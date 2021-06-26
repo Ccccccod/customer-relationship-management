@@ -20,8 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import capstone.dao.UserRepository;
 import capstone.entity.Role;
+import capstone.repository.UserRepository;
 
 /**
  * @author Tuna

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package capstone.dao;
+package capstone.repository;
 
 import java.util.Optional;
 

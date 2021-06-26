@@ -23,6 +23,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * User account
  * @author Tuna
  *
  */
@@ -31,36 +32,39 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
 @Table(name = "[User]", //
 		uniqueConstraints = { //
-				@UniqueConstraint(name = "USER_UK", columnNames = "Name"), //
-				@UniqueConstraint(name = "USER_UK", columnNames = "Email"), //
+				@UniqueConstraint(name = "USER_UK", columnNames = "name"), //
+				@UniqueConstraint(name = "USER_UK", columnNames = "email"), //
 		})
-public class User extends BaseEntity {
+public class User extends NamedEntity<Long> {
+	private static final long serialVersionUID = 1L;
 
-	@Column(name = "Name", length = 36, nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "Password", length = 128, nullable = false)
+	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
-	@Column(name = "Email", length = 320, nullable = false)
+	@Column(name = "email", length = 320, nullable = false)
 	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "User_Role", joinColumns = @JoinColumn(name = "User_Id"), inverseJoinColumns = @JoinColumn(name = "Role_Id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), //
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private Set<Role> roles = new HashSet<>();
 
 	/**
 	 * @param name
-	 * @param password
 	 * @param email
+	 * @param password
 	 */
-	public User(String name, String password, String email) {
+	public User(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.password = password;

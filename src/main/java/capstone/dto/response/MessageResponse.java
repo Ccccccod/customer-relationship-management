@@ -9,7 +9,7 @@ import lombok.Setter;
 
 /**
  * @author Tuna
- *
+ * Response DTO that contains only a message
  */
 @AllArgsConstructor
 @Getter

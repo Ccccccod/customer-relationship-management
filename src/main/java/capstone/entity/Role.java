@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,14 +25,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode(callSuper = true)
 
 @Entity
 @Table(name = "Role", //
 		uniqueConstraints = { //
-				@UniqueConstraint(name = "ROLE_UK", columnNames = "Name") })
-public class Role extends BaseEntity {
+//				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
+				})
+public class Role extends BaseEntity<Long> {
+	private static final long serialVersionUID = 1L;
 
-	@Column(name = "Name", length = 36, nullable = false)
+	@Column(name = "name", length = 36, nullable = false)
 	private String name;
 
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
@@ -46,10 +48,10 @@ public class Role extends BaseEntity {
 		this.name = name;
 	}
 	
-	public static String ADMIN = "ROLE_ADMIN";
+	public static final String ADMIN = "ROLE_ADMIN";
 	
-	public static String MODERATOR = "ROLE_MODERATOR";
+	public static final String MODERATOR = "ROLE_MODERATOR";
 	
-	public static String MEMBER = "ROLE_MEMBER";
+	public static final String MEMBER = "ROLE_MEMBER";
 	
 }

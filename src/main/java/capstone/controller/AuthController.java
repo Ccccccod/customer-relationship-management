@@ -5,8 +5,11 @@ package capstone.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +19,28 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import capstone.dao.RoleRepository;
-import capstone.dao.UserRepository;
 import capstone.dto.request.LoginRequest;
 import capstone.dto.request.SignupRequest;
 import capstone.dto.response.JwtResponse;
 import capstone.dto.response.MessageResponse;
 import capstone.entity.Role;
 import capstone.entity.User;
+import capstone.exception.ErrorDetails;
+import capstone.repository.RoleRepository;
+import capstone.repository.UserRepository;
 import capstone.security.jwt.JwtUtils;
 
+/**
+ * Auth Controller
+ * @author Tuna
+ *
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -47,13 +55,13 @@ public class AuthController {
 	RoleRepository roleRepository;
 
 	@Autowired
-	PasswordEncoder encoder;
+	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	JwtUtils jwtUtils;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -77,30 +85,30 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Validated @RequestBody SignupRequest signUpRequest) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByName(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+					.body(new ErrorDetails("Username is already taken: " + signUpRequest.getUsername()));
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
 			return ResponseEntity
 					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+					.body(new ErrorDetails("Error: Email is already in use!"));
 		}
 
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), 
 							 signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getPassword()));
+							 passwordEncoder.encode(signUpRequest.getPassword()));
 
-		Set<String> strRoles = signUpRequest.getRole();
+		Set<String> strRoles = signUpRequest.getRoles();
 		Set<Role> roles = new HashSet<>();
 
-		if (strRoles == null) {
+		if (Objects.isNull(strRoles)) {
 			Role userRole = roleRepository.findByName(Role.MEMBER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					.orElseThrow(() -> new RuntimeException("Role not found for role name: " + Role.MEMBER));
 			roles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {

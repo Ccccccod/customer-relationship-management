@@ -11,13 +11,16 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import capstone.dao.RoleRepository;
-import capstone.dao.UserRepository;
 import capstone.entity.Role;
+import capstone.entity.Source;
 import capstone.entity.User;
+import capstone.repository.RoleRepository;
+import capstone.repository.SourceRepository;
+import capstone.repository.UserRepository;
 import capstone.utils.EncryptedPasswordUtils;
 
 /**
+ * Data Seeding Listener
  * @author Tuna
  *
  */
@@ -29,6 +32,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    private SourceRepository sourceRepository;
+    
+    static final private String PASSWORD = "12345678"; 
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
@@ -42,11 +50,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.orElseGet(() -> roleRepository.save(new Role(Role.MEMBER)));
 
         // Admin account
-        if (!userRepository.findByEmail("admin@gmail.com").isPresent()) {
+        if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
             User admin = new User();
-            admin.setName("admin");
-            admin.setEmail("admin@gmail.com");
-            admin.setPassword(EncryptedPasswordUtils.encrytePassword("123456"));
+            admin.setName("admin1");
+            admin.setEmail("admin1@gmail.com");
+            admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
             
             Set<Role> roles = new HashSet<Role>();
             roles.add(roleModerator);
@@ -58,11 +66,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         }
 
         // Member account
-        if (!userRepository.findByEmail("member@gmail.com").isPresent()) {
+        if (!userRepository.findByEmail("member1@gmail.com").isPresent()) {
             User member = new User();
-            member.setName("member");
-            member.setEmail("member@gmail.com");
-            member.setPassword(EncryptedPasswordUtils.encrytePassword("123456"));
+            member.setName("member1");
+            member.setEmail("member1@gmail.com");
+            member.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
 
             Set<Role> roles = new HashSet<Role>();
             roles.add(roleMember);
@@ -73,6 +81,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
         userRepository.findAll().forEach(System.out::println);
         roleRepository.findAll().forEach(System.out::println);
+        
+        // Source
+        Source source = sourceRepository.save(new Source("Source"));
+        System.out.println(source);
 	}
 
 }

@@ -3,6 +3,7 @@
  */
 package capstone.security.service;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -17,13 +18,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import capstone.entity.User;
 
 /**
+ * UserDetailsImpl
  * @author Tuna
  *
  */
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private ID id;
 
 	private String username;
 
@@ -34,7 +36,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String username, String email, String password,
+	public UserDetailsImpl(ID id, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
@@ -43,12 +45,12 @@ public class UserDetailsImpl implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public static UserDetailsImpl build(User user) {
+	public static UserDetailsImpl<Long> build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName()))
 				.collect(Collectors.toList());
 
-		return new UserDetailsImpl(
+		return new UserDetailsImpl<Long>(
 				user.getId(), 
 				user.getName(), 
 				user.getEmail(),
@@ -61,7 +63,7 @@ public class UserDetailsImpl implements UserDetails {
 		return authorities;
 	}
 
-	public Long getId() {
+	public ID getId() {
 		return id;
 	}
 
@@ -105,7 +107,11 @@ public class UserDetailsImpl implements UserDetails {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		UserDetailsImpl user = (UserDetailsImpl) o;
-		return Objects.equals(id, user.id);
+		try {
+			UserDetailsImpl<?> user = (UserDetailsImpl<?>) o;
+			return Objects.equals(id, user.id);
+		} catch (ClassCastException e) {
+			return false;
+		}
 	}
 }

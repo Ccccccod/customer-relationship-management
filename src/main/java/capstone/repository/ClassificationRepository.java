@@ -3,7 +3,6 @@
  */
 package capstone.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Classification;
@@ -14,6 +13,6 @@ import capstone.entity.Classification;
  *
  */
 @Repository
-public interface ClassificationRepository extends JpaRepository<Classification, Long> {
+public interface ClassificationRepository extends NamedRepository<Classification, Long> {
 
 }

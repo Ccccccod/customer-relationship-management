@@ -47,5 +47,9 @@ public class Career extends NamedEntity<Long>{
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
+	
+	public Career(String name) {
+		super(name);
+	}
 
 }

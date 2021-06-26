@@ -43,5 +43,9 @@ public class Type extends NamedEntity<Long>{
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
+	
+	public Type(String name) {
+		super(name);
+	}
 
 }

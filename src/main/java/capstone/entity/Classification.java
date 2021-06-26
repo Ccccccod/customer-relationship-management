@@ -48,4 +48,8 @@ public class Classification extends NamedEntity<Long> {
 	@JsonIgnore
 	private Set<Customer> customers;
 
+	public Classification(String name) {
+		super(name);
+	}
+
 }

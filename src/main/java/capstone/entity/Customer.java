@@ -44,7 +44,7 @@ import lombok.ToString;
 public class Customer extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "short_name", columnDefinition = "nvarchar")
+	@Column(name = "short_name", columnDefinition = "nvarchar(255)")
 	private String shortName;
 
 	@Column(name = "tax_code")
@@ -79,7 +79,7 @@ public class Customer extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
 
-	@Column(name = "address", columnDefinition = "nvarchar")
+	@Column(name = "address", columnDefinition = "nvarchar(255)")
 	private String address;
 
 }

@@ -3,7 +3,6 @@
  */
 package capstone.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Customer;
@@ -14,7 +13,7 @@ import capstone.entity.Customer;
  * @author Tuna
  */
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface CustomerRepository extends NamedJpaRepository<Customer, Long> {
 	
 	Boolean existsByTaxCode(String taxCode);
 	

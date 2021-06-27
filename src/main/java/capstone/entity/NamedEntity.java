@@ -31,7 +31,7 @@ import lombok.ToString;
 public abstract class NamedEntity<ID extends Serializable> extends BaseEntity<ID> {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, columnDefinition = "nvarchar(255)")
 	private String name;
 	
 }

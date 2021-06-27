@@ -32,11 +32,8 @@ import lombok.ToString;
 		uniqueConstraints = { //
 //				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
 				})
-public class Role extends BaseEntity<Long> {
+public class Role extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
-
-	@Column(name = "name", length = 36, nullable = false)
-	private String name;
 
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
@@ -44,8 +41,7 @@ public class Role extends BaseEntity<Long> {
     private Set<User> users = new HashSet<User>();
 
 	public Role(String name) {
-		super();
-		this.name = name;
+		super(name);
 	}
 	
 	public static final String ADMIN = "ROLE_ADMIN";

@@ -3,8 +3,6 @@
  */
 package capstone.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import capstone.exception.ResourceNotFoundException;
 
 /**

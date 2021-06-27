@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,7 +44,7 @@ import lombok.ToString;
 public class Customer extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "short_name")
+	@Column(name = "short_name", columnDefinition = "nvarchar")
 	private String shortName;
 
 	@Column(name = "tax_code")
@@ -77,7 +79,7 @@ public class Customer extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
 
-	@Column(name = "address")
+	@Column(name = "address", columnDefinition = "nvarchar")
 	private String address;
 
 }

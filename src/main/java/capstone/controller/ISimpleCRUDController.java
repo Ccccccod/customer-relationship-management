@@ -46,7 +46,11 @@ public interface ISimpleCRUDController<T extends BaseEntity<ID> & Identifiable<I
 	 */
 	JpaRepository<T, ID> getRepository();
 	
-	@GetMapping("/")
+	/**
+	 * List
+	 * @return
+	 */
+	@GetMapping({"", "/"})
 	default ResponseEntity<List<T>> getAll(){
 		return ResponseEntity.ok(getRepository().findAll());
 	}
@@ -76,7 +80,7 @@ public interface ISimpleCRUDController<T extends BaseEntity<ID> & Identifiable<I
 				.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id)));
 	}
 	
-	@PostMapping("/")
+	@PostMapping({"", "/"})
 	default ResponseEntity<?> create(@Valid @RequestBody T t) {
 		if (! t.isNew() && getRepository().existsById(t.getId())) {
 			return ResponseEntity.badRequest().body(new ErrorDetails("An entity is already exist with id: " + t.getId()));

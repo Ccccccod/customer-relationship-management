@@ -15,8 +15,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -27,8 +29,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-// @NoArgsConstructor
-// @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 

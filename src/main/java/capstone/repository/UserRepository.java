@@ -5,7 +5,6 @@ package capstone.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
@@ -16,21 +15,7 @@ import capstone.entity.User;
  *
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-	
-	/**
-	 * Find user by name
-	 * @param name
-	 * @return
-	 */
-	Optional<User> findByName(String name);
-	
-	/**
-	 * Check exist by name
-	 * @param name
-	 * @return
-	 */
-	Boolean existsByName(String name);
+public interface UserRepository extends NamedJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 	
 	/**
 	 * Check exist by email

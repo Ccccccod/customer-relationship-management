@@ -14,6 +14,6 @@ import capstone.entity.Type;
  *
  */
 @Repository
-public interface TypeRepository extends NamedRepository<Type, Long>{
+public interface TypeRepository extends NamedJpaRepository<Type, Long>{
 	
 }

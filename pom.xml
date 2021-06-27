@@ -49,7 +49,7 @@
 			<version>2.1.3.RELEASE</version>
 		</dependency>
 
-		<!--  Web, Thymeleaf -->
+		<!-- Web, Thymeleaf -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>

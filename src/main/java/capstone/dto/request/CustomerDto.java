@@ -25,10 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class CustomerDto extends BaseDto<Long> {
-	
-	@NotNull(message = "Name must not be null")
-	private String name;
+public class CustomerDto extends NamedDto<Long> {
 	
 	private String shortName;
 
@@ -41,8 +38,14 @@ public class CustomerDto extends BaseDto<Long> {
 	@Email
 	private String email;
 	
+	/**
+	 * Nguon goc
+	 */
 	private Long sourceId;
 	
+	/**
+	 * Phan loai khach hang
+	 */
 	private List<Long> classificationIds;
 	
 	private List<Long> fieldIds;

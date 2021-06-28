@@ -39,10 +39,10 @@ public abstract class DtoEntityController<Dto extends BaseDto<ID>, Entity extend
 		implements IDtoEntityController<Dto, Entity, ID> {
 
 	@Autowired
-	private JpaRepository<Entity, ID> repository;
+	protected JpaRepository<Entity, ID> repository;
 	
 	@Autowired
-	private IService<Dto, Entity, ID> service;
+	protected IService<Dto, Entity, ID> service;
 	
 	@Override
 	@GetMapping({"", "/"})

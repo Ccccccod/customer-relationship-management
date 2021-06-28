@@ -117,7 +117,6 @@ public class Contact extends NamedEntity<Long> {
 	/**
 	 * @param name
 	 */
-	@Builder
 	public Contact(String name) {
 		super(name);
 	}

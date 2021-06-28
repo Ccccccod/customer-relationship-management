@@ -25,8 +25,8 @@ public class DtoUtils {
 		return () -> new ResourceNotFoundException("Entity not found for this id: " + id);
 	}
 
-	public static final <T extends BaseEntity<ID>, ID extends Serializable> Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(
-			Class<T> clazz, ID id) {
+	public static final <T extends BaseEntity<ID>, ID extends Serializable> //
+	Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(Class<T> clazz, ID id) {
 		return () -> new ResourceNotFoundException("Entity " + clazz.getName() + " not found for this id: " + id);
 	}
 

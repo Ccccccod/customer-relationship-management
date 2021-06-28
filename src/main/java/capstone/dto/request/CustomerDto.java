@@ -3,7 +3,7 @@
  */
 package capstone.dto.request;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
@@ -46,13 +46,13 @@ public class CustomerDto extends NamedDto<Long> {
 	/**
 	 * Phan loai khach hang
 	 */
-	private List<Long> classificationIds;
+	private Set<Long> classificationIds;
 	
-	private List<Long> fieldIds;
+	private Set<Long> fieldIds;
 	
 	private Long typeId;
 
-	private List<Long> careerIds;
+	private Set<Long> careerIds;
 	
 	private String address;
 	

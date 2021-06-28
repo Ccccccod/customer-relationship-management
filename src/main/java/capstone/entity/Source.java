@@ -43,6 +43,12 @@ public class Source extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "source")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Contact> contacts;
 
 	public Source(String name) {
 		super(name);

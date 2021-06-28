@@ -31,7 +31,7 @@ import capstone.utils.DtoUtils;
  *
  */
 @Service
-public class CustomerService implements IService<CustomerDto, Customer, Long>{
+public class CustomerService extends AbstractService<CustomerDto, Customer, Long> {
 	
 	@Autowired
 	private SourceRepository sourceRepository;
@@ -59,10 +59,7 @@ public class CustomerService implements IService<CustomerDto, Customer, Long>{
 		customer.setEmail(dto.getEmail());
 		customer.setAddress(dto.getAddress());
 		// Source
-		if (!Objects.isNull(dto.getSourceId())) {
-			customer.setSource(sourceRepository.findById(dto.getSourceId())
-					.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(Source.class, dto.getSourceId())));
-		}
+		customer.setSource(this.idToObj(sourceRepository, dto.getSourceId(), Source.class));
 		// Classification
 		if (!Objects.isNull(dto.getClassificationIds())) {
 			Set<Classification> classifications = new HashSet<>();

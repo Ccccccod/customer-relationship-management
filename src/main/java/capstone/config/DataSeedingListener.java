@@ -5,7 +5,9 @@ package capstone.config;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import capstone.entity.Career;
 import capstone.entity.Classification;
+import capstone.entity.Contact;
+import capstone.entity.Customer;
 import capstone.entity.Field;
 import capstone.entity.NamedEntity;
 import capstone.entity.Product;
@@ -23,13 +27,15 @@ import capstone.entity.Type;
 import capstone.entity.User;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
+import capstone.repository.ContactRepository;
+import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
+import capstone.repository.ProductRepository;
 import capstone.repository.RoleRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
 import capstone.repository.UserRepository;
-import capstone.repository.ProductRepository;
 import capstone.utils.EncryptedPasswordUtils;
 
 /**
@@ -39,6 +45,9 @@ import capstone.utils.EncryptedPasswordUtils;
  */
 @Component
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,6 +72,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ContactRepository contactRepository;
     
     static final private String PASSWORD = "12345678"; 
 
@@ -116,8 +128,14 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         userRepository.findAll().forEach(System.out::println);
         roleRepository.findAll().forEach(System.out::println);
         
+        
+        
+        // Customer
+		List<Customer> customers = customerRepository.findAll();
+        
         // Source Nguồn gốc
-        addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
+        Source source1 = new Source("Khách hàng hoặc đối tác giới thiệu");
+        addNamedRepository(sourceRepository, source1);
         addNamedRepository(sourceRepository, new Source("Nhân viên kinh doanh tự tìm kiếm"));
         addNamedRepository(sourceRepository, new Source("Thông qua sự kiện, hội thảo, tập huấn"));
         addNamedRepository(sourceRepository, new Source("Khách hàng tự tìm đến"));
@@ -159,6 +177,26 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         product2.setName("Thành phẩm 2");
 		addNamedRepository(productRepository, product1);
 		addNamedRepository(productRepository, product2);
+		
+		
+		
+		// Contact
+		Contact contact = Contact.builder()
+				.name("Tuấn")
+				.lastName("Nguyễn Quang")
+				.vocative("Ông")
+				.position("Trưởng phòng")
+				.department("Phòng Nhân sự")
+				.classifications(classificationRepository.findAll().stream().collect(Collectors.toSet()))
+				.phone("1591591590")
+				.email("emailKoDuocTrung@gmail.com")
+				.source(source1)
+				.address("khu công nghệ cao Hòa Lạc – Km29, ĐCT08, Thạch Hoà, Thạch Thất, Hà Nội 10000")
+				.build();
+		addNamedRepository(contactRepository, contact);
+		if (!customers.isEmpty()) {
+			contact.setCustomer(customers.get(0));
+		}
 	}
 	
 	private <T extends NamedEntity<ID>, ID extends Serializable> void addNamedRepository(NamedJpaRepository<T, ID> repository, T t) {

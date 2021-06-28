@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.ToString;
  * @author Tuna
  * 
  */
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,6 +51,15 @@ public class Classification extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "contact_classification", //
+			joinColumns = { @JoinColumn(name = "classification_id", nullable = false, updatable = false) }, //
+			inverseJoinColumns = { @JoinColumn(name = "contact_id", nullable = false, updatable = false) })
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Contact> contacts;
 
 	public Classification(String name) {
 		super(name);

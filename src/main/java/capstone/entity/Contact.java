@@ -3,12 +3,15 @@
  */
 package capstone.entity;
 
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -84,7 +87,10 @@ public class Contact extends NamedEntity<Long> {
 	/**
 	 * Phân loại khách hàng
 	 */
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "contacts")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "contact_classification", //
+			joinColumns = { @JoinColumn(name = "contact_id", nullable = false, updatable = false) }, //
+			inverseJoinColumns = { @JoinColumn(name = "classification_id", nullable = false, updatable = false) })
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Classification> classifications;
@@ -119,6 +125,23 @@ public class Contact extends NamedEntity<Long> {
 	 */
 	public Contact(String name) {
 		super(name);
+	}
+
+	@Builder
+	public Contact(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+			String vocative, String lastName, String position, String department, Customer customer,
+			Set<Classification> classifications, String phone, String email, Source source, String address) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		this.vocative = vocative;
+		this.lastName = lastName;
+		this.position = position;
+		this.department = department;
+		this.customer = customer;
+		this.classifications = classifications;
+		this.phone = phone;
+		this.email = email;
+		this.source = source;
+		this.address = address;
 	}
 
 }

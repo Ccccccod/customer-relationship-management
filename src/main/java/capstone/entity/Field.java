@@ -41,10 +41,7 @@ import lombok.ToString;
 public class Field extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "customer_field", //
-			joinColumns = { @JoinColumn(name = "field_id", nullable = false, updatable = false) }, //
-			inverseJoinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) })
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "fields")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore

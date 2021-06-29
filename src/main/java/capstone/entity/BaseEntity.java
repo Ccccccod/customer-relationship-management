@@ -43,7 +43,7 @@ import lombok.ToString;
 @AllArgsConstructor
 
 @MappedSuperclass
-public abstract class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Serializable {
+public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

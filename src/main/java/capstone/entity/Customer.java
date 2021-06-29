@@ -3,12 +3,15 @@
  */
 package capstone.entity;
 
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -30,7 +33,6 @@ import lombok.ToString;
  * @author Tuna
  *
  */
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -63,12 +65,18 @@ public class Customer extends NamedEntity<Long> {
 	@JoinColumn(name = "source_id")
 	private Source source;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "customer_classification", //
+			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
+			inverseJoinColumns = { @JoinColumn(name = "classification_id", nullable = false, updatable = false) })
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Classification> classifications;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "customer_field", //
+			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
+			inverseJoinColumns = { @JoinColumn(name = "field_id", nullable = false, updatable = false) })
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Field> fields;
@@ -77,7 +85,10 @@ public class Customer extends NamedEntity<Long> {
 	@JoinColumn(name = "type_id")
 	private Type type;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "customer_career", //
+			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
+			inverseJoinColumns = { @JoinColumn(name = "career_id", nullable = false, updatable = false) })
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
@@ -90,5 +101,31 @@ public class Customer extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Contact> contacts;
+
+	/**
+	 * @param name
+	 */
+	public Customer(String name) {
+		super(name);
+	}
+
+	@Builder
+	public Customer(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+			String shortName, String taxCode, String phone, String email, Source source,
+			Set<Classification> classifications, Set<Field> fields, Type type, Set<Career> careers, String address,
+			Set<Contact> contacts) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		this.shortName = shortName;
+		this.taxCode = taxCode;
+		this.phone = phone;
+		this.email = email;
+		this.source = source;
+		this.classifications = classifications;
+		this.fields = fields;
+		this.type = type;
+		this.careers = careers;
+		this.address = address;
+		this.contacts = contacts;
+	}
 
 }

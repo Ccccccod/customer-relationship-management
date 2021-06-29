@@ -50,49 +50,20 @@ public class CustomerService extends AbstractService<CustomerDto, Customer, Long
 
 	@Override
 	public Customer dtoToEntity(CustomerDto dto) throws ResourceNotFoundException {
-		Customer customer = new Customer();
-		customer.setId(dto.getId());
-		customer.setName(dto.getName());
-		customer.setShortName(dto.getShortName());
-		customer.setTaxCode(dto.getTaxCode());
-		customer.setPhone(dto.getPhone());
-		customer.setEmail(dto.getEmail());
-		customer.setAddress(dto.getAddress());
-		// Source
-		customer.setSource(this.idToObj(sourceRepository, dto.getSourceId(), Source.class));
-		// Classification
-		if (!Objects.isNull(dto.getClassificationIds())) {
-			Set<Classification> classifications = new HashSet<>();
-			for (Long classifionId : dto.getClassificationIds()) {
-				classifications.add(classificationRepository.findById(classifionId)
-						.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(Classification.class, classifionId)));
-			}
-			customer.setClassifications(classifications);
-		}
-		// Field
-		if (!Objects.isNull(dto.getFieldIds())) {
-			Set<Field> fields = new HashSet<>();
-			for (Long fieldIds : dto.getFieldIds()) {
-				fields.add(fieldRepository.findById(fieldIds)
-						.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(Field.class, fieldIds)));
-			}
-			customer.setFields(fields);
-		}
-		// Type
-		if (!Objects.isNull(dto.getTypeId())) {
-			customer.setType(typeRepository.findById(dto.getTypeId())
-					.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(Type.class, dto.getTypeId())));
-		}
-		// Career
-		if (!Objects.isNull(dto.getCareerIds())) {
-			Set<Career> careers = new HashSet<>();
-			for (Long careerIds : dto.getCareerIds()) {
-				careers.add(careerRepository.findById(careerIds)
-						.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(Career.class, careerIds)));
-			}
-			customer.setCareers(careers);
-		}
-		
+		Customer customer = Customer.builder()
+				.id(dto.getId())
+				.name(dto.getName())
+				.shortName(dto.getShortName())
+				.taxCode(dto.getTaxCode())
+				.phone(dto.getPhone())
+				.email(dto.getEmail())
+				.address(dto.getAddress())
+				.source(this.idToObj(sourceRepository, dto.getSourceId(), Source.class))
+				.classifications(this.idToObj(classificationRepository, dto.getClassificationIds(), Classification.class))
+				.fields(this.idToObj(fieldRepository, dto.getFieldIds(), Field.class))
+				.type(this.idToObj(typeRepository, dto.getTypeId(), Type.class))
+				.careers(this.idToObj(careerRepository, dto.getCareerIds(), Career.class))
+				.build();
 		return customer;
 	}
 

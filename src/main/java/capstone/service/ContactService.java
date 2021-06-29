@@ -35,11 +35,12 @@ public class ContactService extends AbstractService<ContactDto, Contact, Long> {
 	@Override
 	public Contact dtoToEntity(ContactDto dto) throws ResourceNotFoundException {
 		Contact contact = Contact.builder()
+				.id(dto.getId())
 				.lastName(dto.getLastName())
 				.vocative(dto.getVocative())
 				.position(dto.getPosition())
 				.department(dto.getDepartment())
-				.customer(this.idToObj(customerRepository, dto.getId(), Customer.class))
+				.customer(this.idToObj(customerRepository, dto.getCustomerId(), Customer.class))
 				.classifications(this.idToObj(classificationRepository, dto.getClassificationIds(), Classification.class))
 				.phone(dto.getPhone())
 				.email(dto.getEmail())

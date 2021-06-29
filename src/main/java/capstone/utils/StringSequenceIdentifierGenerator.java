@@ -4,7 +4,6 @@
 package capstone.utils;
 
 import java.io.Serializable;
-import java.util.Optional;
 import java.util.Properties;
 
 import org.hibernate.HibernateException;

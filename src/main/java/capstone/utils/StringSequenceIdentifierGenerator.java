@@ -42,7 +42,7 @@ public class StringSequenceIdentifierGenerator implements IdentifierGenerator, C
 	 */
 	private static final int DEFAULT_NUMBER_ID_LENGTH = 5;
 
-	private String sequencePrefix;
+	private String sequencePrefix = DEFAULT_SEQUENCE_PREFIX;
 
 	private String sequenceCallSyntax;
 

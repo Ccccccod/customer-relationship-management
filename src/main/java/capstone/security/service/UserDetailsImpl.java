@@ -3,7 +3,6 @@
  */
 package capstone.security.service;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -22,10 +21,10 @@ import capstone.entity.User;
  * @author Tuna
  *
  */
-public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private ID id;
+	private Long id;
 
 	private String username;
 
@@ -36,7 +35,7 @@ public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(ID id, String username, String email, String password,
+	public UserDetailsImpl(Long id, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
@@ -45,12 +44,12 @@ public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
 		this.authorities = authorities;
 	}
 
-	public static UserDetailsImpl<Long> build(User user) {
+	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName()))
 				.collect(Collectors.toList());
 
-		return new UserDetailsImpl<Long>(
+		return new UserDetailsImpl(
 				user.getId(), 
 				user.getName(), 
 				user.getEmail(),
@@ -63,7 +62,7 @@ public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
 		return authorities;
 	}
 
-	public ID getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -108,7 +107,7 @@ public class UserDetailsImpl<ID extends Serializable> implements UserDetails {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		try {
-			UserDetailsImpl<?> user = (UserDetailsImpl<?>) o;
+			UserDetailsImpl user = (UserDetailsImpl) o;
 			return Objects.equals(id, user.id);
 		} catch (ClassCastException e) {
 			return false;

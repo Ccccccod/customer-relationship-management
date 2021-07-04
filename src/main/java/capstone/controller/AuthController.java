@@ -35,6 +35,7 @@ import capstone.exception.ErrorDetails;
 import capstone.repository.RoleRepository;
 import capstone.repository.UserRepository;
 import capstone.security.jwt.JwtUtils;
+import capstone.security.service.UserDetailsImpl;
 
 /**
  * Auth Controller
@@ -69,19 +70,24 @@ public class AuthController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
-		// Can not cast
-//		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		UserDetails userDetails = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+		Object principal = authentication.getPrincipal();
 		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 null, 
-												 userDetails.getUsername(), 
-												 null, 
-												 roles));
+		List<String> roles = null;
+		
+		if (principal instanceof UserDetailsImpl) {
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			roles = userDetails.getAuthorities().stream()
+					.map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+					userDetails.getEmail(), roles));
+		} else if (principal instanceof org.springframework.security.core.userdetails.User) {
+			UserDetails userDetails = (org.springframework.security.core.userdetails.User) authentication
+					.getPrincipal();
+			return ResponseEntity.ok(new JwtResponse(jwt, null, userDetails.getUsername(), null, roles));
+		} else {
+			return ResponseEntity.ok().build();
+		}
 	}
 
 	@PostMapping("/signup")

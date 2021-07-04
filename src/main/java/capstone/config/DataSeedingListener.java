@@ -13,8 +13,10 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import capstone.entity.BaseEntity;
 import capstone.entity.Career;
 import capstone.entity.Classification;
 import capstone.entity.Contact;
@@ -45,6 +47,7 @@ import capstone.utils.EncryptedPasswordUtils;
  *
  */
 @Component
+@SuppressWarnings("unused")
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -211,11 +214,18 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 			contact.setCustomer(customers.get(0));
 		}
 		addNamedRepository(contactRepository, contact);
+		
+		
 	}
 
 	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
 		return repository.findByName(t.getName()).orElseGet(() -> repository.save(t));
+	}
+
+	private <T extends BaseEntity<ID>, ID extends Serializable> T addRepository(
+			JpaRepository<T, ID> repository, T t) {
+		return repository.findById(t.getId()).orElseGet(() -> repository.save(t));
 	}
 
 }

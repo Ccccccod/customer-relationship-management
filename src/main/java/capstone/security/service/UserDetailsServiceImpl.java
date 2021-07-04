@@ -53,8 +53,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
  
-        return new User(user.getName(), //
-                user.getPassword(), grantList);
+        return new UserDetailsImpl(user.getId(), user.getName(), user.getEmail(), user.getPassword(), grantList);
+//		return new User(user.getName(), user.getPassword(), grantList);
 	}
 	
 //	private List<String> getRoleNamesByUserId(Long id) {

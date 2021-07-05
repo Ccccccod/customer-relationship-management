@@ -14,6 +14,6 @@ import capstone.entity.Field;
  */
 @RestController
 @RequestMapping("/api/field")
-public class FieldController extends SimpleCRUDController<Field, Long> {
+public class FieldController extends AbstractSimpleCRUDController<Field, Long> {
 
 }

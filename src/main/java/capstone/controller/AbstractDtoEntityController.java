@@ -35,7 +35,7 @@ import capstone.utils.MapBuilder;
  * @param <ID> {@link Dto} and {@link Entity}'s ID
  */
 @RequestMapping("/default")
-public abstract class DtoEntityController<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable>
+public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable>
 		implements IDtoEntityController<Dto, Entity, ID> {
 
 	@Autowired

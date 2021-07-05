@@ -14,6 +14,6 @@ import capstone.entity.Classification;
  */
 @RestController
 @RequestMapping("/api/classification")
-public class ClassificationController extends SimpleCRUDController<Classification, Long>{
+public class ClassificationController extends AbstractSimpleCRUDController<Classification, Long>{
 
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import capstone.entity.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public abstract class BaseDto<ID extends Serializable> {
+public abstract class BaseDto<ID extends Serializable> implements Identifiable<ID> {
 	
 	private ID id;
 	

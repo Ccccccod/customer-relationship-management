@@ -38,10 +38,17 @@ public class JwtUtils {
 		
 		// Can not cast
 //		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-		UserDetails userPrincipal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+//		UserDetails userPrincipal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+		
+		String userName = null;
+		Object principal = authentication.getPrincipal();
+		if (principal instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			userName = userDetails.getUsername();
+		}
 		
 		return Jwts.builder()
-				.setSubject(userPrincipal.getUsername())
+				.setSubject(userName)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + this.jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, this.jwtSecret)

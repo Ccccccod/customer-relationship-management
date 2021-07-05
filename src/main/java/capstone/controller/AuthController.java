@@ -36,6 +36,7 @@ import capstone.repository.RoleRepository;
 import capstone.repository.UserRepository;
 import capstone.security.jwt.JwtUtils;
 import capstone.security.service.UserDetailsImpl;
+import capstone.service.UserService;
 
 /**
  * Auth Controller
@@ -57,6 +58,9 @@ public class AuthController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	JwtUtils jwtUtils;
@@ -73,6 +77,7 @@ public class AuthController {
 		Object principal = authentication.getPrincipal();
 		
 		List<String> roles = null;
+		System.out.println(userService.getCurrentUser());
 		
 		if (principal instanceof UserDetailsImpl) {
 			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();

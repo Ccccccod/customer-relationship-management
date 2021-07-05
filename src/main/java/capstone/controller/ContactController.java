@@ -15,6 +15,6 @@ import capstone.entity.Contact;
  */
 @RestController
 @RequestMapping(value = "/api/contact")
-public class ContactController extends DtoEntityController<ContactDto, Contact, Long> {
+public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, Long> {
 
 }

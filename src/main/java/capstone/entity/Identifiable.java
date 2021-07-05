@@ -13,12 +13,12 @@ import capstone.utils.StringSequenceIdentifierGenerator;
  * @author Tuna
  *
  */
-public interface Identifiable<T extends Serializable> {
+public interface Identifiable<ID extends Serializable> {
 
 	/**
 	 * getter for id
 	 * @return
 	 */
-	T getId();
+	ID getId();
 	
 }

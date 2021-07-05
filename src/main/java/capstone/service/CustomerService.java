@@ -3,10 +3,6 @@
  */
 package capstone.service;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +19,6 @@ import capstone.repository.ClassificationRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
-import capstone.utils.DtoUtils;
 
 /**
  * Customer Service

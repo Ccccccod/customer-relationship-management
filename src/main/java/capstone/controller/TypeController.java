@@ -14,6 +14,6 @@ import capstone.entity.Type;
  */
 @RestController
 @RequestMapping("/api/type")
-public class TypeController extends SimpleCRUDController<Type, Long>{
+public class TypeController extends AbstractSimpleCRUDController<Type, Long>{
 
 }

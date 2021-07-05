@@ -12,15 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import capstone.dto.request.BaseDto;
-import capstone.entity.BaseEntity;
+import capstone.entity.Identifiable;
 import capstone.exception.ResourceNotFoundException;
 
 /**
  * @author Tuna
  *
  */
-public interface IDtoEntityController<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
+public interface IDtoEntityController<Dto extends Identifiable<ID>, Entity extends Identifiable<ID>, ID extends Serializable> {
 	
 	ResponseEntity<List<Entity>> getAll();
 

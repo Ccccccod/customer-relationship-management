@@ -14,6 +14,6 @@ import capstone.entity.Source;
  */
 @RestController
 @RequestMapping("/api/source")
-public class SourceController extends SimpleCRUDController<Source, Long> {
+public class SourceController extends AbstractSimpleCRUDController<Source, Long> {
 
 }

@@ -14,6 +14,6 @@ import capstone.entity.Career;
  */
 @RestController
 @RequestMapping("/api/career")
-public class CareerController extends SimpleCRUDController<Career, Long>{
+public class CareerController extends AbstractSimpleCRUDController<Career, Long>{
 
 }

@@ -44,7 +44,7 @@ import lombok.ToString;
 		uniqueConstraints = { //
 				@UniqueConstraint(name = "CONTACT_UK", columnNames = "email") //
 		})
-public class Contact extends NamedEntity<Long> {
+public class Contact extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -118,19 +118,31 @@ public class Contact extends NamedEntity<Long> {
 	 */
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
-	
-	/**
-	 * @param name
-	 */
-	public Contact(String name) {
-		super(name);
-	}
 
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param name
+	 * @param code
+	 * @param vocative
+	 * @param lastName
+	 * @param position
+	 * @param department
+	 * @param customer
+	 * @param classifications
+	 * @param phone
+	 * @param email
+	 * @param source
+	 * @param address
+	 */
 	@Builder
-	public Contact(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+	public Contact(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
 			String vocative, String lastName, String position, String department, Customer customer,
 			Set<Classification> classifications, String phone, String email, Source source, String address) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
 		this.position = position;
@@ -141,6 +153,14 @@ public class Contact extends NamedEntity<Long> {
 		this.email = email;
 		this.source = source;
 		this.address = address;
+	}
+
+	/**
+	 * @param name
+	 * @param code
+	 */
+	public Contact(String name, String code) {
+		super(name, code);
 	}
 
 }

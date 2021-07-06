@@ -3,11 +3,11 @@
  */
 package capstone.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +33,7 @@ import lombok.ToString;
 @Table(name = "Product", //
 		uniqueConstraints = { //
 		})
-public class Product extends NamedEntity<Long> {
+public class Product extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -107,10 +107,55 @@ public class Product extends NamedEntity<Long> {
 	 */
 	@Column(name = "cost_unit_price")
 	private Long costUnitPrice;
-	
-	@JsonIgnore
-	public Product(String name) {
-		super(name);
+
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param name
+	 * @param code
+	 * @param productType
+	 * @param explanation
+	 * @param unit
+	 * @param sellPrice
+	 * @param sellPrice1
+	 * @param sellPrice2
+	 * @param permanentPrice
+	 * @param buyPrice
+	 * @param enterUnitPriorityAfterTax
+	 * @param vat
+	 * @param implicitRecord
+	 * @param costUnitPrice
+	 */
+	@Builder
+	public Product(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
+			String productType, String explanation, String unit, Long sellPrice, Long sellPrice1, Long sellPrice2,
+			Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax, String vat, Boolean implicitRecord,
+			Long costUnitPrice) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+		this.productType = productType;
+		this.explanation = explanation;
+		this.unit = unit;
+		this.sellPrice = sellPrice;
+		this.sellPrice1 = sellPrice1;
+		this.sellPrice2 = sellPrice2;
+		this.permanentPrice = permanentPrice;
+		this.buyPrice = buyPrice;
+		this.enterUnitPriorityAfterTax = enterUnitPriorityAfterTax;
+		this.vat = vat;
+		this.implicitRecord = implicitRecord;
+		this.costUnitPrice = costUnitPrice;
+	}
+
+	/**
+	 * @param name
+	 * @param code
+	 */
+	public Product(String name, String code) {
+		super(name, code);
+		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,20 +34,14 @@ public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 
-	public CodedNamedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy,
-			String name) {
+	public CodedNamedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+			String code) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		this.code = code;
 	}
 
 	public CodedNamedEntity(String name, String code) {
 		super(name);
-		this.code = code;
-	}
-
-	@Builder
-	public CodedNamedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
-			String code) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.code = code;
 	}
 

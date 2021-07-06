@@ -167,6 +167,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
 		// Customer
 		Customer customer1 = addNamedRepository(customerRepository, Customer.builder()
+				.code("KH00001")
 				.name("Công ty TNHH Eurodoor")
 				.shortName("Eurodoor")
 				.taxCode("0185514943")
@@ -185,12 +186,38 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
         
         // Product
-        Product product1 = new Product("Product type 1", "Thành phẩm 1", "Hộp", 200000L, 220000L,230000L,
-				250000L, 150000L, Boolean.TRUE, "10%", Boolean.FALSE, 180000L);
-		Product product2 = new Product("Product type 2", "Thành phẩm 2", "Bao", 400000L, 440000L,460000L,
-				500000L, 300000L, Boolean.TRUE, "10%", Boolean.FALSE, 360000L);
-        product1.setName("Thành phẩm 1");
-        product2.setName("Thành phẩm 2");
+        Product product1 = Product.builder()
+        		.code("HH00001")
+        		.name("Thành phẩm 1")
+        		.productType("Product type 1")
+        		.explanation("Thành phẩm 1")
+        		.unit("Hộp")
+        		.sellPrice(200000L)
+        		.sellPrice1(220000L)
+        		.sellPrice2(230000L)
+        		.permanentPrice(250000L)
+        		.buyPrice(150000L)
+        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+        		.vat("10%")
+        		.implicitRecord(Boolean.FALSE)
+        		.costUnitPrice(180000L)
+        		.build();
+        Product product2 = Product.builder()
+        		.code("HH00002")
+        		.name("Thành phẩm 2")
+        		.productType("Product type 2")
+        		.explanation("Thành phẩm 2")
+        		.unit("Bao")
+        		.sellPrice(400000L)
+        		.sellPrice1(440000L)
+        		.sellPrice2(460000L)
+        		.permanentPrice(500000L)
+        		.buyPrice(300000L)
+        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+        		.vat("10%")
+        		.implicitRecord(Boolean.FALSE)
+        		.costUnitPrice(360000L)
+        		.build();
 		addNamedRepository(productRepository, product1);
 		addNamedRepository(productRepository, product2);
 		
@@ -198,6 +225,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		// Contact
 		Contact contact = Contact.builder()
+				.code("LH00001")
 				.lastName("Nguyễn Quang")
 				.vocative("Ông")
 				.position("Trưởng phòng")

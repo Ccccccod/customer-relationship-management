@@ -45,7 +45,7 @@ import lombok.ToString;
 				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
 				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
 		})
-public class Customer extends NamedEntity<Long> {
+public class Customer extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "short_name", columnDefinition = "nvarchar(255)")
@@ -102,18 +102,31 @@ public class Customer extends NamedEntity<Long> {
 	private Set<Contact> contacts;
 
 	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
 	 * @param name
+	 * @param code
+	 * @param shortName
+	 * @param taxCode
+	 * @param phone
+	 * @param email
+	 * @param source
+	 * @param classifications
+	 * @param fields
+	 * @param type
+	 * @param careers
+	 * @param address
+	 * @param contacts
 	 */
-	public Customer(String name) {
-		super(name);
-	}
-
 	@Builder
-	public Customer(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+	public Customer(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
 			String shortName, String taxCode, String phone, String email, Source source,
 			Set<Classification> classifications, Set<Field> fields, Type type, Set<Career> careers, String address,
 			Set<Contact> contacts) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.shortName = shortName;
 		this.taxCode = taxCode;
 		this.phone = phone;
@@ -125,6 +138,14 @@ public class Customer extends NamedEntity<Long> {
 		this.careers = careers;
 		this.address = address;
 		this.contacts = contacts;
+	}
+
+	/**
+	 * @param name
+	 * @param code
+	 */
+	public Customer(String name, String code) {
+		super(name, code);
 	}
 
 }

@@ -25,7 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class CustomerDto extends NamedDto<Long> {
+public class CustomerDto extends CodedNamedDto<Long> {
 	
 	private String shortName;
 

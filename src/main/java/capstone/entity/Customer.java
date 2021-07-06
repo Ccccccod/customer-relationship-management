@@ -19,6 +19,7 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import capstone.common.Constant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -48,7 +49,7 @@ import lombok.ToString;
 public class Customer extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "short_name", columnDefinition = "nvarchar(255)")
+	@Column(name = "short_name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String shortName;
 
 	@Column(name = "tax_code")
@@ -92,7 +93,7 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
 
-	@Column(name = "address", columnDefinition = "nvarchar(255)")
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")

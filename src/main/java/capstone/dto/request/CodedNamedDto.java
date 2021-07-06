@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Named DTO
+ * Coded Named Dto
  * @author Tuna
  *
  */
@@ -25,18 +25,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class NamedDto<ID extends Serializable> extends BaseDto<ID> {
+public class CodedNamedDto<ID extends Serializable> extends NamedDto<ID> {
 	
-	@NotNull(message = "Name must not be null")
-	private String name;
+	@NotNull(message = "Code must not be null")
+	private String code;
 
 	/**
 	 * @param id
 	 * @param name
+	 * @param code
 	 */
-	public NamedDto(ID id, @NotNull(message = "Name must not be null") String name) {
-		super(id);
-		this.name = name;
+	public CodedNamedDto(ID id, @NotNull(message = "Name must not be null") String name,
+			@NotNull(message = "Code must not be null") String code) {
+		super(id, name);
+		this.code = code;
 	}
-
+	
 }

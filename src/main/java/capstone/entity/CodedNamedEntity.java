@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -31,6 +32,7 @@ import lombok.ToString;
 public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	private static final long serialVersionUID = 1L;
 
+	@NonNull
 	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 

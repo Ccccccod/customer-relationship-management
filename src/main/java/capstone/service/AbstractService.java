@@ -13,7 +13,6 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import capstone.dto.request.BaseDto;
 import capstone.entity.BaseEntity;
 import capstone.exception.ResourceNotFoundException;
 import capstone.utils.DtoUtils;
@@ -25,20 +24,19 @@ import capstone.utils.DtoUtils;
  * @param <Entity>
  * @param <ID>
  */
-public abstract class AbstractService<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable>
-		implements IService<Dto, Entity, ID> {
+public abstract class AbstractService {
 
 	/**
 	 * Method to quickly map to a BaseEntity from its id
 	 * @param <T>
-	 * @param <ID1>
+	 * @param <ID>
 	 * @param repository T's repository
 	 * @param id         T's id
 	 * @param class1     T's class
 	 * @return T
 	 * @throws ResourceNotFoundException if no T is found for the id
 	 */
-	protected <T extends BaseEntity<ID1>, ID1 extends Serializable> T idToObj(JpaRepository<T, ID1> repository, ID1 id,
+	protected <T extends BaseEntity<ID>, ID extends Serializable> T idToObj(JpaRepository<T, ID> repository, ID id,
 			Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(id)) {
 			return null;
@@ -50,20 +48,20 @@ public abstract class AbstractService<Dto extends BaseDto<ID>, Entity extends Ba
 	 * Method to quickly map to a {@link Set} of BaseEntity from a {@link Set} of
 	 * its id
 	 * @param <T>
-	 * @param <ID1>
+	 * @param <ID>
 	 * @param repository T's repository
 	 * @param ids        {@link Set} of T's id
 	 * @param class1     T's class
 	 * @return {@link Set} of T
 	 * @throws ResourceNotFoundException
 	 */
-	protected <T extends BaseEntity<ID1>, ID1 extends Serializable> Set<T> idToObj(JpaRepository<T, ID1> repository,
-			Set<ID1> ids, Class<T> class1) throws ResourceNotFoundException {
+	protected <T extends BaseEntity<ID>, ID extends Serializable> Set<T> idToObj(JpaRepository<T, ID> repository,
+			Set<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
 			return null;
 		}
 		Set<T> ts = new LinkedHashSet<>();
-		for (ID1 id : ids) {
+		for (ID id : ids) {
 			if (Objects.isNull(ids)) {
 				continue;
 			}
@@ -76,20 +74,20 @@ public abstract class AbstractService<Dto extends BaseDto<ID>, Entity extends Ba
 	 * Method to quickly map to a {@link List} of BaseEntity from a {@link List} of
 	 * its id
 	 * @param <T>
-	 * @param <ID1>
+	 * @param <ID>
 	 * @param repository T's repository
 	 * @param ids        {@link List} of T's id
 	 * @param class1     T's class
 	 * @return {@link List} of T
 	 * @throws ResourceNotFoundException
 	 */
-	protected <T extends BaseEntity<ID1>, ID1 extends Serializable> List<T> idToObj(JpaRepository<T, ID1> repository,
-			List<ID1> ids, Class<T> class1) throws ResourceNotFoundException {
+	protected <T extends BaseEntity<ID>, ID extends Serializable> List<T> idToObj(JpaRepository<T, ID> repository,
+			List<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
 			return null;
 		}
 		List<T> ts = new LinkedList<>();
-		for (ID1 id : ids) {
+		for (ID id : ids) {
 			if (Objects.isNull(ids)) {
 				continue;
 			}

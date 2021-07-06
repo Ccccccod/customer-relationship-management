@@ -5,6 +5,8 @@ package capstone.dto.request;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -25,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class ContactDto extends NamedDto<Long> {
+public class ContactDto extends CodedNamedDto<Long> {
 
 	/**
 	 * Xưng hô
@@ -76,20 +78,38 @@ public class ContactDto extends NamedDto<Long> {
 	 * Địa chỉ
 	 */
 	private String address;
-	
-	/**
-	 * @param id
-	 */
-	public ContactDto(Long id) {
-		super(id);
-	}
 
 	/**
+	 * @param id
 	 * @param name
+	 * @param code
+	 * @param vocative
+	 * @param lastName
+	 * @param position
+	 * @param department
+	 * @param customerId
+	 * @param classificationIds
+	 * @param phone
+	 * @param email
+	 * @param sourceId
+	 * @param address
 	 */
 	@Builder
-	public ContactDto(String name) {
-		super(name);
+	public ContactDto(Long id, @NotNull(message = "Name must not be null") String name,
+			@NotNull(message = "Code must not be null") String code, String vocative, String lastName, String position,
+			String department, Long customerId, Set<Long> classificationIds, String phone, String email, Long sourceId,
+			String address) {
+		super(id, name, code);
+		this.vocative = vocative;
+		this.lastName = lastName;
+		this.position = position;
+		this.department = department;
+		this.customerId = customerId;
+		this.classificationIds = classificationIds;
+		this.phone = phone;
+		this.email = email;
+		this.sourceId = sourceId;
+		this.address = address;
 	}
 
 }

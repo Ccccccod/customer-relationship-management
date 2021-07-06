@@ -26,8 +26,8 @@ import capstone.repository.TypeRepository;
  *
  */
 @Service
-public class CustomerService extends AbstractService<CustomerDto, Customer, Long> {
-	
+public class CustomerService extends AbstractService implements IDtoToEntityService<CustomerDto, Customer, Long> {
+
 	@Autowired
 	private SourceRepository sourceRepository;
 	

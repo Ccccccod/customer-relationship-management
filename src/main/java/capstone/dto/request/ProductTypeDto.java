@@ -3,8 +3,6 @@
  */
 package capstone.dto.request;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -15,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Named DTO
+ * Loại hàng hóa
  * @author Tuna
  *
  */
@@ -25,18 +23,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class NamedDto<ID extends Serializable> extends BaseDto<ID> {
+public class ProductTypeDto extends CodedNamedDto<Long> {
 	
-	@NotNull(message = "Name must not be null")
-	private String name;
+	private Long productTypeId;
 
 	/**
 	 * @param id
 	 * @param name
+	 * @param code
+	 * @param productTypeId
 	 */
-	public NamedDto(ID id, @NotNull(message = "Name must not be null") String name) {
-		super(id);
-		this.name = name;
+	public ProductTypeDto(Long id, @NotNull(message = "Name must not be null") String name,
+			@NotNull(message = "Code must not be null") String code, Long productTypeId) {
+		super(id, name, code);
+		this.productTypeId = productTypeId;
 	}
 
 }

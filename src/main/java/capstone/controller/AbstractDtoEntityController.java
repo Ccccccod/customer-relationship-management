@@ -21,7 +21,7 @@ import capstone.dto.request.BaseDto;
 import capstone.entity.BaseEntity;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceNotFoundException;
-import capstone.service.IService;
+import capstone.service.IDtoToEntityService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
 
@@ -42,7 +42,7 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	protected JpaRepository<Entity, ID> repository;
 	
 	@Autowired
-	protected IService<Dto, Entity, ID> service;
+	protected IDtoToEntityService<Dto, Entity, ID> service;
 	
 	@Override
 	@GetMapping({"", "/"})

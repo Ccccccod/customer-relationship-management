@@ -4,8 +4,11 @@
 package capstone.config;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,6 +27,7 @@ import capstone.entity.Customer;
 import capstone.entity.Field;
 import capstone.entity.NamedEntity;
 import capstone.entity.Product;
+import capstone.entity.ProductType;
 import capstone.entity.Role;
 import capstone.entity.Source;
 import capstone.entity.Type;
@@ -35,6 +39,7 @@ import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
 import capstone.repository.ProductRepository;
+import capstone.repository.ProductTypeRepository;
 import capstone.repository.RoleRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
@@ -76,6 +81,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ProductTypeRepository productTypeRepository;
 
     @Autowired
     private ContactRepository contactRepository;
@@ -183,13 +191,14 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		List<Customer> customers = customerRepository.findAll();
         
 
-        
-        
+        // Product Type
+		List<ProductType> productTypes = addProductType();
+
         // Product
         Product product1 = Product.builder()
         		.code("HH00001")
         		.name("Thành phẩm 1")
-        		.productType("Product type 1")
+        		.productType(Optional.ofNullable(productTypes.get(0)).orElse(null))
         		.explanation("Thành phẩm 1")
         		.unit("Hộp")
         		.sellPrice(200000L)
@@ -205,9 +214,25 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Product product2 = Product.builder()
         		.code("HH00002")
         		.name("Thành phẩm 2")
-        		.productType("Product type 2")
+        		.productType(Optional.ofNullable(productTypes.get(1)).orElse(null))
         		.explanation("Thành phẩm 2")
         		.unit("Bao")
+        		.sellPrice(400000L)
+        		.sellPrice1(440000L)
+        		.sellPrice2(460000L)
+        		.permanentPrice(500000L)
+        		.buyPrice(300000L)
+        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+        		.vat("10%")
+        		.implicitRecord(Boolean.FALSE)
+        		.costUnitPrice(360000L)
+        		.build();
+        Product product3 = Product.builder()
+        		.code("HH00003")
+        		.name("T-Shirt")
+        		.productType(Optional.ofNullable(productTypes.get(2)).orElse(null))
+        		.explanation("T-Shirt")
+        		.unit("Hộp")
         		.sellPrice(400000L)
         		.sellPrice1(440000L)
         		.sellPrice2(460000L)
@@ -244,6 +269,90 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		addNamedRepository(contactRepository, contact);
 		
 		
+	}
+	
+	private List<ProductType> addProductType() {
+		List<ProductType> productTypes;
+		ProductType productType1 = addNamedRepository(productTypeRepository, ProductType.builder()
+				.code("LH00001")
+				.name("Clothes")
+				.build());
+			ProductType productType2 = addNamedRepository(productTypeRepository, ProductType.builder()
+					.code("LH00002")
+					.name("Shirt")
+					.productType(productType1)
+					.build());
+				ProductType productType3 = addNamedRepository(productTypeRepository, ProductType.builder()
+						.code("LH00003")
+						.name("T-Shirt")
+						.productType(productType2)
+						.build());	
+				ProductType productType4 = addNamedRepository(productTypeRepository, ProductType.builder()
+						.code("LH00004")
+						.name("V-neck Shirt")
+						.productType(productType2)
+						.build());
+				ProductType productType5 = addNamedRepository(productTypeRepository, ProductType.builder()
+						.code("LH00005")
+						.name("Jacket")
+						.productType(productType2)
+						.build());
+			ProductType productType6 = addNamedRepository(productTypeRepository, ProductType.builder()
+					.code("LH00006")
+					.name("Skirt")
+					.productType(productType1)
+					.build());
+		ProductType productType7 = addNamedRepository(productTypeRepository, ProductType.builder()
+				.code("LH00007")
+				.name("Food")
+				.build());
+			ProductType productType8 = addNamedRepository(productTypeRepository, ProductType.builder()
+					.code("LH00008")
+					.name("Fruit")
+					.productType(productType7)
+					.build());
+				ProductType productType9 = addNamedRepository(productTypeRepository, ProductType.builder()
+						.code("LH00009")
+						.name("Grape")
+						.productType(productType8)
+						.build());
+					ProductType productType10 = addNamedRepository(productTypeRepository, ProductType.builder()
+							.code("LH00010")
+							.name("Table Grape")
+							.productType(productType9)
+							.build());
+						ProductType productType11 = addNamedRepository(productTypeRepository, ProductType.builder()
+								.code("LH00011")
+								.name("Dominga Grape")
+								.productType(productType10)
+								.build());
+					ProductType productType12 = addNamedRepository(productTypeRepository, ProductType.builder()
+							.code("LH00012")
+							.name("Wine Grape")
+							.productType(productType9)
+							.build());
+						ProductType productType13 = addNamedRepository(productTypeRepository, ProductType.builder()
+								.code("LH00013")
+								.name("Black Muscat Grape")
+								.productType(productType12)
+								.build());
+		ProductType productType20 = addNamedRepository(productTypeRepository, ProductType.builder()
+				.code("LH00020")
+				.name("Drink")
+				.build());
+		ProductType productType21 = addNamedRepository(productTypeRepository, ProductType.builder()
+				.code("LH00021")
+				.name("Electronic Equipment")
+				.build());
+			ProductType productType22 = addNamedRepository(productTypeRepository, ProductType.builder()
+					.code("LH00022")
+					.name("Piano")
+					.productType(productType21)
+					.build());
+		productTypes = Arrays.asList(productType1, productType2, productType3, productType4, productType5, productType6,
+				productType7, productType8, productType9, productType10, productType11, productType12, productType13,
+				productType20, productType21, productType22);
+		return productTypes;
 	}
 
 	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(

@@ -11,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import capstone.dto.response.UserResponse;
 import capstone.entity.User;
+import capstone.exception.ResourceNotFoundException;
 import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 
@@ -21,7 +23,7 @@ import capstone.security.service.UserDetailsImpl;
  *
  */
 @Service
-public class UserService {
+public class UserService implements IEntityToResponseService<UserResponse, User, Long>{
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -49,6 +51,20 @@ public class UserService {
 			return null;
 		}
 		return null;
+	}
+
+	@Override
+	public UserResponse entityToResponse(User user) {
+		return UserResponse.builder()
+				.id(user.getId())
+				.username(user.getName())
+				.email(user.getEmail())
+				.roles(user.getRoles())
+				.createdAt(user.getCreatedAt())
+				.createdBy(user.getCreatedBy())
+				.updatedAt(user.getUpdatedAt())
+				.updatedBy(user.getUpdatedBy())
+				.build();
 	}
 	
 }

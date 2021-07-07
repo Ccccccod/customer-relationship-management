@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import capstone.entity.BaseEntity;
-import capstone.exception.ErrorDetails;
+import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
@@ -36,7 +36,7 @@ import capstone.utils.MapBuilder;
  */
 @RequestMapping("/default")
 public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID extends Serializable>
-		implements IDtoEntityController<T, T, ID> {
+		implements IController<T, T, T, ID> {
 	
 	@Autowired
 	private JpaRepository<T, ID> repository;
@@ -79,9 +79,9 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 	
 	@Override
 	@PostMapping({"", "/"})
-	public ResponseEntity<?> create(@Valid @RequestBody T t) throws ResourceNotFoundException {
+	public ResponseEntity<T> create(@Valid @RequestBody T t) throws ResourceNotFoundException, ResourceExistedException {
 		if (! t.isNew() && this.repository.existsById(t.getId())) {
-			return ResponseEntity.badRequest().body(new ErrorDetails("An entity is already exist with id: " + t.getId()));
+			throw new ResourceExistedException("An entity is already exist with id: " + t.getId());
 		}
 		t.setCreatedBy(this.userService.getCurrentUser());
 		return ResponseEntity.ok(this.repository.save(t)); 
@@ -89,7 +89,8 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 	
 	@Override
 	@PostMapping("/{id}")
-	public ResponseEntity<?> create(@PathVariable(value = "id") ID id, @Valid @RequestBody T t) throws ResourceNotFoundException {
+	public ResponseEntity<T> create(@PathVariable(value = "id") ID id, @Valid @RequestBody T t)
+			throws ResourceNotFoundException, ResourceExistedException {
 		t.setId(id);
 		return create(t);
 	}

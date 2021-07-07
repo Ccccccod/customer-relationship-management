@@ -74,6 +74,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 	}
+
+    /**
+     * Exception handler for {@link ResourceExistedException}
+     * @param ex Exception
+     * @param request WebRequest
+     * @return 
+     */
+	@ExceptionHandler(ResourceExistedException.class)
+	public ResponseEntity<?> resourceExistedException(ResourceExistedException ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
     
     /**
      * Exceoption handler for {@link DuplicateKeyException}

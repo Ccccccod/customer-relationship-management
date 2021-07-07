@@ -24,6 +24,7 @@ import capstone.entity.BaseEntity;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceNotFoundException;
 import capstone.service.IDtoToEntityService;
+import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
 
@@ -46,6 +47,9 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	@Autowired
 	protected IDtoToEntityService<Dto, Entity, ID> service;
 	
+	@Autowired
+	protected UserService userService;
+	
 	@Override
 	@GetMapping({"", "/"})
 	public ResponseEntity<List<Entity>> getAll() {
@@ -66,6 +70,7 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 			return ResponseEntity.badRequest().body(new ErrorDetails("An entity is already exist with id: " + dto.getId()));
 		}
 		Entity entity = this.service.dtoToEntity(dto);
+		entity.setCreatedBy(this.userService.getCurrentUser());
 		return ResponseEntity.ok(this.repository.save(entity));
 	}
 	
@@ -84,6 +89,7 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 		}
 		dto.setId(id);
 		Entity entity = this.service.dtoToEntity(dto);
+		entity.setUpdatedBy(this.userService.getCurrentUser());
 		return ResponseEntity.ok(this.repository.save(entity));
 	}
 	

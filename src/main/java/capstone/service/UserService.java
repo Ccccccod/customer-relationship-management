@@ -16,6 +16,7 @@ import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 
 /**
+ * User Service
  * @author Tuna
  *
  */

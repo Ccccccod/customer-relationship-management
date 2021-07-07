@@ -4,18 +4,12 @@
 package capstone.controller;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import capstone.entity.BaseEntity;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceNotFoundException;
+import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
 
@@ -41,10 +36,13 @@ import capstone.utils.MapBuilder;
  */
 @RequestMapping("/default")
 public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID extends Serializable>
-		implements ISimpleCRUDController<T, ID> {
+		implements IDtoEntityController<T, T, ID> {
 	
 	@Autowired
 	private JpaRepository<T, ID> repository;
+	
+	@Autowired
+	protected UserService userService;
 
 	@Override
 	@GetMapping({"", "/"})
@@ -52,25 +50,25 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 		return ResponseEntity.ok(this.repository.findAll());	
 	}
 	
-	@Override
-	@GetMapping("/{page}/{size}")
-	public ResponseEntity<?> getAll(@PathVariable(value = "page") int page, @PathVariable(value = "size") int size) {
-		try {
-			Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-			Page<T> pageTuts = this.repository.findAll(pageable);
-			List<T> ts = pageTuts.getContent();
-			
-			Map<String, Object> response = new HashMap<String, Object>();
-			response.put("list", ts);
-			response.put("currentPage", pageTuts.getNumber());
-			response.put("totalItems", pageTuts.getTotalElements());
-			response.put("totalPages", pageTuts.getTotalPages());
-			
-			return ResponseEntity.ok(response);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(null);
-		}
-	}
+//	@Override
+//	@GetMapping("/{page}/{size}")
+//	public ResponseEntity<?> getAll(@PathVariable(value = "page") int page, @PathVariable(value = "size") int size) {
+//		try {
+//			Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+//			Page<T> pageTuts = this.repository.findAll(pageable);
+//			List<T> ts = pageTuts.getContent();
+//			
+//			Map<String, Object> response = new HashMap<String, Object>();
+//			response.put("list", ts);
+//			response.put("currentPage", pageTuts.getNumber());
+//			response.put("totalItems", pageTuts.getTotalElements());
+//			response.put("totalPages", pageTuts.getTotalPages());
+//			
+//			return ResponseEntity.ok(response);
+//		} catch (Exception e) {
+//			return ResponseEntity.badRequest().body(null);
+//		}
+//	}
 	
 	@Override
 	@GetMapping("/{id}")
@@ -85,6 +83,7 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 		if (! t.isNew() && this.repository.existsById(t.getId())) {
 			return ResponseEntity.badRequest().body(new ErrorDetails("An entity is already exist with id: " + t.getId()));
 		}
+		t.setCreatedBy(this.userService.getCurrentUser());
 		return ResponseEntity.ok(this.repository.save(t)); 
 	}
 	
@@ -102,6 +101,7 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 			DtoUtils.throwResourceNotFoundException(id);
 		}
 		t.setId(id);
+		t.setUpdatedBy(this.userService.getCurrentUser());
 		return ResponseEntity.ok(this.repository.save(t));
 	}
 	

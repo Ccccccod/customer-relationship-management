@@ -5,6 +5,8 @@ package capstone.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import capstone.utils.StringSequenceIdentifierGenerator;
 
 /**
@@ -20,5 +22,16 @@ public interface Identifiable<ID extends Serializable> {
 	 * @return
 	 */
 	ID getId();
+	
+	/**
+	 * Setter for id
+	 * @param id
+	 */
+	void setId(ID id);
+	
+	@JsonIgnore
+	default	boolean isNew() {
+		return this.getId() == null;
+	}
 	
 }

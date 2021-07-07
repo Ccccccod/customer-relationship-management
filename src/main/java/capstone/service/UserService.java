@@ -6,6 +6,7 @@ package capstone.service;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -24,21 +25,26 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	/**
+	 * Get current logged in user
+	 * @return
+	 */
 	public User getCurrentUser() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (Objects.isNull(authentication))
+			return null;
+		Object principal = authentication.getPrincipal();
 		if (principal instanceof UserDetailsImpl) {
 			UserDetailsImpl userDetails = (UserDetailsImpl) principal;
 			Long id = userDetails.getId();
-			if (Objects.isNull(id)) {
+			if (Objects.isNull(id))
 				return null;
-			}
 			return userRepository.findById(id).orElse(null);
 		} else if (principal instanceof org.springframework.security.core.userdetails.User) {
 			UserDetails userDetails = (org.springframework.security.core.userdetails.User) principal;
 			String userName = userDetails.getUsername();
-			if (Objects.isNull(userName)) {
+			if (Objects.isNull(userName))
 				return userRepository.findByName(userName).orElse(null);
-			}
 			return null;
 		}
 		return null;

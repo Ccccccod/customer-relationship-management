@@ -10,6 +10,7 @@ import capstone.entity.BaseEntity;
 import capstone.exception.ResourceNotFoundException;
 
 /**
+ * Dto to Entity mapper
  * @author Tuna
  *
  */

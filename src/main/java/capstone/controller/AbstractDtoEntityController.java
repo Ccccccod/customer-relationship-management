@@ -5,6 +5,7 @@ package capstone.controller;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +54,7 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	
 	@Override
 	@GetMapping("/{id}")
-	public ResponseEntity<Entity> getById(ID id) throws ResourceNotFoundException {
+	public ResponseEntity<Entity> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {
 		return ResponseEntity.ok(this.repository.findById(id) //
 				.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id)));
 	}	
@@ -69,14 +71,14 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	
 	@Override
 	@PostMapping("/{id}")
-	public ResponseEntity<?> create(ID id, @Valid Dto dto) throws ResourceNotFoundException {
+	public ResponseEntity<?> create(@PathVariable(value = "id") ID id, @Valid Dto dto) throws ResourceNotFoundException {
 		dto.setId(id);
 		return create(dto);
 	}
 	
 	@Override
 	@PutMapping("/{id}")
-	public ResponseEntity<Entity> update(ID id, @Valid Dto dto) throws ResourceNotFoundException {
+	public ResponseEntity<Entity> update(@PathVariable(value = "id") ID id, @Valid Dto dto) throws ResourceNotFoundException {
 		if (!this.repository.existsById(id)) {
 			DtoUtils.throwResourceNotFoundException(id);
 		}
@@ -87,9 +89,11 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	
 	@Override
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(List<ID> ids) throws ResourceNotFoundException {
-		List<Entity> deletedTS = this.repository.findAllById(ids);
-		this.repository.deleteAll(deletedTS);
+	public ResponseEntity<?> delete(@PathVariable(value = "id") List<ID> ids) throws ResourceNotFoundException {
+		List<ID> deletedTS = this.repository.findAllById(ids).stream()
+				.map(e -> e.getId())
+				.collect(Collectors.toList());
+		this.repository.deleteAllById(deletedTS);
 		return ResponseEntity.ok(MapBuilder.hashMap("deleted", deletedTS));
 	}
 

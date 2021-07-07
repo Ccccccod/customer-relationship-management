@@ -3,11 +3,15 @@ package capstone.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import capstone.common.Constant;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,10 +37,14 @@ import lombok.ToString;
 				})
 public class Role extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
+	
+	@Column(name = "description", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String description;
 
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private Set<User> users = new HashSet<User>();
 
 	public Role(String name) {

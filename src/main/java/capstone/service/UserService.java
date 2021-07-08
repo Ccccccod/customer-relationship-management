@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import capstone.dto.response.UserResponse;
 import capstone.entity.User;
-import capstone.exception.ResourceNotFoundException;
 import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 

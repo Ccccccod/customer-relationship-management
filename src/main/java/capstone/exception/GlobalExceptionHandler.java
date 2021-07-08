@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,11 +45,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("status", status.value());
 
         // Get all errors
-        List<String> errors = ex.getBindingResult()
+        List<Map<String,Object>> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(x -> x.getDefaultMessage())
+                .map(x -> {
+                	Map<String,Object> map = new LinkedHashMap<>();
+                	if (!Objects.isNull(x.getDefaultMessage())) {
+                    	map.put("message", x.getDefaultMessage());
+                	}
+                	if (!Objects.isNull(x.getField())) {
+                    	map.put("field", x.getField());
+                	}
+                	if (!Objects.isNull(x.getRejectedValue())) {
+                		map.put("rejected", x.getRejectedValue());
+                	}
+                	return map;
+                })
                 .collect(Collectors.toList());
+        ex.getBindingResult().getFieldErrors().get(0).getField();
 
         body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
@@ -62,41 +77,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public void constraintViolationException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
-    
-    /**
-     * Exception handler for {@link ResourceNotFoundException}
-     * @param ex Exception
-     * @param request WebRequest
-     * @return 
-     */
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<?> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-	}
 
-    /**
-     * Exception handler for {@link ResourceExistedException}
-     * @param ex Exception
-     * @param request WebRequest
-     * @return 
-     */
-	@ExceptionHandler(ResourceExistedException.class)
-	public ResponseEntity<?> resourceExistedException(ResourceExistedException ex, WebRequest request) {
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-	}
-    
-    /**
-     * Exceoption handler for {@link DuplicateKeyException}
-     * @param ex Exception
-     * @param request WebRequest
-     * @return 
-     */
-    @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseEntity<?> duplicateKeyException(DuplicateKeyException ex, WebRequest request) {
-		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+	/**
+	 * Provides handling for {@link ResourceNotFoundException},
+	 * {@link ResourceExistedException}, {@link DuplicateKeyException}
+	 * @param ex      the target exception
+	 * @param request the current request
+	 */
+	@ExceptionHandler({ //
+			ResourceNotFoundException.class, //
+			ResourceExistedException.class, //
+			DuplicateKeyException.class //
+		})
+	@Nullable
+    public ResponseEntity<?> handleException1(Exception ex, WebRequest request) throws Exception {
+		if (ex instanceof ResourceNotFoundException) {
+			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+		} else if (ex instanceof ResourceExistedException) {
+			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+		} else if (ex instanceof DuplicateKeyException) {
+			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+		}
+		else {
+			throw ex;
+		}
     }
 	
 	/**

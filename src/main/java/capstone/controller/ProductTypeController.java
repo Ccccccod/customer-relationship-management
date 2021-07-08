@@ -25,7 +25,7 @@ import capstone.service.ProductTypeService;
  *
  */
 @RestController
-@RequestMapping("/api/producttype")
+@RequestMapping("/api/productType")
 public class ProductTypeController extends AbstractDtoEntityController<ProductTypeDto, ProductType, Long> {
 	
 	@Autowired

@@ -6,10 +6,10 @@ package capstone.dto.request;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import capstone.common.Constant;
-import capstone.dto.validatation.Email;
+import capstone.dto.validatation.annotation.Email;
+import capstone.dto.validatation.annotation.Password;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +32,7 @@ public class SignupRequest {
 	private String email;
 
 	@NotNull(message = "Please provide password")
-	@Pattern(regexp = Constant.Validation.PASSWORD_REGEX, message = "Password is invalid")
+	@Password
 	private String password;
 
 	private Set<String> roles;

@@ -45,9 +45,6 @@ import lombok.ToString;
 public class User extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "name", nullable = false)
-	private String name;
-
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
@@ -68,29 +65,21 @@ public class User extends NamedEntity<Long> {
 	 * @param createdBy
 	 * @param updatedBy
 	 * @param name
-	 * @param name2
 	 * @param password
 	 * @param email
 	 * @param roles
 	 */
 	@Builder
-	public User(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String name2,
-			String password, String email, Set<Role> roles) {
+	public User(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String password,
+			String email, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
-		name = name2;
 		this.password = password;
 		this.email = email;
 		this.roles = roles;
 	}
-
-	/**
-	 * @param name
-	 * @param email
-	 * @param password
-	 */
+	
 	public User(String name, String email, String password) {
-		super();
-		this.name = name;
+		super(name);
 		this.password = password;
 		this.email = email;
 	}

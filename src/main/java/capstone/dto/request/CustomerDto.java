@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import capstone.dto.validatation.Email;
+import capstone.dto.validatation.annotation.Email;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

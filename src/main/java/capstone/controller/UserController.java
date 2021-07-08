@@ -16,7 +16,7 @@ import capstone.entity.User;
  *
  */
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/api/user")
 public class UserController extends AbstractCRUDController<UserDto, UserResponse, User, Long> {
 
 }

@@ -3,6 +3,7 @@
  */
 package capstone.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,6 +60,28 @@ public class User extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private Set<Role> roles = new HashSet<>();
+
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param name
+	 * @param name2
+	 * @param password
+	 * @param email
+	 * @param roles
+	 */
+	@Builder
+	public User(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String name2,
+			String password, String email, Set<Role> roles) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+		name = name2;
+		this.password = password;
+		this.email = email;
+		this.roles = roles;
+	}
 
 	/**
 	 * @param name

@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDto extends NamedDto<Long> {
+public class UserDto extends BaseDto<Long> {
 
 	@NotNull(message = "Please provide username")
 	@javax.validation.constraints.Pattern(regexp = Constant.Validation.USERNAME_REGEX, message = "Username is not valid")

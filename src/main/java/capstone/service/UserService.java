@@ -9,10 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import capstone.dto.request.UserDto;
 import capstone.dto.response.UserResponse;
+import capstone.entity.Role;
 import capstone.entity.User;
+import capstone.exception.ResourceNotFoundException;
+import capstone.repository.RoleRepository;
 import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 
@@ -22,10 +27,16 @@ import capstone.security.service.UserDetailsImpl;
  *
  */
 @Service
-public class UserService implements IEntityToResponseService<UserResponse, User, Long>{
+public class UserService extends AbstractService implements IEntityToResponseService<UserResponse, User, Long>, IDtoToEntityService<UserDto, User, Long> {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	/**
 	 * Get current logged in user
@@ -63,6 +74,17 @@ public class UserService implements IEntityToResponseService<UserResponse, User,
 				.createdBy(user.getCreatedBy())
 				.updatedAt(user.getUpdatedAt())
 				.updatedBy(user.getUpdatedBy())
+				.build();
+	}
+
+	@Override
+	public User dtoToEntity(UserDto dto) throws ResourceNotFoundException {
+		return User.builder()
+				.id(dto.getId())
+				.name(dto.getUsername())
+				.email(dto.getEmail())
+				.password(passwordEncoder.encode(dto.getPassword()))
+				.roles(this.idToObj(roleRepository, dto.getRoleIds(), Role.class))
 				.build();
 	}
 	

@@ -23,7 +23,7 @@ public class EmailValidator implements ConstraintValidator<Email, String>{
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		try {
-			return !Objects.isNull(value) && value.matches(EmailValidator.EMAIL_REGEX);
+			return Objects.isNull(value) || value.matches(EmailValidator.EMAIL_REGEX);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -4,6 +4,7 @@
 package capstone.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,7 +22,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.response.serializer.ShortDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -54,11 +57,13 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
+	@JsonSerialize(using = ShortDateSerializer.class)
 	private Date createdAt;
 
 	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
+	@JsonSerialize(using = ShortDateSerializer.class)
 	private Date updatedAt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -76,6 +81,16 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@JsonIgnore
 	public boolean isNew() {
 		return this.id == null;
+	}
+	
+	public String formatedCreatedAt() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		return simpleDateFormat.format(this.createdAt);
+	}
+	
+	public String formatedUpdatedAt() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		return simpleDateFormat.format(this.updatedAt);
 	}
 
 }

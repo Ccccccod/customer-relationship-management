@@ -15,7 +15,7 @@ import javax.validation.Payload;
 import capstone.dto.validatation.validator.PasswordValidator;
 
 /**
- * Password validation
+ * The annotated element must be a valid password
  * @author Tuna
  *
  */

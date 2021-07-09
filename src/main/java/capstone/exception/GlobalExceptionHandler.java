@@ -62,7 +62,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 	return map;
                 })
                 .collect(Collectors.toList());
-        ex.getBindingResult().getFieldErrors().get(0).getField();
 
         body.put("errors", errors);
         return new ResponseEntity<>(body, headers, status);
@@ -80,28 +79,30 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	/**
 	 * Provides handling for {@link ResourceNotFoundException},
-	 * {@link ResourceExistedException}, {@link DuplicateKeyException}
+	 * {@link ResourceExistedException}, {@link DuplicateKeyException},
+	 * {@link InvalidOldPasswordException}
 	 * @param ex      the target exception
 	 * @param request the current request
 	 */
 	@ExceptionHandler({ //
 			ResourceNotFoundException.class, //
 			ResourceExistedException.class, //
-			DuplicateKeyException.class //
+			DuplicateKeyException.class, //
+			InvalidOldPasswordException.class
 		})
 	@Nullable
     public ResponseEntity<?> handleException1(Exception ex, WebRequest request) throws Exception {
 		if (ex instanceof ResourceNotFoundException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-		} else if (ex instanceof ResourceExistedException) {
+		} else if (ex instanceof ResourceExistedException || ex instanceof DuplicateKeyException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
-		} else if (ex instanceof DuplicateKeyException) {
+		} else if (ex instanceof InvalidOldPasswordException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
-		}
-		else {
+			return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+		} else {
+			ex.printStackTrace();
 			throw ex;
 		}
     }

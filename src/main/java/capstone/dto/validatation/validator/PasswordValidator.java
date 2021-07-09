@@ -23,7 +23,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String>{
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		try {
-			return !Objects.isNull(value) && value.matches(PASSWORD_REGEX);
+			return Objects.isNull(value) || value.matches(PASSWORD_REGEX);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

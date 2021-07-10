@@ -4,7 +4,6 @@
 package capstone.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -64,6 +63,7 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
 	@JsonSerialize(using = ShortDateSerializer.class)
+//	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	private Date updatedAt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -81,16 +81,6 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@JsonIgnore
 	public boolean isNew() {
 		return this.id == null;
-	}
-	
-	public String formatedCreatedAt() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		return simpleDateFormat.format(this.createdAt);
-	}
-	
-	public String formatedUpdatedAt() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		return simpleDateFormat.format(this.updatedAt);
 	}
 
 }

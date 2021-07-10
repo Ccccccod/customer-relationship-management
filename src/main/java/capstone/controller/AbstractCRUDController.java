@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +20,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import capstone.dto.request.BaseDto;
-import capstone.dto.response.BaseResponse;
 import capstone.entity.BaseEntity;
+import capstone.entity.Identifiable;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
-import capstone.service.IDtoToEntityService;
-import capstone.service.IEntityToResponseService;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
@@ -35,87 +33,86 @@ import capstone.utils.MapBuilder;
  * Abstract CRUD Controller. 
  * @author Tuna
  *
- * @param <Dto>
- * @param <Response>
- * @param <Entity>
- * @param <ID>
+ * @param <CreateDto> the type of CreateDto
+ * @param <UpdateDto> the type of UpdateDto
+ * @param <Response> the type of Response
+ * @param <Entity> the type of Entity
+ * @param <ID> Id of CreateDto, UpdateDto, Response and Entity
  */
-@RequestMapping("/default")
-public abstract class AbstractCRUDController<Dto extends BaseDto<ID>, Response extends BaseResponse<ID>, //
-		Entity extends BaseEntity<ID>, ID extends Serializable> implements IController<Dto, Response, Entity, ID> {
+public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>, UpdateDto extends Identifiable<ID>, //
+		Response extends Identifiable<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
+	
+	private Logger logger = LoggerFactory.getLogger(AbstractCRUDController.class);
 
 	@Autowired
 	protected JpaRepository<Entity, ID> repository;
 	
 	@Autowired
-	protected IDtoToEntityService<Dto, Entity, ID> dtoToEntityService;
-	
-	@Autowired
-	protected IEntityToResponseService<Response, Entity, ID> entityToResponseService;
-	
-	@Autowired
 	protected UserService userService;
 	
-	@Override
 	@GetMapping({"", "/"})
 	public ResponseEntity<List<Response>> getAll() {
 		List<Response> response = this.repository.findAll().stream() //
-				.map(e -> this.entityToResponseService.entityToResponse(e)) //
+				.map(e -> this.entityToResponse(e)) //
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {
 		Entity entity = this.repository.findById(id).orElse(null);
-		Response response = this.entityToResponseService.entityToResponse(entity);
+		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
 	@PostMapping({"", "/"})
-	public ResponseEntity<Response> create(@Valid @RequestBody Dto dto) throws ResourceNotFoundException, ResourceExistedException {
+	public ResponseEntity<Response> create(@Valid @RequestBody CreateDto dto) throws ResourceNotFoundException, ResourceExistedException {
+        this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
 		if (! dto.isNew() && this.repository.existsById(dto.getId())) {
 			throw new ResourceExistedException("An entity is already exist with id: " + dto.getId());
 		}
-		Entity entity = this.dtoToEntityService.dtoToEntity(dto);
+		Entity entity = this.dtoToEntity(dto);
 		entity.setCreatedBy(this.userService.getCurrentUser());
 		entity = this.repository.save(entity);
-		Response response = this.entityToResponseService.entityToResponse(entity);
+		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
 
-	@Override
 	@PostMapping("/{id}")
-	public ResponseEntity<Response> create(@PathVariable(value = "id") ID id, @Valid @RequestBody Dto dto)
+	public ResponseEntity<Response> create(@PathVariable(value = "id") ID id, @Valid @RequestBody CreateDto dto)
 			throws ResourceNotFoundException, ResourceExistedException {
 		dto.setId(id);
 		return create(dto);
 	}
 
-	@Override
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> update(ID id, @Valid @RequestBody Dto dto) throws ResourceNotFoundException {
-		if (!this.repository.existsById(id)) {
-			DtoUtils.throwResourceNotFoundException(id);
-		}
-		dto.setId(id);
-		Entity entity = this.dtoToEntityService.dtoToEntity(dto);
+	public ResponseEntity<Response> update(ID id, @Valid @RequestBody UpdateDto dto) throws ResourceNotFoundException {
+		logger.debug("update() of id#{} with body {}", id, dto);
+		
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		this.updateEntity(dto, entity);
 		entity.setUpdatedBy(this.userService.getCurrentUser());
+		
 		entity = this.repository.save(entity);
-		Response response = this.entityToResponseService.entityToResponse(entity);
+		logger.debug("updated enitity: {}", entity);
+		
+		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
-
-	@Override
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(List<ID> ids) throws ResourceNotFoundException {
+	public ResponseEntity<?> delete(@RequestBody List<ID> ids) throws ResourceNotFoundException {
 		List<ID> deletedTS = this.repository.findAllById(ids).stream()
 				.map(e -> e.getId())
 				.collect(Collectors.toList());
 		this.repository.deleteAllById(deletedTS);
 		return ResponseEntity.ok(MapBuilder.hashMap("deleted", deletedTS));
 	}
+	
+	protected abstract Response entityToResponse(Entity entity);
+	
+	protected abstract Entity dtoToEntity(CreateDto createDto) throws ResourceNotFoundException;
+	
+	protected abstract void updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
 
 }

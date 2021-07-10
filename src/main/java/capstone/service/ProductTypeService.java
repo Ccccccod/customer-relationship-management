@@ -34,7 +34,7 @@ public class ProductTypeService extends AbstractService implements IDtoToEntityS
 				.id(dto.getId())
 				.code(dto.getCode())
 				.name(dto.getName())
-				.productType(idToObj(productTypeRepository, dto.getProductTypeId(), ProductType.class))
+				.productType(findEntityById(productTypeRepository, dto.getProductTypeId(), ProductType.class))
 				.build();
 		return productType;
 	}

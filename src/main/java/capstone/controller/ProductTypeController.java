@@ -17,6 +17,8 @@ import capstone.dto.request.ProductTypeDto;
 import capstone.dto.response.ProductTypeTreeDto;
 import capstone.entity.ProductType;
 import capstone.exception.ErrorDetails;
+import capstone.exception.ResourceNotFoundException;
+import capstone.service.AbstractService;
 import capstone.service.ProductTypeService;
 
 /**
@@ -49,6 +51,16 @@ public class ProductTypeController extends AbstractDtoEntityController<ProductTy
 	public ResponseEntity<Set<ProductTypeTreeDto>> getTree() {
 		Set<ProductTypeTreeDto> productTypeTreeDtos = this.productTypeService.getTree();
 		return ResponseEntity.ok(productTypeTreeDtos);
+	}
+
+	@Override
+	protected ProductType dtoToEntity(ProductTypeDto dto) throws ResourceNotFoundException {
+		return ProductType.builder()
+				.id(dto.getId())
+				.code(dto.getCode())
+				.name(dto.getName())
+				.productType(AbstractService.findEntityById(this.repository, dto.getProductTypeId(), ProductType.class))
+				.build();
 	}
 	
 	

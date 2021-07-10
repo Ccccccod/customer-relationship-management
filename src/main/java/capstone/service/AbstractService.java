@@ -36,7 +36,7 @@ public abstract class AbstractService {
 	 * @return T
 	 * @throws ResourceNotFoundException if no T is found for the id
 	 */
-	protected <T extends BaseEntity<ID>, ID extends Serializable> T idToObj(JpaRepository<T, ID> repository, ID id,
+	public static <T extends BaseEntity<ID>, ID extends Serializable> T findEntityById(JpaRepository<T, ID> repository, ID id,
 			Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(id)) {
 			return null;
@@ -55,7 +55,7 @@ public abstract class AbstractService {
 	 * @return {@link Set} of T
 	 * @throws ResourceNotFoundException
 	 */
-	protected <T extends BaseEntity<ID>, ID extends Serializable> Set<T> idToObj(JpaRepository<T, ID> repository,
+	public static <T extends BaseEntity<ID>, ID extends Serializable> Set<T> findEntitiesByIds(JpaRepository<T, ID> repository,
 			Set<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
 			return null;
@@ -65,7 +65,7 @@ public abstract class AbstractService {
 			if (Objects.isNull(ids)) {
 				continue;
 			}
-			ts.add(idToObj(repository, id, class1));
+			ts.add(findEntityById(repository, id, class1));
 		}
 		return ts;
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractService {
 	 * @return {@link List} of T
 	 * @throws ResourceNotFoundException
 	 */
-	protected <T extends BaseEntity<ID>, ID extends Serializable> List<T> idToObj(JpaRepository<T, ID> repository,
+	public static <T extends BaseEntity<ID>, ID extends Serializable> List<T> findEntitiesByIds(JpaRepository<T, ID> repository,
 			List<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
 			return null;
@@ -91,7 +91,7 @@ public abstract class AbstractService {
 			if (Objects.isNull(ids)) {
 				continue;
 			}
-			ts.add(idToObj(repository, id, class1));
+			ts.add(findEntityById(repository, id, class1));
 		}
 		return ts;
 	}
@@ -107,9 +107,9 @@ public abstract class AbstractService {
 	 * @return {@link Collection} of T
 	 * @throws ResourceNotFoundException
 	 */
-	protected <T extends BaseEntity<ID1>, ID1 extends Serializable> Collection<T> idToObj(JpaRepository<T, ID1> repository,
+	public static <T extends BaseEntity<ID1>, ID1 extends Serializable> Collection<T> findEntitiesByIds(JpaRepository<T, ID1> repository,
 			Collection<ID1> ids, Class<T> class1) throws ResourceNotFoundException {
-		return idToObj(repository, ids, class1);
+		return findEntitiesByIds(repository, ids, class1);
 	}
 	
 }

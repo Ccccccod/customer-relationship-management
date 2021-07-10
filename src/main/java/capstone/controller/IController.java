@@ -21,12 +21,13 @@ import capstone.exception.ResourceNotFoundException;
  * IController
  * @author Tuna
  *
- * @param <Dto> the type of Dto
+ * @param <CreateDto> the type of CreateDto
+ * @param <UpdateDto> the type of UpdateDto
  * @param <Response> the type of Response
  * @param <Entity> the type of Entity
- * @param <ID> Id of Dto and Entity
+ * @param <ID> Id of CreateDto, UpdateDto, Response and Entity
  */
-public interface IController<Dto extends Identifiable<ID>, Response extends Identifiable<ID>, Entity extends Identifiable<ID>, ID extends Serializable> {
+public interface IController<CreateDto extends Identifiable<ID>, UpdateDto extends Identifiable<ID>, Response extends Identifiable<ID>, Entity extends Identifiable<ID>, ID extends Serializable> {
 
 	/**
 	 * Return a {@link List} containing all of the Entity elements in database
@@ -49,7 +50,7 @@ public interface IController<Dto extends Identifiable<ID>, Response extends Iden
 	 * @throws ResourceNotFoundException if no Entity is found to create a field of the element
 	 * @throws ResourceExistedException if there's already an entity with the given id
 	 */
-	ResponseEntity<Response> create(@Valid @RequestBody Dto dto)
+	ResponseEntity<Response> create(@Valid @RequestBody CreateDto createDto)
 			throws ResourceNotFoundException, ResourceExistedException;
 
 	/**
@@ -60,7 +61,7 @@ public interface IController<Dto extends Identifiable<ID>, Response extends Iden
 	 * @throws ResourceNotFoundException if no Entity is found to create a field of the element
 	 * @throws ResourceExistedException if there's already an entity with the given id
 	 */
-	ResponseEntity<Response> create(@PathVariable(value = "id") ID id, @Valid @RequestBody Dto dto)
+	ResponseEntity<Response> create(@PathVariable(value = "id") ID id, @Valid @RequestBody CreateDto createDto)
 			throws ResourceNotFoundException, ResourceExistedException;
 	
 	/**
@@ -70,7 +71,7 @@ public interface IController<Dto extends Identifiable<ID>, Response extends Iden
 	 * @return the Element that is updated successfully. Or {@link ErrorDetails} if there's error
 	 * @throws ResourceNotFoundException if no Entity is found to create a field of the element
 	 */
-	ResponseEntity<Response> update(@PathVariable(value = "id") ID id, @Valid @RequestBody Dto dto)
+	ResponseEntity<Response> update(@PathVariable(value = "id") ID id, @Valid @RequestBody UpdateDto updateDto)
 			throws ResourceNotFoundException;
 
 	/**

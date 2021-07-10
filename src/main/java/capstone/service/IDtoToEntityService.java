@@ -14,6 +14,7 @@ import capstone.exception.ResourceNotFoundException;
  * @author Tuna
  *
  */
+@FunctionalInterface
 public interface IDtoToEntityService<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
 	
 	Entity dtoToEntity(Dto dto) throws ResourceNotFoundException;

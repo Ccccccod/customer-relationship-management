@@ -84,7 +84,7 @@ public class UserService extends AbstractService implements IEntityToResponseSer
 				.name(dto.getUsername())
 				.email(dto.getEmail())
 				.password(passwordEncoder.encode(dto.getPassword()))
-				.roles(this.idToObj(roleRepository, dto.getRoleIds(), Role.class))
+				.roles(this.findEntitiesByIds(roleRepository, dto.getRoleIds(), Role.class))
 				.build();
 	}
 	

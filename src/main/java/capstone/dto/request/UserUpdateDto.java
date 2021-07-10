@@ -11,20 +11,19 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 import capstone.common.Constant;
 import capstone.dto.validatation.annotation.Email;
-import capstone.dto.validatation.annotation.Password;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * UserDto
+ * UserUpdateDto
  * @author Tuna
  *
  */
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDto extends BaseDto<Long> {
+public class UserUpdateDto extends BaseDto<Long> {
 
 	@JsonAlias({ "name" })
 	@NotNull(message = "Please provide username")
@@ -34,10 +33,6 @@ public class UserDto extends BaseDto<Long> {
 	@NotNull(message = "Please provide email")
 	@Email
 	private String email;
-
-	@NotNull(message = "Please provide password")
-	@Password
-	private String password;
 	
 	private Set<Long> roleIds;
 

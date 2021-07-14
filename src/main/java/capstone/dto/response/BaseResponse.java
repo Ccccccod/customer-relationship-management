@@ -6,8 +6,8 @@ package capstone.dto.response;
 import java.io.Serializable;
 import java.util.Date;
 
-import capstone.entity.Identifiable;
 import capstone.entity.User;
+import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

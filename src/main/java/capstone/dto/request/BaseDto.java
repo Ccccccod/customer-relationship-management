@@ -5,7 +5,7 @@ package capstone.dto.request;
 
 import java.io.Serializable;
 
-import capstone.entity.Identifiable;
+import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,8 +24,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public abstract class BaseDto<ID extends Serializable> implements Identifiable<ID> {
+public class BaseDto<ID extends Serializable> implements Identifiable<ID> {
 	
-	private ID id;
+	protected ID id;
 
 }

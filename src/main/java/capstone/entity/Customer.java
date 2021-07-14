@@ -52,13 +52,13 @@ public class Customer extends CodedNamedEntity<Long> {
 	@Column(name = "short_name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String shortName;
 
-	@Column(name = "tax_code")
+	@Column(name = "tax_code", unique = true, nullable = false)
 	private String taxCode;
 
 	@Column(name = "phone")
 	private String phone;
 
-	@Column(name = "email")
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -3,6 +3,8 @@
  */
 package capstone.dto.request;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,5 +29,10 @@ public class RoleDto extends NamedDto<Long> {
 	 * Mô tả
 	 */
 	private String description;
+	
+	/**
+	 * Quyền
+	 */
+	private Set<Long> permissionFunctionActionIds;
 
 }

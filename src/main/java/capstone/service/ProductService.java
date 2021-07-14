@@ -28,7 +28,7 @@ public class ProductService extends AbstractService implements IDtoToEntityServi
 				.id(dto.getId())
 				.name(dto.getName())
 				.code(dto.getCode())
-				.productType(this.findEntityById(productTypeRepository, dto.getProductTypeId(), ProductType.class))
+				.productType(AbstractService.findEntityById(productTypeRepository, dto.getProductTypeId(), ProductType.class))
 				.explanation(dto.getExplanation())
 				.unit(dto.getUnit())
 				.sellPrice(dto.getSellPrice())

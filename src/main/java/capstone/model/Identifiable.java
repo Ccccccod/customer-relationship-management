@@ -1,7 +1,7 @@
 /**
  * 
  */
-package capstone.entity;
+package capstone.model;
 
 import java.io.Serializable;
 

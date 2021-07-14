@@ -20,7 +20,7 @@ import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
 
-import capstone.entity.Identifiable;
+import capstone.model.Identifiable;
 
 /**
  * StringSequenceIdentifierGenerator

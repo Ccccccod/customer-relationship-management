@@ -88,7 +88,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			ResourceNotFoundException.class, //
 			ResourceExistedException.class, //
 			DuplicateKeyException.class, //
-			InvalidOldPasswordException.class
+			InvalidOldPasswordException.class,
+			org.hibernate.exception.ConstraintViolationException.class
 		})
 	@Nullable
     public ResponseEntity<?> handleException1(Exception ex, WebRequest request) throws Exception {
@@ -101,6 +102,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		} else if (ex instanceof InvalidOldPasswordException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+		} else if (ex instanceof org.hibernate.exception.ConstraintViolationException) {
+			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 		} else {
 			ex.printStackTrace();
 			throw ex;

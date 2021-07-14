@@ -30,8 +30,8 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entit
 	}
 	
 	@Override
-	protected void updateEntity(Dto updateDto, Entity entity) throws ResourceNotFoundException {
-		entity = this.dtoToEntity(updateDto);
+	protected Entity updateEntity(Dto updateDto, Entity entity) throws ResourceNotFoundException {
+		return this.dtoToEntity(updateDto);
 	}
 
 }

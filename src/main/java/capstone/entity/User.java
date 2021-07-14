@@ -48,7 +48,7 @@ public class User extends NamedEntity<Long> {
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
-	@Column(name = "email", length = 320, nullable = false)
+	@Column(name = "email", length = 320, nullable = false, unique = true)
 	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY)

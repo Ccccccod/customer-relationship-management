@@ -58,10 +58,11 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 	}
 
 	@Override
-	protected void updateEntity(UserUpdateDto updateDto, User entity) throws ResourceNotFoundException {
+	protected User updateEntity(UserUpdateDto updateDto, User entity) throws ResourceNotFoundException {
 		entity.setName(updateDto.getUsername());
 		entity.setEmail(updateDto.getEmail());
 		entity.setRoles(AbstractService.findEntitiesByIds(roleRepository, updateDto.getRoleIds(), Role.class));
+		return entity;
 	}
 
 }

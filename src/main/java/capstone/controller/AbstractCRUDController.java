@@ -21,10 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import capstone.dto.request.BaseDto;
 import capstone.entity.BaseEntity;
-import capstone.entity.Identifiable;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.Identifiable;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
@@ -39,10 +40,10 @@ import capstone.utils.MapBuilder;
  * @param <Entity> the type of Entity
  * @param <ID> Id of CreateDto, UpdateDto, Response and Entity
  */
-public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>, UpdateDto extends Identifiable<ID>, //
-		Response extends Identifiable<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
+public abstract class AbstractCRUDController<CreateDto extends Object & Identifiable<ID>, UpdateDto extends Object & Identifiable<ID>, //
+		Response extends Object & Identifiable<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
 	
-	private Logger logger = LoggerFactory.getLogger(AbstractCRUDController.class);
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	protected JpaRepository<Entity, ID> repository;
@@ -60,7 +61,7 @@ public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>,
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {
-		Entity entity = this.repository.findById(id).orElse(null);
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
 		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
@@ -69,13 +70,15 @@ public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>,
 	public ResponseEntity<Response> create(@Valid @RequestBody CreateDto dto) throws ResourceNotFoundException, ResourceExistedException {
         this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
 		if (! dto.isNew() && this.repository.existsById(dto.getId())) {
-			throw new ResourceExistedException("An entity is already exist with id: " + dto.getId());
+			throw new ResourceExistedException("An entity already exist with id: " + dto.getId());
 		}
 		Entity entity = this.dtoToEntity(dto);
 		entity.setCreatedBy(this.userService.getCurrentUser());
 		entity = this.repository.save(entity);
+		
 		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
+//		return ResponseEntity.ok(null);
 	}
 
 	@PostMapping("/{id}")
@@ -86,11 +89,11 @@ public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>,
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> update(ID id, @Valid @RequestBody UpdateDto dto) throws ResourceNotFoundException {
+	public ResponseEntity<Response> update(@PathVariable(value = "id") ID id, @Valid @RequestBody UpdateDto dto) throws ResourceNotFoundException {
 		logger.debug("update() of id#{} with body {}", id, dto);
 		
 		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
-		this.updateEntity(dto, entity);
+		entity = this.updateEntity(dto, entity);
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		
 		entity = this.repository.save(entity);
@@ -100,7 +103,7 @@ public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>,
 		return ResponseEntity.ok(response);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("")
 	public ResponseEntity<?> delete(@RequestBody List<ID> ids) throws ResourceNotFoundException {
 		List<ID> deletedTS = this.repository.findAllById(ids).stream()
 				.map(e -> e.getId())
@@ -108,11 +111,44 @@ public abstract class AbstractCRUDController<CreateDto extends Identifiable<ID>,
 		this.repository.deleteAllById(deletedTS);
 		return ResponseEntity.ok(MapBuilder.hashMap("deleted", deletedTS));
 	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete1(@PathVariable(value = "id") List<ID> ids) throws ResourceNotFoundException {
+		return delete(ids);
+	}
 	
 	protected abstract Response entityToResponse(Entity entity);
 	
 	protected abstract Entity dtoToEntity(CreateDto createDto) throws ResourceNotFoundException;
 	
-	protected abstract void updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
+	protected abstract Entity updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
+	
+//	@SuppressWarnings("unchecked")
+//	protected void checkExistedFields(Entity entity)
+//			throws ResourceExistedException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+//		// Get all unique fields
+//		List<Field> fields = new LinkedList<>();
+//		for (Class<?> class1 = entity.getClass(); !Objects.isNull(class1); class1 = class1.getSuperclass()) {
+//			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
+//		}
+//		fields = fields.stream()
+//				.filter(f -> Stream.of(f.getDeclaredAnnotationsByType(Column.class)).anyMatch(Column::unique))
+//				.collect(Collectors.toList());
+//		
+//		// Check if an entity already exist
+//		for (Field field : fields) {
+//			// Create new instance to make an Example to check
+//			Entity instance = ((Class<Entity>) entity.getClass()).newInstance();
+//			field.setAccessible(true);
+//			Object value = field.get(entity);
+//			field.set(instance, value);
+//			Example<Entity> example = Example.of(instance);
+//			// Query
+//			if (this.repository.exists(example)) {
+//				throw new ResourceExistedException(
+//						"An entity already exist with this " + field.getName() + ": " + value);
+//			}
+//		}
+//	}
 
 }

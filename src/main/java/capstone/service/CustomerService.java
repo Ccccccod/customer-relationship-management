@@ -53,11 +53,11 @@ public class CustomerService extends AbstractService implements IDtoToEntityServ
 				.phone(dto.getPhone())
 				.email(dto.getEmail())
 				.address(dto.getAddress())
-				.source(this.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
-				.classifications(this.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
-				.fields(this.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class))
-				.type(this.findEntityById(typeRepository, dto.getTypeId(), Type.class))
-				.careers(this.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class))
+				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
+				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
+				.fields(AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class))
+				.type(AbstractService.findEntityById(typeRepository, dto.getTypeId(), Type.class))
+				.careers(AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class))
 				.build();
 		return customer;
 	}

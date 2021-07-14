@@ -4,6 +4,7 @@
 package capstone.repository;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ import capstone.entity.NamedEntity;
  * @author Tuna
  */
 @NoRepositoryBean
-public interface NamedJpaRepository<T extends NamedEntity<ID>, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface NamedJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 	
 	/**
 	 * Exists by name
@@ -31,5 +32,11 @@ public interface NamedJpaRepository<T extends NamedEntity<ID>, ID extends Serial
 	 * @return
 	 */
 	Optional<T> findByName(String name);
+	
+	List<T> findByNameIgnoreCase(String name);
+	
+	List<T> findByNameContaining(String name);
+
+	List<T> findByNameNot(String name);
 
 }

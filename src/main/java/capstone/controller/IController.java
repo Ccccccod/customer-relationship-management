@@ -12,10 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import capstone.entity.Identifiable;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.Identifiable;
 
 /**
  * IController

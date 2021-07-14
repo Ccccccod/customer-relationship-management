@@ -52,8 +52,8 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID 
 	}
 	
 	@Override
-	protected void updateEntity(T updateDto, T entity) throws ResourceNotFoundException {
-		entity = updateDto;
+	protected T updateEntity(T updateDto, T entity) throws ResourceNotFoundException {
+		return updateDto;
 	}
 
 }

@@ -40,11 +40,11 @@ public class ContactService extends AbstractService implements IDtoToEntityServi
 				.vocative(dto.getVocative())
 				.position(dto.getPosition())
 				.department(dto.getDepartment())
-				.customer(this.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
-				.classifications(this.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
+				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
+				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
 				.phone(dto.getPhone())
 				.email(dto.getEmail())
-				.source(this.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
+				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.address(dto.getAddress())
 				.build();
 		contact.setName(dto.getName());

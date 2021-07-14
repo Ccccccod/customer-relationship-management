@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Field;
 import capstone.entity.NamedEntity;
+import capstone.entity.PermissionAction;
+import capstone.entity.PermissionFunction;
+import capstone.entity.PermissionFunctionAction;
 import capstone.entity.Product;
 import capstone.entity.ProductType;
 import capstone.entity.Role;
@@ -38,6 +42,9 @@ import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
+import capstone.repository.PermissionActionRepository;
+import capstone.repository.PermissionFunctionActionRepository;
+import capstone.repository.PermissionFunctionRepository;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.repository.RoleRepository;
@@ -87,6 +94,15 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private PermissionActionRepository permissionActionRepository;
+
+    @Autowired
+    private PermissionFunctionRepository permissionFunctionRepository;
+
+    @Autowired
+    private PermissionFunctionActionRepository permissionFunctionActionRepository;
     
     static final private String PASSWORD = "12345678"; 
 
@@ -269,6 +285,59 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		addNamedRepository(contactRepository, contact);
 		
 		
+		// Permissions
+		
+		PermissionFunction permissionFunction1 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER"));
+		PermissionFunction permissionFunction2 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT"));
+		PermissionFunction permissionFunction3 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT"));
+		PermissionFunction permissionFunction4 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE"));
+
+		PermissionAction permissionAction1 = addNamedRepository(permissionActionRepository, new PermissionAction("RETRIEVE"));
+		PermissionAction permissionAction2 = addNamedRepository(permissionActionRepository, new PermissionAction("CREATE"));
+		PermissionAction permissionAction3 = addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE"));
+		PermissionAction permissionAction4 = addNamedRepository(permissionActionRepository, new PermissionAction("DELETE"));
+		
+		PermissionFunctionAction permissionFunctionAction11 = new PermissionFunctionAction(permissionFunction1,
+				permissionAction1);
+		PermissionFunctionAction permissionFunctionAction12 = new PermissionFunctionAction(permissionFunction1,
+				permissionAction2);
+		PermissionFunctionAction permissionFunctionAction13 = new PermissionFunctionAction(permissionFunction1,
+				permissionAction3);
+		PermissionFunctionAction permissionFunctionAction14 = new PermissionFunctionAction(permissionFunction1,
+				permissionAction4);
+
+		PermissionFunctionAction permissionFunctionAction21 = new PermissionFunctionAction(permissionFunction2,
+				permissionAction1);
+		PermissionFunctionAction permissionFunctionAction22 = new PermissionFunctionAction(permissionFunction2,
+				permissionAction2);
+		PermissionFunctionAction permissionFunctionAction23 = new PermissionFunctionAction(permissionFunction2,
+				permissionAction3);
+		PermissionFunctionAction permissionFunctionAction24 = new PermissionFunctionAction(permissionFunction2,
+				permissionAction4);
+
+		PermissionFunctionAction permissionFunctionAction31 = new PermissionFunctionAction(permissionFunction3,
+				permissionAction1);
+		PermissionFunctionAction permissionFunctionAction32 = new PermissionFunctionAction(permissionFunction3,
+				permissionAction2);
+		PermissionFunctionAction permissionFunctionAction33 = new PermissionFunctionAction(permissionFunction3,
+				permissionAction3);
+		PermissionFunctionAction permissionFunctionAction34 = new PermissionFunctionAction(permissionFunction3,
+				permissionAction4);
+
+		PermissionFunctionAction permissionFunctionAction41 = new PermissionFunctionAction(permissionFunction4,
+				permissionAction1);
+		PermissionFunctionAction permissionFunctionAction42 = new PermissionFunctionAction(permissionFunction4,
+				permissionAction2);
+		PermissionFunctionAction permissionFunctionAction43 = new PermissionFunctionAction(permissionFunction4,
+				permissionAction3);
+		PermissionFunctionAction permissionFunctionAction44 = new PermissionFunctionAction(permissionFunction4,
+				permissionAction4);
+		addPermissionFunctionAction(permissionFunctionAction11, permissionFunctionAction12,
+				permissionFunctionAction13, permissionFunctionAction14, permissionFunctionAction21,
+				permissionFunctionAction22, permissionFunctionAction23, permissionFunctionAction24,
+				permissionFunctionAction31, permissionFunctionAction32, permissionFunctionAction33,
+				permissionFunctionAction34, permissionFunctionAction41, permissionFunctionAction42,
+				permissionFunctionAction43, permissionFunctionAction44);
 	}
 	
 	private List<ProductType> addProductType() {
@@ -364,5 +433,26 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 			JpaRepository<T, ID> repository, T t) {
 		return repository.findById(t.getId()).orElseGet(() -> repository.save(t));
 	}
+	
+	private <T extends BaseEntity<ID>, ID extends Serializable> List<T> addRepositorys(
+			JpaRepository<T, ID> repository, T... ts) {
+		return Stream.of(ts)
+				.map(t -> addRepository(repository, t))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+	}
 
+	private PermissionFunctionAction addPermissionFunctionAction(PermissionFunctionAction permissionFunctionAction) {
+		return permissionFunctionActionRepository
+				.findByPermissionFunctionAndPermissionAction(permissionFunctionAction.getPermissionFunction(),
+						permissionFunctionAction.getPermissionAction())
+				.orElseGet(() -> permissionFunctionActionRepository.save(permissionFunctionAction));
+	}
+	
+	private List<PermissionFunctionAction> addPermissionFunctionAction(PermissionFunctionAction... permissionFunctionAction) {
+		return Stream.of(permissionFunctionAction)
+				.map(t -> addPermissionFunctionAction(t))
+				.collect(Collectors.toList());
+	}
+	
 }

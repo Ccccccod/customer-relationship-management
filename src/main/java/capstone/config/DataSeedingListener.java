@@ -27,6 +27,7 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Field;
 import capstone.entity.NamedEntity;
+import capstone.entity.OpportunityPhase;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
@@ -42,6 +43,7 @@ import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
+import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
@@ -94,6 +96,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private OpportunityPhaseRepository opportunityPhaseRepository;
 
     @Autowired
     private PermissionActionRepository permissionActionRepository;
@@ -283,6 +288,31 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 			contact.setCustomer(customers.get(0));
 		}
 		addNamedRepository(contactRepository, contact);
+		
+		// OpportunityPhase
+		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Kết thúc thất bại")
+				.build());
+		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Kết thúc thành công")
+				.nextOpportunityPhase(opportunityPhase6)
+				.build());
+		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Đàm phán thương lượng")
+				.nextOpportunityPhase(opportunityPhase5)
+				.build());
+		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Demo/Giới thiệu")
+				.nextOpportunityPhase(opportunityPhase4)
+				.build());
+		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Khách hàng quan tâm")
+				.nextOpportunityPhase(opportunityPhase3)
+				.build());
+		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+				.name("Mở đầu")
+				.nextOpportunityPhase(opportunityPhase2)
+				.build());
 		
 		
 		// Permissions

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import capstone.dto.request.BaseDto;
 import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
@@ -97,6 +96,7 @@ public abstract class AbstractCRUDController<CreateDto extends Object & Identifi
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		
 		entity = this.repository.save(entity);
+		entity.setId(id);
 		logger.debug("updated enitity: {}", entity);
 		
 		Response response = this.entityToResponse(entity);
@@ -117,10 +117,28 @@ public abstract class AbstractCRUDController<CreateDto extends Object & Identifi
 		return delete(ids);
 	}
 	
+	/**
+	 * Entity to Response mapper
+	 * @param entity
+	 * @return
+	 */
 	protected abstract Response entityToResponse(Entity entity);
 	
+	/**
+	 * Dto to Entity mapper
+	 * @param createDto
+	 * @return
+	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
+	 */
 	protected abstract Entity dtoToEntity(CreateDto createDto) throws ResourceNotFoundException;
 	
+	/**
+	 * Update Entity's fields from UpdateDto's fields
+	 * @param updateDto
+	 * @param entity
+	 * @return
+	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
+	 */
 	protected abstract Entity updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
 	
 //	@SuppressWarnings("unchecked")

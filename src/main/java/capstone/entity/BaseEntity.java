@@ -21,6 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.response.serializer.ShortDateSerializer;
@@ -45,6 +46,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt", "createdBy", "updatedBy" }, allowGetters = true)
+
 @MappedSuperclass
 public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,12 +60,14 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
+	
 	@JsonSerialize(using = ShortDateSerializer.class)
 	private Date createdAt;
 
 	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
+	
 	@JsonSerialize(using = ShortDateSerializer.class)
 //	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	private Date updatedAt;

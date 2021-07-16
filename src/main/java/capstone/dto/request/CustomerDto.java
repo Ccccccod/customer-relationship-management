@@ -16,6 +16,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Khách hàng dto
  * @author Tuna
  *
  */

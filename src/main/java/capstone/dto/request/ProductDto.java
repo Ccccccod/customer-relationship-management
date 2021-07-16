@@ -3,7 +3,10 @@
  */
 package capstone.dto.request;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Hàng hóa Dto
  * @author Tuna
  *
  */
@@ -44,26 +48,31 @@ public class ProductDto extends CodedNamedDto<Long> {
 	/**
 	 * Đơn giá bán
 	 */
+	@PositiveOrZero
 	private Long sellPrice;
 
 	/**
 	 * Đơn giá bán 1
 	 */
+	@PositiveOrZero
 	private Long sellPrice1;
 
 	/**
 	 * Đơn giá bán 2
 	 */
+	@PositiveOrZero
 	private Long sellPrice2;
 
 	/**
 	 * Đơn giá bán cố định
 	 */
+	@PositiveOrZero
 	private Long permanentPrice;
 
 	/**
 	 * Đơn giá mua
 	 */
+	@PositiveOrZero
 	private Long buyPrice;
 
 	/**
@@ -74,6 +83,8 @@ public class ProductDto extends CodedNamedDto<Long> {
 	/**
 	 * Thuế GTGT
 	 */
+	@Min(0)
+	@Max(100)
 	private String vat;
 
 	/**
@@ -84,6 +95,7 @@ public class ProductDto extends CodedNamedDto<Long> {
 	/**
 	 * Đơn giá chi phí
 	 */
+	@PositiveOrZero
 	private Long costUnitPrice;
 
 	/**

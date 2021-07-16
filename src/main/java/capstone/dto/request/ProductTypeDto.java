@@ -13,7 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Loại hàng hóa
+ * Loại hàng hóa Dto
  * @author Tuna
  *
  */

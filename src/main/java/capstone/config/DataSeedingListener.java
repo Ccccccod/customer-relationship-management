@@ -326,7 +326,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.moneyAmount(24_035_000L)
 				.opportunityPhase(opportunityPhase4)
 				.successRate(70)
-				.expectedEndDate(new Date(2022, 9, 6))
+				.expectedEndDate(new Date(2022-1900, 9, 6))
 				.expectedTurnOver(24_035_000L * 70 / 100)
 				.source(source2)
 				.build());

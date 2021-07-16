@@ -46,6 +46,7 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 	@Override
 	protected Opportunity dtoToEntity(OpportunityDto dto) throws ResourceNotFoundException {
 		Opportunity opportunity = Opportunity.builder()
+				.name(dto.getName())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
 				.moneyAmount(dto.getMoneyAmount())
@@ -56,7 +57,7 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.build();
 		if (Objects.isNull(opportunity.getExpectedTurnOver())) {
-			opportunity.setExpectedTurnOver(opportunity.getMoneyAmount() * opportunity.getSuccessRate());
+			opportunity.setExpectedTurnOver(opportunity.getMoneyAmount() * opportunity.getSuccessRate() / 100);
 		}
 		return opportunity;
 	}

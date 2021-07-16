@@ -57,7 +57,7 @@ public class UserService extends AbstractService implements IEntityToResponseSer
 			UserDetails userDetails = (org.springframework.security.core.userdetails.User) principal;
 			String userName = userDetails.getUsername();
 			if (Objects.isNull(userName))
-				return userRepository.findByName(userName).orElse(null);
+				return userRepository.findFirstByName(userName).orElse(null);
 			return null;
 		}
 		return null;

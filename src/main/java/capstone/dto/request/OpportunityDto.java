@@ -46,36 +46,35 @@ public class OpportunityDto extends NamedDto<Long> {
 	/**
 	 * Số tiền
 	 */
-	@NotNull
-	@PositiveOrZero
+	@NotNull(message = "moneyAmount must not be null")
+	@PositiveOrZero(message = "moneyAmount must be positive or zero")
 	private Long moneyAmount;
 
 	/**
 	 * Gian đoạn
 	 */
-	@NotNull
+	@NotNull(message = "opportunityPhaseId must not be null")
 	private Long opportunityPhaseId;
 
 	/**
 	 * Tỷ lệ thành công
 	 */
-	@NotNull
-	@javax.validation.constraints.Min(0)
-	@javax.validation.constraints.Max(100)
+	@NotNull(message = "successRate must not be null")
+	@javax.validation.constraints.Min(value = 0, message = "successRate must not be less than 0")
+	@javax.validation.constraints.Max(value = 100, message = "successRate must not be greater than 100")
 	private Integer successRate;
 
 	/**
 	 * Ngày kỳ vọng kết thúc
 	 */
-	@NotNull
+	@NotNull(message = "expectedEndDate must not be null")
 	@JsonDeserialize(using = DateDeserializer.class)
 	private Date expectedEndDate;
 
 	/**
 	 * Doanh số kỳ vọng
 	 */
-	@NotNull
-	@PositiveOrZero
+	@PositiveOrZero(message = "expectedTurnOver must be positive or zero")
 	private Long expectedTurnOver;
 	
 	/**

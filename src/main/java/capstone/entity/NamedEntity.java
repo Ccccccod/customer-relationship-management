@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
 import capstone.common.Constant;
+import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +33,7 @@ import lombok.ToString;
 @AllArgsConstructor
 
 @MappedSuperclass
-public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> {
+public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> implements Named {
 	private static final long serialVersionUID = 1L;
 	
 	@NonNull

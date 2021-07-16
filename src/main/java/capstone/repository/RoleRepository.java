@@ -3,7 +3,7 @@
  */
 package capstone.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -22,6 +22,6 @@ public interface RoleRepository extends NamedJpaRepository<Role, Long>, JpaSpeci
 	 * @param name
 	 * @return
 	 */
-	Optional<Role> findByName(String name);
+	List<Role> findByName(String name);
 
 }

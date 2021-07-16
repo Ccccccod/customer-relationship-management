@@ -128,11 +128,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 //		productRepository.deleteAll();
 		
 		// Roles
-		Role roleAdmin = roleRepository.findByName(Role.ADMIN)
+		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)
 				.orElseGet(() -> roleRepository.save(new Role(Role.ADMIN)));
-        Role roleModerator = roleRepository.findByName(Role.MODERATOR)
+        Role roleModerator = roleRepository.findFirstByName(Role.MODERATOR)
         		.orElseGet(() -> roleRepository.save(new Role(Role.MODERATOR)));
-        Role roleMember = roleRepository.findByName(Role.MEMBER)
+        Role roleMember = roleRepository.findFirstByName(Role.MEMBER)
         		.orElseGet(() -> roleRepository.save(new Role(Role.MEMBER)));
 
         // Admin account
@@ -473,7 +473,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
 	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
-		return repository.findByName(t.getName()).orElseGet(() -> repository.save(t));
+		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
 	}
 
 	private <T extends BaseEntity<ID>, ID extends Serializable> T addRepository(

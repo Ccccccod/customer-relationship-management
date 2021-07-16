@@ -38,8 +38,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		capstone.entity.User user = this.userRepository.findByName(userName)
-				.orElseThrow(() -> new UsernameNotFoundException("User " + userName + " not found!"));
+		capstone.entity.User user;
+		try {
+			user = this.userRepository.findByName(userName).get(0);
+		} catch (IndexOutOfBoundsException e) {
+			throw new UsernameNotFoundException("User " + userName + " not found!");
+		}
         
         // Roles
         Set<Role> roles = user.getRoles();

@@ -14,6 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import capstone.dto.response.serializer.DateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -70,6 +73,7 @@ public class Opportunity extends NamedEntity<Long> {
 	/**
 	 * Ngày kỳ vọng kết thúc
 	 */
+	@JsonSerialize(using = DateSerializer.class)
 	@Temporal(value = TemporalType.DATE)
 	@Column(name = "opportunity_phase", nullable = false)
 	private Date expectedEndDate;

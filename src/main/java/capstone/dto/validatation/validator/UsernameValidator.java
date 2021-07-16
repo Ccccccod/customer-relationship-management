@@ -9,22 +9,22 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import capstone.common.Constant;
-import capstone.dto.validatation.annotation.Email;
+import capstone.dto.validatation.annotation.Username;
 
 /**
- * Email Validator
- * Validator for {@link Email}
+ * Username Validator
+ * Validator for {@link Username}
  * @author Tuna
  *
  */
-public class EmailValidator implements ConstraintValidator<Email, String>{
+public class UsernameValidator implements ConstraintValidator<Username, String>{
 	
-	private static final String EMAIL_REGEX = Constant.Validation.EMAIL_REGEX;
+	private static final String USERNAME_REGEX = Constant.Validation.USERNAME_REGEX;
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		try {
-			return Objects.isNull(value) || value.matches(EmailValidator.EMAIL_REGEX);
+			return Objects.isNull(value) || value.matches(UsernameValidator.USERNAME_REGEX);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

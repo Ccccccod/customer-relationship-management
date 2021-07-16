@@ -9,15 +9,15 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-import capstone.common.Constant;
 import capstone.dto.validatation.annotation.Email;
 import capstone.dto.validatation.annotation.Password;
+import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * UserDto
+ * User Dto
  * @author Tuna
  *
  */
@@ -28,7 +28,7 @@ public class UserDto extends BaseDto<Long> {
 
 	@JsonAlias({ "name" })
 	@NotNull(message = "Please provide username")
-	@javax.validation.constraints.Pattern(regexp = Constant.Validation.USERNAME_REGEX, message = "Username is not valid")
+	@Username
 	private String username;
 
 	@NotNull(message = "Please provide email")

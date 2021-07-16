@@ -13,6 +13,7 @@ import capstone.dto.validatation.annotation.Password;
 
 /**
  * Password Validator
+ * Validator for {@link Password}
  * @author Tuna
  *
  */

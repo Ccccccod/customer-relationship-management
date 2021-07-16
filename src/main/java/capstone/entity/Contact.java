@@ -13,8 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -31,7 +34,6 @@ import lombok.ToString;
  * @author Tuna
  *
  */
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -118,6 +120,12 @@ public class Contact extends CodedNamedEntity<Long> {
 	 */
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Opportunity> opportunities;
 
 	/**
 	 * @param id

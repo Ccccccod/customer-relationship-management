@@ -4,11 +4,13 @@
 package capstone.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -54,6 +56,12 @@ public class OpportunityPhase extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private OpportunityPhase lastOpportunityPhase;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunityPhase")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Opportunity> opportunities;
 
 	/**
 	 * @param id

@@ -6,6 +6,8 @@ package capstone.config;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +29,7 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Field;
 import capstone.entity.NamedEntity;
+import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
@@ -44,6 +47,7 @@ import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
 import capstone.repository.OpportunityPhaseRepository;
+import capstone.repository.OpportunityRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
@@ -99,6 +103,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private OpportunityPhaseRepository opportunityPhaseRepository;
+    
+    @Autowired
+    private OpportunityRepository opportunityRepository;
 
     @Autowired
     private PermissionActionRepository permissionActionRepository;
@@ -270,9 +277,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		
 		// Contact
-		Contact contact = Contact.builder()
+		Contact contact = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00001")
 				.lastName("Nguyễn Quang")
+				.name("Tuấn")
 				.vocative("Ông")
 				.position("Trưởng phòng")
 				.department("Phòng Nhân sự")
@@ -281,13 +289,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.email("emailKoDuocTrung@gmail.com")
 				.source(source1)
 				.address("khu công nghệ cao Hòa Lạc – Km29, ĐCT08, Thạch Hoà, Thạch Thất, Hà Nội 10000")
-				.build();
-		contact.setName("Tuấn");
-		System.out.println(contact);
-		if (!customers.isEmpty()) {
-			contact.setCustomer(customers.get(0));
-		}
-		addNamedRepository(contactRepository, contact);
+				.customer(customers.get(0))
+				.build());
+		
 		
 		// OpportunityPhase
 		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
@@ -312,6 +316,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
 				.name("Mở đầu")
 				.nextOpportunityPhase(opportunityPhase2)
+				.build());
+		
+		// Opportunity
+		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.customer(customer1)
+				.contact(contact)
+				.name("Bán hàng cho " + customer1.getName())
+				.moneyAmount(24_035_000L)
+				.opportunityPhase(opportunityPhase4)
+				.successRate(70)
+				.expectedEndDate(new Date(2022, 9, 6))
+				.expectedTurnOver(24_035_000L * 70 / 100)
+				.source(source2)
 				.build());
 		
 		

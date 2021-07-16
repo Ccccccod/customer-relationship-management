@@ -50,6 +50,12 @@ public class Source extends NamedEntity<Long> {
 	@JsonIgnore
 	private Set<Contact> contacts;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "source")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Customer> opportunities;
+
 	public Source(String name) {
 		super(name);
 	}

@@ -102,6 +102,12 @@ public class Customer extends CodedNamedEntity<Long> {
 	@JsonIgnore
 	private Set<Contact> contacts;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Opportunity> opportunities;
+
 	/**
 	 * @param id
 	 * @param createdAt

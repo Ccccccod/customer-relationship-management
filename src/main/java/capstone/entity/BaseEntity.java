@@ -43,8 +43,8 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt", "createdBy", "updatedBy" }, allowGetters = true)
 
@@ -59,15 +59,13 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
-	
+	@Column(name = "created_at", updatable = false)
 	@JsonSerialize(using = ShortDateSerializer.class)
 	private Date createdAt;
 
 	@UpdateTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	
+	@Column(name = "updated_at", updatable = false)
 	@JsonSerialize(using = ShortDateSerializer.class)
 //	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	private Date updatedAt;

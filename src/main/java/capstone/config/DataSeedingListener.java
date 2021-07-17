@@ -235,7 +235,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.permanentPrice(250000L)
         		.buyPrice(150000L)
         		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat("10%")
+        		.vat(10)
         		.implicitRecord(Boolean.FALSE)
         		.costUnitPrice(180000L)
         		.build();
@@ -251,7 +251,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.permanentPrice(500000L)
         		.buyPrice(300000L)
         		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat("10%")
+        		.vat(10)
         		.implicitRecord(Boolean.FALSE)
         		.costUnitPrice(360000L)
         		.build();
@@ -267,7 +267,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.permanentPrice(500000L)
         		.buyPrice(300000L)
         		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat("10%")
+        		.vat(10)
         		.implicitRecord(Boolean.FALSE)
         		.costUnitPrice(360000L)
         		.build();

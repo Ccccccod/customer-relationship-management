@@ -26,7 +26,6 @@ import lombok.ToString;
  * @author Tuna
  *
  */
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -55,7 +54,7 @@ public class Product extends CodedNamedEntity<Long> {
 	private String explanation;
 	
 	/**
-	 * Đơn vị
+	 * Đơn vị tính
 	 */
 	@Column(name = "unit", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String unit;
@@ -100,7 +99,7 @@ public class Product extends CodedNamedEntity<Long> {
 	 * Thuế GTGT
 	 */
 	@Column(name = "vat")
-	private String vat;
+	private Integer vat;
 
 	/**
 	 * Ngầm định ghi nhân DS trước thuế
@@ -138,7 +137,7 @@ public class Product extends CodedNamedEntity<Long> {
 	@Builder
 	public Product(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
 			ProductType productType, String explanation, String unit, Long sellPrice, Long sellPrice1, Long sellPrice2,
-			Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax, String vat, Boolean implicitRecord,
+			Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord,
 			Long costUnitPrice) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.productType = productType;

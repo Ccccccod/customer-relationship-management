@@ -85,7 +85,7 @@ public class ProductDto extends CodedNamedDto<Long> {
 	 */
 	@Min(0)
 	@Max(100)
-	private String vat;
+	private Integer vat;
 
 	/**
 	 * Ngầm định ghi nhân DS trước thuế
@@ -119,7 +119,7 @@ public class ProductDto extends CodedNamedDto<Long> {
 	public ProductDto(Long id, @NotNull(message = "Name must not be null") String name,
 			@NotNull(message = "Code must not be null") String code, Long productTypeId, String explanation,
 			String unit, Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice,
-			Boolean enterUnitPriorityAfterTax, String vat, Boolean implicitRecord, Long costUnitPrice) {
+			Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice) {
 		super(id, name, code);
 		this.productTypeId = productTypeId;
 		this.explanation = explanation;

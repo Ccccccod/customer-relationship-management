@@ -4,6 +4,7 @@
 package capstone.dto.request;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -81,5 +82,10 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Nguồn gốc
 	 */
 	private Long sourceId;
+	
+	/**
+	 * Thông tin hàng hóa
+	 */
+	private List<ProductInfoDto> productInfoDtos;
 
 }

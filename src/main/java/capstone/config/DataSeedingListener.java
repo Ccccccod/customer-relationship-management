@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +36,7 @@ import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
 import capstone.entity.Product;
+import capstone.entity.ProductInfo;
 import capstone.entity.ProductType;
 import capstone.entity.Role;
 import capstone.entity.Source;
@@ -329,6 +331,26 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.expectedEndDate(new Date(2022-1900, 9, 6))
 				.expectedTurnOver(24_035_000L * 70 / 100)
 				.source(source2)
+				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
+						ProductInfo.builder()
+								.productCode(product2.getCode())
+								.explanation(product2.getExplanation())
+								.unit(product2.getUnit())
+								.amount(1)
+								.price(product2.getSellPrice())
+								.discount(0)
+								.vat(product2.getVat())
+								.build(),
+						ProductInfo.builder()
+								.productCode(product3.getCode())
+								.explanation(product3.getExplanation())
+								.unit(product3.getUnit())
+								.amount(50)
+								.price(product3.getSellPrice())
+								.discount(10)
+								.vat(product3.getVat())
+								.build()
+						)))
 				.build());
 		
 		

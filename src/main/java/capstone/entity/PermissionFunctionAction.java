@@ -41,7 +41,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "PermissionFunctionAction", //
 		uniqueConstraints = { //
-				@UniqueConstraint(name = "USER_UK", columnNames = { "permission_function_id",
+				@UniqueConstraint(name = "PERMISSION_FUNCTION_ACTION_UK", columnNames = { "permission_function_id",
 						"permission_action_id" })
 		})
 public class PermissionFunctionAction extends BaseEntity<Long> implements Permission {

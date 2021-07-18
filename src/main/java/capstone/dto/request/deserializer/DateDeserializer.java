@@ -26,7 +26,7 @@ public class DateDeserializer extends StdDeserializer<Date> {
 	 * {@link ThreadLocal} because {@link SimpleDateFormat} is not thread safe
 	 */
 	private static ThreadLocal<SimpleDateFormat> simpleDateFormatThreadLocal = ThreadLocal
-			.withInitial(() -> new SimpleDateFormat("dd-MM-yyyy hh:mm:ss"));;
+			.withInitial(() -> new SimpleDateFormat("dd-MM-yyyy"));;
 
 	/**
 	 * @param vc

@@ -9,7 +9,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.transaction.annotation.Transactional;
+=======
+>>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.OpportunityDto;
@@ -116,6 +120,7 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 				.vat(dto.getVat());
 	}
 	
+<<<<<<< HEAD
 	@GetMapping("{opportunityId}/product")
 	public ResponseEntity<List<ProductInfo>> getAllProductInfo(
 			@PathVariable(value = "opportunityId") Long opportunityId) throws ResourceNotFoundException {
@@ -139,6 +144,18 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 			@RequestBody ProductInfoDto productInfoDto) throws ResourceNotFoundException {
 		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(
 				() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
+=======
+	@GetMapping("{id}/product")
+	public ResponseEntity<List<ProductInfo>> getAllProductInfo(@PathVariable(value = "id") Long opportunityId) throws ResourceNotFoundException {
+		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
+		return ResponseEntity.ok(this.productInfoRepository.findByOpportunity(opportunity));
+	}
+	
+	@PostMapping("{id}/product")
+	public ResponseEntity<ProductInfo> createProduct(@PathVariable(value = "id") Long opportunityId,
+			@RequestBody ProductInfoDto productInfoDto) throws ResourceNotFoundException {
+		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
+>>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 		ProductInfo productInfo = this.productDtoToProductInfo(productInfoDto).build();
 		opportunity.addToProductInfos(productInfo);
 		opportunity = this.repository.saveAndFlush(opportunity);
@@ -146,6 +163,7 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 		return ResponseEntity.ok(productInfo);
 	}
 	
+<<<<<<< HEAD
 	@PutMapping("{opportunityId}/product/{productInfoId}")
 	public ResponseEntity<ProductInfo> updateProductInfo(@PathVariable(value = "opportunityId") Long opportunityId,
 			@PathVariable(value = "productInfoId") Long productInfoId, @RequestBody ProductInfoDto dto)
@@ -155,6 +173,13 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 		ProductInfo productInfo = this.productInfoRepository.findByIdAndOpportunity(productInfoId, opportunity).orElseThrow(
 				() -> new ResourceNotFoundException("ProductInfo not found for this id: " + productInfoId + " and this OpportunityId: " + opportunityId));
 
+=======
+	@PutMapping("/product/{id}")
+	public ResponseEntity<ProductInfo> updateProduct(@PathVariable(value = "id") Long id, @RequestBody ProductInfoDto dto)
+			throws ResourceNotFoundException {
+		ProductInfo productInfo = this.productInfoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ProductInfo not found for this id: " + id));
+		
+>>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 		// Update
 		// Code can not be updated
 		productInfo.setExplanation(dto.getExplanation());
@@ -168,6 +193,7 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 		return ResponseEntity.ok(productInfo);
 	}
 	
+<<<<<<< HEAD
 	@Transactional
 	@DeleteMapping("{opportunityId}/product")
 	public ResponseEntity<?> deleteProductInfo(@PathVariable(value = "opportunityId") Long opportunityId,
@@ -183,6 +209,17 @@ public class OpportunityController extends AbstractDtoEntityController<Opportuni
 	public ResponseEntity<?> deleteProductInfo1(@PathVariable(value = "opportunityId") Long opportunityId,
 			@PathVariable(value = "productInfoId") List<Long> ids) throws ResourceNotFoundException {
 		return deleteProductInfo(opportunityId, ids);
+=======
+	@DeleteMapping("/product")
+	public ResponseEntity<?> deleteProduct(@RequestBody List<Long> ids) {
+		this.productInfoRepository.deleteAllById(ids);
+		return ResponseEntity.ok().build();
+	}
+	
+	@DeleteMapping("/product/{id}")
+	public ResponseEntity<?> deleteProduct1(@RequestParam List<Long> ids) {
+		return deleteProduct(ids);
+>>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	}
 
 }

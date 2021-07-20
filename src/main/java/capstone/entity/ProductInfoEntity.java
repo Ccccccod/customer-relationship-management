@@ -9,11 +9,8 @@ import java.util.Set;
 
 import javax.persistence.MappedSuperclass;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,10 +45,7 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * Số lượng
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Integer amount() {
 		if (Objects.nonNull(this.productInfos)) {
 			this.productInfos.stream().map(ProductInfo::getAmount);
@@ -64,10 +58,7 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * Thành tiền
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long totalPrice() {
 		if (Objects.nonNull(this.productInfos)) {
 			return this.productInfos.stream().mapToLong(ProductInfo::totalPrice).sum();
@@ -79,10 +70,7 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * Tiền chiết khấu
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long discountMoney() {
 		if (Objects.nonNull(this.productInfos)) {
 			return this.productInfos.stream().mapToLong(ProductInfo::discountMoney).sum();
@@ -94,10 +82,7 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * Tiền thuế
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long vatMoney() {
 		if (Objects.nonNull(this.productInfos)) {
 			return this.productInfos.stream().mapToLong(ProductInfo::vatMoney).sum();
@@ -109,10 +94,7 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * Tổng tiền
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long totalMoney() {
 		if (Objects.nonNull(this.productInfos)) {
 			return this.productInfos.stream().mapToLong(ProductInfo::totalMoney).sum();

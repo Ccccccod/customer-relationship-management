@@ -14,10 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonProperty;
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -82,10 +79,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * Thành tiền
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long totalPrice() {
 		return this.price * this.amount;
 	}
@@ -100,10 +94,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * Tiền chiết khấu
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long discountMoney() {
 		return this.price * this.discount / 100;
 	}
@@ -118,10 +109,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * Tiền thuế
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long vatMoney() {
 		Integer vat = Objects.nonNull(this.vat) ? this.vat : 0;
 		return (this.totalPrice() - this.discountMoney()) * vat / 100;
@@ -131,10 +119,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * Tổng tiền
 	 * @return
 	 */
-<<<<<<< HEAD
 	@JsonProperty
-=======
->>>>>>> d86532243c5141ae5ae782a22357ea8ae0e6b4c3
 	public Long totalMoney() {
 		return this.totalPrice() - this.discountMoney() + this.vatMoney();
 	}

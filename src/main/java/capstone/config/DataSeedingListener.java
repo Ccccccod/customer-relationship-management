@@ -118,7 +118,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     @Autowired
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
     
-    static final private String PASSWORD = "12345678"; 
+    static final private String PASSWORD = "Minhkien1@"; 
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {

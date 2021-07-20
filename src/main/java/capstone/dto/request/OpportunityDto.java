@@ -11,7 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import capstone.dto.request.deserializer.DateDeserializer;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -69,7 +69,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Ngày kỳ vọng kết thúc
 	 */
 	@NotNull(message = "expectedEndDate must not be null")
-	@JsonDeserialize(using = DateDeserializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate expectedEndDate;
 
 	/**

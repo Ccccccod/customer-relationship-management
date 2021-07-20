@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -145,11 +145,13 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param email
 	 * @param source
 	 * @param address
+	 * @param opportunities
 	 */
 	@Builder
-	public Contact(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
-			String vocative, String lastName, String position, String department, Customer customer,
-			Set<Classification> classifications, String phone, String email, Source source, String address) {
+	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, String code, String vocative, String lastName, String position, String department,
+			Customer customer, Set<Classification> classifications, String phone, String email, Source source,
+			String address, Set<Opportunity> opportunities) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -161,6 +163,7 @@ public class Contact extends CodedNamedEntity<Long> {
 		this.email = email;
 		this.source = source;
 		this.address = address;
+		this.opportunities = opportunities;
 	}
 
 	/**

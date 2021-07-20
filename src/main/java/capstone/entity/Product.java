@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -135,10 +135,10 @@ public class Product extends CodedNamedEntity<Long> {
 	 * @param costUnitPrice
 	 */
 	@Builder
-	public Product(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String code,
-			ProductType productType, String explanation, String unit, Long sellPrice, Long sellPrice1, Long sellPrice2,
-			Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord,
-			Long costUnitPrice) {
+	public Product(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, String code, ProductType productType, String explanation, String unit, Long sellPrice,
+			Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax,
+			Integer vat, Boolean implicitRecord, Long costUnitPrice) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.productType = productType;
 		this.explanation = explanation;

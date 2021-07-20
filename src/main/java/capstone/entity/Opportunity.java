@@ -3,8 +3,9 @@
  */
 package capstone.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,12 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.dto.response.serializer.DateSerializer;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -82,10 +83,12 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Ngày kỳ vọng kết thúc
 	 */
-	@JsonSerialize(using = DateSerializer.class)
-	@Temporal(value = TemporalType.DATE)
 	@Column(name = "opportunity_phase", nullable = false)
-	private Date expectedEndDate;
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+//	@DateTimeFormat(iso = ISO.DATE)
+//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy")
+	private LocalDate expectedEndDate;
 	
 	/**
 	 * Doanh số kỳ vọng
@@ -148,9 +151,9 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * @param productInfos
 	 */
 	@Builder
-	public Opportunity(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			Customer customer, Contact contact, Long moneyAmount, OpportunityPhase opportunityPhase,
-			Integer successRate, Date expectedEndDate, Long expectedTurnOver, Source source,
+			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Source source,
 			Set<ProductInfo> productInfos) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.customer = customer;

@@ -4,7 +4,7 @@
 package capstone.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -36,7 +36,7 @@ public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 
-	public CodedNamedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+	public CodedNamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String code) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.code = code;

@@ -3,7 +3,7 @@
  */
 package capstone.dto.response;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import capstone.entity.Role;
@@ -40,7 +40,7 @@ public class UserResponse extends BaseResponse<Long> {
 	 * @param roles
 	 */
 	@Builder
-	public UserResponse(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String username,
+	public UserResponse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String username,
 			String email, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
 		this.username = username;

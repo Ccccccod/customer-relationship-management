@@ -4,7 +4,7 @@
 package capstone.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -14,17 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.dto.response.serializer.ShortDateSerializer;
 import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -58,17 +55,16 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	private ID id;
 	
 	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at", updatable = false)
-	@JsonSerialize(using = ShortDateSerializer.class)
-	private Date createdAt;
+//	@JsonSerialize(using = ShortDateSerializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
+	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at", updatable = false)
-	@JsonSerialize(using = ShortDateSerializer.class)
-//	@JsonFormat(shape = Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
-	private Date updatedAt;
+//	@JsonSerialize(using = ShortDateSerializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
+	private LocalDateTime updatedAt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by", nullable = true)

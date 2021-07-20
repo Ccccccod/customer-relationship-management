@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -145,9 +145,9 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param opportunity
 	 */
 	@Builder
-	public ProductInfo(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String productCode,
-			String explanation, String unit, Integer amount, Long price, Integer discount, Integer vat,
-			Opportunity opportunity) {
+	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String productCode, String explanation, String unit, Integer amount, Long price, Integer discount,
+			Integer vat, Opportunity opportunity) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
 		this.productCode = productCode;
 		this.explanation = explanation;

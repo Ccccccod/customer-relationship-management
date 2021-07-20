@@ -4,7 +4,7 @@
 package capstone.dto.response;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import capstone.entity.User;
 import capstone.model.Identifiable;
@@ -25,9 +25,9 @@ public class BaseResponse<ID extends Serializable> implements Identifiable<ID>{
 	
 	private ID id;
 	
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 	
 	private User createdBy;
 

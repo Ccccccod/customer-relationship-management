@@ -3,7 +3,7 @@
  */
 package capstone.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -70,7 +70,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	 */
 	@NotNull(message = "expectedEndDate must not be null")
 	@JsonDeserialize(using = DateDeserializer.class)
-	private Date expectedEndDate;
+	private LocalDate expectedEndDate;
 
 	/**
 	 * Doanh số kỳ vọng

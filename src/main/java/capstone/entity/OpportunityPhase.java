@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -72,13 +72,16 @@ public class OpportunityPhase extends NamedEntity<Long> {
 	 * @param name
 	 * @param nextOpportunityPhase
 	 * @param lastOpportunityPhase
+	 * @param opportunities
 	 */
 	@Builder
-	public OpportunityPhase(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
-			OpportunityPhase nextOpportunityPhase, OpportunityPhase lastOpportunityPhase) {
+	public OpportunityPhase(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, OpportunityPhase nextOpportunityPhase, OpportunityPhase lastOpportunityPhase,
+			Set<Opportunity> opportunities) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.nextOpportunityPhase = nextOpportunityPhase;
 		this.lastOpportunityPhase = lastOpportunityPhase;
+		this.opportunities = opportunities;
 	}
 
 	/**

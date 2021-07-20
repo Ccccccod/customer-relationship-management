@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -75,10 +75,17 @@ public class PermissionFunctionAction extends BaseEntity<Long> implements Permis
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param permissionFunction
+	 * @param permissionAction
+	 * @param roles
 	 */
 	@Builder
-	public PermissionFunctionAction(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy) {
+	public PermissionFunctionAction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy,
+			User updatedBy, PermissionFunction permissionFunction, PermissionAction permissionAction, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
+		this.permissionFunction = permissionFunction;
+		this.permissionAction = permissionAction;
+		this.roles = roles;
 	}
 
 	/**

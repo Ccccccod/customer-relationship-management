@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -74,8 +74,8 @@ public class ProductType extends CodedNamedEntity<Long> {
 	 * @param products
 	 */
 	@Builder
-	public ProductType(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
-			String code, ProductType productType, Set<ProductType> productTypes, Set<Product> products) {
+	public ProductType(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, String code, ProductType productType, Set<ProductType> productTypes, Set<Product> products) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.productType = productType;
 		this.productTypes = productTypes;

@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,8 +74,8 @@ public class User extends BaseEntity<Long> implements Named {
 	 * @param roles
 	 */
 	@Builder
-	public User(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name, String password,
-			String email, Set<Role> roles) {
+	public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
+			String password, String email, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
 		this.name = name;
 		this.password = password;

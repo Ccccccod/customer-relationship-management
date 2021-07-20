@@ -4,7 +4,7 @@
 package capstone.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -41,7 +41,7 @@ public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> impleme
 	@Column(name = "name", nullable = false, columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String name;
 
-	public NamedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name) {
+	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
 		this.name = name;
 	}

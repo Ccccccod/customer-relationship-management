@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -56,8 +56,8 @@ public class PermissionAction extends NamedEntity<Long> {
 	 * @param permissionFunctionActions
 	 */
 	@Builder
-	public PermissionAction(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
-			Set<PermissionFunctionAction> permissionFunctionActions) {
+	public PermissionAction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, Set<PermissionFunctionAction> permissionFunctionActions) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.permissionFunctionActions = permissionFunctionActions;
 	}

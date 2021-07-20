@@ -1,9 +1,9 @@
 package capstone.entity;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -112,7 +112,7 @@ public class Role extends NamedEntity<Long> {
 	 * @param permissionFunctionActions
 	 */
 	@Builder
-	public Role(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
+	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String description, Set<User> users, Set<PermissionFunctionAction> permissionFunctionActions) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.description = description;

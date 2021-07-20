@@ -4,7 +4,7 @@
 package capstone.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -71,7 +71,7 @@ public abstract class CodedEntity<ID extends Serializable> extends BaseEntity<ID
 	 * @param createdBy
 	 * @param updatedBy
 	 */
-	public CodedEntity(ID id, Date createdAt, Date updatedAt, User createdBy, User updatedBy) {
+	public CodedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
 	}
 

@@ -3,7 +3,7 @@
  */
 package capstone.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -118,8 +118,8 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * @param name
 	 * @param productInfos
 	 */
-	public ProductInfoEntity(Long id, Date createdAt, Date updatedAt, User createdBy, User updatedBy, String name,
-			Set<ProductInfo> productInfos) {
+	public ProductInfoEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, Set<ProductInfo> productInfos) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.productInfos = productInfos;
 	}

@@ -5,12 +5,8 @@ package capstone.config;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -35,6 +31,7 @@ import capstone.entity.Field;
 import capstone.entity.NamedEntity;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
+import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
@@ -53,6 +50,7 @@ import capstone.repository.FieldRepository;
 import capstone.repository.NamedJpaRepository;
 import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
+import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
@@ -111,6 +109,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     
     @Autowired
     private OpportunityRepository opportunityRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private PermissionActionRepository permissionActionRepository;
@@ -282,7 +283,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		
 		// Contact
-		Contact contact = addNamedRepository(contactRepository, Contact.builder()
+		Contact contact1 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00001")
 				.lastName("Nguyễn Quang")
 				.name("Tuấn")
@@ -326,7 +327,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		// Opportunity
 		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
 				.customer(customer1)
-				.contact(contact)
+				.contact(contact1)
 				.name("Bán hàng cho " + customer1.getName())
 				.moneyAmount(24_035_000L)
 				.opportunityPhase(opportunityPhase4)
@@ -356,6 +357,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						)))
 				.build());
 		
+		// Order
+		Order order1 = addNamedRepository(orderRepository, Order.builder()
+				.code("DH0000001")
+				.name("Đơn hàng bán cho FTech")
+				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
+				.customer(customer1)
+				.contact(contact1)
+				.opportunity(opportunity1)
+				.orderValue(34_100_000L)
+				.liquidationValue(34_100_000L)
+				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.build());
 		
 		// Permissions
 		

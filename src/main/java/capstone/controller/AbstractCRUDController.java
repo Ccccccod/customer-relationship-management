@@ -94,9 +94,9 @@ public abstract class AbstractCRUDController<CreateDto extends Object & Identifi
 		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
 		entity = this.updateEntity(dto, entity);
 		entity.setUpdatedBy(this.userService.getCurrentUser());
-		
-		entity = this.repository.save(entity);
 		entity.setId(id);
+		
+		entity = this.repository.saveAndFlush(entity);
 		logger.debug("updated enitity: {}", entity);
 		
 		Response response = this.entityToResponse(entity);

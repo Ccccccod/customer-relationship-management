@@ -3,6 +3,7 @@
  */
 package capstone.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Invoice;
@@ -13,6 +14,6 @@ import capstone.entity.Invoice;
  *
  */
 @Repository
-public interface InvoiceRepository extends NamedJpaRepository<Invoice, Long>{
+public interface InvoiceRepository extends JpaRepository<Invoice, Long>{
 
 }

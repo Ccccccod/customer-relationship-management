@@ -25,25 +25,55 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class InvoiceDto extends CodedNamedDto<Long> {
 	
+	/**
+	 * Khách hàng
+	 */
 	private Long customerId;
 	
+	/**
+	 * Địa chỉ
+	 */
 	private String address;
 	
+	/**
+	 * Tài khoản ngân hàng
+	 */
 	private String bankAccount;
 	
+	/**
+	 * Mở tại ngân hàng
+	 */
 	private String bank;
 	
+	/**
+	 * Mã số thuế
+	 */
 	private String taxCode;
 	
+	/**
+	 * Người mua
+	 */
 	private Long buyerId;
 	
-	@Email
+	/**
+	 * Tên người nhận
+	 */
 	private String receiverName;
-	
+
+	/**
+	 * Email người nhận
+	 */
+	@Email
 	private String receiverEmail;
 
+	/**
+	 * Điện thoại người nhận
+	 */
 	private String receiverPhone;
 	
+	/**
+	 * Đơn hàng
+	 */
 	private Long orderId;
 	
 }

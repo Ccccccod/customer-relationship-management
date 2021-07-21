@@ -40,7 +40,6 @@ public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, I
 	protected Invoice dtoToEntity(InvoiceDto dto) throws ResourceNotFoundException {
 		return Invoice.builder()
 				.code(dto.getCode())
-				.name(dto.getName())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.address(dto.getAddress())
 				.bankAccount(dto.getBankAccount())

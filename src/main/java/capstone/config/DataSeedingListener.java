@@ -43,8 +43,10 @@ import capstone.entity.Role;
 import capstone.entity.Source;
 import capstone.entity.Type;
 import capstone.entity.User;
+import capstone.model.Coded;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
+import capstone.repository.CodedRepository;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
@@ -377,7 +379,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		
 		// Invoice
-		Invoice invoice1 = addNamedRepository(invoiceRepository, Invoice.builder()
+		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
 				.code("DN0000001")
 				.customer(customer1)
 				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
@@ -388,6 +390,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.receiverName("Min")
 				.receiverEmail("Minn@gmail.com")
 				.receiverPhone("120120129")
+				.order(order1)
 				.build());
 		
 		// Permissions
@@ -532,6 +535,11 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
 		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
+	}
+
+	private <T extends BaseEntity<ID> & Coded, ID extends Serializable, Re extends CodedRepository<T, ID> & JpaRepository<T, ID>> T addCodedRepository(
+			Re repository, T t) {
+		return repository.findFirstByCode(t.getCode()).orElseGet(() -> repository.save(t));
 	}
 
 	private <T extends BaseEntity<ID>, ID extends Serializable> T addRepository(

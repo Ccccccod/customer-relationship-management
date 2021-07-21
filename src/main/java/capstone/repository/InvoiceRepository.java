@@ -14,6 +14,6 @@ import capstone.entity.Invoice;
  *
  */
 @Repository
-public interface InvoiceRepository extends JpaRepository<Invoice, Long>{
+public interface InvoiceRepository extends JpaRepository<Invoice, Long>, CodedRepository<Invoice, Long>{
 
 }

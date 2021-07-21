@@ -40,7 +40,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 
 @Entity
-@Table(name = "Order", //
+@Table(name = "[Order]", //
 		uniqueConstraints = { //
 		})
 public class Order extends CodedNamedEntity<Long> {

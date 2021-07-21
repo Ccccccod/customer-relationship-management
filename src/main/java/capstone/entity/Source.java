@@ -54,7 +54,7 @@ public class Source extends NamedEntity<Long> {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
-	private Set<Customer> opportunities;
+	private Set<Opportunity> opportunities;
 
 	public Source(String name) {
 		super(name);

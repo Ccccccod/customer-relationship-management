@@ -127,6 +127,12 @@ public class Contact extends CodedNamedEntity<Long> {
 	@JsonIgnore
 	private Set<Opportunity> opportunities;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Order> orders;
+
 	/**
 	 * @param id
 	 * @param createdAt

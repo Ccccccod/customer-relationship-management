@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -108,6 +109,12 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity", cascade = CascadeType.ALL)
 	protected Set<ProductInfo> productInfos;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Order> orders;
 	
 	/**
 	 * Địa chỉ

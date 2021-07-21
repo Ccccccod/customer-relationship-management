@@ -28,6 +28,7 @@ import capstone.entity.Classification;
 import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Field;
+import capstone.entity.Invoice;
 import capstone.entity.NamedEntity;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
@@ -47,6 +48,7 @@ import capstone.repository.ClassificationRepository;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
+import capstone.repository.InvoiceRepository;
 import capstone.repository.NamedJpaRepository;
 import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
@@ -112,6 +114,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private PermissionActionRepository permissionActionRepository;
@@ -369,6 +374,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.liquidationValue(34_100_000L)
 				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
 				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.build());
+		
+		// Invoice
+		Invoice invoice1 = addNamedRepository(invoiceRepository, Invoice.builder()
+				.code("DN0000001")
+				.customer(customer1)
+				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
+				.bankAccount("TNHH Eurodoor")
+				.bank("Pro VN Bank")
+				.taxCode("0185514943")
+				.buyer(contact1)
+				.receiverName("Min")
+				.receiverEmail("Minn@gmail.com")
+				.receiverPhone("120120129")
 				.build());
 		
 		// Permissions

@@ -113,6 +113,12 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Order> orders;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Invoice> invoices;
 
 	/**
 	 * @param id

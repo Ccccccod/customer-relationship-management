@@ -12,6 +12,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import capstone.entity.BaseEntity;
 import capstone.entity.NamedEntity;
+import capstone.model.IdAndName;
 import capstone.model.Named;
 
 /**
@@ -41,6 +42,8 @@ public interface NamedJpaRepository<T extends BaseEntity<ID> & Named, ID extends
 	 * @return
 	 */
 	List<T> findByName(String name);
+	
+	List<IdAndName<ID>> findIdNameAllBy();
 	
 	/**
 	 * Find by name order by id

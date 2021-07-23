@@ -25,9 +25,11 @@ import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
+import capstone.model.Repositoried;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
+import lombok.Getter;
 
 /**
  * Abstract CRUD Controller. 
@@ -39,16 +41,20 @@ import capstone.utils.MapBuilder;
  * @param <Entity> the type of Entity
  * @param <ID> Id of CreateDto, UpdateDto, Response and Entity
  */
-public abstract class AbstractCRUDController<CreateDto extends Object & Identifiable<ID>, //
-		UpdateDto extends Object & Identifiable<ID>, //
-		Response extends Object & Identifiable<ID>, //
-		Entity extends BaseEntity<ID>, //
-		Repository extends JpaRepository<Entity, ID>, //
-		ID extends Serializable> {
+public abstract class AbstractCRUDController< //
+			CreateDto extends Object & Identifiable<ID>, //
+			UpdateDto extends Object & Identifiable<ID>, //
+			Response extends Object & Identifiable<ID>, //
+			Entity extends BaseEntity<ID>, //
+			Repository extends JpaRepository<Entity, ID>, //
+			ID extends Serializable //
+		> //
+		implements Repositoried<Repository> {
 	
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
+	@Getter
 	protected Repository repository;
 	
 	@Autowired

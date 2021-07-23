@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.NoRepositoryBean;
 
 import capstone.entity.BaseEntity;
 import capstone.model.Coded;
@@ -17,10 +17,10 @@ import capstone.model.Coded;
  * @author Tuna
  *
  */
-@Repository
+@NoRepositoryBean
 public interface CodedRepository<T extends BaseEntity<ID> & Coded, ID extends Serializable> {
 	
-	Boolean existByCode(String code);
+	Boolean existsByCode(String code);
 	
 	Optional<T> findFirstByCode(String code);
 	

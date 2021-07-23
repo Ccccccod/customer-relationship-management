@@ -133,7 +133,7 @@ public class Contact extends CodedNamedEntity<Long> {
 	@JsonIgnore
 	private Set<Order> orders;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore

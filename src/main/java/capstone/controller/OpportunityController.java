@@ -32,19 +32,22 @@ import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityPhaseRepository;
+import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
 
 /**
  * OpportunityController
+ * Cơ hội Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/opportunity")
-public class OpportunityController extends AbstractDtoEntityController<OpportunityDto, Opportunity, Long> {
-	
+public class OpportunityController
+		extends AbstractDtoEntityController<OpportunityDto, Opportunity, OpportunityRepository, Long> {
+
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;
 	

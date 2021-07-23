@@ -15,17 +15,19 @@ import capstone.entity.Order;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
+import capstone.repository.InvoiceRepository;
 import capstone.repository.OrderRepository;
 import capstone.service.AbstractService;
 
 /**
  * InvoiceController
+ * Hóa đơn Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/invoice")
-public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, Invoice, Long> {
+public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, Invoice, InvoiceRepository, Long> {
 	
 	@Autowired
 	protected CustomerRepository customerRepository;

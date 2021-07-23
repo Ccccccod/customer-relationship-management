@@ -357,9 +357,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		PermissionFunction permissionFunction3 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT"));
 		PermissionFunction permissionFunction4 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE"));
 		
-
-		PermissionAction permissionAction1 = addNamedRepository(permissionActionRepository, new PermissionAction("RETRIEVE"));
 		PermissionAction permissionAction2 = addNamedRepository(permissionActionRepository, new PermissionAction("CREATE"));
+		PermissionAction permissionAction1 = addNamedRepository(permissionActionRepository, new PermissionAction("READ"));
 		PermissionAction permissionAction3 = addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE"));
 		PermissionAction permissionAction4 = addNamedRepository(permissionActionRepository, new PermissionAction("DELETE"));
 		
@@ -368,48 +367,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		List<PermissionAction> permissionActions = Arrays.asList(permissionAction1, permissionAction2,
 				permissionAction3, permissionAction4);
 		List<PermissionFunctionAction> permissionFunctionActions = addPermissionFunctionActions(permissionFunctions, permissionActions);
-		
-//		PermissionFunctionAction permissionFunctionAction11 = new PermissionFunctionAction(permissionFunction1,
-//				permissionAction1);
-//		PermissionFunctionAction permissionFunctionAction12 = new PermissionFunctionAction(permissionFunction1,
-//				permissionAction2);
-//		PermissionFunctionAction permissionFunctionAction13 = new PermissionFunctionAction(permissionFunction1,
-//				permissionAction3);
-//		PermissionFunctionAction permissionFunctionAction14 = new PermissionFunctionAction(permissionFunction1,
-//				permissionAction4);
-//
-//		PermissionFunctionAction permissionFunctionAction21 = new PermissionFunctionAction(permissionFunction2,
-//				permissionAction1);
-//		PermissionFunctionAction permissionFunctionAction22 = new PermissionFunctionAction(permissionFunction2,
-//				permissionAction2);
-//		PermissionFunctionAction permissionFunctionAction23 = new PermissionFunctionAction(permissionFunction2,
-//				permissionAction3);
-//		PermissionFunctionAction permissionFunctionAction24 = new PermissionFunctionAction(permissionFunction2,
-//				permissionAction4);
-//
-//		PermissionFunctionAction permissionFunctionAction31 = new PermissionFunctionAction(permissionFunction3,
-//				permissionAction1);
-//		PermissionFunctionAction permissionFunctionAction32 = new PermissionFunctionAction(permissionFunction3,
-//				permissionAction2);
-//		PermissionFunctionAction permissionFunctionAction33 = new PermissionFunctionAction(permissionFunction3,
-//				permissionAction3);
-//		PermissionFunctionAction permissionFunctionAction34 = new PermissionFunctionAction(permissionFunction3,
-//				permissionAction4);
-//
-//		PermissionFunctionAction permissionFunctionAction41 = new PermissionFunctionAction(permissionFunction4,
-//				permissionAction1);
-//		PermissionFunctionAction permissionFunctionAction42 = new PermissionFunctionAction(permissionFunction4,
-//				permissionAction2);
-//		PermissionFunctionAction permissionFunctionAction43 = new PermissionFunctionAction(permissionFunction4,
-//				permissionAction3);
-//		PermissionFunctionAction permissionFunctionAction44 = new PermissionFunctionAction(permissionFunction4,
-//				permissionAction4);
-//		addPermissionFunctionAction(permissionFunctionAction11, permissionFunctionAction12,
-//				permissionFunctionAction13, permissionFunctionAction14, permissionFunctionAction21,
-//				permissionFunctionAction22, permissionFunctionAction23, permissionFunctionAction24,
-//				permissionFunctionAction31, permissionFunctionAction32, permissionFunctionAction33,
-//				permissionFunctionAction34, permissionFunctionAction41, permissionFunctionAction42,
-//				permissionFunctionAction43, permissionFunctionAction44);
 		
 		// Roles
 		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)

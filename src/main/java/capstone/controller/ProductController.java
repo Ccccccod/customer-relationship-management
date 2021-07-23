@@ -11,17 +11,19 @@ import capstone.dto.request.ProductDto;
 import capstone.entity.Product;
 import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.service.AbstractService;
 
 /**
  * Product controller
+ * Hàng hóa Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/product")
-public class ProductController extends AbstractDtoEntityController<ProductDto, Product, Long> {
+public class ProductController extends AbstractDtoEntityController<ProductDto, Product, ProductRepository, Long> {
 	
 	@Autowired
 	ProductTypeRepository productTypeRepository;

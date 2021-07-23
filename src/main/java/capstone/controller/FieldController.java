@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.entity.Field;
+import capstone.repository.FieldRepository;
 
 /**
+ * Field
+ * Lĩnh vực
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/field")
-public class FieldController extends AbstractSimpleCRUDController<Field, Long> {
+public class FieldController extends AbstractSimpleCRUDController<Field, FieldRepository, Long> {
 
 }

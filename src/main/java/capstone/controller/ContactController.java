@@ -14,17 +14,20 @@ import capstone.entity.Customer;
 import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ClassificationRepository;
+import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
 
 /**
+ * ContactController
+ * Liên hệ Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping(value = "/api/contact")
-public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, Long> {
+public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, ContactRepository, Long> {
 
 	@Autowired
 	private CustomerRepository customerRepository;

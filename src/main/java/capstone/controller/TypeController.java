@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.entity.Type;
+import capstone.repository.TypeRepository;
 
 /**
+ * TypeController
+ * Loại hình Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/type")
-public class TypeController extends AbstractSimpleCRUDController<Type, Long>{
+public class TypeController extends AbstractSimpleCRUDController<Type, TypeRepository, Long>{
 
 }

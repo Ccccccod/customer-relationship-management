@@ -39,13 +39,17 @@ import capstone.utils.MapBuilder;
  * @param <Entity> the type of Entity
  * @param <ID> Id of CreateDto, UpdateDto, Response and Entity
  */
-public abstract class AbstractCRUDController<CreateDto extends Object & Identifiable<ID>, UpdateDto extends Object & Identifiable<ID>, //
-		Response extends Object & Identifiable<ID>, Entity extends BaseEntity<ID>, ID extends Serializable> {
+public abstract class AbstractCRUDController<CreateDto extends Object & Identifiable<ID>, //
+		UpdateDto extends Object & Identifiable<ID>, //
+		Response extends Object & Identifiable<ID>, //
+		Entity extends BaseEntity<ID>, //
+		Repository extends JpaRepository<Entity, ID>, //
+		ID extends Serializable> {
 	
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	protected JpaRepository<Entity, ID> repository;
+	protected Repository repository;
 	
 	@Autowired
 	protected UserService userService;

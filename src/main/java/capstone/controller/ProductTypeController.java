@@ -18,6 +18,7 @@ import capstone.dto.response.ProductTypeTreeDto;
 import capstone.entity.ProductType;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.ProductTypeRepository;
 import capstone.service.AbstractService;
 import capstone.service.ProductTypeService;
 
@@ -28,7 +29,7 @@ import capstone.service.ProductTypeService;
  */
 @RestController
 @RequestMapping("/api/productType")
-public class ProductTypeController extends AbstractDtoEntityController<ProductTypeDto, ProductType, Long> {
+public class ProductTypeController extends AbstractDtoEntityController<ProductTypeDto, ProductType, ProductTypeRepository, Long> {
 	
 	@Autowired
 	protected ProductTypeService productTypeService;

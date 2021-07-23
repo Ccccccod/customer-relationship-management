@@ -15,6 +15,7 @@ import capstone.entity.Role;
 import capstone.entity.User;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.RoleRepository;
+import capstone.repository.UserRepository;
 import capstone.service.AbstractService;
 
 /**
@@ -24,7 +25,7 @@ import capstone.service.AbstractService;
  */
 @RestController
 @RequestMapping("/api/user")
-public class UserController extends AbstractCRUDController<UserDto, UserUpdateDto, UserResponse, User, Long> {
+public class UserController extends AbstractCRUDController<UserDto, UserUpdateDto, UserResponse, User, UserRepository, Long> {
 	
 	@Autowired
 	private RoleRepository roleRepository;

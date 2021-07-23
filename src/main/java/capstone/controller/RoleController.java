@@ -26,17 +26,19 @@ import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
+import capstone.repository.RoleRepository;
 import capstone.service.AbstractService;
 import capstone.utils.DtoUtils;
 
 /**
  * Role Controller
+ * Vai trò Controller
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/role")
-public class RoleController extends AbstractDtoEntityController<RoleDto, Role, Long> {
+public class RoleController extends AbstractDtoEntityController<RoleDto, Role, RoleRepository, Long> {
 	
 	@Autowired
 	protected PermissionFunctionRepository permissionFunctionRepository;

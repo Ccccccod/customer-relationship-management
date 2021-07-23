@@ -5,6 +5,7 @@ package capstone.controller;
 
 import java.io.Serializable;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import capstone.entity.BaseEntity;
@@ -18,8 +19,10 @@ import capstone.exception.ResourceNotFoundException;
  * @param <ID> ID of &ltT&gt
  */
 @RequestMapping("/default")
-public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, ID extends Serializable>
-		extends AbstractCRUDController<T, T, T, T, ID> {
+public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, //
+		Repository extends JpaRepository<T, ID>, //
+		ID extends Serializable>
+		extends AbstractCRUDController<T, T, T, T, Repository, ID> {
 	
 //	@Override
 //	@GetMapping("/{page}/{size}")

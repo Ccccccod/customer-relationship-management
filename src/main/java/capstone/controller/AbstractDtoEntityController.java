@@ -5,6 +5,7 @@ package capstone.controller;
 
 import java.io.Serializable;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import capstone.dto.request.BaseDto;
@@ -21,8 +22,11 @@ import capstone.exception.ResourceNotFoundException;
  * @param <ID> {@link Dto} and {@link Entity}'s ID
  */
 @RequestMapping("/default")
-public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, Entity extends BaseEntity<ID>, ID extends Serializable>
-		extends AbstractCRUDController<Dto, Dto, Entity, Entity, ID> {
+public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, //
+		Entity extends BaseEntity<ID>, //
+		Repository extends JpaRepository<Entity, ID>, //
+		ID extends Serializable> //
+		extends AbstractCRUDController<Dto, Dto, Entity, Entity, Repository, ID> {
 	
 	@Override
 	protected Entity entityToResponse(Entity entity) {

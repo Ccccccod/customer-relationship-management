@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.entity.PermissionFunctionAction;
+import capstone.repository.PermissionFunctionActionRepository;
 
 /**
  * @author Tuna
@@ -14,6 +15,7 @@ import capstone.entity.PermissionFunctionAction;
  */
 @RestController
 @RequestMapping("/api/permission")
-public class PermissionFunctionActionController extends AbstractSimpleCRUDController<PermissionFunctionAction, Long> {
+public class PermissionFunctionActionController
+		extends AbstractSimpleCRUDController<PermissionFunctionAction, PermissionFunctionActionRepository, Long> {
 
 }

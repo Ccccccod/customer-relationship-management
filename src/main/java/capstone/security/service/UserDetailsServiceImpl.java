@@ -3,15 +3,15 @@
  */
 package capstone.security.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,9 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import capstone.entity.Role;
+import capstone.model.Permission;
 import capstone.repository.UserRepository;
 
 /**
+ * UserDetailsServiceImpl
  * @author Tuna
  *
  */
@@ -46,15 +48,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
         
         // Roles
-        Set<Role> roles = user.getRoles();
- 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-        if (roles != null) {
-            for (Role role : roles) {
-                GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-                grantList.add(authority);
-            }
-        }
+//        Set<Role> roles = user.getRoles();
+// 
+//        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+//        if (roles != null) {
+//            for (Role role : roles) {
+//            	if (role.getPermissions() != null) {
+//            		for (Permission permission : role.getPermissions()) {
+//            			grantList.add(new SimpleGrantedAuthority(permission.getValue()));
+//					}
+//            	}
+//            }
+//        }
+
+		List<SimpleGrantedAuthority> grantList = user.getRoles().stream()
+				.filter(Objects::nonNull)
+				.map(Role::getPermissions)
+				.filter(Objects::nonNull).flatMap(Set::stream)
+				.map(Permission::getValue)
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toList());
+		System.out.println("-----------------------------------------------------------------------------------------");
+		grantList.forEach(System.out::println);
  
         return new UserDetailsImpl(user.getId(), user.getName(), user.getEmail(), user.getPassword(), grantList);
 //		return new User(user.getName(), user.getPassword(), grantList);

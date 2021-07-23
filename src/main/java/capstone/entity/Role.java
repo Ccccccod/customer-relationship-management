@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +30,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Role
+ * Vai trò
  * @author Tuna
  *
  */
@@ -42,7 +45,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "Role", //
 		uniqueConstraints = { //
-//				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
+				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
 				})
 public class Role extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
@@ -94,11 +97,11 @@ public class Role extends NamedEntity<Long> {
 		super(name);
 	}
 	
-	public static final String ADMIN = "ROLE_ADMIN";
+	public static final String ADMIN = "Quản trị hệ thống";
 	
-	public static final String MODERATOR = "ROLE_MODERATOR";
+	public static final String BUSINESS_STAFF = "Nhân viên kinh doanh";
 	
-	public static final String MEMBER = "ROLE_MEMBER";
+	public static final String MEMBER = "Thành viên";
 
 	/**
 	 * @param id

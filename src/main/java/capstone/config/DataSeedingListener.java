@@ -6,8 +6,11 @@ package capstone.config;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -129,59 +132,13 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     @Autowired
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
     
-    static final private String PASSWORD = "Minhkien1@"; 
+    static final private String PASSWORD = "Minhkien1@";
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
-//		sourceRepository.deleteAll();
-//		classificationRepository.deleteAll();
-//		fieldRepository.deleteAll();
-//		typeRepository.deleteAll();
-//		careerRepository.deleteAll();
-//		productRepository.deleteAll();
-		
-		// Roles
-		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)
-				.orElseGet(() -> roleRepository.save(new Role(Role.ADMIN)));
-        Role roleModerator = roleRepository.findFirstByName(Role.MODERATOR)
-        		.orElseGet(() -> roleRepository.save(new Role(Role.MODERATOR)));
-        Role roleMember = roleRepository.findFirstByName(Role.MEMBER)
-        		.orElseGet(() -> roleRepository.save(new Role(Role.MEMBER)));
-
-        // Admin account
-        if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
-            User admin = new User();
-            admin.setName("admin1");
-            admin.setEmail("admin1@gmail.com");
-            admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
-            
-            Set<Role> roles = new HashSet<Role>();
-            roles.add(roleModerator);
-            roles.add(roleAdmin);
-            roles.add(roleMember);
-            admin.setRoles(roles);
-            
-            userRepository.save(admin);
-        }
-
-        // Member account
-        if (!userRepository.findByEmail("member1@gmail.com").isPresent()) {
-            User member = new User();
-            member.setName("member1");
-            member.setEmail("member1@gmail.com");
-            member.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
-
-            Set<Role> roles = new HashSet<Role>();
-            roles.add(roleMember);
-            member.setRoles(roles);
-            
-            userRepository.save(member);
-        }
         
 //        userRepository.findAll().forEach(System.out::println);
 //        roleRepository.findAll().forEach(System.out::println);
-        
-        
         
         // Source Nguồn gốc
         Source source1 = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
@@ -399,53 +356,110 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		PermissionFunction permissionFunction2 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT"));
 		PermissionFunction permissionFunction3 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT"));
 		PermissionFunction permissionFunction4 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE"));
+		
 
 		PermissionAction permissionAction1 = addNamedRepository(permissionActionRepository, new PermissionAction("RETRIEVE"));
 		PermissionAction permissionAction2 = addNamedRepository(permissionActionRepository, new PermissionAction("CREATE"));
 		PermissionAction permissionAction3 = addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE"));
 		PermissionAction permissionAction4 = addNamedRepository(permissionActionRepository, new PermissionAction("DELETE"));
 		
-		PermissionFunctionAction permissionFunctionAction11 = new PermissionFunctionAction(permissionFunction1,
-				permissionAction1);
-		PermissionFunctionAction permissionFunctionAction12 = new PermissionFunctionAction(permissionFunction1,
-				permissionAction2);
-		PermissionFunctionAction permissionFunctionAction13 = new PermissionFunctionAction(permissionFunction1,
-				permissionAction3);
-		PermissionFunctionAction permissionFunctionAction14 = new PermissionFunctionAction(permissionFunction1,
-				permissionAction4);
+		List<PermissionFunction> permissionFunctions = Arrays.asList(permissionFunction1, permissionFunction2,
+				permissionFunction3, permissionFunction4);
+		List<PermissionAction> permissionActions = Arrays.asList(permissionAction1, permissionAction2,
+				permissionAction3, permissionAction4);
+		List<PermissionFunctionAction> permissionFunctionActions = addPermissionFunctionActions(permissionFunctions, permissionActions);
+		
+//		PermissionFunctionAction permissionFunctionAction11 = new PermissionFunctionAction(permissionFunction1,
+//				permissionAction1);
+//		PermissionFunctionAction permissionFunctionAction12 = new PermissionFunctionAction(permissionFunction1,
+//				permissionAction2);
+//		PermissionFunctionAction permissionFunctionAction13 = new PermissionFunctionAction(permissionFunction1,
+//				permissionAction3);
+//		PermissionFunctionAction permissionFunctionAction14 = new PermissionFunctionAction(permissionFunction1,
+//				permissionAction4);
+//
+//		PermissionFunctionAction permissionFunctionAction21 = new PermissionFunctionAction(permissionFunction2,
+//				permissionAction1);
+//		PermissionFunctionAction permissionFunctionAction22 = new PermissionFunctionAction(permissionFunction2,
+//				permissionAction2);
+//		PermissionFunctionAction permissionFunctionAction23 = new PermissionFunctionAction(permissionFunction2,
+//				permissionAction3);
+//		PermissionFunctionAction permissionFunctionAction24 = new PermissionFunctionAction(permissionFunction2,
+//				permissionAction4);
+//
+//		PermissionFunctionAction permissionFunctionAction31 = new PermissionFunctionAction(permissionFunction3,
+//				permissionAction1);
+//		PermissionFunctionAction permissionFunctionAction32 = new PermissionFunctionAction(permissionFunction3,
+//				permissionAction2);
+//		PermissionFunctionAction permissionFunctionAction33 = new PermissionFunctionAction(permissionFunction3,
+//				permissionAction3);
+//		PermissionFunctionAction permissionFunctionAction34 = new PermissionFunctionAction(permissionFunction3,
+//				permissionAction4);
+//
+//		PermissionFunctionAction permissionFunctionAction41 = new PermissionFunctionAction(permissionFunction4,
+//				permissionAction1);
+//		PermissionFunctionAction permissionFunctionAction42 = new PermissionFunctionAction(permissionFunction4,
+//				permissionAction2);
+//		PermissionFunctionAction permissionFunctionAction43 = new PermissionFunctionAction(permissionFunction4,
+//				permissionAction3);
+//		PermissionFunctionAction permissionFunctionAction44 = new PermissionFunctionAction(permissionFunction4,
+//				permissionAction4);
+//		addPermissionFunctionAction(permissionFunctionAction11, permissionFunctionAction12,
+//				permissionFunctionAction13, permissionFunctionAction14, permissionFunctionAction21,
+//				permissionFunctionAction22, permissionFunctionAction23, permissionFunctionAction24,
+//				permissionFunctionAction31, permissionFunctionAction32, permissionFunctionAction33,
+//				permissionFunctionAction34, permissionFunctionAction41, permissionFunctionAction42,
+//				permissionFunctionAction43, permissionFunctionAction44);
+		
+		// Roles
+		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)
+				.orElseGet(() -> roleRepository.save(Role.builder()
+						.name(Role.ADMIN)
+						.description("Vai trò này sẽ có đầy đủ tất cả các quyền.")
+						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
+						.build()));
+        Role roleModerator = roleRepository.save(roleRepository.findFirstByName(Role.BUSINESS_STAFF)
+        		.orElseGet(() -> Role.builder()
+						.name(Role.BUSINESS_STAFF)
+						.description("Vai trò này sẽ có tất cả các quyền trừ các quyền đặc biệt liên quan tới quản lý.")
+						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
+						.build()));
+        Role roleMember = roleRepository.findFirstByName(Role.MEMBER)
+        		.orElseGet(() -> roleRepository.save(Role.builder()
+						.name(Role.MEMBER)
+						.description("Vai trò này có các quyền cơ bản của thành viên.")
+						.permissionFunctionActions(new HashSet<PermissionFunctionAction>())
+						.build()));
 
-		PermissionFunctionAction permissionFunctionAction21 = new PermissionFunctionAction(permissionFunction2,
-				permissionAction1);
-		PermissionFunctionAction permissionFunctionAction22 = new PermissionFunctionAction(permissionFunction2,
-				permissionAction2);
-		PermissionFunctionAction permissionFunctionAction23 = new PermissionFunctionAction(permissionFunction2,
-				permissionAction3);
-		PermissionFunctionAction permissionFunctionAction24 = new PermissionFunctionAction(permissionFunction2,
-				permissionAction4);
+        // Admin account
+        if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
+            User admin = new User();
+            admin.setName("admin1");
+            admin.setEmail("admin1@gmail.com");
+            admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
+            
+            Set<Role> roles = new HashSet<Role>();
+            roles.add(roleModerator);
+            roles.add(roleAdmin);
+            roles.add(roleMember);
+            admin.setRoles(roles);
+            
+            userRepository.save(admin);
+        }
 
-		PermissionFunctionAction permissionFunctionAction31 = new PermissionFunctionAction(permissionFunction3,
-				permissionAction1);
-		PermissionFunctionAction permissionFunctionAction32 = new PermissionFunctionAction(permissionFunction3,
-				permissionAction2);
-		PermissionFunctionAction permissionFunctionAction33 = new PermissionFunctionAction(permissionFunction3,
-				permissionAction3);
-		PermissionFunctionAction permissionFunctionAction34 = new PermissionFunctionAction(permissionFunction3,
-				permissionAction4);
+        // Member account
+        if (!userRepository.findByEmail("member1@gmail.com").isPresent()) {
+            User member = new User();
+            member.setName("member1");
+            member.setEmail("member1@gmail.com");
+            member.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
 
-		PermissionFunctionAction permissionFunctionAction41 = new PermissionFunctionAction(permissionFunction4,
-				permissionAction1);
-		PermissionFunctionAction permissionFunctionAction42 = new PermissionFunctionAction(permissionFunction4,
-				permissionAction2);
-		PermissionFunctionAction permissionFunctionAction43 = new PermissionFunctionAction(permissionFunction4,
-				permissionAction3);
-		PermissionFunctionAction permissionFunctionAction44 = new PermissionFunctionAction(permissionFunction4,
-				permissionAction4);
-		addPermissionFunctionAction(permissionFunctionAction11, permissionFunctionAction12,
-				permissionFunctionAction13, permissionFunctionAction14, permissionFunctionAction21,
-				permissionFunctionAction22, permissionFunctionAction23, permissionFunctionAction24,
-				permissionFunctionAction31, permissionFunctionAction32, permissionFunctionAction33,
-				permissionFunctionAction34, permissionFunctionAction41, permissionFunctionAction42,
-				permissionFunctionAction43, permissionFunctionAction44);
+            Set<Role> roles = new HashSet<Role>();
+            roles.add(roleMember);
+            member.setRoles(roles);
+            
+            userRepository.save(member);
+        }
 	}
 	
 	private List<ProductType> addProductType() {
@@ -532,6 +546,31 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		return productTypes;
 	}
 
+	private List<PermissionFunctionAction> addPermissionFunctionActions(Collection<PermissionFunction> permissionFunctions,
+			Collection<PermissionAction> permissionActions) {
+		List<PermissionFunctionAction> permissionFunctionActions = new ArrayList<>();
+		for (PermissionFunction permissionFunction : permissionFunctions) {
+			for (PermissionAction permissionAction : permissionActions) {
+				permissionFunctionActions.add(this.savePermissionFunctionAction(savePermissionFunctionAction(
+						new PermissionFunctionAction(permissionFunction, permissionAction))));
+			}
+		}
+		return permissionFunctionActions;
+	}
+
+	private PermissionFunctionAction savePermissionFunctionAction(PermissionFunctionAction permissionFunctionAction) {
+		return permissionFunctionActionRepository
+				.findByPermissionFunctionAndPermissionAction(permissionFunctionAction.getPermissionFunction(),
+						permissionFunctionAction.getPermissionAction())
+				.orElseGet(() -> permissionFunctionActionRepository.save(permissionFunctionAction));
+	}
+	
+	private List<PermissionFunctionAction> addPermissionFunctionAction(PermissionFunctionAction... permissionFunctionAction) {
+		return Stream.of(permissionFunctionAction)
+				.map(t -> savePermissionFunctionAction(t))
+				.collect(Collectors.toList());
+	}
+	
 	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
 		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
@@ -552,19 +591,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		return Stream.of(ts)
 				.map(t -> addRepository(repository, t))
 				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
-	}
-
-	private PermissionFunctionAction addPermissionFunctionAction(PermissionFunctionAction permissionFunctionAction) {
-		return permissionFunctionActionRepository
-				.findByPermissionFunctionAndPermissionAction(permissionFunctionAction.getPermissionFunction(),
-						permissionFunctionAction.getPermissionAction())
-				.orElseGet(() -> permissionFunctionActionRepository.save(permissionFunctionAction));
-	}
-	
-	private List<PermissionFunctionAction> addPermissionFunctionAction(PermissionFunctionAction... permissionFunctionAction) {
-		return Stream.of(permissionFunctionAction)
-				.map(t -> addPermissionFunctionAction(t))
 				.collect(Collectors.toList());
 	}
 	

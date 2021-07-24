@@ -31,6 +31,7 @@ import capstone.security.jwt.AuthTokenFilter;
 import capstone.security.service.UserDetailsServiceImpl;
 
 /**
+ * WebSecurityConfig
  * @author Tuna
  *
  */
@@ -114,27 +115,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				break;
 			}
 		}
-		
-//		http.authorizeRequests() //
-//				.antMatchers(HttpMethod.GET, "/api/customer", "/api/customer/", "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_READ_CUSTOMER")
-//				.antMatchers(HttpMethod.POST, "/api/customer").hasAnyAuthority("ROLE_CREATE_CUSTOMER")
-//				.antMatchers(HttpMethod.PUT, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_UPDATE_CUSTOMER")
-//				.antMatchers(HttpMethod.DELETE, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_DELETE_CUSTOMER")
-//				;
         
 		http.authorizeRequests()
         .anyRequest().authenticated()
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-//		http.cors().and().csrf().disable()
-//			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//			.authorizeRequests()
-//			.antMatchers("/api/auth/**").permitAll()
-//			.antMatchers("/api/test/**").permitAll()
-//			.anyRequest().authenticated();
-//
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	

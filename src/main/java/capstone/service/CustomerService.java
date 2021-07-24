@@ -47,6 +47,7 @@ public class CustomerService extends AbstractService implements IDtoToEntityServ
 	public Customer dtoToEntity(CustomerDto dto) throws ResourceNotFoundException {
 		Customer customer = Customer.builder()
 				.id(dto.getId())
+				.code(dto.getCode())
 				.name(dto.getName())
 				.shortName(dto.getShortName())
 				.taxCode(dto.getTaxCode())

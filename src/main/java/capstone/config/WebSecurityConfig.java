@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -71,7 +72,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests() //
 				.antMatchers("/api/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll()
-				.antMatchers("/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/customer", "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_READ_CUSTOMER")
+				.antMatchers(HttpMethod.POST, "/api/customer").hasAnyAuthority("ROLE_CREATE_CUSTOMER")
+				.antMatchers(HttpMethod.PUT, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_UPDATE_CUSTOMER")
+				.antMatchers(HttpMethod.DELETE, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_DELETE_CUSTOMER")
+				.antMatchers("/**").authenticated()
 				;
         
 		http.authorizeRequests()

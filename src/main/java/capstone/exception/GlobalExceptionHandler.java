@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -88,8 +89,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			ResourceNotFoundException.class, //
 			ResourceExistedException.class, //
 			DuplicateKeyException.class, //
-			InvalidOldPasswordException.class,
-			org.hibernate.exception.ConstraintViolationException.class
+			InvalidOldPasswordException.class, //
+			org.hibernate.exception.ConstraintViolationException.class, //
+			BadCredentialsException.class
 		})
 	@Nullable
     public ResponseEntity<?> handleException1(Exception ex, WebRequest request) throws Exception {
@@ -105,6 +107,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		} else if (ex instanceof org.hibernate.exception.ConstraintViolationException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+		} else if (ex instanceof BadCredentialsException) {
+			ErrorDetails errorDetails = new ErrorDetails(new Date(), "Usename or password is incorrect", request.getDescription(false));
+			return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
 		} else {
 			ex.printStackTrace();
 			throw ex;

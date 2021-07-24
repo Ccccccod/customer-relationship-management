@@ -66,7 +66,7 @@ public class PermissionFunctionAction extends BaseEntity<Long> implements Permis
 	@JsonProperty("name")
 	@Override
 	public String getValue() {
-		return this.permissionAction.getName() + "_" + this.permissionFunction.getName();
+		return "ROLE_" + this.permissionAction.getName() + "_" + this.permissionFunction.getName();
 	}
 
 	/**

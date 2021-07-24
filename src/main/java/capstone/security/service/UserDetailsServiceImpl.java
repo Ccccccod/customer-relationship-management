@@ -54,6 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				.map(Role::getPermissions)
 				.filter(Objects::nonNull)
 				.flatMap(Set::stream)
+				.filter(Objects::nonNull)
 				.map(Permission::getValue)
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());

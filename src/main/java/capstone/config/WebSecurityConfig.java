@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,7 +88,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		List<PermissionFunctionAction> permissionFunctionActions = permissionFunctionActionRepository.findAll();
 		for (PermissionFunctionAction permissionFunctionAction : permissionFunctionActions) {
 			String function = permissionFunctionAction.getPermissionFunction().getName();
+			function = WordUtils.capitalizeFully(function, '_').replace("_", "");
+			function = WordUtils.uncapitalize(function, new char[0]);
 			String action = permissionFunctionAction.getPermissionAction().getName();
+			System.out.println("fff: " + function);
 			String url = baseUrl + "/" + function;
 			String url1 = url + "/";
 
@@ -133,6 +137,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
+	
 	
 	@Bean
     CorsConfigurationSource corsConfigurationSource() {

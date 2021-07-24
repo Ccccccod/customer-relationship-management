@@ -33,7 +33,7 @@ import capstone.utils.MapBuilder;
  */
 @RestController
 @RequestMapping(value = "/api/customer")
-public class CustomerController {
+public class CustomerController implements IReadNameController<Customer, CustomerRepository, Long> {
 	
 	@Autowired
 	private CustomerService customerService;
@@ -41,7 +41,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	private CustomerRepository getRepository() {
+	public CustomerRepository getRepository() {
 		return this.customerRepository;
 	}
 	

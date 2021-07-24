@@ -27,7 +27,8 @@ import capstone.service.AbstractService;
  */
 @RestController
 @RequestMapping(value = "/api/contact")
-public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, ContactRepository, Long> {
+public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, ContactRepository, Long>
+		implements IReadNameController<Contact, ContactRepository, Long> {
 
 	@Autowired
 	private CustomerRepository customerRepository;

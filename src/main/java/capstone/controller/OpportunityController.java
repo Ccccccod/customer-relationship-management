@@ -46,7 +46,8 @@ import capstone.service.AbstractService;
 @RestController
 @RequestMapping("/api/opportunity")
 public class OpportunityController
-		extends AbstractDtoEntityController<OpportunityDto, Opportunity, OpportunityRepository, Long> {
+		extends AbstractDtoEntityController<OpportunityDto, Opportunity, OpportunityRepository, Long>
+		implements IReadNameController<Opportunity, OpportunityRepository, Long> {
 
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;

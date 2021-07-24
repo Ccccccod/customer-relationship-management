@@ -27,7 +27,8 @@ import capstone.service.AbstractService;
  */
 @RestController
 @RequestMapping("/api/order")
-public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order, OrderRepository, Long> {
+public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order, OrderRepository, Long>
+		implements IReadNameController<Order, OrderRepository, Long> {
 	
 	@Autowired
 	protected CustomerRepository customerRepository;

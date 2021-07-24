@@ -18,6 +18,7 @@ import capstone.repository.OpportunityPhaseRepository;
 @RestController
 @RequestMapping("/api/opportunityPhase")
 public class OpportunityPhaseController
-		extends AbstractSimpleCRUDController<OpportunityPhase, OpportunityPhaseRepository, Long> {
+		extends AbstractSimpleCRUDController<OpportunityPhase, OpportunityPhaseRepository, Long>
+		implements IReadNameController<OpportunityPhase, OpportunityPhaseRepository, Long> {
 
 }

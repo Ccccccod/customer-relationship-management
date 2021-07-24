@@ -38,7 +38,8 @@ import capstone.utils.DtoUtils;
  */
 @RestController
 @RequestMapping("/api/role")
-public class RoleController extends AbstractDtoEntityController<RoleDto, Role, RoleRepository, Long> {
+public class RoleController extends AbstractDtoEntityController<RoleDto, Role, RoleRepository, Long>
+		implements IReadNameController<Role, RoleRepository, Long> {
 	
 	@Autowired
 	protected PermissionFunctionRepository permissionFunctionRepository;

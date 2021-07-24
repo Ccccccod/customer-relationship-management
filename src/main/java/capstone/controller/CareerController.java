@@ -17,6 +17,7 @@ import capstone.repository.CareerRepository;
  */
 @RestController
 @RequestMapping("/api/career")
-public class CareerController extends AbstractSimpleCRUDController<Career, CareerRepository, Long> {
+public class CareerController extends AbstractSimpleCRUDController<Career, CareerRepository, Long>
+		implements IReadNameController<Career, CareerRepository, Long> {
 
 }

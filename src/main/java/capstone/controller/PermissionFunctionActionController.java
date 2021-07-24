@@ -3,6 +3,11 @@
  */
 package capstone.controller;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +22,17 @@ import capstone.repository.PermissionFunctionActionRepository;
 @RequestMapping("/api/permission")
 public class PermissionFunctionActionController
 		extends AbstractSimpleCRUDController<PermissionFunctionAction, PermissionFunctionActionRepository, Long> {
+
+	@GetMapping("/name")
+	public ResponseEntity<?> getAllName() {
+		this.getRepository().findAll().stream()
+				.map(p -> {
+					Map<String,Object> map = new LinkedHashMap<String, Object>();
+					map.put("id", p.getId());
+					map.put("name", p.getValue());
+					return null;
+				});
+		return ResponseEntity.ok(null);
+	}
 
 }

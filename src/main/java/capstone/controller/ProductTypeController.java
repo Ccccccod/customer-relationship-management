@@ -29,7 +29,9 @@ import capstone.service.ProductTypeService;
  */
 @RestController
 @RequestMapping("/api/productType")
-public class ProductTypeController extends AbstractDtoEntityController<ProductTypeDto, ProductType, ProductTypeRepository, Long> {
+public class ProductTypeController
+		extends AbstractDtoEntityController<ProductTypeDto, ProductType, ProductTypeRepository, Long>
+		implements IReadNameController<ProductType, ProductTypeRepository, Long> {
 	
 	@Autowired
 	protected ProductTypeService productTypeService;

@@ -17,6 +17,8 @@ import capstone.repository.ClassificationRepository;
  */
 @RestController
 @RequestMapping("/api/classification")
-public class ClassificationController extends AbstractSimpleCRUDController<Classification, ClassificationRepository, Long> {
+public class ClassificationController
+		extends AbstractSimpleCRUDController<Classification, ClassificationRepository, Long>
+		implements IReadNameController<Classification, ClassificationRepository, Long> {
 
 }

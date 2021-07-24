@@ -17,6 +17,7 @@ import capstone.repository.FieldRepository;
  */
 @RestController
 @RequestMapping("/api/field")
-public class FieldController extends AbstractSimpleCRUDController<Field, FieldRepository, Long> {
+public class FieldController extends AbstractSimpleCRUDController<Field, FieldRepository, Long>
+		implements IReadNameController<Field, FieldRepository, Long> {
 
 }

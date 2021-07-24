@@ -17,6 +17,7 @@ import capstone.repository.TypeRepository;
  */
 @RestController
 @RequestMapping("/api/type")
-public class TypeController extends AbstractSimpleCRUDController<Type, TypeRepository, Long>{
+public class TypeController extends AbstractSimpleCRUDController<Type, TypeRepository, Long>
+		implements IReadNameController<Type, TypeRepository, Long> {
 
 }

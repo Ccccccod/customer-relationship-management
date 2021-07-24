@@ -17,6 +17,7 @@ import capstone.repository.SourceRepository;
  */
 @RestController
 @RequestMapping("/api/source")
-public class SourceController extends AbstractSimpleCRUDController<Source, SourceRepository, Long> {
+public class SourceController extends AbstractSimpleCRUDController<Source, SourceRepository, Long>
+		implements IReadNameController<Source, SourceRepository, Long> {
 
 }

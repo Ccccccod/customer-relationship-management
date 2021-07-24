@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +51,7 @@ public class User extends BaseEntity<Long> implements Named {
 	@Column(name = "name", nullable = false, updatable = false, unique = true)
 	private String name;
 
+	@JsonIgnore // Ignore in case this user is added to response
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 

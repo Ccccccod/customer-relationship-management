@@ -75,8 +75,7 @@ public abstract class AbstractCRUDController< //
 		return ResponseEntity.ok(response);
 	}
 
-//	@PostMapping({"", "/"})
-	@PostMapping
+	@PostMapping({"", "/"})
 	public ResponseEntity<Response> create(@Valid @RequestBody CreateDto dto) throws ResourceNotFoundException, ResourceExistedException {
         this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
 		if (! dto.isNew() && this.repository.existsById(dto.getId())) {

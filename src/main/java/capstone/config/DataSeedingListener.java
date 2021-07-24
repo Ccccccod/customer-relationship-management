@@ -351,21 +351,24 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		
 		// Permissions
+
+		List<PermissionFunction> permissionFunctions = Arrays.asList(
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("OPPORTUNITY")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ORDER")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("INVOICE")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("USER")),
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ROLE")));
+
+		List<PermissionAction> permissionActions = Arrays.asList(
+				addNamedRepository(permissionActionRepository, new PermissionAction("CREATE")),
+				addNamedRepository(permissionActionRepository, new PermissionAction("READ")),
+				addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE")),
+				addNamedRepository(permissionActionRepository, new PermissionAction("DELETE")));
 		
-		PermissionFunction permissionFunction1 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER"));
-		PermissionFunction permissionFunction2 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT"));
-		PermissionFunction permissionFunction3 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT"));
-		PermissionFunction permissionFunction4 = addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE"));
-		
-		PermissionAction permissionAction2 = addNamedRepository(permissionActionRepository, new PermissionAction("CREATE"));
-		PermissionAction permissionAction1 = addNamedRepository(permissionActionRepository, new PermissionAction("READ"));
-		PermissionAction permissionAction3 = addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE"));
-		PermissionAction permissionAction4 = addNamedRepository(permissionActionRepository, new PermissionAction("DELETE"));
-		
-		List<PermissionFunction> permissionFunctions = Arrays.asList(permissionFunction1, permissionFunction2,
-				permissionFunction3, permissionFunction4);
-		List<PermissionAction> permissionActions = Arrays.asList(permissionAction1, permissionAction2,
-				permissionAction3, permissionAction4);
 		List<PermissionFunctionAction> permissionFunctionActions = addPermissionFunctionActions(permissionFunctions, permissionActions);
 		
 		// Roles

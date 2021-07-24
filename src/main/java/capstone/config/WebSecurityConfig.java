@@ -18,10 +18,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import capstone.entity.PermissionFunctionAction;
+import capstone.repository.PermissionFunctionActionRepository;
 import capstone.security.jwt.AuthEntryPointJwt;
 import capstone.security.jwt.AuthTokenFilter;
 import capstone.security.service.UserDetailsServiceImpl;
@@ -43,6 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
+	
+	@Autowired
+	private PermissionFunctionActionRepository permissionFunctionActionRepository;
 
 	@Bean
 	public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -67,20 +73,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
+        http.cors().and().csrf().disable()
+        	.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+        	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        // Permit all for login and logout
 		http.authorizeRequests() //
 				.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/test/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/customer", "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_READ_CUSTOMER")
-				.antMatchers(HttpMethod.POST, "/api/customer").hasAnyAuthority("ROLE_CREATE_CUSTOMER")
-				.antMatchers(HttpMethod.PUT, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_UPDATE_CUSTOMER")
-				.antMatchers(HttpMethod.DELETE, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_DELETE_CUSTOMER")
-				.antMatchers("/**").authenticated()
-				;
+				.antMatchers("/api/test/**").permitAll();
+
+		final String baseUrl = "/api";
+		
+		List<PermissionFunctionAction> permissionFunctionActions = permissionFunctionActionRepository.findAll();
+		for (PermissionFunctionAction permissionFunctionAction : permissionFunctionActions) {
+			String function = permissionFunctionAction.getPermissionFunction().getName();
+			String action = permissionFunctionAction.getPermissionAction().getName();
+			String url = baseUrl + "/" + function;
+			String url1 = url + "/";
+
+			switch (action) {
+			case "READ":
+				http.authorizeRequests().antMatchers(HttpMethod.GET, url, url1, url1 + "{id:\\d+}")
+						.hasAuthority(permissionFunctionAction.getValue());
+				break;
+			case "CREATE":
+				http.authorizeRequests().antMatchers(HttpMethod.POST, url, url1)
+						.hasAuthority(permissionFunctionAction.getValue());
+				break;
+			case "UPDATE":
+				http.authorizeRequests().antMatchers(HttpMethod.PUT, url1 + "{id:\\d+}")
+						.hasAuthority(permissionFunctionAction.getValue());
+				break;
+			case "DELETE":
+				http.authorizeRequests().antMatchers(HttpMethod.DELETE, url1 + "{id:\\d+(,\\d+)?}")
+						.hasAuthority(permissionFunctionAction.getValue());
+				break;
+			}
+		}
+		
+//		http.authorizeRequests() //
+//				.antMatchers(HttpMethod.GET, "/api/customer", "/api/customer/", "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_READ_CUSTOMER")
+//				.antMatchers(HttpMethod.POST, "/api/customer").hasAnyAuthority("ROLE_CREATE_CUSTOMER")
+//				.antMatchers(HttpMethod.PUT, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_UPDATE_CUSTOMER")
+//				.antMatchers(HttpMethod.DELETE, "/api/customer/{id:\\d+}").hasAnyAuthority("ROLE_DELETE_CUSTOMER")
+//				;
         
 		http.authorizeRequests()
-        .anyRequest().permitAll()
+        .anyRequest().authenticated()
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
@@ -92,7 +131,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //			.antMatchers("/api/test/**").permitAll()
 //			.anyRequest().authenticated();
 //
-//		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean

@@ -42,6 +42,7 @@ public class ContactController extends AbstractDtoEntityController<ContactDto, C
 	@Override
 	protected Contact dtoToEntity(ContactDto dto) throws ResourceNotFoundException {
 		Contact contact = Contact.builder()
+				.code(dto.getCode())
 				.id(dto.getId())
 				.lastName(dto.getLastName())
 				.vocative(dto.getVocative())

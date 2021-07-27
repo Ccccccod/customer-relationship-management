@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import capstone.common.Constant;
@@ -38,6 +39,7 @@ public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> impleme
 	
 	@NonNull
 	@NotNull // javax.validation.constraints.NotNull in case this object is used as request dto
+	@NotBlank(message = "must not be empty")
 	@Column(name = "name", nullable = false, columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String name;
 

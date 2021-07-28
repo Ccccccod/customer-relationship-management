@@ -26,7 +26,7 @@ import capstone.dto.validatation.validator.PasswordValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Password {
 
-	String message() default "Password is invalid";
+	String message() default "{Password.message}";
 
 	Class<?>[] groups() default {};
 

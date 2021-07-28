@@ -22,7 +22,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Username {
 
-	String message() default "Username is invalid";
+	String message() default "{Username.message}";
 
 	Class<?>[] groups() default {};
 

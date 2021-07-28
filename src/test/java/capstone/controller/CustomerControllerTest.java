@@ -20,8 +20,7 @@ import capstone.repository.CustomerRepository;
  * @author Tuna
  *
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = BackEndCapstoneApplication.class)
+
 class CustomerControllerTest
 		extends AbstractDtoEntityControllerTest<CustomerDto, Customer, CustomerRepository, CustomerController, Long> {
 
@@ -32,13 +31,14 @@ class CustomerControllerTest
 
 	@Override
 	protected List<Customer> resources() {
-		return Arrays.asList(resource);
+		return Arrays.asList(resource());
 	}
 
 	@Override
 	protected Customer resource() {
-		return Customer.builder().code("KH00001").name("Công ty TNHH Eurodoor").shortName("Eurodoor")
-				.taxCode("0185514943").phone("0185514943").email("letan@eurodoor.com.vn")
+		return Customer.builder().code("KH111").name("zxvcxvcxv").shortName("Eurovxcvxcdoor")
+				.id(1L)
+				.taxCode("1234455").phone("1222323223").email("xxxyyyzzz@gmail.com")
 //				.source(source1)
 //				.classifications(Stream.of(classification1, classification2).collect(Collectors.toSet()))
 //				.fields(Stream.of(field1, field2).collect(Collectors.toSet()))

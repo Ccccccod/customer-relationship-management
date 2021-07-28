@@ -76,7 +76,7 @@ import capstone.utils.EncryptedPasswordUtils;
  */
 @Component
 @SuppressWarnings("unused")
-public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+public class DataSeedingListener /*implements ApplicationListener<ContextRefreshedEvent>*/ {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -133,295 +133,295 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
     
     static final private String PASSWORD = "Minhkien1@";
-
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent arg0) {
-        
-//        userRepository.findAll().forEach(System.out::println);
-//        roleRepository.findAll().forEach(System.out::println);
-        
-        // Source Nguồn gốc
-        Source source1 = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
-        Source source2 = addNamedRepository(sourceRepository, new Source("Nhân viên kinh doanh tự tìm kiếm"));
-        Source source3 = addNamedRepository(sourceRepository, new Source("Thông qua sự kiện, hội thảo, tập huấn"));
-        Source source4 = addNamedRepository(sourceRepository, new Source("Khách hàng tự tìm đến"));
-        Source source5 = addNamedRepository(sourceRepository, new Source("Khác"));
-        
-        // Classification Phân loại
-        Classification classification1 = addNamedRepository(classificationRepository, new Classification("Khách hàng bán lẻ"));
-        Classification classification2 = addNamedRepository(classificationRepository, new Classification("Khách hàng dự án"));
-        
-        // Field Lĩnh vực
-        Field field1 = addNamedRepository(fieldRepository, new Field("Thương mại"));
-        Field field2 = addNamedRepository(fieldRepository, new Field("Dịch vụ"));
-        Field field3 = addNamedRepository(fieldRepository, new Field("Sản xuất"));
-        Field field4 = addNamedRepository(fieldRepository, new Field("Xây lắp"));
-        Field field5 = addNamedRepository(fieldRepository, new Field("Công nghiệp nhẹ"));
-        
-        // Type Loại hình
-        Type type1 = addNamedRepository(typeRepository, new Type("Doanh nghiệp"));
-        Type type2 = addNamedRepository(typeRepository, new Type("Hộ cá thể"));
-        Type type3 = addNamedRepository(typeRepository, new Type("Hành chính sự nghiệp"));
-        Type type4 = addNamedRepository(typeRepository, new Type("Khác"));
-        
-        // Career Ngành nghề
-        Career career1 = addNamedRepository(careerRepository, new Career("Kinh doanh nhóm chính"));
-        Career career2 = addNamedRepository(careerRepository, new Career("Kinh doanh thực phẩm"));
-        Career career3 = addNamedRepository(careerRepository, new Career("Kinh doanh hóa chất"));
-        Career career4 = addNamedRepository(careerRepository, new Career("Kinh doanh mỹ phẩm"));
-        Career career5 = addNamedRepository(careerRepository, new Career("Kinh doanh ô tô, xe máy"));
-        
-		// Customer
-		Customer customer1 = addNamedRepository(customerRepository, Customer.builder()
-				.code("KH00001")
-				.name("Công ty TNHH Eurodoor")
-				.shortName("Eurodoor")
-				.taxCode("0185514943")
-				.phone("0185514943")
-				.email("letan@eurodoor.com.vn")
-				.source(source1)
-				.classifications(Stream.of(classification1, classification2).collect(Collectors.toSet()))
-				.fields(Stream.of(field1, field2).collect(Collectors.toSet()))
-				.type(type1)
-				.careers(Stream.of(career1, career2).collect(Collectors.toSet()))
-				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
-				.build());
-		List<Customer> customers = customerRepository.findAll();
-        
-
-        // Product Type
-		List<ProductType> productTypes = addProductType();
-
-        // Product
-        Product product1 = Product.builder()
-        		.code("HH00001")
-        		.name("Thành phẩm 1")
-        		.productType(Optional.ofNullable(productTypes.get(0)).orElse(null))
-        		.explanation("Thành phẩm 1")
-        		.unit("Hộp")
-        		.sellPrice(200000L)
-        		.sellPrice1(220000L)
-        		.sellPrice2(230000L)
-        		.permanentPrice(250000L)
-        		.buyPrice(150000L)
-        		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat(10)
-        		.implicitRecord(Boolean.FALSE)
-        		.costUnitPrice(180000L)
-        		.build();
-        Product product2 = Product.builder()
-        		.code("HH00002")
-        		.name("Thành phẩm 2")
-        		.productType(Optional.ofNullable(productTypes.get(1)).orElse(null))
-        		.explanation("Thành phẩm 2")
-        		.unit("Bao")
-        		.sellPrice(400000L)
-        		.sellPrice1(440000L)
-        		.sellPrice2(460000L)
-        		.permanentPrice(500000L)
-        		.buyPrice(300000L)
-        		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat(10)
-        		.implicitRecord(Boolean.FALSE)
-        		.costUnitPrice(360000L)
-        		.build();
-        Product product3 = Product.builder()
-        		.code("HH00003")
-        		.name("T-Shirt")
-        		.productType(Optional.ofNullable(productTypes.get(2)).orElse(null))
-        		.explanation("T-Shirt")
-        		.unit("Hộp")
-        		.sellPrice(400000L)
-        		.sellPrice1(440000L)
-        		.sellPrice2(460000L)
-        		.permanentPrice(500000L)
-        		.buyPrice(300000L)
-        		.enterUnitPriorityAfterTax(Boolean.TRUE)
-        		.vat(10)
-        		.implicitRecord(Boolean.FALSE)
-        		.costUnitPrice(360000L)
-        		.build();
-		addNamedRepository(productRepository, product1);
-		addNamedRepository(productRepository, product2);
-		
-		
-		
-		// Contact
-		Contact contact1 = addNamedRepository(contactRepository, Contact.builder()
-				.code("LH00001")
-				.lastName("Nguyễn Quang")
-				.name("Tuấn")
-				.vocative("Ông")
-				.position("Trưởng phòng")
-				.department("Phòng Nhân sự")
-				.classifications(classificationRepository.findAll().stream().collect(Collectors.toSet()))
-				.phone("1591591590")
-				.email("emailKoDuocTrung@gmail.com")
-				.source(source1)
-				.address("khu công nghệ cao Hòa Lạc – Km29, ĐCT08, Thạch Hoà, Thạch Thất, Hà Nội 10000")
-				.customer(customers.get(0))
-				.build());
-		
-		
-		// OpportunityPhase
-		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Kết thúc thất bại")
-				.build());
-		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Kết thúc thành công")
-				.nextOpportunityPhase(opportunityPhase6)
-				.build());
-		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Đàm phán thương lượng")
-				.nextOpportunityPhase(opportunityPhase5)
-				.build());
-		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Demo/Giới thiệu")
-				.nextOpportunityPhase(opportunityPhase4)
-				.build());
-		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Khách hàng quan tâm")
-				.nextOpportunityPhase(opportunityPhase3)
-				.build());
-		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Mở đầu")
-				.nextOpportunityPhase(opportunityPhase2)
-				.build());
-		
-		// Opportunity
-		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
-				.customer(customer1)
-				.contact(contact1)
-				.name("Bán hàng cho " + customer1.getName())
-				.moneyAmount(24_035_000L)
-				.opportunityPhase(opportunityPhase4)
-				.successRate(70)
-				.expectedEndDate(LocalDate.of(2022, Month.JUNE, 6))
-				.expectedTurnOver(24_035_000L * 70 / 100)
-				.source(source2)
-				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
-						ProductInfo.builder()
-								.productCode(product2.getCode())
-								.explanation(product2.getExplanation())
-								.unit(product2.getUnit())
-								.amount(1)
-								.price(product2.getSellPrice())
-								.discount(0)
-								.vat(product2.getVat())
-								.build(),
-						ProductInfo.builder()
-								.productCode(product3.getCode())
-								.explanation(product3.getExplanation())
-								.unit(product3.getUnit())
-								.amount(50)
-								.price(product3.getSellPrice())
-								.discount(10)
-								.vat(product3.getVat())
-								.build()
-						)))
-				.build());
-		
-		// Order
-		Order order1 = addNamedRepository(orderRepository, Order.builder()
-				.code("DH0000001")
-				.name("Đơn hàng bán cho FTech")
-				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
-				.customer(customer1)
-				.contact(contact1)
-				.opportunity(opportunity1)
-				.orderValue(34_100_000L)
-				.liquidationValue(34_100_000L)
-				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
-				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
-				.build());
-		
-		// Invoice
-		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
-				.code("DN0000001")
-				.customer(customer1)
-				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
-				.bankAccount("TNHH Eurodoor")
-				.bank("Pro VN Bank")
-				.taxCode("0185514943")
-				.buyer(contact1)
-				.receiverName("Min")
-				.receiverEmail("Minn@gmail.com")
-				.receiverPhone("120120129")
-				.order(order1)
-				.build());
-		
-		// Permissions
-
-		List<PermissionFunction> permissionFunctions = Arrays.asList(
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("OPPORTUNITY")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ORDER")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("INVOICE")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("USER")),
-				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ROLE")));
-
-		List<PermissionAction> permissionActions = Arrays.asList(
-				addNamedRepository(permissionActionRepository, new PermissionAction("CREATE")),
-				addNamedRepository(permissionActionRepository, new PermissionAction("READ")),
-				addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE")),
-				addNamedRepository(permissionActionRepository, new PermissionAction("DELETE")));
-		
-		List<PermissionFunctionAction> permissionFunctionActions = addPermissionFunctionActions(permissionFunctions, permissionActions);
-		
-		// Roles
-		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)
-				.orElseGet(() -> roleRepository.save(Role.builder()
-						.name(Role.ADMIN)
-						.description("Vai trò này sẽ có đầy đủ tất cả các quyền.")
-						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
-						.build()));
-        Role roleModerator = roleRepository.save(roleRepository.findFirstByName(Role.BUSINESS_STAFF)
-        		.orElseGet(() -> Role.builder()
-						.name(Role.BUSINESS_STAFF)
-						.description("Vai trò này sẽ có tất cả các quyền trừ các quyền đặc biệt liên quan tới quản lý.")
-						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
-						.build()));
-        Role roleMember = roleRepository.findFirstByName(Role.MEMBER)
-        		.orElseGet(() -> roleRepository.save(Role.builder()
-						.name(Role.MEMBER)
-						.description("Vai trò này có các quyền cơ bản của thành viên.")
-						.permissionFunctionActions(new HashSet<PermissionFunctionAction>())
-						.build()));
-
-        // Admin account
-        if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
-            User admin = new User();
-            admin.setName("admin1");
-            admin.setEmail("admin1@gmail.com");
-            admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
-            
-            Set<Role> roles = new HashSet<Role>();
-            roles.add(roleModerator);
-            roles.add(roleAdmin);
-            roles.add(roleMember);
-            admin.setRoles(roles);
-            
-            userRepository.save(admin);
-        }
-
-        // Member account
-        if (!userRepository.findByEmail("member1@gmail.com").isPresent()) {
-            User member = new User();
-            member.setName("member1");
-            member.setEmail("member1@gmail.com");
-            member.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
-
-            Set<Role> roles = new HashSet<Role>();
-            roles.add(roleMember);
-            member.setRoles(roles);
-            
-            userRepository.save(member);
-        }
-	}
-	
+//
+//	@Override
+//	public void onApplicationEvent(ContextRefreshedEvent arg0) {
+//        
+////        userRepository.findAll().forEach(System.out::println);
+////        roleRepository.findAll().forEach(System.out::println);
+//        
+//        // Source Nguồn gốc
+//        Source source1 = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
+//        Source source2 = addNamedRepository(sourceRepository, new Source("Nhân viên kinh doanh tự tìm kiếm"));
+//        Source source3 = addNamedRepository(sourceRepository, new Source("Thông qua sự kiện, hội thảo, tập huấn"));
+//        Source source4 = addNamedRepository(sourceRepository, new Source("Khách hàng tự tìm đến"));
+//        Source source5 = addNamedRepository(sourceRepository, new Source("Khác"));
+//        
+//        // Classification Phân loại
+//        Classification classification1 = addNamedRepository(classificationRepository, new Classification("Khách hàng bán lẻ"));
+//        Classification classification2 = addNamedRepository(classificationRepository, new Classification("Khách hàng dự án"));
+//        
+//        // Field Lĩnh vực
+//        Field field1 = addNamedRepository(fieldRepository, new Field("Thương mại"));
+//        Field field2 = addNamedRepository(fieldRepository, new Field("Dịch vụ"));
+//        Field field3 = addNamedRepository(fieldRepository, new Field("Sản xuất"));
+//        Field field4 = addNamedRepository(fieldRepository, new Field("Xây lắp"));
+//        Field field5 = addNamedRepository(fieldRepository, new Field("Công nghiệp nhẹ"));
+//        
+//        // Type Loại hình
+//        Type type1 = addNamedRepository(typeRepository, new Type("Doanh nghiệp"));
+//        Type type2 = addNamedRepository(typeRepository, new Type("Hộ cá thể"));
+//        Type type3 = addNamedRepository(typeRepository, new Type("Hành chính sự nghiệp"));
+//        Type type4 = addNamedRepository(typeRepository, new Type("Khác"));
+//        
+//        // Career Ngành nghề
+//        Career career1 = addNamedRepository(careerRepository, new Career("Kinh doanh nhóm chính"));
+//        Career career2 = addNamedRepository(careerRepository, new Career("Kinh doanh thực phẩm"));
+//        Career career3 = addNamedRepository(careerRepository, new Career("Kinh doanh hóa chất"));
+//        Career career4 = addNamedRepository(careerRepository, new Career("Kinh doanh mỹ phẩm"));
+//        Career career5 = addNamedRepository(careerRepository, new Career("Kinh doanh ô tô, xe máy"));
+//        
+//		// Customer
+//		Customer customer1 = addNamedRepository(customerRepository, Customer.builder()
+//				.code("KH00001")
+//				.name("Công ty TNHH Eurodoor")
+//				.shortName("Eurodoor")
+//				.taxCode("0185514943")
+//				.phone("0185514943")
+//				.email("letan@eurodoor.com.vn")
+//				.source(source1)
+//				.classifications(Stream.of(classification1, classification2).collect(Collectors.toSet()))
+//				.fields(Stream.of(field1, field2).collect(Collectors.toSet()))
+//				.type(type1)
+//				.careers(Stream.of(career1, career2).collect(Collectors.toSet()))
+//				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
+//				.build());
+//		List<Customer> customers = customerRepository.findAll();
+//        
+//
+//        // Product Type
+//		List<ProductType> productTypes = addProductType();
+//
+//        // Product
+//        Product product1 = Product.builder()
+//        		.code("HH00001")
+//        		.name("Thành phẩm 1")
+//        		.productType(Optional.ofNullable(productTypes.get(0)).orElse(null))
+//        		.explanation("Thành phẩm 1")
+//        		.unit("Hộp")
+//        		.sellPrice(200000L)
+//        		.sellPrice1(220000L)
+//        		.sellPrice2(230000L)
+//        		.permanentPrice(250000L)
+//        		.buyPrice(150000L)
+//        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+//        		.vat(10)
+//        		.implicitRecord(Boolean.FALSE)
+//        		.costUnitPrice(180000L)
+//        		.build();
+//        Product product2 = Product.builder()
+//        		.code("HH00002")
+//        		.name("Thành phẩm 2")
+//        		.productType(Optional.ofNullable(productTypes.get(1)).orElse(null))
+//        		.explanation("Thành phẩm 2")
+//        		.unit("Bao")
+//        		.sellPrice(400000L)
+//        		.sellPrice1(440000L)
+//        		.sellPrice2(460000L)
+//        		.permanentPrice(500000L)
+//        		.buyPrice(300000L)
+//        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+//        		.vat(10)
+//        		.implicitRecord(Boolean.FALSE)
+//        		.costUnitPrice(360000L)
+//        		.build();
+//        Product product3 = Product.builder()
+//        		.code("HH00003")
+//        		.name("T-Shirt")
+//        		.productType(Optional.ofNullable(productTypes.get(2)).orElse(null))
+//        		.explanation("T-Shirt")
+//        		.unit("Hộp")
+//        		.sellPrice(400000L)
+//        		.sellPrice1(440000L)
+//        		.sellPrice2(460000L)
+//        		.permanentPrice(500000L)
+//        		.buyPrice(300000L)
+//        		.enterUnitPriorityAfterTax(Boolean.TRUE)
+//        		.vat(10)
+//        		.implicitRecord(Boolean.FALSE)
+//        		.costUnitPrice(360000L)
+//        		.build();
+//		addNamedRepository(productRepository, product1);
+//		addNamedRepository(productRepository, product2);
+//		
+//		
+//		
+//		// Contact
+//		Contact contact1 = addNamedRepository(contactRepository, Contact.builder()
+//				.code("LH00001")
+//				.lastName("Nguyễn Quang")
+//				.name("Tuấn")
+//				.vocative("Ông")
+//				.position("Trưởng phòng")
+//				.department("Phòng Nhân sự")
+//				.classifications(classificationRepository.findAll().stream().collect(Collectors.toSet()))
+//				.phone("1591591590")
+//				.email("emailKoDuocTrung@gmail.com")
+//				.source(source1)
+//				.address("khu công nghệ cao Hòa Lạc – Km29, ĐCT08, Thạch Hoà, Thạch Thất, Hà Nội 10000")
+////				.customer(customers.get(0))
+//				.build());
+//		
+//		
+//		// OpportunityPhase
+//		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Kết thúc thất bại")
+//				.build());
+//		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Kết thúc thành công")
+//				.nextOpportunityPhase(opportunityPhase6)
+//				.build());
+//		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Đàm phán thương lượng")
+//				.nextOpportunityPhase(opportunityPhase5)
+//				.build());
+//		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Demo/Giới thiệu")
+//				.nextOpportunityPhase(opportunityPhase4)
+//				.build());
+//		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Khách hàng quan tâm")
+//				.nextOpportunityPhase(opportunityPhase3)
+//				.build());
+//		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
+//				.name("Mở đầu")
+//				.nextOpportunityPhase(opportunityPhase2)
+//				.build());
+//		
+//		// Opportunity
+//		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
+//				.customer(customer1)
+//				.contact(contact1)
+//				.name("Bán hàng cho " + customer1.getName())
+//				.moneyAmount(24_035_000L)
+//				.opportunityPhase(opportunityPhase4)
+//				.successRate(70)
+//				.expectedEndDate(LocalDate.of(2022, Month.JUNE, 6))
+//				.expectedTurnOver(24_035_000L * 70 / 100)
+//				.source(source2)
+//				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
+//						ProductInfo.builder()
+//								.productCode(product2.getCode())
+//								.explanation(product2.getExplanation())
+//								.unit(product2.getUnit())
+//								.amount(1)
+//								.price(product2.getSellPrice())
+//								.discount(0)
+//								.vat(product2.getVat())
+//								.build(),
+//						ProductInfo.builder()
+//								.productCode(product3.getCode())
+//								.explanation(product3.getExplanation())
+//								.unit(product3.getUnit())
+//								.amount(50)
+//								.price(product3.getSellPrice())
+//								.discount(10)
+//								.vat(product3.getVat())
+//								.build()
+//						)))
+//				.build());
+//		
+//		// Order
+//		Order order1 = addNamedRepository(orderRepository, Order.builder()
+//				.code("DH0000001")
+//				.name("Đơn hàng bán cho FTech")
+//				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
+//				.customer(customer1)
+//				.contact(contact1)
+//				.opportunity(opportunity1)
+//				.orderValue(34_100_000L)
+//				.liquidationValue(34_100_000L)
+//				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
+//				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+//				.build());
+//		
+//		// Invoice
+//		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
+//				.code("DN0000001")
+//				.customer(customer1)
+//				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
+//				.bankAccount("TNHH Eurodoor")
+//				.bank("Pro VN Bank")
+//				.taxCode("0185514943")
+//				.buyer(contact1)
+//				.receiverName("Min")
+//				.receiverEmail("Minn@gmail.com")
+//				.receiverPhone("120120129")
+//				.order(order1)
+//				.build());
+//		
+//		// Permissions
+//
+//		List<PermissionFunction> permissionFunctions = Arrays.asList(
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("OPPORTUNITY")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ORDER")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("INVOICE")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("PRODUCT_TYPE")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("USER")),
+//				addNamedRepository(permissionFunctionRepository, new PermissionFunction("ROLE")));
+//
+//		List<PermissionAction> permissionActions = Arrays.asList(
+//				addNamedRepository(permissionActionRepository, new PermissionAction("CREATE")),
+//				addNamedRepository(permissionActionRepository, new PermissionAction("READ")),
+//				addNamedRepository(permissionActionRepository, new PermissionAction("UPDATE")),
+//				addNamedRepository(permissionActionRepository, new PermissionAction("DELETE")));
+//		
+//		List<PermissionFunctionAction> permissionFunctionActions = addPermissionFunctionActions(permissionFunctions, permissionActions);
+//		
+//		// Roles
+//		Role roleAdmin = roleRepository.findFirstByName(Role.ADMIN)
+//				.orElseGet(() -> roleRepository.save(Role.builder()
+//						.name(Role.ADMIN)
+//						.description("Vai trò này sẽ có đầy đủ tất cả các quyền.")
+//						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
+//						.build()));
+//        Role roleModerator = roleRepository.save(roleRepository.findFirstByName(Role.BUSINESS_STAFF)
+//        		.orElseGet(() -> Role.builder()
+//						.name(Role.BUSINESS_STAFF)
+//						.description("Vai trò này sẽ có tất cả các quyền trừ các quyền đặc biệt liên quan tới quản lý.")
+//						.permissionFunctionActions(permissionFunctionActions.stream().collect(Collectors.toSet()))
+//						.build()));
+//        Role roleMember = roleRepository.findFirstByName(Role.MEMBER)
+//        		.orElseGet(() -> roleRepository.save(Role.builder()
+//						.name(Role.MEMBER)
+//						.description("Vai trò này có các quyền cơ bản của thành viên.")
+//						.permissionFunctionActions(new HashSet<PermissionFunctionAction>())
+//						.build()));
+//
+//        // Admin account
+//        if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
+//            User admin = new User();
+//            admin.setName("admin1");
+//            admin.setEmail("admin1@gmail.com");
+//            admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
+//            
+//            Set<Role> roles = new HashSet<Role>();
+//            roles.add(roleModerator);
+//            roles.add(roleAdmin);
+//            roles.add(roleMember);
+//            admin.setRoles(roles);
+//            
+//            userRepository.save(admin);
+//        }
+//
+//        // Member account
+//        if (!userRepository.findByEmail("member1@gmail.com").isPresent()) {
+//            User member = new User();
+//            member.setName("member1");
+//            member.setEmail("member1@gmail.com");
+//            member.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
+//
+//            Set<Role> roles = new HashSet<Role>();
+//            roles.add(roleMember);
+//            member.setRoles(roles);
+//            
+//            userRepository.save(member);
+//        }
+//	}
+//	
 	private List<ProductType> addProductType() {
 		List<ProductType> productTypes;
 		ProductType productType1 = addNamedRepository(productTypeRepository, ProductType.builder()

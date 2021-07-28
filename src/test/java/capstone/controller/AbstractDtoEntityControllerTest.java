@@ -5,6 +5,7 @@ package capstone.controller;
 
 import java.io.Serializable;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.dto.request.BaseDto;
@@ -22,4 +23,10 @@ abstract class AbstractDtoEntityControllerTest<Dto extends BaseDto<ID>, //
 >
 extends AbstractCRUDControllerTest<Dto, Dto, Entity, Entity, Repository, Controller, ID> {
 
+	@Override
+	@BeforeEach
+	protected void setUp() throws Exception {
+		
+		super.setUp();
+	}
 }

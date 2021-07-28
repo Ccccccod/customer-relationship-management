@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.After;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,7 @@ abstract class AbstractCRUDControllerTest< //
 		MvcResult mvcResult = mockMvc.perform(get(url).contentType(this.contentType)).andExpect(status().isOk())
 				.andReturn();
 		
+		
 		String actualJsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
 		String expectedJsonResponse = mapToJson(resources);
@@ -87,6 +89,7 @@ abstract class AbstractCRUDControllerTest< //
 
 		MvcResult mvcResult = mockMvc.perform(get(url + "/" + resource.getId())).andExpect(status().isOk())
 				.andReturn();
+	
 
 		String actualJsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
@@ -102,7 +105,7 @@ abstract class AbstractCRUDControllerTest< //
 		MvcResult mvcResult = mockMvc.perform(
 				post(url).contentType(this.contentType).content(mapToJson(resource))
 				).andExpect(status().isOk()).andReturn();
-
+		
 		String actualJsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		
 		String expectedJsonResponse = mapToJson(resource);
@@ -120,6 +123,10 @@ abstract class AbstractCRUDControllerTest< //
 		mockMvc.perform(
 				delete(url).contentType(contentType).content(mapToJson(ids))
 				).andExpect(status().isOk()).andReturn();
+		
 	}
-
+@After
+	public void test() throws Exception {
+	  Mockito.reset(repository);
+	}
 }

@@ -27,7 +27,7 @@ public abstract class AbstractDtoEntityController<Dto extends BaseDto<ID>, //
 		Repository extends JpaRepository<Entity, ID>, //
 		ID extends Serializable> //
 		extends AbstractCRUDController<Dto, Dto, Entity, Entity, Repository, ID> {
-	
+
 	@Override
 	protected Entity entityToResponse(Entity entity) {
 		return entity;

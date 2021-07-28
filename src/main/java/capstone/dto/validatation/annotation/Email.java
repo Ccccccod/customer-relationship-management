@@ -26,7 +26,7 @@ import capstone.dto.validatation.validator.EmailValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Email {
 
-	String message() default "Email is invalid";
+	String message() default "{Email.message}";
 
 	Class<?>[] groups() default {};
 

@@ -56,7 +56,7 @@ public abstract class AbstractCRUDController< //
 	@Autowired
 	@Getter
 	protected Repository repository;
-	
+
 	@Autowired
 	protected UserService userService;
 	
@@ -78,9 +78,7 @@ public abstract class AbstractCRUDController< //
 	@PostMapping({"", "/"})
 	public ResponseEntity<Response> create(@Valid @RequestBody CreateDto dto) throws ResourceNotFoundException, ResourceExistedException {
         this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
-		if (! dto.isNew() && this.repository.existsById(dto.getId())) {
-			throw new ResourceExistedException("An entity already exist with id: " + dto.getId());
-		}
+        
 		Entity entity = this.dtoToEntity(dto);
 		entity.setCreatedBy(this.userService.getCurrentUser());
 		entity = this.repository.save(entity);

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -33,6 +35,8 @@ public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
+	@NotNull(message = "must not be null")
+	@NotBlank(message = "must not be blank")
 	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 

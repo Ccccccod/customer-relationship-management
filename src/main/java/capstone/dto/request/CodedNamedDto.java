@@ -21,13 +21,13 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class CodedNamedDto<ID extends Serializable> extends NamedDto<ID> {
 	
-	@NotNull(message = "Code must not be null")
+	@NotNull
 	private String code;
 
 	/**
@@ -35,8 +35,8 @@ public class CodedNamedDto<ID extends Serializable> extends NamedDto<ID> {
 	 * @param name
 	 * @param code
 	 */
-	public CodedNamedDto(ID id, @NotNull(message = "Name must not be null") String name,
-			@NotNull(message = "Code must not be null") String code) {
+	public CodedNamedDto(ID id, String name,
+			String code) {
 		super(id, name);
 		this.code = code;
 	}

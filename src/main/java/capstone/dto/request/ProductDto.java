@@ -5,7 +5,6 @@ package capstone.dto.request;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import lombok.AllArgsConstructor;
@@ -116,9 +115,8 @@ public class ProductDto extends CodedNamedDto<Long> {
 	 * @param costUnitPrice
 	 */
 	@Builder
-	public ProductDto(Long id, @NotNull(message = "Name must not be null") String name,
-			@NotNull(message = "Code must not be null") String code, Long productTypeId, String explanation,
-			String unit, Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice,
+	public ProductDto(Long id, String name, String code, Long productTypeId, String explanation, String unit,
+			Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice,
 			Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice) {
 		super(id, name, code);
 		this.productTypeId = productTypeId;

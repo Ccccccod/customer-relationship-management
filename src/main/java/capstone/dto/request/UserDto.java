@@ -13,6 +13,7 @@ import capstone.dto.validatation.annotation.Email;
 import capstone.dto.validatation.annotation.Password;
 import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,19 +24,20 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class UserDto extends BaseDto<Long> {
 
 	@JsonAlias({ "name" })
-	@NotNull(message = "Please provide username")
+	@NotNull
 	@Username
 	private String username;
 
-	@NotNull(message = "Please provide email")
+	@NotNull
 	@Email
 	private String email;
 
-	@NotNull(message = "Please provide password")
+	@NotNull
 	@Password
 	private String password;
 	

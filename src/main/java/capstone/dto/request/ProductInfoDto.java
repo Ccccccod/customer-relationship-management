@@ -28,24 +28,24 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 
-@NotNull(message = "ProductInfoDto must not be null")
+@NotNull
 public class ProductInfoDto {
 
-	@NotNull(message = "productCode must not be null")
+	@NotNull
 	private String productCode;
 
 	private String explanation;
 
 	private String unit;
 
-	@NotNull(message = "amount must not be null")
-	@Positive(message = "amount must be positive")
+	@NotNull
+	@Positive
 	private Integer amount;
 
-	@NotNull(message = "price must not be null")
+	@NotNull
 	private Long price;
 
-	@NotNull(message = "discount must not be null")
+	@NotNull
 	private Integer discount;
 
 	private Integer vat;

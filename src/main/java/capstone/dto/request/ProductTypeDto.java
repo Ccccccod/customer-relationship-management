@@ -3,9 +3,8 @@
  */
 package capstone.dto.request;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +32,8 @@ public class ProductTypeDto extends CodedNamedDto<Long> {
 	 * @param code
 	 * @param productTypeId
 	 */
-	public ProductTypeDto(Long id, @NotNull(message = "Name must not be null") String name,
-			@NotNull(message = "Code must not be null") String code, Long productTypeId) {
+	@Builder
+	public ProductTypeDto(Long id, String name, String code, Long productTypeId) {
 		super(id, name, code);
 		this.productTypeId = productTypeId;
 	}

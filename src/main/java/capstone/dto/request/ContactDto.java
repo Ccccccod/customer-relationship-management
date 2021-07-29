@@ -95,8 +95,8 @@ public class ContactDto extends CodedNamedDto<Long> {
 	 * @param address
 	 */
 	@Builder
-	public ContactDto(Long id, @NotNull(message = "Name must not be null") String name,
-			@NotNull(message = "Code must not be null") String code, String vocative, String lastName, String position,
+	public ContactDto(Long id, String name,
+			String code, String vocative, String lastName, String position,
 			String department, Long customerId, Set<Long> classificationIds, String phone, String email, Long sourceId,
 			String address) {
 		super(id, name, code);

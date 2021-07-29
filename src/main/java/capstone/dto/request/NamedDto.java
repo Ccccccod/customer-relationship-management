@@ -6,7 +6,6 @@ package capstone.dto.request;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -28,14 +27,14 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class NamedDto<ID extends Serializable> extends BaseDto<ID> {
 	
-	@NotBlank(message = "Name must not be blank")
+	@NotBlank
 	private String name;
 
 	/**
 	 * @param id
 	 * @param name
 	 */
-	public NamedDto(ID id, @NotNull(message = "Name must not be null") String name) {
+	public NamedDto(ID id, String name) {
 		super(id);
 		this.name = name;
 	}

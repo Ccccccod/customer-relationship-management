@@ -23,11 +23,11 @@ import lombok.ToString;
 @ToString
 public class LoginRequest {
 
-	@NotNull(message = "Please provide username")
+	@NotNull
 	@Username
 	private String username;
 
-	@NotNull(message = "Please provide password")
+	@NotNull
 	@Password
 	private String password;
 }

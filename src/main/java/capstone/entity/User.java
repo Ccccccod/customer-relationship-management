@@ -16,7 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
@@ -48,10 +50,12 @@ import lombok.ToString;
 public class User extends BaseEntity<Long> implements Named {
 	private static final long serialVersionUID = 1L;
 	
+	@JsonAlias("username")
+	@JsonProperty("username")
 	@Column(name = "name", nullable = false, updatable = false, unique = true)
 	private String name;
 
-	@JsonIgnore // Ignore in case this user is added to response
+	@JsonProperty(access = Access.WRITE_ONLY) // Ignore in case this user is added to response
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 

@@ -1,9 +1,10 @@
 package capstone.config;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +130,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setExposedHeaders(Collections.singletonList(("AUTHORIZATION")));
-        //Get CORS client from config table
+        
+        // TODO Get CORS client from config table
         List<String> corsAllow = new ArrayList<>();
         corsAllow.add("http://localhost:3000");
         corsAllow.add("https://localhost:3000");
@@ -137,7 +139,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         if (corsAllow.isEmpty()) corsAllow.add("/**");
         corsConfiguration.setAllowedOrigins(corsAllow);
 
-        corsConfiguration.setAllowedMethods(Arrays.asList("POST", "PUT", "DELETE", "GET"));
+        // Allow all methods
+		corsConfiguration
+				.setAllowedMethods(Stream.of(HttpMethod.values()).map(HttpMethod::name).collect(Collectors.toList()));
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

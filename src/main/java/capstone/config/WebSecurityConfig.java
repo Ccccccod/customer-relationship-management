@@ -1,9 +1,9 @@
 package capstone.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.text.WordUtils;
@@ -131,10 +131,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setExposedHeaders(Collections.singletonList(("AUTHORIZATION")));
         
-        // TODO Get CORS client from config table
-        List<String> corsAllow = new ArrayList<>();
-        corsAllow.add("http://localhost:3000");
-        corsAllow.add("https://localhost:3000");
+		// TODO Get CORS client from config table
+		List<String> corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000");
         
         if (corsAllow.isEmpty()) corsAllow.add("/**");
         corsConfiguration.setAllowedOrigins(corsAllow);

@@ -24,5 +24,10 @@ abstract class AbstractSimpleCRUDControllerTest<T extends BaseEntity<ID>, //
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
+	
+	@Override
+	protected T createResource() {
+		return resource();
+	}
 
 }

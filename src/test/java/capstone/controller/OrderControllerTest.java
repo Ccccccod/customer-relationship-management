@@ -8,13 +8,12 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
 import capstone.dto.request.OrderDto;
 import capstone.entity.Order;
 import capstone.repository.OrderRepository;
 
 /**
+ * OrderControllerTest
  * @author DELL
  *
  */
@@ -44,13 +43,25 @@ public class OrderControllerTest
 
 	@Override
 	protected Order resource() {
-		return Order.builder().id(1L).name("ban cho duc").code("DH14").liquidationDeadline(LocalDate.of(2021, 4, 20)).deliveryDeadline(LocalDate.of(2021, 4, 20)).build();
+		return Order.builder().id(1L)
+				.name("ban cho duc")
+				.code("DH14")
+				.orderValue(1200L)
+				.orderDate(LocalDate.of(2021, 4, 20))
+				.liquidationDeadline(LocalDate.of(2021, 4, 20))
+				.deliveryDeadline(LocalDate.of(2021, 4, 20)).build();
 	}
-	@Override
-	@Test
-	public void testCreateUpdate() throws Exception {
-		org.assertj.core.api.Assertions.assertThat("").isEqualToIgnoringWhitespace("");
 
+	@Override
+	protected OrderDto createResource() {
+		return OrderDto.builder()
+				.name(resource().getName())
+				.code(resource().getCode())
+				.orderValue(resource().getOrderValue())
+				.orderDate(resource().getOrderDate())
+				.liquidationDeadline(resource().getLiquidationDeadline())
+				.deliveryDeadline(resource().getDeliveryDeadline())
+				.build();
 	}
 
 }

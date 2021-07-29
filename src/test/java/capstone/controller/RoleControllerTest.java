@@ -6,14 +6,12 @@ package capstone.controller;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
 import capstone.dto.request.RoleDto;
-import capstone.entity.Product;
 import capstone.entity.Role;
 import capstone.repository.RoleRepository;
 
 /**
+ * RoleControllerTest
  * @author DELL
  *
  */
@@ -45,9 +43,9 @@ public class RoleControllerTest
 	}
 
 	@Override
-	@Test
-	public void testCreateUpdate() throws Exception {
-		org.assertj.core.api.Assertions.assertThat("").isEqualToIgnoringWhitespace("");
-
+	protected RoleDto createResource() {
+		return RoleDto.builder()
+				.name(resource().getName())
+				.build();
 	}
 }

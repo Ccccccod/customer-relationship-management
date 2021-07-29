@@ -6,14 +6,12 @@ package capstone.controller;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
 import capstone.dto.request.InvoiceDto;
 import capstone.entity.Invoice;
-import capstone.entity.Product;
 import capstone.repository.InvoiceRepository;
 
 /**
+ * InvoiceControllerTest
  * @author DELL
  *
  */
@@ -27,26 +25,32 @@ public class InvoiceControllerTest
 
 	@Override
 	protected List<Invoice> resources() {
-		return Arrays.asList(Invoice.builder()
-				.code("HD0009")
-				.build() ,
+		return Arrays.asList(
+				Invoice.builder()
+						.code("HD0009")
+						.build(), 
 				Invoice.builder()
 						.code("HD0008")
-						.build() ,
-						Invoice.builder()
-								.code("HD0006")
-								.build());
+						.build(),
+				Invoice.builder()
+						.code("HD0006")
+						.build()
+				);
 	}
 
 	@Override
 	protected Invoice resource() {
-		return Invoice.builder().id(1L).code("HD0004").build();
+		return Invoice.builder()
+				.id(1L)
+				.code("HD0004")
+				.build();
 	}
+
 	@Override
-	@Test
-	public void testCreateUpdate() throws Exception {
-		org.assertj.core.api.Assertions.assertThat("").isEqualToIgnoringWhitespace("");
-
+	protected InvoiceDto createResource() {
+		return InvoiceDto.builder()
+				.code(resource().getCode())
+				.build();
 	}
-
+	
 }

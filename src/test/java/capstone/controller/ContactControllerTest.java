@@ -8,10 +8,10 @@ import java.util.List;
 
 import capstone.dto.request.ContactDto;
 import capstone.entity.Contact;
-import capstone.entity.Product;
 import capstone.repository.ContactRepository;
 
 /**
+ * ContactControllerTest
  * @author DELL
  *
  */
@@ -25,24 +25,37 @@ public class ContactControllerTest
 
 	@Override
 	protected List<Contact> resources() {
-		return Arrays.asList(Contact.builder()
-				.name("anh tu")
-				.code("LH11")
-				.build() ,
+		return Arrays.asList(
+				Contact.builder()
+						.name("anh tu")
+						.code("LH11")
+						.build(),
 				Contact.builder()
 						.name("minh kien")
 						.code("LH12")
-						.build() ,
-						Contact.builder()
-								.name(" Vi bao")
-								.code("LH13")
-								.build());
+						.build(),
+				Contact.builder()
+						.name(" Vi bao")
+						.code("LH13")
+						.build());
 	}
 	
 
 	@Override
 	protected Contact resource() {
-		return Contact.builder().id(1L).name("tu").code("LH41").build();
+		return Contact.builder()
+				.id(1L)
+				.name("tu")
+				.code("LH41")
+				.build();
+	}
+
+	@Override
+	protected ContactDto createResource() {
+		return ContactDto.builder()
+				.name(resource.getName())
+				.code(resource().getCode())
+				.build();
 	}
 
 }

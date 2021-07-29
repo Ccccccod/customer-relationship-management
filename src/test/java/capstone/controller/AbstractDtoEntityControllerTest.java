@@ -29,4 +29,5 @@ extends AbstractCRUDControllerTest<Dto, Dto, Entity, Entity, Repository, Control
 		
 		super.setUp();
 	}
+	
 }

@@ -4,10 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import capstone.dto.request.ProductTypeDto;
-import capstone.entity.Product;
 import capstone.entity.ProductType;
 import capstone.repository.ProductTypeRepository;
 
+/**
+ * ProductTypeControllerTest
+ * @author Tuna
+ *
+ */
 public class ProductTypeControllerTest extends
 		AbstractDtoEntityControllerTest<ProductTypeDto, ProductType, ProductTypeRepository, ProductTypeController, Long> {
 
@@ -35,6 +39,14 @@ public class ProductTypeControllerTest extends
 	@Override
 	protected ProductType resource() {
 		return ProductType.builder().id(1L).name("ao coc").code("LH4").build();
+	}
+
+	@Override
+	protected ProductTypeDto createResource() {
+		return ProductTypeDto.builder()
+				.name(resource().getName())
+				.code(resource().getCode())
+				.build();
 	}
 
 }

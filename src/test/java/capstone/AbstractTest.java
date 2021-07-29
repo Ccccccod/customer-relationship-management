@@ -6,6 +6,7 @@ package capstone;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +40,7 @@ public abstract class AbstractTest {
 	
 	protected ObjectMapper objectMapper = new ObjectMapper();
 
-	@BeforeClass
+	@BeforeEach
 	protected void setUp() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		objectMapper = new ObjectMapper();

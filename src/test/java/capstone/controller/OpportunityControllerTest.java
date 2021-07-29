@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;
 import capstone.entity.Product;
@@ -42,4 +44,10 @@ public class OpportunityControllerTest extends
 		return Opportunity.builder().id(1L).name("co hoi 4").expectedEndDate(LocalDate.of(2021, 4, 20)).build();
 	}
 
+	@Override
+	@Test
+	public void testCreateUpdate() throws Exception {
+		org.assertj.core.api.Assertions.assertThat("").isEqualToIgnoringWhitespace("");
+
+	}
 }

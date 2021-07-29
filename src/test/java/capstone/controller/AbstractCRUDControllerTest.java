@@ -106,7 +106,7 @@ abstract class AbstractCRUDControllerTest< //
 		
 		MvcResult mvcResult = mockMvc.perform(
 				post(url).contentType(this.contentType).content(mapToJson(createResource()))
-				)/*.andExpect(status().isOk())*/.andReturn();
+				).andExpect(status().isOk()).andReturn();
 		
 		String actualJsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		

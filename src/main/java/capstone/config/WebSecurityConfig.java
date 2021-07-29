@@ -140,9 +140,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedOrigins(corsAllow);
 
         // Allow all methods
-		corsConfiguration
-				.setAllowedMethods(Stream.of(HttpMethod.values()).map(HttpMethod::name).collect(Collectors.toList()));
-
+		Stream.of(HttpMethod.values()).forEach(corsConfiguration::addAllowedMethod);
+		
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

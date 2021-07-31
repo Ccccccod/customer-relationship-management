@@ -25,6 +25,7 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
+import capstone.entity.Product;
 import capstone.entity.ProductInfo;
 import capstone.entity.ProductInfo.ProductInfoBuilder;
 import capstone.entity.Source;
@@ -34,8 +35,10 @@ import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
+import capstone.repository.ProductRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
+import capstone.service.ProductInfoService;
 
 /**
  * OpportunityController
@@ -63,6 +66,12 @@ public class OpportunityController
 	
 	@Autowired
 	protected SourceRepository sourceRepository;
+	
+	@Autowired
+	protected ProductRepository productRepository;
+	
+	@Autowired
+	protected ProductInfoService productInfoService;
 
 	@Override
 	protected Opportunity dtoToEntity(OpportunityDto dto) throws ResourceNotFoundException {
@@ -144,7 +153,21 @@ public class OpportunityController
 		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(
 				() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
 		ProductInfo productInfo = this.productDtoToProductInfo(productInfoDto).build();
-		opportunity.addToProductInfos(productInfo);
+		opportunity.addToProductInfo(productInfo);
+		opportunity = this.repository.saveAndFlush(opportunity);
+		
+		return ResponseEntity.ok(productInfo);
+	}
+
+	@PostMapping("{opportunityId}/product/{productId}")
+	public ResponseEntity<ProductInfo> createProductInfo(@PathVariable(value = "opportunityId") Long opportunityId,
+			@PathVariable(value = "productId") Long productId) throws ResourceNotFoundException {
+		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(
+				() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
+		Product product = this.productRepository.findById(productId).orElseThrow(
+				() -> new ResourceNotFoundException("Product not found for this id: " + productId));
+		ProductInfo productInfo = this.productInfoService.generateFromProduct(product);
+		opportunity.addToProductInfo(productInfo);
 		opportunity = this.repository.saveAndFlush(opportunity);
 		
 		return ResponseEntity.ok(productInfo);

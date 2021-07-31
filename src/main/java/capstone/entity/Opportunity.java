@@ -5,8 +5,6 @@ package capstone.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -125,19 +123,9 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	}
 	
 	@Override
-	public void setProductInfos(Set<ProductInfo> productInfos) {
-		this.productInfos = productInfos;
-		if (Objects.nonNull(this.productInfos))
-			this.productInfos.forEach(i -> i.setOpportunity(this));
-	}
-	
-	@Override
-	public void addToProductInfos(ProductInfo productInfo) {
-		productInfo.setOpportunity(this);
-		if (Objects.nonNull(this.productInfos))
-			this.productInfos.add(productInfo);
-		else
-			this.productInfos = new LinkedHashSet<ProductInfo>(Arrays.asList(productInfo));
+	public void productInfoSetThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOpportunity(this);
 	}
 
 	/**
@@ -171,9 +159,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 		this.expectedEndDate = expectedEndDate;
 		this.expectedTurnOver = expectedTurnOver;
 		this.source = source;
-		this.productInfos = productInfos;
-		if (Objects.nonNull(productInfos))
-			productInfos.forEach(i -> i.setOpportunity(this));
+		setToProductInfos(productInfos);
 	}
 
 }

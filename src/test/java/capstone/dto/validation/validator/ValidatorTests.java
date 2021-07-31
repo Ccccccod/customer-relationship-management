@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -23,21 +24,22 @@ import capstone.entity.NamedEntity;
  */
 public class ValidatorTests {
 	
-	/**
-	 * Create Validator
-	 * @return
-	 */
-	private Validator createValidator() {
+	private static Validator validator;
+
+	@BeforeClass
+	public static void setUp() {
+		// Set Up validator
+//		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+//		validator = factory.getValidator();
 		LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
 		localValidatorFactoryBean.afterPropertiesSet();
-		return localValidatorFactoryBean;
+		ValidatorTests.validator = localValidatorFactoryBean;
 	}
 	
 	@Test
 	void testEmptyName() {
 		NamedEntity<Long> entity = new NamedEntity<Long>("");
 		
-		Validator validator = createValidator();
 		Set<ConstraintViolation<NamedEntity<Long>>> constraintViolations = validator.validate(entity);
 
 		assertThat(constraintViolations).hasSize(1);
@@ -50,7 +52,6 @@ public class ValidatorTests {
 	void testEmptyCode() {
 		CodedNamedEntity<Long> entity = new CodedNamedEntity<Long>("Name", "");
 
-		Validator validator = createValidator();
 		Set<ConstraintViolation<CodedNamedEntity<Long>>> constraintViolations = validator.validate(entity);
 		
 		assertThat(constraintViolations).hasSize(1);
@@ -58,7 +59,5 @@ public class ValidatorTests {
 		assertThat(violation.getPropertyPath().toString()).isEqualTo("code");
 		assertThat(violation.getMessage()).isEqualTo("must not be blank");
 	}
-	
-	
 
 }

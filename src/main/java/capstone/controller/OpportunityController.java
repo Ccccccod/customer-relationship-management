@@ -25,7 +25,6 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
-import capstone.entity.Product;
 import capstone.entity.ProductInfo;
 import capstone.entity.ProductInfo.ProductInfoBuilder;
 import capstone.entity.Source;
@@ -35,7 +34,6 @@ import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
-import capstone.repository.ProductRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
 import capstone.service.ProductInfoService;
@@ -66,9 +64,6 @@ public class OpportunityController
 	
 	@Autowired
 	protected SourceRepository sourceRepository;
-	
-	@Autowired
-	protected ProductRepository productRepository;
 	
 	@Autowired
 	protected ProductInfoService productInfoService;
@@ -164,9 +159,7 @@ public class OpportunityController
 			@PathVariable(value = "productId") Long productId) throws ResourceNotFoundException {
 		Opportunity opportunity = this.repository.findById(opportunityId).orElseThrow(
 				() -> new ResourceNotFoundException("Opportunity not found for this id: " + opportunityId));
-		Product product = this.productRepository.findById(productId).orElseThrow(
-				() -> new ResourceNotFoundException("Product not found for this id: " + productId));
-		ProductInfo productInfo = this.productInfoService.generateFromProduct(product);
+		ProductInfo productInfo = this.productInfoService.generateFromProduct(productId);
 		opportunity.addToProductInfo(productInfo);
 		opportunity = this.repository.saveAndFlush(opportunity);
 		

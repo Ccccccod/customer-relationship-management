@@ -4,7 +4,7 @@
 package capstone.dto.request;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -88,7 +88,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	/**
 	 * Thông tin hàng hóa
 	 */
-	private List<ProductInfoDto> productInfoDtos;
+	private Set<ProductInfoDto> productInfoDtos;
 
 	/**
 	 * @param id
@@ -106,7 +106,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	@Builder
 	OpportunityDto(Long id, String name, Long customerId, Long contactId, Long moneyAmount, Long opportunityPhaseId,
 			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Long sourceId,
-			List<ProductInfoDto> productInfoDtos) {
+			Set<ProductInfoDto> productInfoDtos) {
 		super(id, name);
 		this.customerId = customerId;
 		this.contactId = contactId;

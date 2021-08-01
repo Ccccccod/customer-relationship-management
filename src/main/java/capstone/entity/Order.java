@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -110,6 +111,12 @@ public class Order extends CodedNamedEntity<Long> {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate deliveryDeadline;
+
+	/**
+	 * Thông tin từng hàng hóa
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	protected Set<ProductInfo> productInfos;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	@ToString.Exclude

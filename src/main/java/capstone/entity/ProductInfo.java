@@ -129,6 +129,11 @@ public class ProductInfo extends BaseEntity<Long> {
 	@ToString.Exclude @EqualsAndHashCode.Exclude @JsonIgnore
 	private Opportunity opportunity;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "order_id")
+	@ToString.Exclude @EqualsAndHashCode.Exclude @JsonIgnore
+	private Order order;
+
 	/**
 	 * @param id
 	 * @param createdAt

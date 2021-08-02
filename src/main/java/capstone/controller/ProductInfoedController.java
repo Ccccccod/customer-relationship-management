@@ -142,7 +142,7 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 	}
 
 	@Transactional
-	@DeleteMapping("{productInfoedId}/product/{productInfofId}")
+	@DeleteMapping("{productInfoedId}/product/{productInfoId}")
 	default ResponseEntity<?> deleteProductInfo1(@PathVariable(value = "opportunityId") ID opportunityId,
 			@PathVariable(value = "productInfoId") List<Long> ids) throws ResourceNotFoundException {
 		return deleteProductInfo(opportunityId, ids);

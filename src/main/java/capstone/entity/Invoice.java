@@ -4,16 +4,21 @@
 package capstone.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import capstone.common.Constant;
 import capstone.model.Coded;
+import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -39,7 +44,7 @@ import lombok.ToString;
 @Table(name = "Invoice", //
 		uniqueConstraints = { //
 		})
-public class Invoice extends BaseEntity<Long> implements Coded {
+public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "code", unique = true, nullable = false)
@@ -107,6 +112,18 @@ public class Invoice extends BaseEntity<Long> implements Coded {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
 	private Order order;
+
+	/**
+	 * Thông tin từng hàng hóa
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
+	protected Set<ProductInfo> productInfos;
+
+	@Override
+	public void productInfoSetThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setInvoice(this);
+	}
 
 	/**
 	 * @param id

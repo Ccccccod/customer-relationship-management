@@ -133,6 +133,11 @@ public class ProductInfo extends BaseEntity<Long> {
 	@JoinColumn(name = "order_id")
 	@ToString.Exclude @EqualsAndHashCode.Exclude @JsonIgnore
 	private Order order;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "invoice_id")
+	@ToString.Exclude @EqualsAndHashCode.Exclude @JsonIgnore
+	private Invoice invoice;
 	
 	@JsonProperty
 	public Long opportunityId() {
@@ -142,6 +147,11 @@ public class ProductInfo extends BaseEntity<Long> {
 	@JsonProperty
 	public Long orderId() {
 		return Objects.nonNull(this.order) ? this.order.getId() : null;
+	}
+	
+	@JsonProperty
+	public Long invoiceId() {
+		return Objects.nonNull(this.invoice) ? this.invoice.getId() : null;
 	}
 
 	/**

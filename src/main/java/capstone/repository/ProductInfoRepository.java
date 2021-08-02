@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import capstone.entity.Invoice;
 import capstone.entity.Opportunity;
 import capstone.entity.Order;
 import capstone.entity.ProductInfo;
@@ -32,5 +33,11 @@ public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> 
 	Optional<ProductInfo> findByIdAndOrder(Long id, Order order);
 
 	List<ProductInfo> deleteByIdInAndOrder(Iterable<? extends Long> ids, Order order);
+	
+	List<ProductInfo> findByInvoice(Invoice invoice);
+	
+	Optional<ProductInfo> findByIdAndInvoice(Long id, Invoice invoice);
+
+	List<ProductInfo> deleteByIdInAndInvoice(Iterable<? extends Long> ids, Invoice invoice);
 	
 }

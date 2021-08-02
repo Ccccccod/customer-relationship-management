@@ -133,6 +133,16 @@ public class ProductInfo extends BaseEntity<Long> {
 	@JoinColumn(name = "order_id")
 	@ToString.Exclude @EqualsAndHashCode.Exclude @JsonIgnore
 	private Order order;
+	
+	@JsonProperty
+	public Long opportunityId() {
+		return Objects.nonNull(this.opportunity) ? this.opportunity.getId() : null;
+	}
+	
+	@JsonProperty
+	public Long orderId() {
+		return Objects.nonNull(this.order) ? this.order.getId() : null;
+	}
 
 	/**
 	 * @param id

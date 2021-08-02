@@ -5,6 +5,7 @@ package capstone.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -47,7 +49,7 @@ import lombok.ToString;
 @Table(name = "[Order]", //
 		uniqueConstraints = { //
 		})
-public class Order extends CodedNamedEntity<Long> {
+public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	private static final long serialVersionUID = 1L;
 	// Code
 	// Name
@@ -80,8 +82,6 @@ public class Order extends CodedNamedEntity<Long> {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "opportunity_id")
 	private Opportunity opportunity;
-	
-	// TODO Bao gia
 
 	/**
 	 * Giá trị đơn hàng
@@ -157,6 +157,12 @@ public class Order extends CodedNamedEntity<Long> {
 		this.liquidationDeadline = liquidationDeadline;
 		this.deliveryDeadline = deliveryDeadline;
 		this.invoices = invoices;
+	}
+
+	@Override
+	public void productInfoSetThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOrder(this);
 	}
 
 }

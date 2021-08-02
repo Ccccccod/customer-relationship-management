@@ -48,6 +48,7 @@ public class ProductInfoService {
 				.amount(1)
 				.price(product.getSellPrice())
 				.vat(product.getVat())
+				.discount(0)
 				.build();
 	};
 	

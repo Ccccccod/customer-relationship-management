@@ -3,6 +3,9 @@
  */
 package capstone.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,12 +15,15 @@ import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Opportunity;
 import capstone.entity.Order;
+import capstone.entity.ProductInfo;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
+import capstone.repository.ProductInfoRepository;
 import capstone.service.AbstractService;
+import capstone.service.ProductInfoService;
 
 /**
  * OrderController
@@ -28,7 +34,8 @@ import capstone.service.AbstractService;
 @RestController
 @RequestMapping("/api/order")
 public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order, OrderRepository, Long>
-		implements IReadNameController<Order, OrderRepository, Long> {
+		implements IReadNameController<Order, OrderRepository, Long>,
+		ProductInfoedController<Order, OrderRepository, Long> {
 	
 	@Autowired
 	protected CustomerRepository customerRepository;
@@ -38,6 +45,12 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 
 	@Autowired
 	protected OpportunityRepository opportunityRepository;
+
+	@Autowired
+	protected ProductInfoRepository productInfoRepository;
+	
+	@Autowired
+	protected ProductInfoService productInfoService;
 
 	@Override
 	protected Order dtoToEntity(OrderDto dto) throws ResourceNotFoundException {
@@ -53,6 +66,36 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 				.liquidationDeadline(dto.getLiquidationDeadline())
 				.deliveryDeadline(dto.getDeliveryDeadline())
 				.build();
+	}
+
+	@Override
+	public ProductInfoService getProductInfoService() {
+		return this.productInfoService;
+	}
+
+	@Override
+	public Class<Order> entityClass() {
+		return Order.class;
+	}
+
+	@Override
+	public ProductInfoRepository getProductInfoRepository() {
+		return this.productInfoRepository;
+	}
+
+	@Override
+	public List<ProductInfo> findByProductInfoed(Order t) {
+		return this.productInfoRepository.findByOrder(t);
+	}
+
+	@Override
+	public Optional<ProductInfo> findByIdAndProductInfoed(Long id, Order t) {
+		return this.productInfoRepository.findByIdAndOrder(id, t);
+	}
+
+	@Override
+	public List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, Order t) {
+		return this.productInfoRepository.deleteByIdInAndOrder(ids, t);
 	}
 
 }

@@ -35,14 +35,34 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 		ID extends Serializable> //
 		extends Repositoried<Repository> {
 	
+	/**
+	 * @return autowired {@link ProductInfoService}
+	 */
 	ProductInfoService getProductInfoService();
 	
+	/**
+	 * @return {@link Class} of T
+	 */
 	Class<T> entityClass();
 	
+	/**
+	 * @return autowired {@link ProductInfoRepository}
+	 */
 	ProductInfoRepository getProductInfoRepository();
 	
+	/**
+	 * Call {@link ProductInfoRepository} to find by t
+	 * @param t t to find by
+	 * @return results
+	 */
 	List<ProductInfo> findByProductInfoed(T t);
 	
+	/**
+	 * Call {@link ProductInfoRepository} to find by id and t
+	 * @param id
+	 * @param t
+	 * @return
+	 */
 	Optional<ProductInfo> findByIdAndProductInfoed(Long id, T t);
 	
 	List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, T t);

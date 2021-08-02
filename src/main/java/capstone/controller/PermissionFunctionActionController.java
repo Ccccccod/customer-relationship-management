@@ -17,6 +17,7 @@ import capstone.entity.PermissionFunctionAction;
 import capstone.repository.PermissionFunctionActionRepository;
 
 /**
+ * PermissionFunctionActionController
  * @author Tuna
  *
  */
@@ -27,7 +28,7 @@ public class PermissionFunctionActionController
 
 	@GetMapping("/name")
 	public ResponseEntity<?> getAllName() {
-		Set<Object> result = this.getRepository().findAll().stream()
+		Set<Map<String, Object>> result = this.getRepository().findAll().stream()
 				.map(p -> {
 					Map<String,Object> map = new LinkedHashMap<String, Object>();
 					map.put("id", p.getId());

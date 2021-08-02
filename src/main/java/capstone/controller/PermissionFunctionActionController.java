@@ -5,6 +5,8 @@ package capstone.controller;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +27,15 @@ public class PermissionFunctionActionController
 
 	@GetMapping("/name")
 	public ResponseEntity<?> getAllName() {
-		this.getRepository().findAll().stream()
+		Set<Object> result = this.getRepository().findAll().stream()
 				.map(p -> {
 					Map<String,Object> map = new LinkedHashMap<String, Object>();
 					map.put("id", p.getId());
 					map.put("name", p.getValue());
 					return null;
-				});
-		return ResponseEntity.ok(null);
+				})
+				.collect(Collectors.toSet());
+		return ResponseEntity.ok(result);
 	}
 
 }

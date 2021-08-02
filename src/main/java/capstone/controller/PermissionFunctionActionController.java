@@ -32,7 +32,7 @@ public class PermissionFunctionActionController
 					Map<String,Object> map = new LinkedHashMap<String, Object>();
 					map.put("id", p.getId());
 					map.put("name", p.getValue());
-					return null;
+					return map;
 				})
 				.collect(Collectors.toSet());
 		return ResponseEntity.ok(result);

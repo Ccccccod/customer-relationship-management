@@ -14,7 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -140,16 +142,19 @@ public class ProductInfo extends BaseEntity<Long> {
 	private Invoice invoice;
 	
 	@JsonProperty
+	@JsonInclude(value = Include.NON_NULL)
 	public Long opportunityId() {
 		return Objects.nonNull(this.opportunity) ? this.opportunity.getId() : null;
 	}
 	
 	@JsonProperty
+	@JsonInclude(value = Include.NON_NULL)
 	public Long orderId() {
 		return Objects.nonNull(this.order) ? this.order.getId() : null;
 	}
 	
 	@JsonProperty
+	@JsonInclude(value = Include.NON_NULL)
 	public Long invoiceId() {
 		return Objects.nonNull(this.invoice) ? this.invoice.getId() : null;
 	}

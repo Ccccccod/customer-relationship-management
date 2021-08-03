@@ -18,19 +18,21 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import capstone.dto.request.ProductInfoDto;
+import capstone.entity.BaseEntity;
 import capstone.entity.ProductInfo;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.ProductInfoed;
 import capstone.model.Repositoried;
 import capstone.repository.ProductInfoRepository;
 import capstone.service.ProductInfoService;
+import capstone.service.UserService;
 
 /**
  * ProductInfoedController
  * @author Tuna
  *
  */
-public interface ProductInfoedController<T extends ProductInfoed, //
+public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoed, //
 		Repository extends JpaRepository<T, ID>, //
 		ID extends Serializable> //
 		extends Repositoried<Repository> {
@@ -66,6 +68,8 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 	Optional<ProductInfo> findByIdAndProductInfoed(Long id, T t);
 	
 	List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, T t);
+	
+	UserService getUserService();
 
 	@GetMapping("{productInfoedId}/product")
 	default ResponseEntity<List<ProductInfo>> getAllProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId)
@@ -93,7 +97,11 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 				entityClass().getName() + " not found for this id: " + productInfoedId));
 		ProductInfo productInfo = getProductInfoService().generateFromProductInfoDto(productInfoDto);
 		productInfoed.addToProductInfo(productInfo);
+		
+		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
+		productInfo.setCreatedBy(this.getUserService().getCurrentUser());
 		getRepository().saveAndFlush(productInfoed);
+		
 		return ResponseEntity.ok(productInfo);
 	}
 	
@@ -104,7 +112,11 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 				entityClass().getName() + " not found for this id: " + productInfoedId));
 		ProductInfo productInfo = getProductInfoService().generateFromProduct(productId);
 		productInfoed.addToProductInfo(productInfo);
+
+		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
+		productInfo.setCreatedBy(this.getUserService().getCurrentUser());
 		getRepository().saveAndFlush(productInfoed);
+		
 		return ResponseEntity.ok(productInfo);
 	}
 	
@@ -126,6 +138,9 @@ public interface ProductInfoedController<T extends ProductInfoed, //
 		productInfo.setPrice(dto.getPrice());
 		productInfo.setDiscount(dto.getDiscount());
 		productInfo.setVat(dto.getVat());
+
+		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
+		productInfo.setUpdatedBy(this.getUserService().getCurrentUser());
 		getProductInfoRepository().saveAndFlush(productInfo);
 
 		return ResponseEntity.ok(productInfo);

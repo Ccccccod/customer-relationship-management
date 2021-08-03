@@ -58,6 +58,7 @@ public abstract class AbstractCRUDController< //
 	protected Repository repository;
 
 	@Autowired
+	@Getter
 	protected UserService userService;
 	
 	@GetMapping({"", "/"})

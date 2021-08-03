@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,11 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 		Repository extends JpaRepository<T, ID>, //
 		ID extends Serializable> //
 		extends Repositoried<Repository> {
+
+	/**
+	 * @return the logger
+	 */
+	Logger getLogger();
 	
 	/**
 	 * @return autowired {@link ProductInfoService}
@@ -93,6 +99,8 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	@PostMapping("{productInfoedId}/product")
 	default ResponseEntity<ProductInfo> createProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId,
 			@RequestBody ProductInfoDto productInfoDto) throws ResourceNotFoundException {
+		getLogger().debug("createProductInfo() with body {} of type {}", productInfoDto, productInfoDto.getClass());
+		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
 				entityClass().getName() + " not found for this id: " + productInfoedId));
 		ProductInfo productInfo = getProductInfoService().generateFromProductInfoDto(productInfoDto);
@@ -108,6 +116,8 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	@PostMapping("{productInfoedId}/product/{productId}")
 	default ResponseEntity<ProductInfo> createProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId,
 			@PathVariable(value = "productId") Long productId) throws ResourceNotFoundException {
+		getLogger().debug("createProductInfo() with productInfoId#{}", productId);
+		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
 				entityClass().getName() + " not found for this id: " + productInfoedId));
 		ProductInfo productInfo = getProductInfoService().generateFromProduct(productId);
@@ -124,6 +134,9 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	default ResponseEntity<ProductInfo> updateProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId,
 			@PathVariable(value = "productInfoId") Long productInfoId, @RequestBody ProductInfoDto dto)
 			throws ResourceNotFoundException {
+		getLogger().debug("updateProductInfo() of id#{}, productInfoedId ({}) #{} with body {} of type {}",
+				productInfoId, productInfoedId.getClass(), productInfoedId, dto, dto.getClass());
+		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
 				entityClass().getName() + " not found for this id: " + productInfoedId));
 		ProductInfo productInfo = findByIdAndProductInfoed(productInfoId, productInfoed)
@@ -142,6 +155,7 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
 		productInfo.setUpdatedBy(this.getUserService().getCurrentUser());
 		getProductInfoRepository().saveAndFlush(productInfo);
+		getLogger().debug("updated enitity: {}", productInfo);
 
 		return ResponseEntity.ok(productInfo);
 	}

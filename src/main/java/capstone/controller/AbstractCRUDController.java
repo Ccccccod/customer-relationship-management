@@ -51,6 +51,7 @@ public abstract class AbstractCRUDController< //
 		> //
 		implements Repositoried<Repository> {
 	
+	@Getter
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired

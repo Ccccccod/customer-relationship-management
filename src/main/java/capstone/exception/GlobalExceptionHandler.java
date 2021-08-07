@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -45,22 +44,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("timestamp", new Date());
         body.put("status", status.value());
 
-        // Get all errors
-        List<Map<String,Object>> errors = ex.getBindingResult()
+		// Get all errors
+		List<Map<String, Object>> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(x -> {
-                	Map<String,Object> map = new LinkedHashMap<>();
-                	if (!Objects.isNull(x.getDefaultMessage())) {
-                    	map.put("message", x.getDefaultMessage());
-                	}
-                	if (!Objects.isNull(x.getField())) {
-                    	map.put("field", x.getField());
-                	}
-                	if (!Objects.isNull(x.getRejectedValue())) {
-                		map.put("rejected", x.getRejectedValue());
-                	}
-                	return map;
+				.map(x -> {
+					Map<String, Object> map = new LinkedHashMap<>();
+					map.put("message", x.getDefaultMessage());
+					map.put("field", x.getField());
+					map.put("rejectedValue", x.getRejectedValue());
+					return map;
                 })
                 .collect(Collectors.toList());
 
@@ -78,6 +71,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
+    /**
+	 * Provides handling for {@link ResourceExistedException}
+     * @param e the target exception
+     * @param request the current request
+     * @return
+     */
+    @ExceptionHandler(ResourceExistedException.class)
+    public ResponseEntity<?> resourceExistedException(ResourceExistedException e, WebRequest request) {
+		HttpStatus status = HttpStatus.CONFLICT;
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", status.value());
+        
+        Map<String, Object> error = new LinkedHashMap<>();
+        error.put("message", e.getMessage());
+        error.put("field", e.getName());
+        error.put("rejectedValue", e.getRejectedValue());
+        body.put("error", error);
+        
+		return new ResponseEntity<>(body, status);
+    }
+
 	/**
 	 * Provides handling for {@link ResourceNotFoundException},
 	 * {@link ResourceExistedException}, {@link DuplicateKeyException},
@@ -91,6 +106,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			DuplicateKeyException.class, //
 			InvalidOldPasswordException.class, //
 			org.hibernate.exception.ConstraintViolationException.class, //
+			ResourceExistedException.class, //
 			BadCredentialsException.class
 		})
 	@Nullable
@@ -98,18 +114,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		if (ex instanceof ResourceNotFoundException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+			
 		} else if (ex instanceof ResourceExistedException || ex instanceof DuplicateKeyException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+			
 		} else if (ex instanceof InvalidOldPasswordException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+			
 		} else if (ex instanceof org.hibernate.exception.ConstraintViolationException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
+			
 		} else if (ex instanceof BadCredentialsException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), "Usename or password is incorrect", request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
+			
 		} else {
 			ex.printStackTrace();
 			throw ex;

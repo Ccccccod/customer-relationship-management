@@ -80,7 +80,7 @@ public class User extends BaseEntity<Long> implements Named {
 	 * @param email
 	 * @param roles
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String password, String email, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);

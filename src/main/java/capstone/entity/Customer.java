@@ -141,7 +141,7 @@ public class Customer extends CodedNamedEntity<Long> {
 	 * @param contacts
 	 * @param opportunities
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Customer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, String shortName, String taxCode, String phone, String email, Source source,
 			Set<Classification> classifications, Set<Field> fields, Type type, Set<Career> careers, String address,

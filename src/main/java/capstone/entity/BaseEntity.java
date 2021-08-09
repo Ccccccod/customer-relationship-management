@@ -52,31 +52,31 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-	private ID id;
+	protected ID id;
 	
 	@CreationTimestamp
 	@Column(name = "created_at", updatable = false)
 //	@JsonSerialize(using = ShortDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
-	private LocalDateTime createdAt;
+	protected LocalDateTime createdAt;
 
 	@UpdateTimestamp
 	@Column(name = "updated_at", updatable = false)
 //	@JsonSerialize(using = ShortDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
-	private LocalDateTime updatedAt;
+	protected LocalDateTime updatedAt;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	private User createdBy;
+	protected User createdBy;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "update_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	private User updatedBy;
+	protected User updatedBy;
 	
 	@JsonIgnore
 	public boolean isNew() {

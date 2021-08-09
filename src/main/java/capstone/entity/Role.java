@@ -114,7 +114,7 @@ public class Role extends NamedEntity<Long> {
 	 * @param users
 	 * @param permissionFunctionActions
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String description, Set<User> users, Set<PermissionFunctionAction> permissionFunctionActions) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);

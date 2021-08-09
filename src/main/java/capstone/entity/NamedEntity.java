@@ -41,7 +41,7 @@ public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> impleme
 	@NotNull // javax.validation.constraints.NotNull in case this object is used as request dto
 	@NotBlank(message = "must not be empty")
 	@Column(name = "name", nullable = false, columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String name;
+	protected String name;
 
 	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);

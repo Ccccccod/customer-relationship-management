@@ -143,7 +143,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param receiverPhone
 	 * @param order
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Invoice(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String code, Customer customer, String address, String bankAccount, String bank, String taxCode,
 			Contact buyer, String receiverName, String receiverEmail, String receiverPhone, Order order) {

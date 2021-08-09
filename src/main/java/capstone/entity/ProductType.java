@@ -73,7 +73,7 @@ public class ProductType extends CodedNamedEntity<Long> {
 	 * @param productTypes
 	 * @param products
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public ProductType(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, ProductType productType, Set<ProductType> productTypes, Set<Product> products) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);

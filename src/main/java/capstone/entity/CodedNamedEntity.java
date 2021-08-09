@@ -38,7 +38,7 @@ public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	@NotNull(message = "must not be null")
 	@NotBlank(message = "must not be blank")
 	@Column(name = "code", unique = true, nullable = false)
-	private String code;
+	protected String code;
 
 	public CodedNamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String code) {

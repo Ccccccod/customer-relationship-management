@@ -159,7 +159,7 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param address
 	 * @param opportunities
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, String vocative, String lastName, String position, String department,
 			Customer customer, Set<Classification> classifications, String phone, String email, Source source,

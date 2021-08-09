@@ -145,7 +145,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * @param source
 	 * @param productInfos
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			Customer customer, Contact contact, Long moneyAmount, OpportunityPhase opportunityPhase,
 			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Source source,

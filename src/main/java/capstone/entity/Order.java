@@ -142,7 +142,7 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	 * @param deliveryDeadline
 	 * @param invoices
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String code, LocalDate orderDate, Customer customer, Contact contact, Opportunity opportunity,
 			Long orderValue, Long liquidationValue, LocalDate liquidationDeadline, LocalDate deliveryDeadline,

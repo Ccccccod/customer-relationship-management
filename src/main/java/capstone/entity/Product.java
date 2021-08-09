@@ -134,7 +134,7 @@ public class Product extends CodedNamedEntity<Long> {
 	 * @param implicitRecord
 	 * @param costUnitPrice
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public Product(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, ProductType productType, String explanation, String unit, Long sellPrice,
 			Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax,

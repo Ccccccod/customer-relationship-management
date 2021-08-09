@@ -102,11 +102,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	 */
 	@ExceptionHandler({ //
 			ResourceNotFoundException.class, //
-			ResourceExistedException.class, //
 			DuplicateKeyException.class, //
 			InvalidOldPasswordException.class, //
 			org.hibernate.exception.ConstraintViolationException.class, //
-			ResourceExistedException.class, //
 			BadCredentialsException.class
 		})
 	@Nullable

@@ -53,8 +53,8 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 	protected ProductInfoService productInfoService;
 
 	@Override
-	protected Order dtoToEntity(OrderDto dto) throws ResourceNotFoundException {
-		return Order.builder()
+	protected Order dtoToEntity(OrderDto dto, Order order) throws ResourceNotFoundException {
+		return order.toBuilder()
 				.code(dto.getCode())
 				.name(dto.getName())
 				.orderDate(dto.getOrderDate())

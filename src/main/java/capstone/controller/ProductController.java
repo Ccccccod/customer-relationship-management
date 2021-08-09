@@ -30,8 +30,8 @@ public class ProductController extends AbstractDtoEntityController<ProductDto, P
 	ProductTypeRepository productTypeRepository;
 
 	@Override
-	protected Product dtoToEntity(ProductDto dto) throws ResourceNotFoundException {
-		return Product.builder()
+	protected Product dtoToEntity(ProductDto dto, Product product) throws ResourceNotFoundException {
+		return product.toBuilder()
 				.id(dto.getId())
 				.name(dto.getName())
 				.code(dto.getCode())

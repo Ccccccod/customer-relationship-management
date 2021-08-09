@@ -60,8 +60,8 @@ public class OpportunityController
 	protected ProductInfoService productInfoService;
 
 	@Override
-	protected Opportunity dtoToEntity(OpportunityDto dto) throws ResourceNotFoundException {
-		Opportunity opportunity = Opportunity.builder()
+	protected Opportunity dtoToEntity(OpportunityDto dto, Opportunity opportunity) throws ResourceNotFoundException {
+		opportunity.toBuilder()
 				.name(dto.getName())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))

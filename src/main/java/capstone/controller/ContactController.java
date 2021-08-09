@@ -38,10 +38,11 @@ public class ContactController extends AbstractDtoEntityController<ContactDto, C
 	
 	@Autowired
 	private SourceRepository sourceRepository;
-
+	
 	@Override
-	protected Contact dtoToEntity(ContactDto dto) throws ResourceNotFoundException {
-		Contact contact = Contact.builder()
+	protected Contact dtoToEntity(ContactDto dto, Contact contact) throws ResourceNotFoundException {
+		contact.toBuilder()
+				.name(dto.getName())
 				.code(dto.getCode())
 				.id(dto.getId())
 				.lastName(dto.getLastName())
@@ -55,7 +56,6 @@ public class ContactController extends AbstractDtoEntityController<ContactDto, C
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.address(dto.getAddress())
 				.build();
-		contact.setName(dto.getName());
 		return contact;
 	}
 

@@ -50,8 +50,9 @@ public abstract class AbstractSimpleCRUDController<T extends BaseEntity<ID>, //
 	}
 	
 	@Override
-	protected T dtoToEntity(T createDto) throws ResourceNotFoundException {
-		return createDto;
+	protected T dtoToEntity(T createDto, T entity) throws ResourceNotFoundException {
+		modelMapper.map(createDto, entity);
+		return entity;
 	}
 	
 	@Override

@@ -52,8 +52,8 @@ public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, I
 	protected ProductInfoService productInfoService;
 
 	@Override
-	protected Invoice dtoToEntity(InvoiceDto dto) throws ResourceNotFoundException {
-		return Invoice.builder()
+	protected Invoice dtoToEntity(InvoiceDto dto, Invoice invoice) throws ResourceNotFoundException {
+		return invoice.toBuilder()
 				.code(dto.getCode())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.address(dto.getAddress())

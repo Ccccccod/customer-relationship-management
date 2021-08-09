@@ -51,8 +51,8 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 	protected PermissionFunctionActionRepository permissionFunctionActionRepository;
 
 	@Override
-	protected Role dtoToEntity(RoleDto dto) throws ResourceNotFoundException {
-		return Role.builder()
+	protected Role dtoToEntity(RoleDto dto, Role role) throws ResourceNotFoundException {
+		return role.toBuilder()
 				.name(dto.getName())
 				.description(dto.getDescription())
 				.permissionFunctionActions(AbstractService.findEntitiesByIds(permissionFunctionActionRepository,

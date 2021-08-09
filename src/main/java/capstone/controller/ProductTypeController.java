@@ -57,8 +57,8 @@ public class ProductTypeController
 	}
 
 	@Override
-	protected ProductType dtoToEntity(ProductTypeDto dto) throws ResourceNotFoundException {
-		return ProductType.builder()
+	protected ProductType dtoToEntity(ProductTypeDto dto, ProductType productType) throws ResourceNotFoundException {
+		return productType.toBuilder()
 				.id(dto.getId())
 				.code(dto.getCode())
 				.name(dto.getName())

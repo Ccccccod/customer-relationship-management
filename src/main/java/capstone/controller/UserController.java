@@ -48,8 +48,8 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 	}
 
 	@Override
-	protected User dtoToEntity(UserDto dto) throws ResourceNotFoundException {
-		return User.builder()
+	protected User dtoToEntity(UserDto dto, User user) throws ResourceNotFoundException {
+		return user.toBuilder()
 				.id(dto.getId())
 				.name(dto.getUsername())
 				.email(dto.getEmail())

@@ -52,7 +52,7 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 
 	@Override
 	protected Customer dtoToEntity(CustomerDto dto, Customer customer) throws ResourceNotFoundException {
-		customer.toBuilder()
+		return customer.toBuilder()
 				.id(dto.getId())
 				.code(dto.getCode())
 				.name(dto.getName())
@@ -67,7 +67,6 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 				.type(AbstractService.findEntityById(typeRepository, dto.getTypeId(), Type.class))
 				.careers(AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class))
 				.build();
-		return customer;
 	}
 
 	@Override

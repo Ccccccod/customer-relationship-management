@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,8 @@ public abstract class AbstractCRUDController< //
 	@Getter
 	protected UserService userService;
 	
+	protected ModelMapper modelMapper = new ModelMapper();
+	
 	@GetMapping({"", "/"})
 	public ResponseEntity<List<Response>> getAll() {
 		List<Response> response = this.repository.findAll().stream() //
@@ -85,8 +88,9 @@ public abstract class AbstractCRUDController< //
 			ResourceExistedException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 		this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
         
-		Entity entity = this.dtoToEntity(dto);
+		Entity entity = this.dtoToEntity(dto, entityClass().newInstance());
 		entity.setCreatedBy(this.userService.getCurrentUser());
+		entity.setId(null);
 		
 		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
 		entity = this.repository.save(entity);
@@ -145,10 +149,11 @@ public abstract class AbstractCRUDController< //
 	/**
 	 * Dto to Entity mapper
 	 * @param createDto dto to map to entity
+	 * @param entity
 	 * @return
 	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
 	 */
-	protected abstract Entity dtoToEntity(CreateDto createDto) throws ResourceNotFoundException;
+	protected abstract Entity dtoToEntity(CreateDto createDto, Entity entity) throws ResourceNotFoundException;
 	
 	/**
 	 * Update Entity's fields from UpdateDto's fields

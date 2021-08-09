@@ -20,4 +20,9 @@ import capstone.repository.TypeRepository;
 public class TypeController extends AbstractSimpleCRUDController<Type, TypeRepository, Long>
 		implements IReadNameController<Type, TypeRepository, Long> {
 
+	@Override
+	protected Class<Type> entityClass() {
+		return Type.class;
+	}
+
 }

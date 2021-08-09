@@ -65,6 +65,11 @@ public class ProductTypeController
 				.productType(AbstractService.findEntityById(this.repository, dto.getProductTypeId(), ProductType.class))
 				.build();
 	}
+
+	@Override
+	protected Class<ProductType> entityClass() {
+		return ProductType.class;
+	}
 	
 	
 

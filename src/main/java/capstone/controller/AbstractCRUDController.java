@@ -4,20 +4,14 @@
 package capstone.controller;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +26,7 @@ import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
 import capstone.model.Repositoried;
+import capstone.repository.RepositoryUtils;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
@@ -56,6 +51,8 @@ public abstract class AbstractCRUDController< //
 			ID extends Serializable //
 		> //
 		implements Repositoried<Repository> {
+	
+	protected abstract Class<Entity> entityClass();
 	
 	@Getter
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -90,7 +87,8 @@ public abstract class AbstractCRUDController< //
         
 		Entity entity = this.dtoToEntity(dto);
 		entity.setCreatedBy(this.userService.getCurrentUser());
-		checkExistedFields(entity);
+		
+		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
 		entity = this.repository.save(entity);
 		
 		Response response = this.entityToResponse(entity);
@@ -106,7 +104,8 @@ public abstract class AbstractCRUDController< //
 //	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Response> update(@PathVariable(value = "id") ID id, @Valid @RequestBody UpdateDto dto) throws ResourceNotFoundException {
+	public ResponseEntity<Response> update(@PathVariable(value = "id") ID id, @Valid @RequestBody UpdateDto dto)
+			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
 		logger.debug("update() of id#{} with body {}", id, dto);
 		
 		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
@@ -114,6 +113,7 @@ public abstract class AbstractCRUDController< //
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		entity.setId(id);
 		
+		RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
 		entity = this.repository.saveAndFlush(entity);
 		logger.debug("updated enitity: {}", entity);
 		
@@ -144,7 +144,7 @@ public abstract class AbstractCRUDController< //
 	
 	/**
 	 * Dto to Entity mapper
-	 * @param createDto
+	 * @param createDto dto to map to entity
 	 * @return
 	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
 	 */
@@ -159,35 +159,35 @@ public abstract class AbstractCRUDController< //
 	 */
 	protected abstract Entity updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
 	
-	@SuppressWarnings("unchecked")
-	protected void checkExistedFields(Entity entity)
-			throws ResourceExistedException, IllegalArgumentException, IllegalAccessException, InstantiationException {
-		// Get all unique fields
-		List<Field> fields = new LinkedList<>();
-		for (Class<?> class1 = entity.getClass(); !Objects.isNull(class1); class1 = class1.getSuperclass()) {
-			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
-		}
-		// Remove fields that don't need to be unique
-		fields = fields.stream()
-				.filter(Objects::nonNull)
-				// Ignore id
-				.filter(field -> !field.getName().toLowerCase().equals("id"))
-				.filter(f -> Arrays.stream(f.getDeclaredAnnotationsByType(Column.class)).anyMatch(Column::unique))
-				.collect(Collectors.toList());
-		
-		// Check if an entity already exist
-		for (Field field : fields) {
-			// Create new instance to make an Example to check
-			Entity instance = ((Class<Entity>) entity.getClass()).newInstance();
-			field.setAccessible(true);
-			Object value = field.get(entity);
-			field.set(instance, value);
-			Example<Entity> example = Example.of(instance);
-			// Query
-			if (this.repository.exists(example)) {
-				throw new ResourceExistedException("An entity already exist", field.getName(), value);
-			}
-		}
-	}
+//	@SuppressWarnings("unchecked")
+//	protected void checkExistedFields(Entity entity)
+//			throws ResourceExistedException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+//		// Get all unique fields
+//		List<Field> fields = new LinkedList<>();
+//		for (Class<?> class1 = entity.getClass(); !Objects.isNull(class1); class1 = class1.getSuperclass()) {
+//			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
+//		}
+//		// Remove fields that don't need to be unique
+//		fields = fields.stream()
+//				.filter(Objects::nonNull)
+//				// Ignore id
+//				.filter(field -> !field.getName().toLowerCase().equals("id"))
+//				.filter(f -> Arrays.stream(f.getDeclaredAnnotationsByType(Column.class)).anyMatch(Column::unique))
+//				.collect(Collectors.toList());
+//		
+//		// Check if an entity already exist
+//		for (Field field : fields) {
+//			// Create new instance to make an Example to check
+//			Entity instance = ((Class<Entity>) entity.getClass()).newInstance();
+//			field.setAccessible(true);
+//			Object value = field.get(entity);
+//			field.set(instance, value);
+//			Example<Entity> example = Example.of(instance);
+//			// Query
+//			if (this.repository.exists(example)) {
+//				throw new ResourceExistedException("An entity already exist", field.getName(), value);
+//			}
+//		}
+//	}
 
 }

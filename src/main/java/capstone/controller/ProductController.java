@@ -50,4 +50,9 @@ public class ProductController extends AbstractDtoEntityController<ProductDto, P
 				.build();
 	}
 
+	@Override
+	protected Class<Product> entityClass() {
+		return Product.class;
+	}
+
 }

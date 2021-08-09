@@ -66,4 +66,9 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 		return entity;
 	}
 
+	@Override
+	protected Class<User> entityClass() {
+		return User.class;
+	}
+
 }

@@ -21,4 +21,9 @@ public class OpportunityPhaseController
 		extends AbstractSimpleCRUDController<OpportunityPhase, OpportunityPhaseRepository, Long>
 		implements IReadNameController<OpportunityPhase, OpportunityPhaseRepository, Long> {
 
+	@Override
+	protected Class<OpportunityPhase> entityClass() {
+		return OpportunityPhase.class;
+	}
+
 }

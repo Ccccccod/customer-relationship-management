@@ -21,4 +21,9 @@ public class ClassificationController
 		extends AbstractSimpleCRUDController<Classification, ClassificationRepository, Long>
 		implements IReadNameController<Classification, ClassificationRepository, Long> {
 
+	@Override
+	protected Class<Classification> entityClass() {
+		return Classification.class;
+	}
+
 }

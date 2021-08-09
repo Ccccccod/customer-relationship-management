@@ -87,4 +87,9 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 		this.repository.save(role);
 	}
 
+	@Override
+	protected Class<Role> entityClass() {
+		return Role.class;
+	}
+
 }

@@ -20,4 +20,9 @@ import capstone.repository.CareerRepository;
 public class CareerController extends AbstractSimpleCRUDController<Career, CareerRepository, Long>
 		implements IReadNameController<Career, CareerRepository, Long> {
 
+	@Override
+	protected Class<Career> entityClass() {
+		return Career.class;
+	}
+
 }

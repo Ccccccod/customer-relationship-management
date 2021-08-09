@@ -69,5 +69,10 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 				.build();
 		return customer;
 	}
+
+	@Override
+	protected Class<Customer> entityClass() {
+		return Customer.class;
+	}
 	
 }

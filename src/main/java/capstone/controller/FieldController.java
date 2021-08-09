@@ -20,4 +20,9 @@ import capstone.repository.FieldRepository;
 public class FieldController extends AbstractSimpleCRUDController<Field, FieldRepository, Long>
 		implements IReadNameController<Field, FieldRepository, Long> {
 
+	@Override
+	protected Class<Field> entityClass() {
+		return Field.class;
+	}
+
 }

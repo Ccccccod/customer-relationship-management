@@ -39,4 +39,9 @@ public class PermissionFunctionActionController
 		return ResponseEntity.ok(result);
 	}
 
+	@Override
+	protected Class<PermissionFunctionAction> entityClass() {
+		return PermissionFunctionAction.class;
+	}
+
 }

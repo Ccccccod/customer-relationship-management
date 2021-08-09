@@ -59,4 +59,9 @@ public class ContactController extends AbstractDtoEntityController<ContactDto, C
 		return contact;
 	}
 
+	@Override
+	protected Class<Contact> entityClass() {
+		return Contact.class;
+	}
+
 }

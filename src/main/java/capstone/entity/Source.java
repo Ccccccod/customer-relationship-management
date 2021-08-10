@@ -58,6 +58,12 @@ public class Source extends NamedEntity<Long> {
 	@JsonIgnore
 	private Set<Opportunity> opportunities;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "source")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Potential> potentials;
+
 	/**
 	 * @param id
 	 * @param createdAt

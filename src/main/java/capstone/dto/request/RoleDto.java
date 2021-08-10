@@ -20,8 +20,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class RoleDto extends NamedDto<Long> {

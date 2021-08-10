@@ -36,8 +36,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 

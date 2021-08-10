@@ -20,8 +20,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class BaseDto<ID extends Serializable> implements Identifiable<ID> {

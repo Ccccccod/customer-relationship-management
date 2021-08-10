@@ -30,8 +30,8 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
 @MappedSuperclass
 public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> implements Named {

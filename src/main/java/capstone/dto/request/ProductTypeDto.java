@@ -18,8 +18,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class ProductTypeDto extends CodedNamedDto<Long> {

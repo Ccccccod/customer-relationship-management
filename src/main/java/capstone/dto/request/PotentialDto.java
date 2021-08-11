@@ -3,8 +3,10 @@
  */
 package capstone.dto.request;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import capstone.dto.validatation.annotation.Email;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +43,7 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	/**
 	 * Tên
 	 */
+	@NotBlank
 	private String name;
 	
 	/**
@@ -68,6 +71,7 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	 * Email
 	 */
 	@NotNull
+	@Email
 	private String email;
 
 	/**

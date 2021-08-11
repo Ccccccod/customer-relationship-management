@@ -5,6 +5,9 @@ package capstone.dto.request;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
+import capstone.dto.validatation.annotation.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -65,6 +68,8 @@ public class ContactDto extends CodedNamedDto<Long> {
 	/**
 	 * Email
 	 */
+	@NotNull
+	@Email
 	private String email;
 
 	/**

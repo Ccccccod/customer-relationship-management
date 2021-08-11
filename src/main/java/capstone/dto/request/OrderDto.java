@@ -59,6 +59,12 @@ public class OrderDto extends CodedNamedDto<Long> {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate deliveryDeadline;
+	
+	/**
+	 * Tình trạng thanh toán
+	 */
+	@NotNull
+	private Boolean paid;
 
 	/**
 	 * @param id

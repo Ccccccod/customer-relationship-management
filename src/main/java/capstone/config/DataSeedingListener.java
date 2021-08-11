@@ -333,6 +333,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.liquidationValue(34_100_000L)
 				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
 				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.paid(Boolean.TRUE)
 				.build());
 		
 		// Invoice

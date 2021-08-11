@@ -111,6 +111,12 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate deliveryDeadline;
+	
+	/**
+	 * Tình trạng thanh toán
+	 */
+	@Column(name = "paid", nullable = false)
+	private Boolean paid;
 
 	/**
 	 * Thông tin từng hàng hóa
@@ -140,13 +146,15 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	 * @param liquidationValue
 	 * @param liquidationDeadline
 	 * @param deliveryDeadline
+	 * @param paid
+	 * @param productInfos
 	 * @param invoices
 	 */
 	@Builder(toBuilder = true)
 	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
 			String code, LocalDate orderDate, Customer customer, Contact contact, Opportunity opportunity,
 			Long orderValue, Long liquidationValue, LocalDate liquidationDeadline, LocalDate deliveryDeadline,
-			Set<Invoice> invoices) {
+			Boolean paid, Set<ProductInfo> productInfos, Set<Invoice> invoices) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.orderDate = orderDate;
 		this.customer = customer;
@@ -156,6 +164,8 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 		this.liquidationValue = liquidationValue;
 		this.liquidationDeadline = liquidationDeadline;
 		this.deliveryDeadline = deliveryDeadline;
+		this.paid = paid;
+		this.productInfos = productInfos;
 		this.invoices = invoices;
 	}
 

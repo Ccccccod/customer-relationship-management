@@ -65,6 +65,7 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 				.liquidationValue(dto.getLiquidationValue())
 				.liquidationDeadline(dto.getLiquidationDeadline())
 				.deliveryDeadline(dto.getDeliveryDeadline())
+				.paid(dto.getPaid())
 				.build();
 	}
 

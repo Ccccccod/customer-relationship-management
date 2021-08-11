@@ -30,14 +30,17 @@ public class OrderControllerTest
 		return Arrays.asList(Order.builder()
 				.name("ban cho tu")
 				.code("DH11")
+				.paid(true)
 				.build() ,
 				Order.builder()
 						.name("ban cho kien")
 						.code("DH12")
+						.paid(true)
 						.build() ,
 						Order.builder()
 						.code("DH13")
 								.name("ban cho bao")
+								.paid(false)
 								.build());
 	}
 

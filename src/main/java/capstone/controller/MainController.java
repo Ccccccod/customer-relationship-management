@@ -4,25 +4,63 @@
 package capstone.controller;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Objects;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import capstone.dto.request.DateFromToDto;
+import capstone.dto.response.OverviewResponse;
+import capstone.entity.Order;
+import capstone.exception.ResourceNotFoundException;
+import capstone.service.OrderService;
 import capstone.utils.WebUtils;
 
 /**
+ * MainController
  * @author Tuna
  *
  */
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping()
+@RequestMapping("/api/main")
 public class MainController {
+	
+	@Autowired
+	private OrderService orderService;
+
+	@GetMapping("/overview/order")
+	public ResponseEntity<OverviewResponse> overview(@Valid @RequestBody DateFromToDto dateFromToDto)
+			throws ResourceNotFoundException {
+		List<Order> orders = orderService.findByOrderDateBetween(dateFromToDto.getFrom(), dateFromToDto.getTo());
+		if (Objects.isNull(orders)) {
+			throw new ResourceNotFoundException();
+		}
+		Integer quantity = Math.toIntExact(orders.stream().count());
+		Long turnOver = orders.stream().mapToLong(Order::totalMoney).sum();
+		Integer recordedQuantity = Math.toIntExact(orders.stream().filter(Order::getPaid).count());
+		Long recordedTurnOver = orders.stream().filter(Order::getPaid).mapToLong(Order::totalMoney).sum();
+		
+		OverviewResponse overviewResponse = OverviewResponse.builder() //
+				.quantity(quantity) //
+				.turnOver(turnOver) //
+				.recordedQuantity(recordedQuantity) //
+				.recordedTurnOver(recordedTurnOver) //
+				.build();
+		return ResponseEntity.ok(overviewResponse);
+	}
  
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {

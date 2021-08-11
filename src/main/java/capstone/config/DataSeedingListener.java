@@ -39,6 +39,7 @@ import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
+import capstone.entity.Potential;
 import capstone.entity.Product;
 import capstone.entity.ProductInfo;
 import capstone.entity.ProductType;
@@ -61,6 +62,7 @@ import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
+import capstone.repository.PotentialRepository;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.repository.RoleRepository;
@@ -77,6 +79,9 @@ import capstone.utils.EncryptedPasswordUtils;
 @Component
 @SuppressWarnings("unused")
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+	
+	@Autowired
+	private PotentialRepository potentialRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -170,6 +175,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Career career3 = addNamedRepository(careerRepository, new Career("Kinh doanh hóa chất"));
         Career career4 = addNamedRepository(careerRepository, new Career("Kinh doanh mỹ phẩm"));
         Career career5 = addNamedRepository(careerRepository, new Career("Kinh doanh ô tô, xe máy"));
+        
+        // Potential
+        Potential potential1 = addNamedRepository(potentialRepository, Potential.builder()
+        		.vocative("Ông")
+        		.lastName("Nguyễn Quang")
+        		.name("Tuấn")
+        		.department("Phòng kinh doanh")
+        		.position("Giám đốc")
+        		.phone("0915367546")
+        		.source(source2)
+        		.email("quangtuanico@gmail.com")
+        		.taxCode(null)
+        		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
+        		.build());
         
 		// Customer
 		Customer customer1 = addNamedRepository(customerRepository, Customer.builder()
@@ -323,7 +342,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		// Order
 		Order order1 = addNamedRepository(orderRepository, Order.builder()
-				.code("DH0000001")
+				.code("DH00009")
 				.name("Đơn hàng bán cho FTech")
 				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
 				.customer(customer1)
@@ -334,6 +353,26 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
 				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
 				.paid(Boolean.TRUE)
+				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
+						ProductInfo.builder()
+								.productCode(product2.getCode())
+								.explanation(product2.getExplanation())
+								.unit(product2.getUnit())
+								.amount(1)
+								.price(product2.getSellPrice())
+								.discount(0)
+								.vat(product2.getVat())
+								.build(),
+						ProductInfo.builder()
+								.productCode(product3.getCode())
+								.explanation(product3.getExplanation())
+								.unit(product3.getUnit())
+								.amount(50)
+								.price(product3.getSellPrice())
+								.discount(10)
+								.vat(product3.getVat())
+								.build()
+						)))
 				.build());
 		
 		// Invoice

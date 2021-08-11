@@ -165,7 +165,8 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 		this.liquidationDeadline = liquidationDeadline;
 		this.deliveryDeadline = deliveryDeadline;
 		this.paid = paid;
-		this.productInfos = productInfos;
+//		this.productInfos = productInfos;
+		setToProductInfos(productInfos);
 		this.invoices = invoices;
 	}
 

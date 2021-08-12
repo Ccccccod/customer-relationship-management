@@ -77,7 +77,6 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	/**
 	 * Mã số thuế
 	 */
-	@NotNull
 	private String taxCode;
 	
 	/**

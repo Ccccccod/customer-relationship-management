@@ -91,7 +91,7 @@ public class Potential extends NamedEntity<Long> {
 	/**
 	 * Mã số thuế
 	 */
-	@Column(name = "tax_code", unique = true, nullable = false)
+	@Column(name = "tax_code")
 	private String taxCode;
 	
 	/**
@@ -138,7 +138,6 @@ public class Potential extends NamedEntity<Long> {
 	 */
 	public Potential(@NonNull String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -27,7 +27,6 @@ public interface ProductInfoed {
 	@JsonProperty
 	default Integer amount() {
 		if (Objects.nonNull(this.getProductInfos())) {
-			this.getProductInfos().stream().map(ProductInfo::getAmount);
 			return this.getProductInfos().stream().mapToInt(ProductInfo::getAmount).sum();
 		}
 		return null;

@@ -5,8 +5,6 @@ package capstone.dto.request;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

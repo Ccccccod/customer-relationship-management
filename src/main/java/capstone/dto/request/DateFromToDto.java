@@ -35,7 +35,6 @@ public class DateFromToDto {
 	/**
 	 * Từ Ngày
 	 */
-	@NotNull
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate from;
@@ -43,7 +42,6 @@ public class DateFromToDto {
 	/**
 	 * Đến Ngày
 	 */
-	@NotNull
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate to;

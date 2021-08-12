@@ -4,6 +4,7 @@
 package capstone.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.DateFromToDto;
-import capstone.dto.response.OverviewResponse;
+import capstone.dto.response.OrderOverviewResponse;
 import capstone.entity.Order;
 import capstone.exception.ResourceNotFoundException;
 import capstone.service.OrderService;
@@ -41,9 +42,21 @@ public class MainController {
 	@Autowired
 	private OrderService orderService;
 
+	/**
+	 * Get overview of Orders
+	 * @param dateFromToDto contains 2 dates (from, to) to get orders between
+	 * @return ResponseEntity of overview of Orders {@link OrderOverviewResponse}
+	 * @throws ResourceNotFoundException
+	 */
 	@GetMapping("/overview/order")
-	public ResponseEntity<OverviewResponse> overview(@Valid @RequestBody DateFromToDto dateFromToDto)
+	public ResponseEntity<OrderOverviewResponse> overview(@Valid @RequestBody DateFromToDto dateFromToDto)
 			throws ResourceNotFoundException {
+		if (Objects.isNull(dateFromToDto.getFrom())) {
+			dateFromToDto.setFrom(LocalDate.MIN);
+		}
+		if (Objects.isNull(dateFromToDto.getTo())) {
+			dateFromToDto.setTo(LocalDate.MAX);
+		}
 		List<Order> orders = orderService.findByOrderDateBetween(dateFromToDto.getFrom(), dateFromToDto.getTo());
 		if (Objects.isNull(orders)) {
 			throw new ResourceNotFoundException();
@@ -53,7 +66,7 @@ public class MainController {
 		Integer recordedQuantity = Math.toIntExact(orders.stream().filter(Order::getPaid).count());
 		Long recordedTurnOver = orders.stream().filter(Order::getPaid).mapToLong(Order::totalMoney).sum();
 		
-		OverviewResponse overviewResponse = OverviewResponse.builder() //
+		OrderOverviewResponse overviewResponse = OrderOverviewResponse.builder() //
 				.quantity(quantity) //
 				.turnOver(turnOver) //
 				.recordedQuantity(recordedQuantity) //

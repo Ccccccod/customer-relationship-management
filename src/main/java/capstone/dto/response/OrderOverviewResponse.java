@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * OverviewResponse
+ * OrderOverviewResponse
  * @author Tuna
  *
  */
@@ -17,14 +17,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class OverviewResponse {
+public class OrderOverviewResponse {
 	
+	/**
+	 * Số lượng đơn hàng
+	 */
 	private Integer quantity;
 	
+	/**
+	 * Doanh số đặt hàng
+	 */
 	private Long turnOver;
 	
+	/**
+	 * Số lượng đã ghi nhận
+	 */
 	private Integer recordedQuantity;
 	
+	/**
+	 * Doanh số đã ghi nhận
+	 */
 	private Long recordedTurnOver;
 
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.PositiveOrZero;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import lombok.AllArgsConstructor;
@@ -56,7 +57,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Gian đoạn
 	 */
 	@NotNull
-	private Long opportunityPhaseId;
+	private OpportunityPhase opportunityPhaseId;
 
 	/**
 	 * Tỷ lệ thành công
@@ -104,9 +105,9 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * @param productInfoDtos
 	 */
 	@Builder
-	OpportunityDto(Long id, String name, Long customerId, Long contactId, Long moneyAmount, Long opportunityPhaseId,
-			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Long sourceId,
-			Set<ProductInfoDto> productInfoDtos) {
+	OpportunityDto(Long id, String name, Long customerId, Long contactId, Long moneyAmount,
+			OpportunityPhase opportunityPhaseId, Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver,
+			Long sourceId, Set<ProductInfoDto> productInfoDtos) {
 		super(id, name);
 		this.customerId = customerId;
 		this.contactId = contactId;

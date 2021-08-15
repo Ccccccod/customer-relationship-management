@@ -15,13 +15,11 @@ import capstone.dto.request.OpportunityDto;
 import capstone.entity.Contact;
 import capstone.entity.Customer;
 import capstone.entity.Opportunity;
-import capstone.entity.OpportunityPhase;
 import capstone.entity.ProductInfo;
 import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
-import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
 import capstone.repository.SourceRepository;
@@ -49,9 +47,6 @@ public class OpportunityController
 
 	@Autowired
 	protected ContactRepository contactRepository;
-
-	@Autowired
-	protected OpportunityPhaseRepository opportunityPhaseRepository;
 	
 	@Autowired
 	protected SourceRepository sourceRepository;
@@ -66,7 +61,7 @@ public class OpportunityController
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
 				.moneyAmount(dto.getMoneyAmount())
-				.opportunityPhase(AbstractService.findEntityById(opportunityPhaseRepository, dto.getOpportunityPhaseId(), OpportunityPhase.class))
+				.opportunityPhase(dto.getOpportunityPhaseId())
 				.successRate(dto.getSuccessRate())
 				.expectedEndDate(dto.getExpectedEndDate())
 				.expectedTurnOver(dto.getExpectedTurnOver())
@@ -85,7 +80,7 @@ public class OpportunityController
 		entity.setCustomer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class));
 		entity.setContact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class));
 		entity.setMoneyAmount(dto.getMoneyAmount());
-		entity.setOpportunityPhase(AbstractService.findEntityById(opportunityPhaseRepository, dto.getOpportunityPhaseId(), OpportunityPhase.class));
+		entity.setOpportunityPhase(dto.getOpportunityPhaseId());
 		entity.setSuccessRate(dto.getSuccessRate());
 		entity.setExpectedEndDate(dto.getExpectedEndDate());
 		entity.setExpectedTurnOver(dto.getExpectedTurnOver());

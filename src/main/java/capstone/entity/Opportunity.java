@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.I18nEnumSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
@@ -65,12 +69,13 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 */
 	@Column(name = "money_amount", nullable = false)
 	private Long moneyAmount;
-	
+
 	/**
 	 * Gian đoạn
 	 */
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "opportunity_phase_id", nullable = false)
+	@JsonSerialize(using = I18nEnumSerializer.class, as = OpportunityPhase.class)
+	@Column(name = "opportunity_phase", nullable = false)
+	@Enumerated(EnumType.STRING)
 	private OpportunityPhase opportunityPhase;
 	
 	/**
@@ -82,7 +87,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Ngày kỳ vọng kết thúc
 	 */
-	@Column(name = "opportunity_phase", nullable = false)
+	@Column(name = "expected_end_date", nullable = false)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 //	@DateTimeFormat(iso = ISO.DATE)
@@ -146,8 +151,8 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * @param productInfos
 	 */
 	@Builder(toBuilder = true)
-	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			Customer customer, Contact contact, Long moneyAmount, OpportunityPhase opportunityPhase,
+	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, Customer customer, Contact contact, Long moneyAmount, OpportunityPhase opportunityPhase,
 			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Source source,
 			Set<ProductInfo> productInfos) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);

@@ -3,11 +3,12 @@
  */
 package capstone.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import capstone.entity.OpportunityPhase;
-import capstone.repository.OpportunityPhaseRepository;
+import capstone.common.enums.OpportunityPhase;
 
 /**
  * OpportunityPhaseController
@@ -17,13 +18,11 @@ import capstone.repository.OpportunityPhaseRepository;
  */
 @RestController
 @RequestMapping("/api/opportunityPhase")
-public class OpportunityPhaseController
-		extends AbstractSimpleCRUDController<OpportunityPhase, OpportunityPhaseRepository, Long>
-		implements IReadNameController<OpportunityPhase, OpportunityPhaseRepository, Long> {
+public class OpportunityPhaseController {
 
-	@Override
-	protected Class<OpportunityPhase> entityClass() {
-		return OpportunityPhase.class;
+	@GetMapping("/name")
+	public ResponseEntity<?> getAllName() {
+		return ResponseEntity.ok(OpportunityPhase.values());
 	}
 
 }

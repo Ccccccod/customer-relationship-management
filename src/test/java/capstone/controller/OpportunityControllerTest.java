@@ -7,9 +7,11 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;
-import capstone.entity.OpportunityPhase;
 import capstone.repository.OpportunityRepository;
 
 /**
@@ -43,10 +45,7 @@ public class OpportunityControllerTest extends
 		return Opportunity.builder()
 				.id(1L)
 				.name("co hoi 4")
-				.opportunityPhase(OpportunityPhase.builder()
-						.id(1L)
-						.name("OP")
-						.build())
+				.opportunityPhase(OpportunityPhase.BEGINNING)
 				.moneyAmount(1000L)
 				.successRate(90)
 				.expectedEndDate(LocalDate.of(2021, 4, 20))
@@ -57,7 +56,7 @@ public class OpportunityControllerTest extends
 	protected OpportunityDto createResource() {
 		return OpportunityDto.builder()
 				.name(resource().getName())
-				.opportunityPhaseId(resource().getOpportunityPhase().getId())
+				.opportunityPhaseId(resource().getOpportunityPhase())
 				.moneyAmount(resource().getMoneyAmount())
 				.successRate(resource().getSuccessRate())
 				.expectedEndDate(resource().getExpectedEndDate())

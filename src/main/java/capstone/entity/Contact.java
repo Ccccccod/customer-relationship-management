@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -65,6 +66,14 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * Tên: name.
 	 * In {@link NamedEntity}
 	 */
+	
+	/*
+	 * Họ và Tên
+	 */
+	@JsonProperty
+	public String getFullName() {
+		return lastName + " " + name;
+	}
 	
 	/**
 	 * Chức danh

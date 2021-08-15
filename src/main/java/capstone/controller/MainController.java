@@ -75,6 +75,8 @@ public class MainController {
 				.turnOver(turnOver) //
 				.recordedQuantity(recordedQuantity) //
 				.recordedTurnOver(recordedTurnOver) //
+				.from(from) //
+				.to(to) //
 				.build();
 		return ResponseEntity.ok(overviewResponse);
 	}
@@ -119,7 +121,9 @@ public class MainController {
 						opportunities.stream().filter(Objects::nonNull) //
 								.mapToDouble(Opportunity::getSuccessRate) //
 								.average() //
-								.orElse(0));
+								.orElse(0))
+				.from(from)
+				.to(to);
 		return ResponseEntity.ok(opportunityOverviewResponseBuilder.build());
 	}
  

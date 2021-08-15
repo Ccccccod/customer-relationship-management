@@ -3,6 +3,8 @@
  */
 package capstone.dto.response;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +40,15 @@ public class OrderOverviewResponse {
 	 * Doanh số đã ghi nhận
 	 */
 	private Long recordedTurnOver;
+	
+	/**
+	 * Từ ngày
+	 */
+	private LocalDate from;
 
+	/**
+	 * Đến ngày
+	 */
+	private LocalDate to;
+	
 }

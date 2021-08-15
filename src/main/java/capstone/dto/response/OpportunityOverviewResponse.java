@@ -3,6 +3,8 @@
  */
 package capstone.dto.response;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +40,15 @@ public class OpportunityOverviewResponse {
 	 * Tỷ lệ chiến thắng cơ hội
 	 */
 	private Double opportunityWinRate;
+	
+	/**
+	 * Từ ngày
+	 */
+	private LocalDate from;
+
+	/**
+	 * Đến ngày
+	 */
+	private LocalDate to;
 
 }

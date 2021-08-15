@@ -5,27 +5,31 @@ package capstone.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import capstone.dto.request.DateFromToDto;
+import capstone.common.enums.OpportunityPhase;
+import capstone.dto.response.OpportunityOverviewResponse;
+import capstone.dto.response.OpportunityOverviewResponse.OpportunityOverviewResponseBuilder;
 import capstone.dto.response.OrderOverviewResponse;
+import capstone.entity.Opportunity;
 import capstone.entity.Order;
 import capstone.exception.ResourceNotFoundException;
+import capstone.service.OpportunityService;
 import capstone.service.OrderService;
 import capstone.utils.WebUtils;
 
@@ -41,23 +45,23 @@ public class MainController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private OpportunityService opportunityService;
 
 	/**
 	 * Get overview of Orders
-	 * @param dateFromToDto contains 2 dates (from, to) to get orders between
+	 * @param from to get orders between
+	 * @param to to get orders between
 	 * @return ResponseEntity of overview of Orders {@link OrderOverviewResponse}
 	 * @throws ResourceNotFoundException
 	 */
 	@GetMapping("/overview/order")
-	public ResponseEntity<OrderOverviewResponse> overview(@Valid @RequestBody DateFromToDto dateFromToDto)
+	public ResponseEntity<OrderOverviewResponse> orderOverview(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to)
 			throws ResourceNotFoundException {
-		if (Objects.isNull(dateFromToDto.getFrom())) {
-			dateFromToDto.setFrom(LocalDate.MIN);
-		}
-		if (Objects.isNull(dateFromToDto.getTo())) {
-			dateFromToDto.setTo(LocalDate.MAX);
-		}
-		List<Order> orders = orderService.findByOrderDateBetween(dateFromToDto.getFrom(), dateFromToDto.getTo());
+		List<Order> orders = orderService.findByOrderDateBetween(from, to);
 		if (Objects.isNull(orders)) {
 			throw new ResourceNotFoundException();
 		}
@@ -73,6 +77,50 @@ public class MainController {
 				.recordedTurnOver(recordedTurnOver) //
 				.build();
 		return ResponseEntity.ok(overviewResponse);
+	}
+
+	/**
+	 * Get overview of Opportunities
+	 * @param from to get opportunities between
+	 * @param to to get opportunities between
+	 * @return ResponseEntity of overview of Orders {@link OpportunityOverviewResponse}
+	 * @throws ResourceNotFoundException
+	 */
+	@GetMapping("/overview/opportunity")
+	public ResponseEntity<OpportunityOverviewResponse> opportunityOverview(
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,
+			@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) throws ResourceNotFoundException {
+		List<Opportunity> opportunities = opportunityService.findByExpectedEndDateBetween(from, to);
+		if (Objects.isNull(opportunities)) {
+			throw new ResourceNotFoundException();
+		}
+		List<OpportunityPhase> inProgress = Arrays.asList(OpportunityPhase.BEGINNING,
+				OpportunityPhase.CUSTOMER_INTEREST, OpportunityPhase.DEMO, OpportunityPhase.NEGOTIATION);
+		OpportunityOverviewResponseBuilder opportunityOverviewResponseBuilder = OpportunityOverviewResponse.builder() //
+				.numberOfOportunitiesInProgress( //
+						opportunities.stream().filter(Objects::nonNull) //
+								.map(Opportunity::getOpportunityPhase).filter(inProgress::contains) //
+								.mapToInt(o -> 1) //
+								.sum())
+				.doneTurnOver( //
+						opportunities.stream().filter(Objects::nonNull) //
+								.filter(o -> Objects.equals(o.getOpportunityPhase(), OpportunityPhase.SUCCESS_FINISH)) //
+								.mapToLong(Opportunity::totalMoney) //
+								.sum()) //
+				.expectedTurnOver( //
+						opportunities.stream().filter(Objects::nonNull) //
+								.mapToLong(o -> {
+									Long totalMoney = Objects.isNull(o.totalMoney()) ? o.totalMoney() : 0L;
+									Integer successRate = Objects.isNull(o.getSuccessRate()) ? o.getSuccessRate() : 0;
+									return totalMoney * successRate;
+								}) //
+								.sum())
+				.opportunityWinRate( //
+						opportunities.stream().filter(Objects::nonNull) //
+								.mapToDouble(Opportunity::getSuccessRate) //
+								.average() //
+								.orElse(0));
+		return ResponseEntity.ok(opportunityOverviewResponseBuilder.build());
 	}
  
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)

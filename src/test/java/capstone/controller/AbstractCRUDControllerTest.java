@@ -104,9 +104,11 @@ abstract class AbstractCRUDControllerTest< //
 	public void testCreateUpdate() throws Exception {
 		Mockito.when(repository.save(any())).thenReturn(resource);
 		
+		System.out.println("createResource" + mapToJsonDto(createResource()).toString());
 		MvcResult mvcResult = mockMvc.perform(
-				post(url).contentType(this.contentType).content(mapToJson(createResource()))
+				post(url).contentType(this.contentType).content(mapToJsonDto(createResource()))
 				).andExpect(status().isOk()).andReturn();
+		System.out.println("mvcResult" + mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
 		
 		String actualJsonResponse = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 		

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import capstone.common.enums.OpportunityPhase;
 import capstone.entity.Opportunity;
 
 /**
@@ -19,5 +20,8 @@ import capstone.entity.Opportunity;
 public interface OpportunityRepository extends NamedJpaRepository<Opportunity, Long> {
 	
 	List<Opportunity> findByExpectedEndDateBetween(LocalDate from, LocalDate to);
+	
+	List<Opportunity> findByOpportunityPhaseAndExpectedEndDateBetween(OpportunityPhase opportunityPhase, LocalDate from,
+			LocalDate to);
 
 }

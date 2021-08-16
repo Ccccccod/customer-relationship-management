@@ -5,9 +5,13 @@ package capstone.controller;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -127,6 +131,38 @@ public class MainController {
 		return ResponseEntity.ok(opportunityOverviewResponseBuilder.build());
 	}
  
+	/**
+	 * Get monthly revenue by year
+	 * @param year year
+	 * @return An array of 12 months' revenue order by month
+	 */
+	@GetMapping("/revenueByYear")
+	public ResponseEntity<List<Object>> monthlyRevenueByYear(@RequestParam int year) {
+		LocalDate date = LocalDate.of(year, Month.JANUARY, 1);
+		LocalDate firstDay = date.with(TemporalAdjusters.firstDayOfYear());
+		LocalDate lastDay = date.with(TemporalAdjusters.lastDayOfYear());
+		List<Opportunity> opportunities = opportunityService
+				.findByOpportunityPhaseAndExpectedEndDateBetween(OpportunityPhase.SUCCESS_FINISH, firstDay, lastDay);
+		Map<Month, List<Opportunity>> map = opportunities.stream() //
+				// Group by months
+				.collect(Collectors
+						.groupingBy(item -> item.getExpectedEndDate().getMonth())); //
+		// Making sure all Months are in the map by putting an empty array to months that
+		// contains no opportunities
+		Arrays.stream(Month.values()).filter(month -> Objects.isNull(map.get(month)))
+				.forEach(month -> map.put(month, Arrays.asList()));
+		@SuppressWarnings("unchecked")
+		List<Object> list = map.entrySet().stream() //
+				// Map to [month, sum]
+				.map(e -> new Comparable[] { e.getKey(),
+						e.getValue().stream().filter(Objects::nonNull).mapToLong(Opportunity::totalMoney).sum() }) //
+				// sort by month
+				.sorted((o1, o2) -> o1[0].compareTo(o2[0])) //
+				.map(e -> e[1]) //
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(list);
+	}
+	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");

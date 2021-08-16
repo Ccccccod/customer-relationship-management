@@ -14,7 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.response.serializer.ProductTypeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -47,6 +49,7 @@ public class ProductType extends CodedNamedEntity<Long> {
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_type_id")
+	@JsonSerialize(using = ProductTypeSerializer.class)
 	private ProductType productType;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")

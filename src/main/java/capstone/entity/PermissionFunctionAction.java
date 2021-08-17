@@ -4,6 +4,7 @@
 package capstone.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,11 +13,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import capstone.i18n.I18nConfig;
 import capstone.model.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +36,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * PermissionFunctionAction
  * @author Tuna
  *
  */
@@ -67,6 +77,37 @@ public class PermissionFunctionAction extends BaseEntity<Long> implements Permis
 	@Override
 	public String getValue() {
 		return "ROLE_" + this.permissionAction.getName() + "_" + this.permissionFunction.getName();
+	}
+	
+	@Getter
+	@Autowired
+	@Qualifier("i18nNameMessageSource")
+	@Transient
+	@JsonIgnore
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@Deprecated
+	protected MessageSource messageSource;
+
+	/**
+	 * @return Vietnamese name
+	 */
+	@Deprecated
+	public String getViName() {
+		try {
+			if (Objects.isNull(messageSource)) {
+				messageSource = new I18nConfig().i18nNameMessageSource();
+			}
+			return messageSource.getMessage("permission.action." + StringUtils.lowerCase(this.permissionAction.getName()), null,
+					LocaleContextHolder.getLocale())
+					+ " "
+					+ messageSource.getMessage(
+							"permission.function." + StringUtils.lowerCase(this.permissionFunction.getName()), null,
+							LocaleContextHolder.getLocale());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

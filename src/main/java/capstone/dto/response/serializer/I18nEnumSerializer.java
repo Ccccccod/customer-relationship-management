@@ -33,7 +33,7 @@ public class I18nEnumSerializer<T extends Enum<? extends I18nEnum>> extends StdS
 	public I18nEnumSerializer(Class<T> t) {
 		super(t);
 		if (Objects.isNull(messageSource)) {
-			messageSource = new I18nConfig().i18nMessageSource();
+			messageSource = new I18nConfig().i18nEnumMessageSource();
 		}
 	}
 
@@ -43,7 +43,7 @@ public class I18nEnumSerializer<T extends Enum<? extends I18nEnum>> extends StdS
 	
 	@Getter
 	@Autowired
-	@Qualifier("i18nMessageSource")
+	@Qualifier("i18nEnumMessageSource")
 	protected MessageSource messageSource;
 
 	@Override

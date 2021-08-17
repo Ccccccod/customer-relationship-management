@@ -70,9 +70,13 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	/**
 	 * Email
 	 */
-	@NotNull
 	@Email
 	private String email;
+	
+	/**
+	 * Tổ chức
+	 */
+	private Long customerId;
 
 	/**
 	 * Mã số thuế
@@ -94,12 +98,14 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	 * @param phone
 	 * @param sourceId
 	 * @param email
+	 * @param customerId
 	 * @param taxCode
 	 * @param address
 	 */
-	@Builder
-	public PotentialDto(Long id, String vocative, String lastName, String name, String department, String position,
-			@NotNull String phone, Long sourceId, @NotNull String email, @NotNull String taxCode, String address) {
+	@Builder(toBuilder = true)
+	public PotentialDto(Long id, String vocative, String lastName, @NotBlank String name, String department,
+			String position, @NotNull String phone, Long sourceId, String email, Long customerId, String taxCode,
+			String address) {
 		super(id);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -109,6 +115,7 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 		this.phone = phone;
 		this.sourceId = sourceId;
 		this.email = email;
+		this.customerId = customerId;
 		this.taxCode = taxCode;
 		this.address = address;
 	}

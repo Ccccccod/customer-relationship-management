@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +24,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
+import capstone.common.enums.OpportunityPhase;
 import capstone.entity.BaseEntity;
 import capstone.entity.Career;
 import capstone.entity.Classification;
@@ -34,7 +34,6 @@ import capstone.entity.Field;
 import capstone.entity.Invoice;
 import capstone.entity.NamedEntity;
 import capstone.entity.Opportunity;
-import capstone.entity.OpportunityPhase;
 import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
@@ -56,7 +55,6 @@ import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
 import capstone.repository.InvoiceRepository;
 import capstone.repository.NamedJpaRepository;
-import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
@@ -115,9 +113,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private ContactRepository contactRepository;
-
-    @Autowired
-    private OpportunityPhaseRepository opportunityPhaseRepository;
     
     @Autowired
     private OpportunityRepository opportunityRepository;
@@ -136,11 +131,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
+
+    /**
+     * WARNING: disable when testing
+     */
+    private static final boolean enable = true;
     
     static final private String PASSWORD = "Minhkien1@";
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
+		if (!enable) {
+			return;
+		}
         
 //        userRepository.findAll().forEach(System.out::println);
 //        roleRepository.findAll().forEach(System.out::println);
@@ -176,20 +179,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Career career4 = addNamedRepository(careerRepository, new Career("Kinh doanh mỹ phẩm"));
         Career career5 = addNamedRepository(careerRepository, new Career("Kinh doanh ô tô, xe máy"));
         
-        // Potential
-        Potential potential1 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
-        		.lastName("Nguyễn Quang")
-        		.name("Tuấn")
-        		.department("Phòng kinh doanh")
-        		.position("Giám đốc")
-        		.phone("0915367546")
-        		.source(source2)
-        		.email("quangtuanico@gmail.com")
-        		.taxCode(null)
-        		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
-        		.build());
-        
 		// Customer
 		Customer customer1 = addNamedRepository(customerRepository, Customer.builder()
 				.code("KH00001")
@@ -207,6 +196,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		List<Customer> customers = customerRepository.findAll();
         
+        // Potential
+        Potential potential1 = addNamedRepository(potentialRepository, Potential.builder()
+        		.vocative("Ông")
+        		.lastName("Nguyễn Quang")
+        		.name("Tuấn")
+        		.department("Phòng kinh doanh")
+        		.position("Giám đốc")
+        		.phone("0915367546")
+        		.source(source2)
+        		.email("quangtuanico@gmail.com")
+        		.customer(customer1)
+        		.taxCode(null)
+        		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
+        		.build());
 
         // Product Type
 		List<ProductType> productTypes = addProductType();
@@ -282,38 +285,13 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		
 		
-		// OpportunityPhase
-		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Kết thúc thất bại")
-				.build());
-		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Kết thúc thành công")
-				.nextOpportunityPhase(opportunityPhase6)
-				.build());
-		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Đàm phán thương lượng")
-				.nextOpportunityPhase(opportunityPhase5)
-				.build());
-		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Demo/Giới thiệu")
-				.nextOpportunityPhase(opportunityPhase4)
-				.build());
-		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Khách hàng quan tâm")
-				.nextOpportunityPhase(opportunityPhase3)
-				.build());
-		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, OpportunityPhase.builder()
-				.name("Mở đầu")
-				.nextOpportunityPhase(opportunityPhase2)
-				.build());
-		
 		// Opportunity
 		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
 				.customer(customer1)
 				.contact(contact1)
 				.name("Bán hàng cho " + customer1.getName())
 				.moneyAmount(24_035_000L)
-				.opportunityPhase(opportunityPhase4)
+				.opportunityPhase(OpportunityPhase.NEGOTIATION)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2022, Month.JUNE, 6))
 				.expectedTurnOver(24_035_000L * 70 / 100)
@@ -393,6 +371,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		// Permissions
 
 		List<PermissionFunction> permissionFunctions = Arrays.asList(
+				addNamedRepository(permissionFunctionRepository, new PermissionFunction("POTENTIAL")),
 				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CUSTOMER")),
 				addNamedRepository(permissionFunctionRepository, new PermissionFunction("OPPORTUNITY")),
 				addNamedRepository(permissionFunctionRepository, new PermissionFunction("CONTACT")),
@@ -586,6 +565,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		return repository.findById(t.getId()).orElseGet(() -> repository.save(t));
 	}
 	
+	@Deprecated
 	private <T extends BaseEntity<ID>, ID extends Serializable> List<T> addRepositorys(
 			JpaRepository<T, ID> repository, T... ts) {
 		return Stream.of(ts)

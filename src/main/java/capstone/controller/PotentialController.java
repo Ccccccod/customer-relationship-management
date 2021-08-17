@@ -8,15 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.PotentialDto;
+import capstone.entity.Customer;
 import capstone.entity.Potential;
 import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.CustomerRepository;
 import capstone.repository.PotentialRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
 
 /**
  * PotentialController
+ * Tiềm năng Controller
  * @author Tuna
  *
  */
@@ -27,6 +30,9 @@ public class PotentialController
 	
 	@Autowired
 	protected SourceRepository sourceRepository;
+	
+	@Autowired
+	protected CustomerRepository customerRepository;
 
 	@Override
 	protected Class<capstone.entity.Potential> entityClass() {
@@ -46,6 +52,7 @@ public class PotentialController
 				.phone(dto.getPhone())
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.email(dto.getEmail())
+				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.taxCode(dto.getTaxCode())
 				.address(dto.getAddress())
 				.build();

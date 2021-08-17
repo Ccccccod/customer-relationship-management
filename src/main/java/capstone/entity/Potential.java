@@ -23,6 +23,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Potential
+ * Tiềm năng
  * @author Tuna
  *
  */
@@ -85,8 +87,15 @@ public class Potential extends NamedEntity<Long> {
 	/**
 	 * Email
 	 */
-	@Column(name = "email", unique = true, nullable = false)
+	@Column(name = "email")
 	private String email;
+	
+	/**
+	 * Tổ chức
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	/**
 	 * Mã số thuế
@@ -114,13 +123,14 @@ public class Potential extends NamedEntity<Long> {
 	 * @param phone
 	 * @param source
 	 * @param email
+	 * @param customer
 	 * @param taxCode
 	 * @param address
 	 */
 	@Builder(toBuilder = true)
-	public Potential(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String vocative, String lastName, String department, String position, String phone, Source source,
-			String email, String taxCode, String address) {
+	public Potential(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			String name, String vocative, String lastName, String department, String position, String phone,
+			Source source, String email, Customer customer, String taxCode, String address) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -129,6 +139,7 @@ public class Potential extends NamedEntity<Long> {
 		this.phone = phone;
 		this.source = source;
 		this.email = email;
+		this.customer = customer;
 		this.taxCode = taxCode;
 		this.address = address;
 	}

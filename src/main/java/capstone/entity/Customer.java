@@ -119,6 +119,12 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Invoice> invoices;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Potential> potentials;
 
 	/**
 	 * @param id
@@ -140,12 +146,16 @@ public class Customer extends CodedNamedEntity<Long> {
 	 * @param address
 	 * @param contacts
 	 * @param opportunities
+	 * @param orders
+	 * @param invoices
+	 * @param potentials
 	 */
 	@Builder(toBuilder = true)
 	public Customer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, String shortName, String taxCode, String phone, String email, Source source,
 			Set<Classification> classifications, Set<Field> fields, Type type, Set<Career> careers, String address,
-			Set<Contact> contacts, Set<Opportunity> opportunities) {
+			Set<Contact> contacts, Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices,
+			Set<Potential> potentials) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.shortName = shortName;
 		this.taxCode = taxCode;
@@ -159,6 +169,9 @@ public class Customer extends CodedNamedEntity<Long> {
 		this.address = address;
 		this.contacts = contacts;
 		this.opportunities = opportunities;
+		this.orders = orders;
+		this.invoices = invoices;
+		this.potentials = potentials;
 	}
 
 	/**

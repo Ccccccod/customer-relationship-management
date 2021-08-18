@@ -56,7 +56,7 @@ public class OpportunityControllerTest extends
 	protected OpportunityDto createResource() {
 		return OpportunityDto.builder()
 				.name(resource().getName())
-				.opportunityPhaseId(resource().getOpportunityPhase())
+				.opportunityPhase(resource().getOpportunityPhase())
 				.moneyAmount(resource().getMoneyAmount())
 				.successRate(resource().getSuccessRate())
 				.expectedEndDate(resource().getExpectedEndDate())

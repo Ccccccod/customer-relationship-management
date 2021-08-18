@@ -52,9 +52,17 @@ public class ContactController extends AbstractDtoEntityController<ContactDto, C
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
 				.phone(dto.getPhone())
+				.officePhone(dto.getOfficePhone())
+				.otherPhone(dto.getOtherPhone())
 				.email(dto.getEmail())
+				.officeEmail(dto.getOfficeEmail())
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.address(dto.getAddress())
+				// Other Information
+				.dateOfBirth(dto.getDateOfBirth())
+				.gender(dto.getGender())
+				.maritalStatus(dto.getMaritalStatus())
+				.facebook(dto.getFacebook())
 				.build();
 	}
 

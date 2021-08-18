@@ -3,11 +3,14 @@
  */
 package capstone.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,8 +22,14 @@ import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.enums.Gender;
+import capstone.common.enums.MaritalStatus;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -112,10 +121,28 @@ public class Contact extends CodedNamedEntity<Long> {
 	private String phone;
 	
 	/**
+	 * Điện thoại cơ quan
+	 */
+	@Column(name = "office_phone")
+	private String officePhone;
+	
+	/**
+	 * Điện thoại khác
+	 */
+	@Column(name = "other_phone")
+	private String otherPhone;
+	
+	/**
 	 * Email
 	 */
-	@Column(name = "email", unique = true, nullable = false)
+	@Column(name = "email")
 	private String email;
+	
+	/**
+	 * Email cơ quan
+	 */
+	@Column(name = "office_email")
+	private String officeEmail;
 
 	/**
 	 * Nguồn gốc
@@ -129,6 +156,37 @@ public class Contact extends CodedNamedEntity<Long> {
 	 */
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
+	
+	// Other Information
+	// Thông tin khác
+	
+	/**
+	 * Ngày sinh
+	 */
+	@Column(name = "date_of_birth")
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate dateOfBirth;
+
+	/**
+	 * Giới tính
+	 */
+	@Column(name = "gender")
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+
+	/**
+	 * Tình trạng hôn nhân
+	 */
+	@Column(name = "marital_status")
+	@Enumerated(EnumType.STRING)
+	private MaritalStatus maritalStatus;
+	
+	/**
+	 * facebook
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String facebook;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
 	@ToString.Exclude
@@ -163,16 +221,27 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param customer
 	 * @param classifications
 	 * @param phone
+	 * @param officePhone
+	 * @param otherPhone
 	 * @param email
+	 * @param officeEmail
 	 * @param source
 	 * @param address
+	 * @param dateOfBirth
+	 * @param gender
+	 * @param maritalStatus
+	 * @param facebook
 	 * @param opportunities
+	 * @param orders
+	 * @param invoices
 	 */
 	@Builder(toBuilder = true)
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String name, String code, String vocative, String lastName, String position, String department,
-			Customer customer, Set<Classification> classifications, String phone, String email, Source source,
-			String address, Set<Opportunity> opportunities) {
+			Customer customer, Set<Classification> classifications, String phone, String officePhone, String otherPhone,
+			String email, String officeEmail, Source source, String address, LocalDate dateOfBirth, Gender gender,
+			MaritalStatus maritalStatus, String facebook, Set<Opportunity> opportunities, Set<Order> orders,
+			Set<Invoice> invoices) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -181,10 +250,19 @@ public class Contact extends CodedNamedEntity<Long> {
 		this.customer = customer;
 		this.classifications = classifications;
 		this.phone = phone;
+		this.officePhone = officePhone;
+		this.otherPhone = otherPhone;
 		this.email = email;
+		this.officeEmail = officeEmail;
 		this.source = source;
 		this.address = address;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.maritalStatus = maritalStatus;
+		this.facebook = facebook;
 		this.opportunities = opportunities;
+		this.orders = orders;
+		this.invoices = invoices;
 	}
 
 	/**

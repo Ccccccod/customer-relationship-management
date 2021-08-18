@@ -3,10 +3,17 @@
  */
 package capstone.dto.request;
 
+import java.time.LocalDate;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.enums.Gender;
+import capstone.common.enums.MaritalStatus;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +28,6 @@ import lombok.ToString;
  * @author Tuna
  *
  */
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -64,13 +70,28 @@ public class ContactDto extends CodedNamedDto<Long> {
 	 * Điện thoại
 	 */
 	private String phone;
+	
+	/**
+	 * Điện thoại cơ quan
+	 */
+	private String officePhone;
+	
+	/**
+	 * Điện thoại khác
+	 */
+	private String otherPhone;
 
 	/**
 	 * Email
 	 */
-	@NotNull
 	@Email
 	private String email;
+	
+	/**
+	 * Email cơ quan
+	 */
+	@Email
+	private String officeEmail;
 
 	/**
 	 * Nguồn gốc
@@ -81,6 +102,33 @@ public class ContactDto extends CodedNamedDto<Long> {
 	 * Địa chỉ
 	 */
 	private String address;
+	
+	// Other Information
+	// Thông tin khác
+	
+	/**
+	 * Ngày sinh
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate dateOfBirth;
+
+	/**
+	 * Giới tính
+	 */
+	@JsonAlias("genderId")
+	private Gender gender;
+
+	/**
+	 * Tình trạng hôn nhân
+	 */
+	@JsonAlias("maritalStatusId")
+	private MaritalStatus maritalStatus;
+	
+	/**
+	 * facebook
+	 */
+	private String facebook;
 
 	/**
 	 * @param id
@@ -93,15 +141,22 @@ public class ContactDto extends CodedNamedDto<Long> {
 	 * @param customerId
 	 * @param classificationIds
 	 * @param phone
+	 * @param officePhone
+	 * @param otherPhone
 	 * @param email
+	 * @param officeEmail
 	 * @param sourceId
 	 * @param address
+	 * @param dateOfBirth
+	 * @param gender
+	 * @param maritalStatus
+	 * @param facebook
 	 */
 	@Builder
-	public ContactDto(Long id, String name,
-			String code, String vocative, String lastName, String position,
-			String department, Long customerId, Set<Long> classificationIds, String phone, String email, Long sourceId,
-			String address) {
+	public ContactDto(Long id, String name, String code, String vocative, String lastName, String position,
+			String department, Long customerId, Set<Long> classificationIds, String phone, String officePhone,
+			String otherPhone, String email, String officeEmail, Long sourceId, String address, LocalDate dateOfBirth,
+			Gender gender, MaritalStatus maritalStatus, String facebook) {
 		super(id, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -110,9 +165,16 @@ public class ContactDto extends CodedNamedDto<Long> {
 		this.customerId = customerId;
 		this.classificationIds = classificationIds;
 		this.phone = phone;
+		this.officePhone = officePhone;
+		this.otherPhone = otherPhone;
 		this.email = email;
+		this.officeEmail = officeEmail;
 		this.sourceId = sourceId;
 		this.address = address;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.maritalStatus = maritalStatus;
+		this.facebook = facebook;
 	}
 
 }

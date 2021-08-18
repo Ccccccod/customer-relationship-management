@@ -61,7 +61,7 @@ public class OpportunityController
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
 				.moneyAmount(dto.getMoneyAmount())
-				.opportunityPhase(dto.getOpportunityPhaseId())
+				.opportunityPhase(dto.getOpportunityPhase())
 				.successRate(dto.getSuccessRate())
 				.expectedEndDate(dto.getExpectedEndDate())
 				.expectedTurnOver(dto.getExpectedTurnOver())
@@ -80,7 +80,7 @@ public class OpportunityController
 		entity.setCustomer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class));
 		entity.setContact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class));
 		entity.setMoneyAmount(dto.getMoneyAmount());
-		entity.setOpportunityPhase(dto.getOpportunityPhaseId());
+		entity.setOpportunityPhase(dto.getOpportunityPhase());
 		entity.setSuccessRate(dto.getSuccessRate());
 		entity.setExpectedEndDate(dto.getExpectedEndDate());
 		entity.setExpectedTurnOver(dto.getExpectedTurnOver());

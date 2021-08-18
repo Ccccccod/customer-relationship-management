@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;

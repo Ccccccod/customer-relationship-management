@@ -21,7 +21,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.response.serializer.UserSerializer;
 import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -70,12 +72,14 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@JoinColumn(name = "created_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
+	@JsonSerialize(using = UserSerializer.class)
 	protected User createdBy;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "update_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
+	@JsonSerialize(using = UserSerializer.class)
 	protected User updatedBy;
 	
 	@JsonIgnore

@@ -50,11 +50,18 @@ public class PotentialController
 				.department(dto.getDepartment())
 				.position(dto.getPosition())
 				.phone(dto.getPhone())
+				.officePhone(dto.getOfficePhone())
+				.otherPhone(dto.getOtherPhone())
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.email(dto.getEmail())
+				.officeEmail(dto.getOfficeEmail())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.taxCode(dto.getTaxCode())
 				.address(dto.getAddress())
+				// Personal info
+				.gender(dto.getGender())
+				.dateOfBirth(dto.getDateOfBirth())
+				.facebook(dto.getFacebook())
 				.build();
 	}
 

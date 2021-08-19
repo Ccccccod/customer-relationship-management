@@ -73,7 +73,6 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Email người nhận
 	 */
-	@NotNull
 	@Email
 	private String receiverEmail;
 

@@ -82,7 +82,7 @@ public class OrderDto extends CodedNamedDto<Long> {
 	@Builder
 	OrderDto(Long id, String name, String code, @NotNull LocalDate orderDate, Long customerId, Long contactId,
 			Long opportunityId, @NotNull Long orderValue, Long liquidationValue, @NotNull LocalDate liquidationDeadline,
-			@NotNull LocalDate deliveryDeadline) {
+			@NotNull LocalDate deliveryDeadline, Boolean paid) {
 		super(id, name, code);
 		this.orderDate = orderDate;
 		this.customerId = customerId;
@@ -92,6 +92,7 @@ public class OrderDto extends CodedNamedDto<Long> {
 		this.liquidationValue = liquidationValue;
 		this.liquidationDeadline = liquidationDeadline;
 		this.deliveryDeadline = deliveryDeadline;
+		this.paid = paid;
 	}
 
 }

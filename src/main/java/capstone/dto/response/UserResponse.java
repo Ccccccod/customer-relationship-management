@@ -3,11 +3,17 @@
  */
 package capstone.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.enums.Gender;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.response.serializer.UserSerializer;
 import capstone.entity.Role;
 import capstone.entity.User;
@@ -27,9 +33,11 @@ import lombok.Setter;
 public class UserResponse implements Identifiable<Long> {
 	
 	private Long id;
-	
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	private LocalDateTime createdAt;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	private LocalDateTime updatedAt;
 	
 	@JsonSerialize(using = UserSerializer.class)
@@ -42,7 +50,49 @@ public class UserResponse implements Identifiable<Long> {
 	
 	private String email;
 	
+	/**
+	 * Vai trò
+	 */
 	private Set<Role> roles;
+
+	/**
+	 * Họ và đệm
+	 */
+	private String lastName;
+
+	/**
+	 * Họ và đệm
+	 */
+	private String name;
+	
+	/**
+	 * Điện thoại
+	 */
+	private String phone;
+	
+	/**
+	 * Ngày sinh
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate dateOfBirth;
+
+	/**
+	 * Giới tính
+	 */
+	private Gender gender;
+
+	/**
+	 * Địa chỉ
+	 */
+	private String address;
+	
+	/**
+	 * @return Họ và tên
+	 */
+	public String getFullName() {
+		return (this.lastName != null ? this.lastName : "") + ' ' + (this.name != null ? this.name : "");
+	}
 
 	/**
 	 * @param id
@@ -53,10 +103,17 @@ public class UserResponse implements Identifiable<Long> {
 	 * @param username
 	 * @param email
 	 * @param roles
+	 * @param lastName
+	 * @param name
+	 * @param phone
+	 * @param dateOfBirth
+	 * @param gender
+	 * @param address
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public UserResponse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String username, String email, Set<Role> roles) {
+			String username, String email, Set<Role> roles, String lastName, String name, String phone,
+			LocalDate dateOfBirth, Gender gender, String address) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;
@@ -66,6 +123,12 @@ public class UserResponse implements Identifiable<Long> {
 		this.username = username;
 		this.email = email;
 		this.roles = roles;
+		this.lastName = lastName;
+		this.name = name;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.gender = gender;
+		this.address = address;
 	}
 
 }

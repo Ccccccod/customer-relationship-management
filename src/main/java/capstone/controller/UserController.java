@@ -44,6 +44,13 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 				.createdBy(user.getCreatedBy())
 				.updatedAt(user.getUpdatedAt())
 				.updatedBy(user.getUpdatedBy())
+				
+				.lastName(user.getLastName())
+				.name(user.getName())
+				.phone(user.getPhone())
+				.dateOfBirth(user.getDateOfBirth())
+				.gender(user.getGender())
+				.address(user.getAddress())
 				.build();
 	}
 
@@ -51,19 +58,31 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 	protected User dtoToEntity(UserDto dto, User user) throws ResourceNotFoundException {
 		return user.toBuilder()
 				.id(dto.getId())
-				.name(dto.getUsername())
+				.username(dto.getUsername())
 				.email(dto.getEmail())
 				.password(passwordEncoder.encode(dto.getPassword()))
 				.roles(AbstractService.findEntitiesByIds(roleRepository, dto.getRoleIds(), Role.class))
+				.lastName(dto.getLastName())
+				.name(dto.getName())
+				.phone(dto.getPhone())
+				.dateOfBirth(dto.getDateOfBirth())
+				.gender(dto.getGender())
+				.address(dto.getAddress())
 				.build();
 	}
 
 	@Override
 	protected User updateEntity(UserUpdateDto updateDto, User entity) throws ResourceNotFoundException {
-		entity.setName(updateDto.getUsername());
-		entity.setEmail(updateDto.getEmail());
-		entity.setRoles(AbstractService.findEntitiesByIds(roleRepository, updateDto.getRoleIds(), Role.class));
-		return entity;
+		return entity.toBuilder() //
+				.username(updateDto.getUsername()).email(updateDto.getEmail()) //
+				.roles(AbstractService.findEntitiesByIds(roleRepository, updateDto.getRoleIds(), Role.class)) //
+				.lastName(updateDto.getLastName()) //
+				.name(updateDto.getName()) //
+				.phone(updateDto.getPhone()) //
+				.dateOfBirth(updateDto.getDateOfBirth()) //
+				.gender(updateDto.getGender()) //
+				.address(updateDto.getAddress()) //
+				.build();
 	}
 
 	@Override

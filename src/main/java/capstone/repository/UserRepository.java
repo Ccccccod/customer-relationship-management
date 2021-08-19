@@ -3,6 +3,7 @@
  */
 package capstone.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -30,4 +31,18 @@ public interface UserRepository extends NamedJpaRepository<User, Long>, JpaSpeci
 	 * @return
 	 */
 	Optional<User> findByEmail(String email);
+	
+	/**
+	 * Find by name
+	 * @param name
+	 * @return
+	 */
+	List<User> findByUsername(String username);
+	
+	/**
+	 * Exists by name
+	 * @param name
+	 * @return
+	 */
+	Boolean existsByUsername(String username);
 }

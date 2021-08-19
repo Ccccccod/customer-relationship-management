@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		capstone.entity.User user;
 		try {
-			user = this.userRepository.findByName(userName).get(0);
+			user = this.userRepository.findByUsername(userName).get(0);
 		} catch (IndexOutOfBoundsException e) {
 			throw new UsernameNotFoundException("User " + userName + " not found!");
 		}
@@ -59,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				.map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
  
-        return new UserDetailsImpl(user.getId(), user.getName(), user.getEmail(), user.getPassword(), grantList);
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), grantList);
 //		return new User(user.getName(), user.getPassword(), grantList);
 	}
 	

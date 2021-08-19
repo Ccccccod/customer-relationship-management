@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -117,6 +118,7 @@ public class PotentialDto extends BaseDto<Long> implements Named {
 	/**
 	 * Giới tính
 	 */
+	@JsonProperty("genderId") //
 	@JsonAlias("genderId")
 	private Gender gender;
 	

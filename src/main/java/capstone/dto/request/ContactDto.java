@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -116,12 +117,14 @@ public class ContactDto extends CodedNamedDto<Long> {
 	/**
 	 * Giới tính
 	 */
+	@JsonProperty("genderId") //
 	@JsonAlias("genderId")
 	private Gender gender;
 
 	/**
 	 * Tình trạng hôn nhân
 	 */
+	@JsonProperty("maritalStatusId") //
 	@JsonAlias("maritalStatusId")
 	private MaritalStatus maritalStatus;
 	

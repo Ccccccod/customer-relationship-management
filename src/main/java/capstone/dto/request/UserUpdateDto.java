@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -68,6 +69,8 @@ public class UserUpdateDto extends BaseDto<Long> {
 	/**
 	 * Giới tính
 	 */
+	@JsonProperty("genderId") //
+	@JsonAlias("genderId")
 	private Gender gender;
 
 	/**

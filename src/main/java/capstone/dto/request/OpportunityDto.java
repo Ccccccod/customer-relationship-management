@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -58,6 +59,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Gian đoạn
 	 */
 	@NotNull
+	@JsonProperty("opportunityPhaseId") //
 	@JsonAlias("opportunityPhaseId")
 	private OpportunityPhase opportunityPhase;
 

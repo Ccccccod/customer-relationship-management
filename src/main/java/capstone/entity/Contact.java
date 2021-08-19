@@ -185,7 +185,7 @@ public class Contact extends CodedNamedEntity<Long> {
 	/**
 	 * facebook
 	 */
-	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	@Column(name = "facebook", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String facebook;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")

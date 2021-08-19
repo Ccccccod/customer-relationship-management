@@ -157,7 +157,7 @@ public class Potential extends NamedEntity<Long> {
 	/**
 	 * facebook
 	 */
-	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	@Column(name = "facebook", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String facebook;
 
 	/**

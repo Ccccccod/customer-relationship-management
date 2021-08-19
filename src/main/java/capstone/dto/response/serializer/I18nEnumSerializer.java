@@ -21,10 +21,11 @@ import lombok.Getter;
 
 /**
  * I18nEnumSerializer
+ * Json Serializer for {@link I18nEnum}
  * @author Tuna
  *
  */
-public class I18nEnumSerializer<T extends Enum<? extends I18nEnum>> extends StdSerializer<T> {
+public class I18nEnumSerializer<T extends Enum<T> & I18nEnum> extends StdSerializer<T> {
 	private static final long serialVersionUID = 1L;
 	
 	/**

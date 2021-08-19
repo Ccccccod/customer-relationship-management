@@ -5,7 +5,7 @@ package capstone.controller;
 
 import java.io.Serializable;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.entity.BaseEntity;
@@ -20,8 +20,8 @@ abstract class AbstractSimpleCRUDControllerTest<T extends BaseEntity<ID>, //
 		ID extends Serializable
 > extends AbstractCRUDControllerTest<T, T, T, T, Repository, Controller, ID> {
 
-	@BeforeEach
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		super.setUp();
 	}
 	

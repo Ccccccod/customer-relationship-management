@@ -52,7 +52,9 @@ public class OrderControllerTest
 				.orderValue(1200L)
 				.orderDate(LocalDate.of(2021, 4, 20))
 				.liquidationDeadline(LocalDate.of(2021, 4, 20))
-				.deliveryDeadline(LocalDate.of(2021, 4, 20)).build();
+				.deliveryDeadline(LocalDate.of(2021, 4, 20))
+				.paid(true)
+				.build();
 	}
 
 	@Override
@@ -64,6 +66,7 @@ public class OrderControllerTest
 				.orderDate(resource().getOrderDate())
 				.liquidationDeadline(resource().getLiquidationDeadline())
 				.deliveryDeadline(resource().getDeliveryDeadline())
+				.paid(resource().getPaid())
 				.build();
 	}
 

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.After;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -84,7 +84,7 @@ abstract class AbstractCRUDControllerTest< //
 
 		assertEquals(objectMapper.readTree(expectedJsonResponse), objectMapper.readTree(actualJsonResponse));
 	}
-	
+
 	@Test
 	public void testGetById() throws Exception {
 		Mockito.when(repository.findById(any())).thenReturn(Optional.ofNullable(resource));
@@ -116,7 +116,7 @@ abstract class AbstractCRUDControllerTest< //
 
 		assertEquals(objectMapper.readTree(expectedJsonResponse), objectMapper.readTree(actualJsonResponse));
 	}
-	
+
 	@Test
 	public void testDelete() throws Exception {
 		ID id = resource.getId();

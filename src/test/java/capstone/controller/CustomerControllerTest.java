@@ -16,7 +16,7 @@ import capstone.repository.CustomerRepository;
  *
  */
 
-class CustomerControllerTest
+public class CustomerControllerTest
 		extends AbstractDtoEntityControllerTest<CustomerDto, Customer, CustomerRepository, CustomerController, Long> {
 
 	@Override

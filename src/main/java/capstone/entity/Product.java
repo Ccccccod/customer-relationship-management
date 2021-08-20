@@ -4,13 +4,17 @@
 package capstone.entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -112,6 +116,12 @@ public class Product extends CodedNamedEntity<Long> {
 	 */
 	@Column(name = "cost_unit_price")
 	private Long costUnitPrice;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<ProductInfo> productInfos;
 
 	/**
 	 * @param id

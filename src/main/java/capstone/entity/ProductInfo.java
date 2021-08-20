@@ -15,8 +15,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
@@ -46,6 +46,13 @@ import lombok.ToString;
 		})
 public class ProductInfo extends BaseEntity<Long> {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Hàng hóa
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "product_id")
+	private Product product;
 	
 	/**
 	 * Mã hàng hóa
@@ -165,6 +172,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param product
 	 * @param productCode
 	 * @param explanation
 	 * @param unit
@@ -173,12 +181,15 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param discount
 	 * @param vat
 	 * @param opportunity
+	 * @param order
+	 * @param invoice
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String productCode, String explanation, String unit, Integer amount, Long price, Integer discount,
-			Integer vat, Opportunity opportunity) {
+			Product product, String productCode, String explanation, String unit, Integer amount, Long price,
+			Integer discount, Integer vat, Opportunity opportunity, Order order, Invoice invoice) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy);
+		this.product = product;
 		this.productCode = productCode;
 		this.explanation = explanation;
 		this.unit = unit;
@@ -187,6 +198,8 @@ public class ProductInfo extends BaseEntity<Long> {
 		this.discount = discount;
 		this.vat = vat;
 		this.opportunity = opportunity;
+		this.order = order;
+		this.invoice = invoice;
 	}
 
 }

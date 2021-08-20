@@ -42,6 +42,7 @@ public class ProductInfoService {
 	 */
 	public ProductInfo generateFromProduct(Product product) {
 		return ProductInfo.builder()
+				.product(product)
 				.productCode(product.getCode())
 				.explanation(product.getExplanation())
 				.unit(product.getUnit())

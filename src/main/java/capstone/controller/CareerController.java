@@ -3,6 +3,9 @@
  */
 package capstone.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,12 @@ public class CareerController extends AbstractSimpleCRUDController<Career, Caree
 	@Override
 	protected Class<Career> entityClass() {
 		return Career.class;
+	}
+	
+	@Override
+	public ResponseEntity<?> getAllName() {
+		List<Career> all = getRepository().findAll();
+		return ResponseEntity.ok(all);
 	}
 
 }

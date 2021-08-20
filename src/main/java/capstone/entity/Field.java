@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +44,12 @@ public class Field extends NamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Career> careers;
 	
 	public Field(String name) {
 		super(name);

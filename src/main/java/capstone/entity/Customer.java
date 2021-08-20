@@ -29,6 +29,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
+ * Customer
  * Khách hàng
  * @author Tuna
  *
@@ -49,22 +50,40 @@ import lombok.ToString;
 public class Customer extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Tên viết tắt
+	 */
 	@Column(name = "short_name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String shortName;
 
+	/**
+	 * Mã số thuế
+	 */
 	@Column(name = "tax_code", unique = true, nullable = false)
 	private String taxCode;
 
+	/**
+	 * Điện thoại
+	 */
 	@Column(name = "phone")
 	private String phone;
 
+	/**
+	 * Email
+	 */
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
+	/**
+	 * Nguồn gốc
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "source_id")
 	private Source source;
 
+	/**
+	 * Phân loại khách hàng
+	 */
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_classification", //
 			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
@@ -73,6 +92,9 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Classification> classifications;
 
+	/**
+	 * Lĩnh vực
+	 */
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_field", //
 			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
@@ -81,10 +103,16 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Field> fields;
 
+	/**
+	 * Loại hình
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "type_id")
 	private Type type;
 
+	/**
+	 * Ngành nghề
+	 */
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "customer_career", //
 			joinColumns = { @JoinColumn(name = "customer_id", nullable = false, updatable = false) }, //
@@ -93,6 +121,9 @@ public class Customer extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
 
+	/**
+	 * Địa chỉ
+	 */
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
 

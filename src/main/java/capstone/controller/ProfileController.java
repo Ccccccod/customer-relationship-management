@@ -88,7 +88,7 @@ public class ProfileController {
 	protected UserResponse entityToResponse(User user) {
 		return UserResponse.builder()
 				.id(user.getId())
-				.username(user.getName())
+				.username(user.getUsername())
 				.email(user.getEmail())
 				.roles(user.getRoles())
 				.createdAt(user.getCreatedAt())

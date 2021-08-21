@@ -118,7 +118,7 @@ public class MainController {
 								.mapToLong(o -> {
 									Long totalMoney = Objects.nonNull(o.totalMoney()) ? o.totalMoney() : 0L;
 									Integer successRate = Objects.nonNull(o.getSuccessRate()) ? o.getSuccessRate() : 0;
-									return totalMoney * successRate;
+									return totalMoney * successRate / 100;
 								}) //
 								.sum())
 				.opportunityWinRate( //

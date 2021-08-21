@@ -121,7 +121,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	@JsonProperty
 	public Long vatMoney() {
 		Integer vat = Objects.nonNull(this.vat) ? this.vat : 0;
-		return (this.totalPrice() - this.discountMoney()) * vat / 100;
+		return this.totalPrice() * vat / 100;
 	}
 	
 	/**

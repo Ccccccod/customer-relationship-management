@@ -45,7 +45,7 @@ import lombok.ToString;
 @Table(name = "Customer", //
 		uniqueConstraints = { //
 				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
-				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
+//				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
 		})
 public class Customer extends CodedNamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
@@ -59,7 +59,7 @@ public class Customer extends CodedNamedEntity<Long> {
 	/**
 	 * Mã số thuế
 	 */
-	@Column(name = "tax_code", unique = true, nullable = false)
+	@Column(name = "tax_code"/*, unique = true*/, nullable = false)
 	private String taxCode;
 
 	/**

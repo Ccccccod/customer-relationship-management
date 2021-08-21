@@ -25,7 +25,7 @@ import lombok.Getter;
  * @author Tuna
  *
  */
-public class I18nEnumSerializer<T extends Enum<T> & I18nEnum> extends StdSerializer<T> {
+public class I18nEnumSerializer<T extends Enum<T> & I18nEnum<T>> extends StdSerializer<T> {
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -57,7 +57,7 @@ public class I18nEnumSerializer<T extends Enum<T> & I18nEnum> extends StdSeriali
 		gen.writeStringField("id", value.name());
 		String localed;
 		if (value instanceof I18nEnum && //
-				(localed = this.getMessageSource().getMessage(((I18nEnum) value).getMessageKey(value), null,
+				(localed = this.getMessageSource().getMessage(((I18nEnum<?>) value).getMessageKey(value), null,
 						LocaleContextHolder.getLocale())) != null) {}
 		else localed = value.name();
 		gen.writeStringField("name", localed);

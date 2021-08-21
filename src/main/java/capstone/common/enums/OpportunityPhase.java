@@ -15,7 +15,7 @@ import capstone.i18n.I18nEnum;
  *
  */
 @JsonSerialize(using = I18nEnumSerializer.class)
-public enum OpportunityPhase implements I18nEnum {
+public enum OpportunityPhase implements I18nEnum<OpportunityPhase> {
 
 	/** Mở đầu */
 	BEGINNING,

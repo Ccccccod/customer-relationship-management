@@ -15,7 +15,7 @@ import capstone.i18n.I18nEnum;
  *
  */
 @JsonSerialize(using = I18nEnumSerializer.class)
-public enum Gender implements I18nEnum {
+public enum Gender implements I18nEnum<Gender> {
 	
 	/** Nam */
 	MALE,
@@ -24,6 +24,6 @@ public enum Gender implements I18nEnum {
 	FEMALE,
 
 	/** Khác */
-	OTHER
+	OTHER;
 
 }

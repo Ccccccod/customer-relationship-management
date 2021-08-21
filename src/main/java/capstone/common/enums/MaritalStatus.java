@@ -15,7 +15,7 @@ import capstone.i18n.I18nEnum;
  *
  */
 @JsonSerialize(using = I18nEnumSerializer.class)
-public enum MaritalStatus implements I18nEnum {
+public enum MaritalStatus implements I18nEnum<MaritalStatus> {
 	
 	/** Chưa kết hôn */
 	NOT_MARRIED,

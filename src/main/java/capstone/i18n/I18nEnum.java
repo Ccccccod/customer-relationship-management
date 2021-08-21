@@ -3,16 +3,11 @@
  */
 package capstone.i18n;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.response.serializer.I18nEnumSerializer;
-import capstone.utils.JsonDeserializable;
 
 /**
  * I18nEnum<br>
@@ -23,7 +18,7 @@ import capstone.utils.JsonDeserializable;
  *
  */
 @JsonSerialize(using = I18nEnumSerializer.class)
-public interface I18nEnum<E> extends Serializable, JsonDeserializable<E> {
+public interface I18nEnum<E extends Enum<E>> extends Serializable {
 	
 	/**
 	 * @param e {@link Enum} to make message key
@@ -31,12 +26,6 @@ public interface I18nEnum<E> extends Serializable, JsonDeserializable<E> {
 	 */
 	default String getMessageKey(Enum<?> e) {
 		return e.getClass().getSimpleName() + '.' + e.name().toLowerCase();
-	}
-	
-	@Override
-	default E deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 }

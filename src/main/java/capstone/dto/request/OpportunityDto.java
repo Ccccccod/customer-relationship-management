@@ -51,7 +51,6 @@ public class OpportunityDto extends NamedDto<Long> {
 	/**
 	 * Số tiền
 	 */
-	@NotNull
 	@PositiveOrZero
 	private Long moneyAmount;
 

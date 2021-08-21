@@ -67,7 +67,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Số tiền
 	 */
-	@Column(name = "money_amount", nullable = false)
+	@Column(name = "money_amount")
 	private Long moneyAmount;
 
 	/**

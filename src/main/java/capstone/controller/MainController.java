@@ -116,8 +116,8 @@ public class MainController {
 				.expectedTurnOver( //
 						opportunities.stream().filter(Objects::nonNull) //
 								.mapToLong(o -> {
-									Long totalMoney = Objects.isNull(o.totalMoney()) ? o.totalMoney() : 0L;
-									Integer successRate = Objects.isNull(o.getSuccessRate()) ? o.getSuccessRate() : 0;
+									Long totalMoney = Objects.nonNull(o.totalMoney()) ? o.totalMoney() : 0L;
+									Integer successRate = Objects.nonNull(o.getSuccessRate()) ? o.getSuccessRate() : 0;
 									return totalMoney * successRate;
 								}) //
 								.sum())

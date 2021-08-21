@@ -74,7 +74,7 @@ public class ProfileController {
 
 	protected User updateEntity(UserUpdateDto updateDto, User entity) throws ResourceNotFoundException {
 		return entity.toBuilder() //
-				.username(updateDto.getUsername()).email(updateDto.getEmail()) //
+				.username(updateDto.getUsername()) //
 				.roles(AbstractService.findEntitiesByIds(roleRepository, updateDto.getRoleIds(), Role.class)) //
 				.lastName(updateDto.getLastName()) //
 				.name(updateDto.getName()) //

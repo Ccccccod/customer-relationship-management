@@ -80,6 +80,10 @@ public interface ProductInfoed {
 		return null;
 	}
 	
+	default Long getMoneyAmount() {
+		return totalMoney();
+	}
+	
 	Set<ProductInfo> getProductInfos();
 
 	/**

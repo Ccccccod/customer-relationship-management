@@ -3,6 +3,9 @@
  */
 package capstone.controller;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +55,9 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 
 	@Override
 	protected Customer dtoToEntity(CustomerDto dto, Customer customer) throws ResourceNotFoundException {
+		Set<Field> fields = AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class);
+		Set<Career> careers = AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class)
+				.stream().filter(career -> fields.contains(career.getField())).collect(Collectors.toSet());
 		return customer.toBuilder()
 				.id(dto.getId())
 				.code(dto.getCode())
@@ -63,9 +69,9 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 				.address(dto.getAddress())
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
-				.fields(AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class))
+				.fields(fields)
 				.type(AbstractService.findEntityById(typeRepository, dto.getTypeId(), Type.class))
-				.careers(AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class))
+				.careers(careers)
 				.build();
 	}
 

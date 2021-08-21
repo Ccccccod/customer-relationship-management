@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,12 +46,6 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Liên hệ
 	 */
 	private Long contactId;
-	
-	/**
-	 * Số tiền
-	 */
-	@PositiveOrZero
-	private Long moneyAmount;
 
 	/**
 	 * Gian đoạn
@@ -77,12 +70,6 @@ public class OpportunityDto extends NamedDto<Long> {
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate expectedEndDate;
-
-	/**
-	 * Doanh số kỳ vọng
-	 */
-	@PositiveOrZero
-	private Long expectedTurnOver;
 	
 	/**
 	 * Nguồn gốc
@@ -108,17 +95,14 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * @param productInfoDtos
 	 */
 	@Builder
-	OpportunityDto(Long id, String name, Long customerId, Long contactId, Long moneyAmount,
-			OpportunityPhase opportunityPhase, Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver,
-			Long sourceId, Set<ProductInfoDto> productInfoDtos) {
+	public OpportunityDto(Long id, String name, Long customerId, Long contactId, OpportunityPhase opportunityPhase,
+			Integer successRate, LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos) {
 		super(id, name);
 		this.customerId = customerId;
 		this.contactId = contactId;
-		this.moneyAmount = moneyAmount;
 		this.opportunityPhase = opportunityPhase;
 		this.successRate = successRate;
 		this.expectedEndDate = expectedEndDate;
-		this.expectedTurnOver = expectedTurnOver;
 		this.sourceId = sourceId;
 		this.productInfoDtos = productInfoDtos;
 	}

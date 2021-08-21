@@ -6,6 +6,7 @@ package capstone.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,12 +64,6 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
-	
-	/**
-	 * Số tiền
-	 */
-	@Column(name = "money_amount")
-	private Long moneyAmount;
 
 	/**
 	 * Gian đoạn
@@ -95,12 +90,6 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	private LocalDate expectedEndDate;
 	
 	/**
-	 * Doanh số kỳ vọng
-	 */
-	@Column(name = "expected_turn_over", nullable = false)
-	private Long expectedTurnOver;
-	
-	/**
 	 * Nguồn gốc
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -123,8 +112,17 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * Địa chỉ
 	 * @return
 	 */
-	public String address() {
+	public String getAddress() {
 		return Objects.nonNull(this.customer) ? this.customer.getAddress() : null;
+	}
+	
+	/**
+	 * Doanh số kỳ vọng
+	 */
+	public Long getExpectedTurnOver() {
+		Long totalMoney = Optional.ofNullable(totalMoney()).orElse(0L);
+		Integer successRate = Optional.ofNullable(this.successRate).orElse(0);
+		return totalMoney * successRate;
 	}
 	
 	@Override
@@ -152,17 +150,14 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 */
 	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Customer customer, Contact contact, Long moneyAmount, OpportunityPhase opportunityPhase,
-			Integer successRate, LocalDate expectedEndDate, Long expectedTurnOver, Source source,
-			Set<ProductInfo> productInfos) {
+			String name, Customer customer, Contact contact, OpportunityPhase opportunityPhase, Integer successRate,
+			LocalDate expectedEndDate, Source source, Set<ProductInfo> productInfos) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
 		this.customer = customer;
 		this.contact = contact;
-		this.moneyAmount = moneyAmount;
 		this.opportunityPhase = opportunityPhase;
 		this.successRate = successRate;
 		this.expectedEndDate = expectedEndDate;
-		this.expectedTurnOver = expectedTurnOver;
 		this.source = source;
 		setToProductInfos(productInfos);
 	}

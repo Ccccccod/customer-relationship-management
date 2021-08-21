@@ -44,7 +44,6 @@ public class OpportunityControllerTest extends
 				.id(1L)
 				.name("co hoi 4")
 				.opportunityPhase(OpportunityPhase.BEGINNING)
-				.moneyAmount(1000L)
 				.successRate(90)
 				.expectedEndDate(LocalDate.of(2021, 4, 20))
 				.build();
@@ -55,7 +54,6 @@ public class OpportunityControllerTest extends
 		return OpportunityDto.builder()
 				.name(resource().getName())
 				.opportunityPhase(resource().getOpportunityPhase())
-				.moneyAmount(resource().getMoneyAmount())
 				.successRate(resource().getSuccessRate())
 				.expectedEndDate(resource().getExpectedEndDate())
 				.build();

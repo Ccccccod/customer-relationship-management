@@ -4,7 +4,6 @@
 package capstone.controller;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,17 +59,12 @@ public class OpportunityController
 				.name(dto.getName())
 				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
 				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
-				.moneyAmount(dto.getMoneyAmount())
 				.opportunityPhase(dto.getOpportunityPhase())
 				.successRate(dto.getSuccessRate())
 				.expectedEndDate(dto.getExpectedEndDate())
-				.expectedTurnOver(dto.getExpectedTurnOver())
 				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
 				.build();
 		opportunity.setToProductInfos(this.productInfoService.generateFromProductInfoDto(dto.getProductInfoDtos()));
-		if (Objects.isNull(opportunity.getExpectedTurnOver())) {
-			opportunity.setExpectedTurnOver(opportunity.getMoneyAmount() * opportunity.getSuccessRate() / 100);
-		}
 		return opportunity;
 	}
 	
@@ -79,15 +73,10 @@ public class OpportunityController
 		entity.setName(dto.getName());
 		entity.setCustomer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class));
 		entity.setContact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class));
-		entity.setMoneyAmount(dto.getMoneyAmount());
 		entity.setOpportunityPhase(dto.getOpportunityPhase());
 		entity.setSuccessRate(dto.getSuccessRate());
 		entity.setExpectedEndDate(dto.getExpectedEndDate());
-		entity.setExpectedTurnOver(dto.getExpectedTurnOver());
 		entity.setSource(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class));
-		if (Objects.isNull(entity.getExpectedTurnOver())) {
-			entity.setExpectedTurnOver(entity.getMoneyAmount() * entity.getSuccessRate() / 100);
-		}
 		// ProductInfo is not changed. It should not changeable in update controller
 		return entity;
 	}

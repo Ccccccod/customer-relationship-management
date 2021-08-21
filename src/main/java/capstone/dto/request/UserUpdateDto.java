@@ -32,7 +32,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserUpdateDto extends BaseDto<Long> {
 
-	@JsonAlias({ "name" })
 	@NotNull
 	@Username
 	private String username;
@@ -51,7 +50,6 @@ public class UserUpdateDto extends BaseDto<Long> {
 	/**
 	 * Họ và đệm
 	 */
-	@Email
 	private String name;
 	
 	/**

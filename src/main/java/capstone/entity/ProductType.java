@@ -63,6 +63,12 @@ public class ProductType extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Product> products;
+	
+	public Long getParentId() {
+		if (null == productType)
+			return null;
+		return productType.id;
+	}
 
 	/**
 	 * @param id

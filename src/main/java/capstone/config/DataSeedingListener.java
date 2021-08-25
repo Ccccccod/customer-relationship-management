@@ -136,7 +136,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     /**
      * WARNING: disable when testing
      */
-    private static final boolean enable = true;
+    private static final boolean enable = false;
     
     static final private String PASSWORD = "Minhkien1@";
 

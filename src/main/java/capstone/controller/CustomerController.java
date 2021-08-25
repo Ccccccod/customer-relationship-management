@@ -3,6 +3,7 @@
  */
 package capstone.controller;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,8 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 	protected Customer dtoToEntity(CustomerDto dto, Customer customer) throws ResourceNotFoundException {
 		Set<Field> fields = AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class);
 		Set<Career> careers = AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class)
-				.stream().filter(career -> fields.contains(career.getField())).collect(Collectors.toSet());
+				.stream().filter(career -> Objects.isNull(fields) || fields.contains(career.getField()))
+				.collect(Collectors.toSet());
 		return customer.toBuilder()
 				.id(dto.getId())
 				.code(dto.getCode())

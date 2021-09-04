@@ -63,6 +63,9 @@ public abstract class AbstractService< //
 	protected Repository repository;
 	
 	@Autowired
+	protected ClassificationService classificationService;
+	
+	@Autowired
 	protected PositionService positionService;
 	
 	@Autowired
@@ -94,6 +97,9 @@ public abstract class AbstractService< //
 	
 	@Autowired
 	protected OpportunityService opportunityService;
+	
+	@Autowired
+	protected VocativeService vocativeService;
 	
 	@Autowired
 	protected OrderService orderService;
@@ -178,6 +184,26 @@ public abstract class AbstractService< //
 
 	Entity getEntityById(ID id) throws ResourceNotFoundException {
 		return getEntityById(id, false);
+	}
+	
+	Set<Entity> getEntitiesById(Iterable<ID> ids, Boolean isDeleted) throws ResourceNotFoundException {
+		if (Objects.isNull(ids)) {
+			return null;
+		}
+		Set<Entity> entities = new LinkedHashSet<Entity>();
+		for (ID id : ids) {
+			if (Objects.nonNull(ids))
+				entities.add(getEntityById(id, isDeleted));
+		}
+		return entities;
+	}
+	
+	Set<Entity> getEntitiesById(Iterable<ID> ids) throws ResourceNotFoundException {
+		return getEntitiesById(ids, false);
+	}
+	
+	List<Entity> getAllEntities() throws ResourceNotFoundException {
+		return deletedFilter(() -> this.repository.findAll(), false);
 	}
 	
 	/**

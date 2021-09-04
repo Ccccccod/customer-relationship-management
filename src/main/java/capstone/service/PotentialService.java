@@ -28,7 +28,6 @@ import capstone.repository.VocativeRepository;
 /**
  * PotentialService
  * @author Tuna
- * 
  */
 @Service
 public class PotentialService
@@ -38,27 +37,6 @@ public class PotentialService
 	protected Class<Potential> entityClass() {
 		return Potential.class;
 	}
-
-	@Autowired
-	protected VocativeRepository vocativeRepository;
-
-	@Autowired
-	protected DepartmentRepository departmentRepository;
-
-	@Autowired
-	protected PositionRepository positionRepository;
-
-	@Autowired
-	protected ClassificationRepository classificationRepository;
-
-	@Autowired
-	protected SourceRepository sourceRepository;
-
-	@Autowired
-	protected GenderRepository genderRepository;
-
-	@Autowired
-	protected BusinessTypeRepository businessTypeRepository;
 	
 	@Override
  	protected Potential entityToResponse(Potential entity) {
@@ -70,15 +48,15 @@ public class PotentialService
 		return entity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
-				.vocative(findEntityById(vocativeRepository, d.getVocativeId(), Vocative.class))
+				.vocative(vocativeService.getEntityById(d.getVocativeId()))
 				.lastName(d.getLastName())
 				.name(d.getName())
-				.department(findEntityById(departmentRepository, d.getDepartmentId(), Department.class))
+				.department(departmentService.getEntityById(d.getDepartmentId()))
 				.position(findEntityById(positionRepository, d.getPositionId(), Position.class))
 				.phone(d.getPhone())
 				.officePhone(d.getOfficePhone())
 				.otherPhone(d.getOtherPhone())
-				.classifications(findEntitiesByIds(classificationRepository, d.getClassificationIds(), Classification.class))
+				.classifications(classificationService.getEntitiesById(d.getClassificationIds()))
 				.source(findEntityById(sourceRepository, d.getSourceId(), Source.class))
 				.notCallPhone(d.getNotCallPhone())
 				.notSendEmail(d.getNotSendEmail())

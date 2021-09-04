@@ -16,8 +16,7 @@ import capstone.repository.OrderRepository;
 
 /**
  * OrderService
- * @author Tuna
- *
+ * @author tuna
  */
 @Service
 public class OrderService extends AbstractService< OrderDto,  OrderDto,  Order,  Order,  OrderRepository, Long>{
@@ -53,7 +52,6 @@ public class OrderService extends AbstractService< OrderDto,  OrderDto,  Order, 
 				.deliveryDeadline(d.getDeliveryDeadline())
 				.receivedMoney(d.getReceivedMoney())
 				.build();
-
 	}
 
 	@Override

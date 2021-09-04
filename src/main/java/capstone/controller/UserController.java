@@ -3,8 +3,6 @@
  */
 package capstone.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +88,7 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 				.name(user.getName())
 				.phone(user.getPhone())
 				.dateOfBirth(user.getDateOfBirth())
-				.gender(user.getGender())
+//				.gender(user.getGender())
 				.address(user.getAddress())
 				.build();
 	}

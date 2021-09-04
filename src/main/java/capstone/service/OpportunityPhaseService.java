@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.OpportunityPhase;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.OpportunityPhaseRepository;
@@ -10,8 +12,9 @@ import capstone.repository.OpportunityPhaseRepository;
 /**
  * OpportunityPhaseService
  * @author DELL
- *
+ * @author tuna
  */
+@Service
 public class OpportunityPhaseService extends AbstractService<OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhaseRepository, Long> {
 
 	@Override

@@ -192,7 +192,7 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 	 * Giới tính
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "gender")
+	@JoinColumn(name = "gender_id")
 	private Gender gender;
 	
 	/**
@@ -236,7 +236,7 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 	 * Loại hình doanh nghiệp
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "position_id")
+	@JoinColumn(name = "business_type_id")
 	private BusinessType businessType;
 
 	/**

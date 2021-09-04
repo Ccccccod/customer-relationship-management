@@ -29,7 +29,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 
 @NotNull
-public class ProductInfoDto {
+public class ProductInfoDto extends BaseDto<Long> {
 
 	@NotNull
 	private String productCode;

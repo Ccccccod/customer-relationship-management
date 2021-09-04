@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Income;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.IncomeRepository;
@@ -10,7 +12,9 @@ import capstone.repository.IncomeRepository;
 /**
  * IncomeService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class IncomeService extends AbstractService<Income, Income, Income, Income, IncomeRepository, Long>  {
 
 	@Override

@@ -3,14 +3,18 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Type;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.TypeRepository;
 
 /**
+ * TypeService
  * @author DELL
- *
+ * @author tuna
  */
+@Service
 public class TypeService extends AbstractService<Type, Type, Type, Type, TypeRepository, Long> {
 
 	@Override

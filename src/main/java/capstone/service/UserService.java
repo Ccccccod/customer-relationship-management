@@ -18,8 +18,7 @@ import capstone.security.service.UserDetailsImpl;
 
 /**
  * User Service
- * @author Tuna
- *
+ * @author tuna
  */
 @Service
 public class UserService {

@@ -127,12 +127,11 @@ public class PermissionFunctionAction extends BaseEntity<Long> implements Permis
 	@Builder(toBuilder = true)
 	public PermissionFunctionAction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy,
 			User updatedBy, User owner, Boolean shared, Boolean deleted, PermissionFunction permissionFunction,
-			PermissionAction permissionAction, Set<Role> roles, MessageSource messageSource) {
+			PermissionAction permissionAction, Set<Role> roles) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.permissionFunction = permissionFunction;
 		this.permissionAction = permissionAction;
 		this.roles = roles;
-		this.messageSource = messageSource;
 	}
 
 	/**

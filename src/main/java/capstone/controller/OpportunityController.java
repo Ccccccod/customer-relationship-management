@@ -6,36 +6,34 @@ package capstone.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.OpportunityDto;
-import capstone.entity.Contact;
-import capstone.entity.Customer;
 import capstone.entity.Opportunity;
 import capstone.entity.ProductInfo;
-import capstone.entity.Source;
-import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityRepository;
-import capstone.repository.OrderRepository;
 import capstone.repository.ProductInfoRepository;
 import capstone.repository.SourceRepository;
-import capstone.service.AbstractService;
+import capstone.service.OpportunityService;
 import capstone.service.ProductInfoService;
+import capstone.service.UserService;
+import lombok.Getter;
 
 /**
  * OpportunityController
  * Cơ hội Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/opportunity")
 public class OpportunityController
-		extends AbstractDtoEntityController<OpportunityDto, Opportunity, OpportunityRepository, Long>
+		extends CRUDController<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, OpportunityService, Long>
 		implements IReadNameController<Opportunity, OpportunityRepository, Long>,
 		ProductInfoedController<Opportunity, OpportunityRepository, Long> {
 
@@ -55,35 +53,7 @@ public class OpportunityController
 	protected ProductInfoService productInfoService;
 	
 	@Autowired
-	private OrderRepository orderRepository;
-
-	@Override
-	protected Opportunity dtoToEntity(OpportunityDto dto, Opportunity opportunity) throws ResourceNotFoundException {
-		opportunity = opportunity.toBuilder()
-				.name(dto.getName())
-				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
-				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
-				.opportunityPhase(dto.getOpportunityPhase())
-				.successRate(dto.getSuccessRate())
-				.expectedEndDate(dto.getExpectedEndDate())
-				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
-				.build();
-		opportunity.setToProductInfos(this.productInfoService.generateFromProductInfoDto(dto.getProductInfoDtos()));
-		return opportunity;
-	}
-	
-	@Override
-	protected Opportunity updateEntity(OpportunityDto dto, Opportunity entity) throws ResourceNotFoundException {
-		entity.setName(dto.getName());
-		entity.setCustomer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class));
-		entity.setContact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class));
-		entity.setOpportunityPhase(dto.getOpportunityPhase());
-		entity.setSuccessRate(dto.getSuccessRate());
-		entity.setExpectedEndDate(dto.getExpectedEndDate());
-		entity.setSource(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class));
-		// ProductInfo is not changed. It should not changeable in update controller
-		return entity;
-	}
+	protected UserService userService;
 
 	@Override
 	public ProductInfoService getProductInfoService() {
@@ -115,12 +85,20 @@ public class OpportunityController
 		return this.productInfoRepository.deleteByIdInAndOpportunity(ids, t);
 	}
 	
+	@Autowired
+	protected OpportunityRepository opportunityRepository;
+
 	@Override
-	protected void preDelete(List<Opportunity> entities) {
-		entities.forEach(e -> {
-			e.getOrders().forEach(i -> i.setOpportunity(null));
-			orderRepository.saveAll(e.getOrders());
-		});
+	public OpportunityRepository getRepository() {
+		return opportunityRepository;
+	}
+	
+	@Getter
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Override
+	public UserService getUserService() {
+		return userService;
 	}
 	
 //	@GetMapping("{opportunityId}/product")

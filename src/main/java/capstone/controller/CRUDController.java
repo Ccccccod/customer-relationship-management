@@ -45,7 +45,7 @@ public abstract class CRUDController< //
 	private Service service;
 
 	@GetMapping
-	public ResponseEntity<List<Response>> getAll() {
+	public ResponseEntity<List<Response>> getAll() throws ResourceNotFoundException {
 		List<Response> list = service.getAll();
 		return ResponseEntity.ok(list);
 	}

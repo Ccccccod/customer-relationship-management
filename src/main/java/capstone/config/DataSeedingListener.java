@@ -224,7 +224,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		capstone.entity.OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Mở đầu") );
 		capstone.entity.OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Khách hàng quan tâm") );
-		capstone.entity.OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Demo/Giới thiệu") );
+		capstone.entity.OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Demo / Giới thiệu") );
 		capstone.entity.OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Đàm phán thương lượng") );
 		capstone.entity.OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thành công") );
 		capstone.entity.OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thất bại") );

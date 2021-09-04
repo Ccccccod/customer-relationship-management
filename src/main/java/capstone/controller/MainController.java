@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import capstone.common.Constant;
 import capstone.common.enums.OpportunityPhase;
 import capstone.dto.response.OpportunityOverviewResponse;
 import capstone.dto.response.OpportunityOverviewResponse.OpportunityOverviewResponseBuilder;
@@ -69,10 +71,14 @@ public class MainController {
 		if (Objects.isNull(orders)) {
 			throw new ResourceNotFoundException();
 		}
+		
+		Predicate<Order> paid = o -> Objects.equals(o.getPaymentStatus(), Constant.Order.PaymentStatus.PAID);
+		
 		Integer quantity = Math.toIntExact(orders.stream().count());
 		Long turnOver = orders.stream().mapToLong(Order::totalMoney).sum();
-		Integer recordedQuantity = Math.toIntExact(orders.stream().filter(Order::getPaid).count());
-		Long recordedTurnOver = orders.stream().filter(Order::getPaid).mapToLong(Order::totalMoney).sum();
+		Integer recordedQuantity = Math.toIntExact(orders.stream()
+				.filter(paid).count());
+		Long recordedTurnOver = orders.stream().filter(paid).mapToLong(Order::totalMoney).sum();
 		
 		OrderOverviewResponse overviewResponse = OrderOverviewResponse.builder() //
 				.quantity(quantity) //
@@ -100,12 +106,14 @@ public class MainController {
 		if (Objects.isNull(opportunities)) {
 			throw new ResourceNotFoundException();
 		}
-		List<OpportunityPhase> inProgress = Arrays.asList(OpportunityPhase.BEGINNING,
-				OpportunityPhase.CUSTOMER_INTEREST, OpportunityPhase.DEMO, OpportunityPhase.NEGOTIATION);
+		List<String> inProgress = Arrays.asList("Mở đầu",
+				"Khách hàng quan tâm", "Demo / Giới thiệu", "Đàm phán thương lượng");
 		OpportunityOverviewResponseBuilder opportunityOverviewResponseBuilder = OpportunityOverviewResponse.builder() //
 				.numberOfOportunitiesInProgress( //
 						opportunities.stream().filter(Objects::nonNull) //
-								.map(Opportunity::getOpportunityPhase).filter(inProgress::contains) //
+								.map(Opportunity::getOpportunityPhase)
+								.map(capstone.entity.OpportunityPhase::getName)
+								.filter(inProgress::contains) //
 								.mapToInt(o -> 1) //
 								.sum())
 				.doneTurnOver( //
@@ -141,8 +149,11 @@ public class MainController {
 		LocalDate date = LocalDate.of(year, Month.JANUARY, 1);
 		LocalDate firstDay = date.with(TemporalAdjusters.firstDayOfYear());
 		LocalDate lastDay = date.with(TemporalAdjusters.lastDayOfYear());
-		List<Opportunity> opportunities = opportunityService
-				.findByOpportunityPhaseAndExpectedEndDateBetween(OpportunityPhase.SUCCESS_FINISH, firstDay, lastDay);
+		List<Opportunity> opportunities = opportunityService //
+				.findByExpectedEndDateBetween(firstDay, lastDay).stream() //
+				.filter(o -> Objects.equals(o.getOpportunityPhase().getName(), "Kết thúc thành công")) //
+				.collect(Collectors.toList());
+//				.findByOpportunityPhaseAndExpectedEndDateBetween("Kết thúc thành công", firstDay, lastDay);
 		Map<Month, List<Opportunity>> map = opportunities.stream() //
 				// Group by months
 				.collect(Collectors

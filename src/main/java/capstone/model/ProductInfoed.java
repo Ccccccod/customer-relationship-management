@@ -77,7 +77,7 @@ public interface ProductInfoed {
 		if (Objects.nonNull(this.getProductInfos())) {
 			return this.getProductInfos().stream().mapToLong(ProductInfo::totalMoney).sum();
 		}
-		return null;
+		return 0L;
 	}
 	
 	default Long getMoneyAmount() {

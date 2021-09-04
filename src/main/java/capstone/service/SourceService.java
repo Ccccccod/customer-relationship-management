@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.SourceRepository;
@@ -10,7 +12,9 @@ import capstone.repository.SourceRepository;
 /**
  * SourceService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class SourceService extends AbstractService<Source, Source, Source, Source, SourceRepository, Long>{
 
 	@Override

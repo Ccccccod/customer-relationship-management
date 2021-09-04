@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;
+import capstone.entity.OpportunityPhase;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
-import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
-import capstone.repository.SourceRepository;
 
 /**
  * OpportunityService
@@ -28,18 +25,9 @@ public class OpportunityService
 
 	@Autowired
 	private OpportunityRepository repository;
-
+	
 	@Autowired
-	private CustomerRepository customerRepository;
-
-	@Autowired
-	private ContactRepository contactRepository;
-
-	@Autowired
-	private OpportunityPhaseRepository opportunityPhaseRepository;
-
-	@Autowired
-	private SourceRepository sourceRepository;
+	protected ProductInfoService productInfoService;
 
 	public List<Opportunity> findByExpectedEndDateBetween(LocalDate from, LocalDate to) {
 		return repository.findByExpectedEndDateBetween(from, to);
@@ -56,9 +44,9 @@ public class OpportunityService
 	}
 
 	@Override
-	protected Opportunity createDtoToEntity(OpportunityDto d, Opportunity entity)
+	protected Opportunity createDtoToEntity(OpportunityDto d, Opportunity opportunity)
 			throws ResourceNotFoundException {
-		return entity.toBuilder()
+		opportunity = opportunity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
 				.name(d.getName())
@@ -69,12 +57,26 @@ public class OpportunityService
                 .expectedEndDate(d.getExpectedEndDate())
                 .source(sourceService.getEntityById(d.getSourceId()))
 				.build();
+		opportunity.setToProductInfos(this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos()));
+		return opportunity;
 	}
 
 	@Override
-	protected Opportunity updateDtoToEntity(OpportunityDto updateDto, Opportunity entity)
+	protected Opportunity updateDtoToEntity(OpportunityDto d, Opportunity opportunity)
 			throws ResourceNotFoundException {
-		return this.createDtoToEntity(updateDto, entity);
+		opportunity = opportunity.toBuilder()
+				.id(d.getId())
+				.code(d.getCode())
+				.name(d.getName())
+				.customer(customerService.getEntityById(d.getCustomerId()))
+                .contact(contactService.getEntityById(d.getContactId()))
+                .opportunityPhase(opportunityPhaseService.getEntityById(d.getOpportunityPhaseId()))   
+                .successRate(d.getSuccessRate())
+                .expectedEndDate(d.getExpectedEndDate())
+                .source(sourceService.getEntityById(d.getSourceId()))
+				.build();
+		// ProductInfo is not changed. It should not changeable in update controller
+		return opportunity;
 	}
 
 	@Override

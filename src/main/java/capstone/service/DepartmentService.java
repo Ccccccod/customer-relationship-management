@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Department;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.DepartmentRepository;
@@ -10,7 +12,9 @@ import capstone.repository.DepartmentRepository;
 /**
  * DepartmentService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class DepartmentService extends AbstractService<Department, Department, Department, Department, DepartmentRepository, Long>{
 
 	@Override

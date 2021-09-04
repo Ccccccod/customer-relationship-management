@@ -24,5 +24,19 @@ public final class Constant {
 		public static final String NVARCHAR_255 = "nvarchar(255)";
 		
 	}
+	
+	public static final class Order {
+		
+		public static final class PaymentStatus {
+			
+			public static final String PAID = "Đã thanh toán";
+			
+			public static final String PAID_IN_PART = "Đã thanh toán một phần";
+			
+			public static final String UNPAID = "Chưa thanh toán"; 
+			
+		}
+		
+	}
 
 }

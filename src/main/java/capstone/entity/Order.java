@@ -25,6 +25,7 @@ import capstone.common.Constant;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
+import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +51,7 @@ import lombok.ToString;
 @Table(name = "[Order]", //
 		uniqueConstraints = { //
 		})
-public class Order extends BaseEntity<Long> implements ProductInfoed, Coded {
+public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Named {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -132,6 +133,16 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded {
 	 */
 	@Column(name = "receivedMoney", nullable = false)
 	private Long receivedMoney;
+	
+	public String getPaymentStatus() {
+		Long receivedMoney = this.receivedMoney != null ? this.receivedMoney : 0L;
+		Long totalMoney = this.totalMoney();
+		if (Objects.equals(receivedMoney, totalMoney))
+			return Constant.Order.PaymentStatus.PAID;
+		else if (receivedMoney == 0)
+			return Constant.Order.PaymentStatus.UNPAID;
+		return Constant.Order.PaymentStatus.PAID_IN_PART;
+	}
 
 	/**
 	 * Thông tin từng hàng hóa
@@ -190,6 +201,11 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded {
 		this.productInfos = productInfos;
 		setToProductInfos(productInfos);
 		this.invoices = invoices;
+	}
+
+	@Override
+	public String getName() {
+		return this.explanation;
 	}
 
 }

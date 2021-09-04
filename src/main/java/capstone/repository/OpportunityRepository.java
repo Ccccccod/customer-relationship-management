@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import capstone.common.enums.OpportunityPhase;
 import capstone.entity.Opportunity;
+import capstone.entity.OpportunityPhase;
 
 /**
  * OpportunityRepository

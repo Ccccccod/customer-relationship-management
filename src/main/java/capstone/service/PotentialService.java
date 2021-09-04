@@ -3,27 +3,12 @@
  */
 package capstone.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.PotentialDto;
-import capstone.entity.BusinessType;
-import capstone.entity.Classification;
-import capstone.entity.Department;
-import capstone.entity.Gender;
-import capstone.entity.Position;
 import capstone.entity.Potential;
-import capstone.entity.Source;
-import capstone.entity.Vocative;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.BusinessTypeRepository;
-import capstone.repository.ClassificationRepository;
-import capstone.repository.DepartmentRepository;
-import capstone.repository.GenderRepository;
-import capstone.repository.PositionRepository;
 import capstone.repository.PotentialRepository;
-import capstone.repository.SourceRepository;
-import capstone.repository.VocativeRepository;
 
 /**
  * PotentialService

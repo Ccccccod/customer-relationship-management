@@ -3,30 +3,12 @@
  */
 package capstone.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.ContactDto;
-import capstone.entity.Classification;
 import capstone.entity.Contact;
-import capstone.entity.Customer;
-import capstone.entity.Department;
-import capstone.entity.Gender;
-import capstone.entity.MaritalStatus;
-import capstone.entity.Position;
-import capstone.entity.Source;
-import capstone.entity.Vocative;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.BusinessTypeRepository;
-import capstone.repository.ClassificationRepository;
 import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
-import capstone.repository.DepartmentRepository;
-import capstone.repository.GenderRepository;
-import capstone.repository.MaritalStatusRepository;
-import capstone.repository.PositionRepository;
-import capstone.repository.SourceRepository;
-import capstone.repository.VocativeRepository;
 
 /**
  * ContactService

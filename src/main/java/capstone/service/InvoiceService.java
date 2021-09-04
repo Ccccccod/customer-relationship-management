@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.dto.request.InvoiceDto;
 import capstone.entity.Invoice;
 import capstone.exception.ResourceNotFoundException;
@@ -11,7 +13,9 @@ import capstone.repository.InvoiceRepository;
 /**
  * InvoiceService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class InvoiceService extends AbstractService<InvoiceDto , InvoiceDto, Invoice, Invoice,InvoiceRepository, Long> {
 
 	@Override

@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Field;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.FieldRepository;
@@ -10,7 +12,9 @@ import capstone.repository.FieldRepository;
 /**
  * FieldService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class FieldService extends AbstractService<Field, Field, Field, Field, FieldRepository, Long> {
 
 	@Override

@@ -45,17 +45,17 @@ public interface NamedJpaRepository<T extends BaseEntity<ID> & Named, ID extends
 	
 	List<IdAndName<ID>> findIdNameAllBy();
 	
-	/**
-	 * Find by name order by id
-	 * @param name
-	 * @return
-	 */
-	List<T> findByNameOrderByIdAsc(String name);
-	
-	List<T> findByNameIgnoreCase(String name);
-	
-	List<T> findByNameContaining(String name);
-
-	List<T> findByNameNot(String name);
+//	/**
+//	 * Find by name order by id
+//	 * @param name
+//	 * @return
+//	 */
+//	List<T> findByNameOrderByIdAsc(String name);
+//	
+//	List<T> findByNameIgnoreCase(String name);
+//	
+//	List<T> findByNameContaining(String name);
+//
+//	List<T> findByNameNot(String name);
 
 }

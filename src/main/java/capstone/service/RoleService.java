@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.dto.request.RoleDto;
 import capstone.entity.Role;
 import capstone.exception.ResourceNotFoundException;
@@ -11,7 +13,9 @@ import capstone.repository.RoleRepository;
 /**
  * RoleService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class RoleService extends AbstractService<RoleDto, RoleDto, Role, Role, RoleRepository, Long> {
 
 	@Override
@@ -29,8 +33,7 @@ public class RoleService extends AbstractService<RoleDto, RoleDto, Role, Role, R
 		return entity.toBuilder()
 		.name(dto.getName())
 		.description(dto.getDescription())
-		.permissionFunctionActions(AbstractService.findEntitiesByIds(permissionFunctionActionRepository,
-				dto.getPermissionFunctionActionIds(), PermissionFunctionAction.class))
+		.permissionFunctionActions(permissionFunctionActionService.getEntitiesById(dto.getPermissionFunctionActionIds()))
 		.build();
 	}
 

@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.BusinessType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.BusinessTypeRepository;
@@ -10,7 +12,9 @@ import capstone.repository.BusinessTypeRepository;
 /**
  * BusinessTypeService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class BusinessTypeService extends AbstractService<BusinessType, BusinessType, BusinessType, BusinessType, BusinessTypeRepository, Long> {
 
 	@Override

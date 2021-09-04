@@ -3,25 +3,12 @@
  */
 package capstone.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.CustomerDto;
-import capstone.entity.Career;
-import capstone.entity.Classification;
 import capstone.entity.Customer;
-import capstone.entity.Field;
-import capstone.entity.Income;
-import capstone.entity.Source;
-import capstone.entity.Type;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.CareerRepository;
-import capstone.repository.ClassificationRepository;
 import capstone.repository.CustomerRepository;
-import capstone.repository.FieldRepository;
-import capstone.repository.IncomeRepository;
-import capstone.repository.SourceRepository;
-import capstone.repository.TypeRepository;
 
 /**
  * Customer Service
@@ -30,23 +17,23 @@ import capstone.repository.TypeRepository;
 @Service
 public class CustomerService extends AbstractService<CustomerDto, CustomerDto, Customer, Customer, CustomerRepository, Long> {
 
-	@Autowired
-	private SourceRepository sourceRepository;
-	
-	@Autowired
-	private ClassificationRepository classificationRepository;
-	
-	@Autowired 
-	private FieldRepository fieldRepository;
-	
-	@Autowired
-	private TypeRepository typeRepository;
-	
-	@Autowired
-	private CareerRepository careerRepository;
-	
-	@Autowired
-	private IncomeRepository incomeRepository;
+//	@Autowired
+//	private SourceRepository sourceRepository;
+//	
+//	@Autowired
+//	private ClassificationRepository classificationRepository;
+//	
+//	@Autowired 
+//	private FieldRepository fieldRepository;
+//	
+//	@Autowired
+//	private TypeRepository typeRepository;
+//	
+//	@Autowired
+//	private CareerRepository careerRepository;
+//	
+//	@Autowired
+//	private IncomeRepository incomeRepository;
 
 	@Override
 	protected Class<Customer> entityClass() {

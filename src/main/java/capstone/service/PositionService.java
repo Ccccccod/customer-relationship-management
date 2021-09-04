@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Position;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PositionRepository;
@@ -10,7 +12,9 @@ import capstone.repository.PositionRepository;
 /**
  * PositionService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class PositionService extends AbstractService<Position, Position, Position, Position, PositionRepository, Long>  {
 
 	@Override

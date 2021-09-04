@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Gender;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.GenderRepository;
@@ -10,7 +12,9 @@ import capstone.repository.GenderRepository;
 /**
  * GenderService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class GenderService extends AbstractService<Gender, Gender, Gender, Gender, GenderRepository, Long>  {
 
 	@Override

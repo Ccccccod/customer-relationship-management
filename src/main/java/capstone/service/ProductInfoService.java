@@ -23,8 +23,7 @@ import capstone.repository.ProductRepository;
 
 /**
  * ProductInfoService
- * @author Tuna
- *
+ * @author tuna
  */
 @Service
 public class ProductInfoService {

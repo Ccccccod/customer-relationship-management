@@ -3,6 +3,8 @@
  */
 package capstone.service;
 
+import org.springframework.stereotype.Service;
+
 import capstone.entity.Career;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.CareerRepository;
@@ -10,7 +12,9 @@ import capstone.repository.CareerRepository;
 /**
  * CareerService
  * @author DELL
+ * @author tuna
  */
+@Service
 public class CareerService extends AbstractService<Career, Career, Career, Career, CareerRepository, Long> {
 
 	@Override

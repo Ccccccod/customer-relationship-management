@@ -19,8 +19,8 @@ import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProductTypeRepository;
 
 /**
- * @author Tuna
- *
+ * ProductTypeService
+ * @author tuna
  */
 @Service
 public class ProductTypeService extends AbstractService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long> implements IDtoToEntityService<ProductTypeDto, ProductType, Long>{

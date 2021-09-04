@@ -12,11 +12,10 @@ import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
-import lombok.Builder;
 
 /**
- * @author Tuna
- *
+ * ProductService
+ * @author tuna
  */
 @Service
 public class ProductService extends AbstractService<ProductDto, ProductDto, Product, Product, ProductRepository, Long> implements IDtoToEntityService<ProductDto, Product, Long>{

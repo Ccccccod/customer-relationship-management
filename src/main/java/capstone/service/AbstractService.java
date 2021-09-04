@@ -118,6 +118,9 @@ public abstract class AbstractService< //
 	
 	@Autowired
 	protected OrderService orderService;
+
+	@Autowired
+	protected PermissionFunctionActionService permissionFunctionActionService;
 	
 	@Autowired
     private EntityManager entityManager;

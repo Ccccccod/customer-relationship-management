@@ -62,7 +62,7 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 * Gian đoạn
 	 */
 	@NotNull
-	private OpportunityPhase opportunityPhaseId;
+	private Long opportunityPhaseId;
 
 	/**
 	 * Tỷ lệ thành công
@@ -104,7 +104,7 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 */
 	@Builder(toBuilder = true)
 	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId,
-			@NotNull OpportunityPhase opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,
+			@NotNull Long opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,
 			@NotNull LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos) {
 		super(id);
 		this.code = code;

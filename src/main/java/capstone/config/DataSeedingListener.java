@@ -49,19 +49,28 @@ import capstone.entity.Type;
 import capstone.entity.User;
 import capstone.entity.Vocative;
 import capstone.model.Coded;
+import capstone.model.Identifiable;
+import capstone.model.Named;
+import capstone.repository.BusinessTypeRepository;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
 import capstone.repository.CodedRepository;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
+import capstone.repository.DepartmentRepository;
 import capstone.repository.FieldRepository;
+import capstone.repository.GenderRepository;
+import capstone.repository.IncomeRepository;
 import capstone.repository.InvoiceRepository;
+import capstone.repository.MaritalStatusRepository;
 import capstone.repository.NamedJpaRepository;
+import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
+import capstone.repository.PositionRepository;
 import capstone.repository.PotentialRepository;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
@@ -69,6 +78,7 @@ import capstone.repository.RoleRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
 import capstone.repository.UserRepository;
+import capstone.repository.VocativeRepository;
 import capstone.utils.EncryptedPasswordUtils;
 
 /**
@@ -79,6 +89,30 @@ import capstone.utils.EncryptedPasswordUtils;
 @Component
 @SuppressWarnings("unused")
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+
+	@Autowired
+	private VocativeRepository vocativeRepository;
+
+	@Autowired
+	private BusinessTypeRepository businessTypeRepository;
+
+	@Autowired
+	private DepartmentRepository departmentRepository;
+
+	@Autowired
+	private GenderRepository genderRepository;
+
+	@Autowired
+	private IncomeRepository incomeRepository;
+
+	@Autowired
+	private MaritalStatusRepository maritalStatusRepository;
+
+	@Autowired
+	private OpportunityPhaseRepository opportunityPhaseRepository;
+
+	@Autowired
+	private PositionRepository positionRepository;
 	
 	@Autowired
 	private PotentialRepository potentialRepository;
@@ -151,6 +185,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 //        roleRepository.findAll().forEach(System.out::println);
 		
 		// Vocative
+		Vocative vocativeAnh = addNamedRepository(vocativeRepository, new Vocative("Anh"));
+		Vocative vocativeChi = addNamedRepository(vocativeRepository, new Vocative("Chị"));
+		Vocative vocativeOng = addNamedRepository(vocativeRepository, new Vocative("Ông"));
+		Vocative vocativeBa = addNamedRepository(vocativeRepository, new Vocative("Bà"));
         
         // Source Nguồn gốc
         Source sourceCustomerOrPartnerRefer = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
@@ -389,7 +427,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
         // Potential
         Potential potential6 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Chị")
+        		.vocative(vocativeChi)
         		.lastName("Tôn Nữ Lạc").name("Huyền")
         		.department("Phòng CSKH")
         		.position("Trợ lý")
@@ -401,7 +439,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 58, đường Nguyễn Sinh Cung, Phường Vĩ Dạ, Thành phố Huế, Thừa Thiên - Huế, Việt Nam")
         		.build());
         Potential potential7 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Anh")
+        		.vocative(vocativeAnh)
         		.lastName("Trần Nhật").name("Vũ")
         		.department("Phòng Kinh doanh")
         		.position("Nhân viên")
@@ -413,7 +451,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 15, đường Phạm Hữu Nhật, Phường Mỹ An, Quận Ngũ Hành Sơn, Đà Nẵng, Việt Nam")
         		.build());
         Potential potential8 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+        		.vocative(vocativeBa)
         		.lastName("Võ Thị Hoàng").name("Anh")
         		.department("Phòng nhân sự")
         		.position("Trưởng phòng")
@@ -425,7 +463,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 605 Đường Võ Văn Kiệt, Phường 04, Quận 5, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential9 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+        		.vocative(vocativeOng)
         		.lastName("Phạm Tiến").name("Hoàng")
         		.department("Phòng CSKH")
         		.position("Trưởng phòng")
@@ -437,7 +475,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("13 Đường Bà Huyện Thanh Quan, Phường 13, Quận Bình Thạnh, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential10 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+        		.vocative(vocativeBa)
         		.lastName("Trần Thị").name("Dung")
         		.department("Phòng nhân sự")
         		.position("Trưởng phòng")
@@ -449,7 +487,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 10 đường Hoàng Hoa Thám , Phường Cống Vị, Quận Ba Đình, Hà Nội, Việt Nam")
         		.build());
         Potential potential11 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+        		.vocative(vocativeOng)
         		.lastName("Nguyễn Quang").name("Tuấn")
         		.department("Phòng kinh doanh")
         		.position("Giám đốc")
@@ -461,7 +499,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
         		.build());
         Potential potential2 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+        		.vocative(vocativeOng)
         		.lastName("Nguyễn Văn").name("Nam")
         		.department("Phòng Kinh doanh")
         		.position("Trưởng phòng")
@@ -473,7 +511,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 51, phố Lê Đại Hành, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hà Nội, Việt Nam")
         		.build());
         Potential potential3 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+        		.vocative(vocativeBa)
         		.lastName("Phạm Thị Hà").name("Phương")
         		.department("Phòng nhân sự")
         		.position("Trưởng phòng")
@@ -485,7 +523,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 3, ngõ 78, phố Duy Tân, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội, Việt Nam")
         		.build());
         Potential potential4 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Chị")
+        		.vocative(vocativeChi)
         		.lastName("Trịnh Thị").name("Vinh")
         		.department("Phòng Hành chính tổng hợp")
         		.position("Trưởng phòng")
@@ -497,7 +535,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential5 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Anh")
+        		.vocative(vocativeAnh)
         		.lastName("Nguyễn Anh").name("Tuấn")
         		.department("Phòng Tài chính")
         		.position("Trưởng phòng")
@@ -1232,7 +1270,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.collect(Collectors.toList());
 	}
 	
-	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
+	private <T extends BaseEntity<ID> & Named, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
 		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
 	}

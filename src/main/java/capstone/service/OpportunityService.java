@@ -64,7 +64,10 @@ public class OpportunityService
 				.name(d.getName())
 				.customer(customerService.getEntityById(d.getCustomerId()))
                 .contact(contactService.getEntityById(d.getContactId()))
-                .opportunityPhase(opportunityPhaseService.getEntityById(d.getOpportunityPhaseId()))                
+                .opportunityPhase(opportunityPhaseService.getEntityById(d.getOpportunityPhaseId()))   
+                .successRate(d.getSuccessRate())
+                .expectedEndDate(d.getExpectedEndDate())
+                .source(sourceService.getEntityById(d.getSourceId()))
 				.build();
 	}
 

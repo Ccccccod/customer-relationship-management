@@ -62,6 +62,9 @@ public class OpportunityService
 				.id(d.getId())
 				.code(d.getCode())
 				.name(d.getName())
+				.customer(customerService.getEntityById(d.getCustomerId()))
+                .contact(contactService.getEntityById(d.getContactId()))
+                .opportunityPhase(opportunityPhaseService.getEntityById(d.getOpportunityPhaseId()))                
 				.build();
 	}
 

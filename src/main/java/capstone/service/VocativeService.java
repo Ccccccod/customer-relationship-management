@@ -34,5 +34,5 @@ public class VocativeService extends AbstractService<Vocative, Vocative, Vocativ
 	protected Vocative updateDtoToEntity(Vocative updateDto, Vocative entity) throws ResourceNotFoundException {
 		return this.createDtoToEntity(updateDto, entity);
 	}
-
+	
 }

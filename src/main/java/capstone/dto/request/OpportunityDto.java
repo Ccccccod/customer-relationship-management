@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
-import capstone.entity.OpportunityPhase;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;

@@ -67,9 +67,15 @@ public abstract class CodedEntity<ID extends Serializable> extends BaseEntity<ID
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param code
 	 */
-	public CodedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+	public CodedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			User owner, Boolean shared, Boolean deleted, String code) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 	}
 
 	/**

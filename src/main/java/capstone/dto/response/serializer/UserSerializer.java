@@ -32,7 +32,12 @@ public class UserSerializer extends StdSerializer<User> {
 	public void serialize(User user, JsonGenerator gen, SerializerProvider provider) throws IOException {
 		gen.writeStartObject();
 		gen.writeNumberField("id", user.getId());
+//		gen.writeStringField("code", user.getCode());
+		gen.writeStringField("username", user.getUsername());
+		gen.writeStringField("lastName", user.getLastName());
 		gen.writeStringField("name", user.getName());
+		gen.writeStringField("fullName", user.getFullName());
+		gen.writeStringField("email", user.getEmail());
 		gen.writeEndObject();
 	}
 

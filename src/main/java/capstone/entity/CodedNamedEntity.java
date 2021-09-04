@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import capstone.model.Coded;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,7 +32,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 
 @MappedSuperclass
-public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
+public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> implements Coded {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
@@ -40,9 +41,11 @@ public class CodedNamedEntity<ID extends Serializable> extends NamedEntity<ID> {
 	@Column(name = "code", unique = true, nullable = false)
 	protected String code;
 
-	public CodedNamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String code) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+	public CodedNamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			User owner, Boolean shared, Boolean deleted,
+			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
+			@NonNull @NotNull(message = "must not be null") @NotBlank(message = "must not be blank") String code) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.code = code;
 	}
 

@@ -22,7 +22,8 @@ public class ChangePasswordValidator implements ConstraintValidator<ChangePasswo
 	public boolean isValid(ChangePasswordRequest value, ConstraintValidatorContext context) {
 		if (Objects.isNull(value) || Objects.isNull(value.getOldPassword()) || Objects.isNull(value.getNewPassword()))
 			return true;
-		return value.getOldPassword().equals(value.getNewPassword());
+		// new password must ot be equal to old password
+		return !value.getOldPassword().equals(value.getNewPassword());
 	}
 
 }

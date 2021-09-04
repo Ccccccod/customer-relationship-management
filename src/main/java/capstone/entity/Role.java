@@ -20,6 +20,7 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
+import capstone.model.Named;
 import capstone.model.Permission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,9 +48,18 @@ import lombok.ToString;
 		uniqueConstraints = { //
 				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
 				})
-public class Role extends NamedEntity<Long> {
+public class Role extends BaseEntity<Long> implements Named {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Tên
+	 */
+	@Column(name = "name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String name;
 	
+	/**
+	 * Mô tả
+	 */
 	@Column(name = "description", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String description;
 
@@ -92,10 +102,6 @@ public class Role extends NamedEntity<Long> {
 					"This permission is not supported: " + permission.getClass().getName());
 		}
 	}
-
-	public Role(String name) {
-		super(name);
-	}
 	
 	public static final String ADMIN = "Quản trị hệ thống";
 	
@@ -109,18 +115,27 @@ public class Role extends NamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param description
 	 * @param users
 	 * @param permissionFunctionActions
 	 */
 	@Builder(toBuilder = true)
-	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String description, Set<User> users, Set<PermissionFunctionAction> permissionFunctionActions) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String name, String description, Set<User> users,
+			Set<PermissionFunctionAction> permissionFunctionActions) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.name = name;
 		this.description = description;
 		this.users = users;
 		this.permissionFunctionActions = permissionFunctionActions;
+	}
+
+	public Role(String name) {
+		this.name = name;
 	}
 	
 }

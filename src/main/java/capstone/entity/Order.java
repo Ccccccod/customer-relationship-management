@@ -21,8 +21,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.Constant;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.Coded;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +38,6 @@ import lombok.ToString;
  * Order
  * Đơn hàng
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -49,10 +50,14 @@ import lombok.ToString;
 @Table(name = "[Order]", //
 		uniqueConstraints = { //
 		})
-public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
+public class Order extends BaseEntity<Long> implements ProductInfoed, Coded {
 	private static final long serialVersionUID = 1L;
-	// Code
-	// Name
+
+	/**
+	 * Mã đơn hàng
+	 */
+	@Column(name = "code", unique = true, nullable = false)
+	private String code;
 	
 	/**
 	 * Ngày đặt hàng
@@ -86,23 +91,22 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Giá trị đơn hàng
 	 */
-	@Column(name = "order_value", nullable = false)
-	private Long orderValue;
+	public Long getOrderValue() {
+		return this.totalMoney();
+	}
+
+	/**
+	 * Diễn giải
+	 */
+	@Column(name = "explanation", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String explanation;
 	
 	/**
 	 * Giá trị thanh lý
-
 	 */
-	@Column(name = "liquidation_value")
-	private Long liquidationValue;
-
-	/**
-	 * Hạn thanh toán
-	 */
-	@Column(name = "liquidation_date", nullable = false)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	private LocalDate liquidationDeadline;
+	public Long getLiquidationValue() {
+		return this.totalMoney();
+	}
 
 	/**
 	 * Hạn giao hàng
@@ -111,12 +115,23 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate deliveryDeadline;
-	
+
 	/**
-	 * Tình trạng thanh toán
+	 * Hạn thanh toán
 	 */
-	@Column(name = "paid", nullable = false)
-	private Boolean paid;
+	@Column(name = "liquidation_date", nullable = false)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate liquidationDeadline;
+	
+	// Order fulfillment status
+	// Tình trạng thực hiện đơn hàng
+
+	/**
+	 * Thực thu
+	 */
+	@Column(name = "receivedMoney", nullable = false)
+	private Long receivedMoney;
 
 	/**
 	 * Thông tin từng hàng hóa
@@ -130,50 +145,51 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	@JsonIgnore
 	private Set<Invoice> invoices;
 
+	@Override
+	public void productInfoSetThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOrder(this);
+	}
+
 	/**
 	 * @param id
 	 * @param createdAt
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
-	 * @param name
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param code
 	 * @param orderDate
 	 * @param customer
 	 * @param contact
 	 * @param opportunity
-	 * @param orderValue
-	 * @param liquidationValue
-	 * @param liquidationDeadline
+	 * @param explanation
 	 * @param deliveryDeadline
-	 * @param paid
+	 * @param liquidationDeadline
+	 * @param receivedMoney
 	 * @param productInfos
 	 * @param invoices
 	 */
 	@Builder(toBuilder = true)
-	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String code, LocalDate orderDate, Customer customer, Contact contact, Opportunity opportunity,
-			Long orderValue, Long liquidationValue, LocalDate liquidationDeadline, LocalDate deliveryDeadline,
-			Boolean paid, Set<ProductInfo> productInfos, Set<Invoice> invoices) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String code, LocalDate orderDate, Customer customer, Contact contact,
+			Opportunity opportunity, String explanation, LocalDate deliveryDeadline, LocalDate liquidationDeadline,
+			Long receivedMoney, Set<ProductInfo> productInfos, Set<Invoice> invoices) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 		this.orderDate = orderDate;
 		this.customer = customer;
 		this.contact = contact;
 		this.opportunity = opportunity;
-		this.orderValue = orderValue;
-		this.liquidationValue = liquidationValue;
-		this.liquidationDeadline = liquidationDeadline;
+		this.explanation = explanation;
 		this.deliveryDeadline = deliveryDeadline;
-		this.paid = paid;
-//		this.productInfos = productInfos;
+		this.liquidationDeadline = liquidationDeadline;
+		this.receivedMoney = receivedMoney;
+		this.productInfos = productInfos;
 		setToProductInfos(productInfos);
 		this.invoices = invoices;
-	}
-
-	@Override
-	public void productInfoSetThis(ProductInfo productInfo) {
-		if (Objects.nonNull(productInfo))
-			productInfo.setOrder(this);
 	}
 
 }

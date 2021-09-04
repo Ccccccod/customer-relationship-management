@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -47,6 +50,9 @@ import lombok.ToString;
 
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt", "createdBy", "updatedBy" }, allowGetters = true)
 
+@FilterDef(name = "deletedFilter", parameters = @ParamDef(name = "isDeleted", type = "boolean"))
+@Filter(name = "deletedFilter", condition = "deleted = :isDeleted")
+
 @MappedSuperclass
 public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,13 +63,13 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	protected ID id;
 	
 	@CreationTimestamp
-	@Column(name = "created_at", updatable = false)
+	@Column(name = "created_at", updatable = true)
 //	@JsonSerialize(using = ShortDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	protected LocalDateTime createdAt;
 
 	@UpdateTimestamp
-	@Column(name = "updated_at", updatable = false)
+	@Column(name = "updated_at", updatable = true)
 //	@JsonSerialize(using = ShortDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	protected LocalDateTime updatedAt;
@@ -76,11 +82,23 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	protected User createdBy;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "update_by", nullable = true)
+	@JoinColumn(name = "updated_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonSerialize(using = UserSerializer.class)
 	protected User updatedBy;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "owner")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	protected User owner;
+	
+	@Column
+	protected Boolean shared;
+	
+	@Column
+	protected Boolean deleted = Boolean.FALSE;
 	
 	@JsonIgnore
 	public boolean isNew() {

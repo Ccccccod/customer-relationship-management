@@ -3,9 +3,10 @@
  */
 package capstone.controller;
 
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,13 @@ import capstone.entity.Type;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
+import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.FieldRepository;
+import capstone.repository.InvoiceRepository;
+import capstone.repository.OpportunityRepository;
+import capstone.repository.OrderRepository;
+import capstone.repository.PotentialRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
 import capstone.service.AbstractService;
@@ -53,13 +59,29 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 	
 	@Autowired
 	private CareerRepository careerRepository;
+	
+	@Autowired
+	private PotentialRepository potentialRepository;
+	
+	@Autowired
+	private ContactRepository contactRepository;
+	
+	@Autowired
+	private OpportunityRepository opportunityRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private InvoiceRepository invoiceRepository;
 
 	@Override
 	protected Customer dtoToEntity(CustomerDto dto, Customer customer) throws ResourceNotFoundException {
-		Set<Field> fields = AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class);
+		Set<Field> fields = Optional
+				.ofNullable(AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class))
+				.orElse(new LinkedHashSet<Field>());
 		Set<Career> careers = AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class)
-				.stream().filter(career -> Objects.isNull(fields) || fields.contains(career.getField()))
-				.collect(Collectors.toSet());
+				/*.stream().filter(career -> fields.contains(career.getField())).collect(Collectors.toSet())*/;
 		return customer.toBuilder()
 				.id(dto.getId())
 				.code(dto.getCode())
@@ -80,6 +102,22 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 	@Override
 	protected Class<Customer> entityClass() {
 		return Customer.class;
+	}
+	
+	@Override
+	protected void preDelete(List<Customer> entities) {
+		entities.forEach(e -> {
+			e.getPotentials().forEach(i -> i.setCustomer(null));
+			potentialRepository.saveAll(e.getPotentials());
+			e.getContacts().forEach(i -> i.setCustomer(null));
+			contactRepository.saveAll(e.getContacts());
+			e.getOpportunities().forEach(i -> i.setCustomer(null));
+			opportunityRepository.saveAll(e.getOpportunities());
+			e.getOrders().forEach(i -> i.setCustomer(null));
+			orderRepository.saveAll(e.getOrders());
+			e.getInvoices().forEach(i -> i.setCustomer(null));
+			invoiceRepository.saveAll(e.getInvoices());
+		});
 	}
 
 }

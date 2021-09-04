@@ -20,7 +20,7 @@ public enum OpportunityPhase implements I18nEnum<OpportunityPhase> {
 	/** Mở đầu */
 	BEGINNING,
 	
-	/** Khách hàng tự tìm kiếm */
+	/** Khách hàng quan tâm */
 	CUSTOMER_INTEREST,
 
 	/** DEMO / giới thiệu */

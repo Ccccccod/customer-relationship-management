@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,6 +24,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -76,6 +79,9 @@ public class ProductType extends CodedNamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param code
 	 * @param productType
@@ -84,8 +90,11 @@ public class ProductType extends CodedNamedEntity<Long> {
 	 */
 	@Builder(toBuilder = true)
 	public ProductType(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, String code, ProductType productType, Set<ProductType> productTypes, Set<Product> products) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+			User owner, Boolean shared, Boolean deleted,
+			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
+			@NonNull @NotNull(message = "must not be null") @NotBlank(message = "must not be blank") String code,
+			ProductType productType, Set<ProductType> productTypes, Set<Product> products) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.productType = productType;
 		this.productTypes = productTypes;
 		this.products = products;

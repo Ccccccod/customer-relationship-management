@@ -127,11 +127,11 @@ public abstract class AbstractCRUDController< //
 	
 	@DeleteMapping("")
 	public ResponseEntity<?> delete(@RequestBody List<ID> ids) throws ResourceNotFoundException {
-		List<ID> deletedTS = this.repository.findAllById(ids).stream()
-				.map(e -> e.getId())
+		List<Entity> entities = this.repository.findAllById(ids).stream()
 				.collect(Collectors.toList());
-		this.repository.deleteAllById(deletedTS);
-		return ResponseEntity.ok(MapBuilder.hashMap("deleted", deletedTS));
+		this.preDelete(entities);
+		this.repository.deleteAll(entities);
+		return ResponseEntity.ok(MapBuilder.hashMap("deleted", true));
 	}
 
 	@DeleteMapping("/{id}")
@@ -163,6 +163,14 @@ public abstract class AbstractCRUDController< //
 	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
 	 */
 	protected abstract Entity updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
+	
+	protected void preDelete(List<Entity> entities) {
+		entities.forEach(e -> {
+			e.setCreatedBy(null);
+			e.setUpdatedBy(null);
+		});
+		this.getRepository().saveAll(entities);
+	}
 	
 //	@SuppressWarnings("unchecked")
 //	protected void checkExistedFields(Entity entity)

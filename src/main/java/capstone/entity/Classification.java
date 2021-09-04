@@ -23,7 +23,6 @@ import lombok.ToString;
 /**
  * Phân loại khách hàng
  * @author Tuna
- * 
  */
 @Builder
 @Getter
@@ -40,17 +39,32 @@ import lombok.ToString;
 public class Classification extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Tổ chức
+	 */
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "classifications")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
 
+	/**
+	 * Liên hệ
+	 */
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "classifications")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Contact> contacts;
+
+	/**
+	 * Tiềm năng
+	 */
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "classifications")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Potential> potentials;
 
 	public Classification(String name) {
 		super(name);

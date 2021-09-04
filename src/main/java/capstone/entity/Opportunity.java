@@ -12,8 +12,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,10 +22,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.OpportunityPhase;
+import capstone.common.Constant;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
-import capstone.dto.response.serializer.I18nEnumSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.Coded;
+import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,23 +53,40 @@ import lombok.ToString;
 @Table(name = "Opportunity", //
 		uniqueConstraints = { //
 		})
-public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
+public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Coded, Named {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Mã cơ hội
+	 */
+	@Column(name = "code", unique = true, nullable = false)
+	private String code;
+
+	/**
+	 * Tổ chức
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
+	/**
+	 * Liên hệ
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
 
 	/**
+	 * Tên cơ hội
+	 */
+	@Column(name = "name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String name;
+
+	/**
 	 * Gian đoạn
 	 */
-	@JsonSerialize(using = I18nEnumSerializer.class, as = OpportunityPhase.class)
-	@Column(name = "opportunity_phase", nullable = false)
-	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "opportunity_phase_id")
 	private OpportunityPhase opportunityPhase;
 	
 	/**
@@ -137,28 +153,36 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
-	 * @param name
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param code
 	 * @param customer
 	 * @param contact
-	 * @param moneyAmount
+	 * @param name
 	 * @param opportunityPhase
 	 * @param successRate
 	 * @param expectedEndDate
-	 * @param expectedTurnOver
 	 * @param source
 	 * @param productInfos
+	 * @param orders
 	 */
 	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Customer customer, Contact contact, OpportunityPhase opportunityPhase, Integer successRate,
-			LocalDate expectedEndDate, Source source, Set<ProductInfo> productInfos) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+			User owner, Boolean shared, Boolean deleted, String code, Customer customer, Contact contact, String name,
+			OpportunityPhase opportunityPhase, Integer successRate, LocalDate expectedEndDate, Source source,
+			Set<ProductInfo> productInfos, Set<Order> orders) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 		this.customer = customer;
 		this.contact = contact;
+		this.name = name;
 		this.opportunityPhase = opportunityPhase;
 		this.successRate = successRate;
 		this.expectedEndDate = expectedEndDate;
 		this.source = source;
+		this.productInfos = productInfos;
+		this.orders = orders;
 		setToProductInfos(productInfos);
 	}
 

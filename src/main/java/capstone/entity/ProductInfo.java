@@ -172,6 +172,9 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param product
 	 * @param productCode
 	 * @param explanation
@@ -186,9 +189,10 @@ public class ProductInfo extends BaseEntity<Long> {
 	 */
 	@Builder(toBuilder = true)
 	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			Product product, String productCode, String explanation, String unit, Integer amount, Long price,
-			Integer discount, Integer vat, Opportunity opportunity, Order order, Invoice invoice) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+			User owner, Boolean shared, Boolean deleted, Product product, String productCode, String explanation,
+			String unit, Integer amount, Long price, Integer discount, Integer vat, Opportunity opportunity,
+			Order order, Invoice invoice) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.product = product;
 		this.productCode = productCode;
 		this.explanation = explanation;

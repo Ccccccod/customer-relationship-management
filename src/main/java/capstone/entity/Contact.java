@@ -9,8 +9,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,8 +26,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
-import capstone.common.enums.Gender;
-import capstone.common.enums.MaritalStatus;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import lombok.AllArgsConstructor;
@@ -35,6 +33,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -62,8 +61,9 @@ public class Contact extends CodedNamedEntity<Long> {
 	/**
 	 * Xưng hô
 	 */
-	@Column(name = "vocative", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String vocative;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "vocative_id")
+	private Vocative vocative;
 
 	/**
 	 * Họ và đệm
@@ -81,20 +81,24 @@ public class Contact extends CodedNamedEntity<Long> {
 	 */
 	@JsonProperty
 	public String getFullName() {
-		return lastName + " " + name;
+		String lastName = this.lastName != null ? this.lastName : "";
+		String name = this.name != null ? this.name : "";
+		return (lastName + " " + name).trim();
 	}
-	
-	/**
-	 * Chức danh
-	 */
-	@Column(name = "position", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String position;
 	
 	/**
 	 * Phòng ban
 	 */
-	@Column(name = "department", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String department;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "department_id")
+	private Department department;
+	
+	/**
+	 * Chức danh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "position_id")
+	private Position position;
 	
 	/**
 	 * Tổ chức
@@ -113,6 +117,18 @@ public class Contact extends CodedNamedEntity<Long> {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Classification> classifications;
+	
+	/**
+	 * Không gọi điện
+	 */
+	@Column(name = "not_call_phone")
+	private Boolean notCallPhone;
+	
+	/**
+	 * Không gửi email
+	 */
+	@Column(name = "not_send_email")
+	private Boolean notSendEmail;
 	
 	/**
 	 * Phone
@@ -171,22 +187,34 @@ public class Contact extends CodedNamedEntity<Long> {
 	/**
 	 * Giới tính
 	 */
-	@Column(name = "gender")
-	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "gender")
 	private Gender gender;
 
 	/**
 	 * Tình trạng hôn nhân
 	 */
-	@Column(name = "marital_status")
-	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "marital_status")
 	private MaritalStatus maritalStatus;
 	
 	/**
 	 * facebook
 	 */
-	@Column(name = "facebook", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	@Column(name = "facebook")
 	private String facebook;
+
+	/**
+	 * Tài khoản ngân hàng
+	 */
+	@Column(name = "bank_account")
+	private String bankAccount;
+	
+	/**
+	 * Mở tại ngân hàng
+	 */
+	@Column(name = "bank", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String bank;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contact")
 	@ToString.Exclude
@@ -212,14 +240,19 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param code
 	 * @param vocative
 	 * @param lastName
-	 * @param position
 	 * @param department
+	 * @param position
 	 * @param customer
 	 * @param classifications
+	 * @param notCallPhone
+	 * @param notSendEmail
 	 * @param phone
 	 * @param officePhone
 	 * @param otherPhone
@@ -231,24 +264,31 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param gender
 	 * @param maritalStatus
 	 * @param facebook
+	 * @param bankAccount
+	 * @param bank
 	 * @param opportunities
 	 * @param orders
 	 * @param invoices
 	 */
 	@Builder(toBuilder = true)
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, String code, String vocative, String lastName, String position, String department,
-			Customer customer, Set<Classification> classifications, String phone, String officePhone, String otherPhone,
-			String email, String officeEmail, Source source, String address, LocalDate dateOfBirth, Gender gender,
-			MaritalStatus maritalStatus, String facebook, Set<Opportunity> opportunities, Set<Order> orders,
-			Set<Invoice> invoices) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+			User owner, Boolean shared, Boolean deleted,
+			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
+			@NonNull @NotNull(message = "must not be null") @NotBlank(message = "must not be blank") String code,
+			Vocative vocative, String lastName, Department department, Position position, Customer customer,
+			Set<Classification> classifications, Boolean notCallPhone, Boolean notSendEmail, String phone,
+			String officePhone, String otherPhone, String email, String officeEmail, Source source, String address,
+			LocalDate dateOfBirth, Gender gender, MaritalStatus maritalStatus, String facebook, String bankAccount,
+			String bank, Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
-		this.position = position;
 		this.department = department;
+		this.position = position;
 		this.customer = customer;
 		this.classifications = classifications;
+		this.notCallPhone = notCallPhone;
+		this.notSendEmail = notSendEmail;
 		this.phone = phone;
 		this.officePhone = officePhone;
 		this.otherPhone = otherPhone;
@@ -260,6 +300,8 @@ public class Contact extends CodedNamedEntity<Long> {
 		this.gender = gender;
 		this.maritalStatus = maritalStatus;
 		this.facebook = facebook;
+		this.bankAccount = bankAccount;
+		this.bank = bank;
 		this.opportunities = opportunities;
 		this.orders = orders;
 		this.invoices = invoices;

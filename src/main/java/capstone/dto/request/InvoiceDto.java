@@ -19,7 +19,6 @@ import lombok.ToString;
  * Invoice Dto
  * Hóa đơn Dto
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -30,15 +29,15 @@ import lombok.ToString;
 public class InvoiceDto extends BaseDto<Long> implements Coded {
 	
 	/**
-	 * Khách hàng
-	 */
-	private Long customerId;
-	
-	/**
 	 * Mã
 	 */
 	@NotNull
 	private String code;
+	
+	/**
+	 * Khách hàng
+	 */
+	private Long customerId;
 	
 	/**
 	 * Địa chỉ
@@ -101,7 +100,7 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	 * @param orderId
 	 */
 	@Builder
-	InvoiceDto(Long id, String code, Long customerId, String address, String bankAccount, String bank, String taxCode,
+	public InvoiceDto(Long id, String code, Long customerId, String address, String bankAccount, String bank, String taxCode,
 			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId) {
 		super(id);
 		this.code = code;

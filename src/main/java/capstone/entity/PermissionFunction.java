@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -52,13 +54,18 @@ public class PermissionFunction extends NamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param permissionFunctionActions
 	 */
-	@Builder
+	@Builder(toBuilder = true)
 	public PermissionFunction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Set<PermissionFunctionAction> permissionFunctionActions) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+			User owner, Boolean shared, Boolean deleted,
+			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
+			Set<PermissionFunctionAction> permissionFunctionActions) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.permissionFunctionActions = permissionFunctionActions;
 	}
 
@@ -67,7 +74,6 @@ public class PermissionFunction extends NamedEntity<Long> {
 	 */
 	public PermissionFunction(@NonNull String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 }

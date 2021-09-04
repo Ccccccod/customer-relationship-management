@@ -6,16 +6,18 @@ package capstone.dto.request;
 import java.time.LocalDate;
 import java.util.Set;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.entity.OpportunityPhase;
+import capstone.model.Coded;
+import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -27,7 +29,6 @@ import lombok.ToString;
 /**
  * Cơ hội dto
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -35,7 +36,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class OpportunityDto extends NamedDto<Long> {
+public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
+
+	/**
+	 * Mã cơ hội
+	 */
+	private String code;
+
+	/**
+	 * Tên cơ hội
+	 */
+	private String name;
 	
 	/**
 	 * Khách hàng
@@ -51,9 +62,7 @@ public class OpportunityDto extends NamedDto<Long> {
 	 * Gian đoạn
 	 */
 	@NotNull
-	@JsonProperty("opportunityPhaseId") //
-	@JsonAlias("opportunityPhaseId")
-	private OpportunityPhase opportunityPhase;
+	private OpportunityPhase opportunityPhaseId;
 
 	/**
 	 * Tỷ lệ thành công
@@ -83,24 +92,26 @@ public class OpportunityDto extends NamedDto<Long> {
 
 	/**
 	 * @param id
+	 * @param code
 	 * @param name
 	 * @param customerId
 	 * @param contactId
-	 * @param moneyAmount
-	 * @param opportunityPhase
+	 * @param opportunityPhaseId
 	 * @param successRate
 	 * @param expectedEndDate
-	 * @param expectedTurnOver
 	 * @param sourceId
 	 * @param productInfoDtos
 	 */
-	@Builder
-	public OpportunityDto(Long id, String name, Long customerId, Long contactId, OpportunityPhase opportunityPhase,
-			Integer successRate, LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos) {
-		super(id, name);
+	@Builder(toBuilder = true)
+	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId,
+			@NotNull OpportunityPhase opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,
+			@NotNull LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos) {
+		super(id);
+		this.code = code;
+		this.name = name;
 		this.customerId = customerId;
 		this.contactId = contactId;
-		this.opportunityPhase = opportunityPhase;
+		this.opportunityPhaseId = opportunityPhaseId;
 		this.successRate = successRate;
 		this.expectedEndDate = expectedEndDate;
 		this.sourceId = sourceId;

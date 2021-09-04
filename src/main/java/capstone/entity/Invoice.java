@@ -31,7 +31,6 @@ import lombok.ToString;
  * Invoice
  * Hóa đơn
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -131,6 +130,9 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param code
 	 * @param customer
 	 * @param address
@@ -142,12 +144,14 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param receiverEmail
 	 * @param receiverPhone
 	 * @param order
+	 * @param productInfos
 	 */
 	@Builder(toBuilder = true)
 	public Invoice(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String code, Customer customer, String address, String bankAccount, String bank, String taxCode,
-			Contact buyer, String receiverName, String receiverEmail, String receiverPhone, Order order) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+			User owner, Boolean shared, Boolean deleted, String code, Customer customer, String address,
+			String bankAccount, String bank, String taxCode, Contact buyer, String receiverName, String receiverEmail,
+			String receiverPhone, Order order, Set<ProductInfo> productInfos) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.customer = customer;
 		this.address = address;
@@ -159,6 +163,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 		this.receiverEmail = receiverEmail;
 		this.receiverPhone = receiverPhone;
 		this.order = order;
+		this.productInfos = productInfos;
 	}
 
 }

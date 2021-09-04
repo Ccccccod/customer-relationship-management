@@ -125,7 +125,9 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 
 		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
 		productInfo.setCreatedBy(this.getUserService().getCurrentUser());
+		productInfo = getProductInfoRepository().save(productInfo);
 		getRepository().saveAndFlush(productInfoed);
+		getProductInfoRepository().flush();
 		
 		return ResponseEntity.ok(productInfo);
 	}

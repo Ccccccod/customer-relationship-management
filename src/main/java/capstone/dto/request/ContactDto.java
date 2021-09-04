@@ -7,15 +7,16 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.Gender;
-import capstone.common.enums.MaritalStatus;
+import capstone.dto.request.deserializer.IdDeserializable;
+import capstone.dto.request.deserializer.IdsDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
+import capstone.model.Coded;
+import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -35,37 +36,67 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class ContactDto extends CodedNamedDto<Long> {
+public class ContactDto extends BaseDto<Long> implements Coded, Named {
+	
+	/**
+	 * Mã cơ hội
+	 */
+	private String code;
 
 	/**
 	 * Xưng hô
 	 */
-	private String vocative;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("vocative")
+	private Long vocativeId;
 
 	/**
 	 * Họ và đệm
 	 */
 	private String lastName;
-
+	
 	/**
-	 * Chức danh
+	 * Tên
 	 */
-	private String position;
+	private String name;
 
 	/**
 	 * Phòng ban
 	 */
-	private String department;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("department")
+	private Long departmentId;
+
+	/**
+	 * Chức danh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("position")
+	private Long positionId;
 	
 	/**
 	 * Tổ chức
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("customer")
 	private Long customerId;
 	
 	/**
 	 * Phân loại khách hàng
 	 */
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("classifications")
 	private Set<Long> classificationIds;
+	
+	/**
+	 * Không gọi điện
+	 */
+	private Boolean notCallPhone;
+	
+	/**
+	 * Không gửi email
+	 */
+	private Boolean notSendEmail;
 
 	/**
 	 * Điện thoại
@@ -97,6 +128,8 @@ public class ContactDto extends CodedNamedDto<Long> {
 	/**
 	 * Nguồn gốc
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("source")
 	private Long sourceId;
 	
 	/**
@@ -117,16 +150,16 @@ public class ContactDto extends CodedNamedDto<Long> {
 	/**
 	 * Giới tính
 	 */
-	@JsonProperty("genderId") //
-	@JsonAlias("genderId")
-	private Gender gender;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("gender")
+	private Long genderId;
 
 	/**
 	 * Tình trạng hôn nhân
 	 */
-	@JsonProperty("maritalStatusId") //
+	@JsonDeserialize(using = IdDeserializable.class)
 	@JsonAlias("maritalStatusId")
-	private MaritalStatus maritalStatus;
+	private Long maritalStatusId;
 	
 	/**
 	 * facebook
@@ -134,15 +167,27 @@ public class ContactDto extends CodedNamedDto<Long> {
 	private String facebook;
 
 	/**
+	 * Tài khoản ngân hàng
+	 */
+	private String bankAccount;
+	
+	/**
+	 * Mở tại ngân hàng
+	 */
+	private String bank;
+
+	/**
 	 * @param id
-	 * @param name
 	 * @param code
-	 * @param vocative
+	 * @param vocativeId
 	 * @param lastName
-	 * @param position
-	 * @param department
+	 * @param name
+	 * @param departmentId
+	 * @param positionId
 	 * @param customerId
 	 * @param classificationIds
+	 * @param notCallPhone
+	 * @param notSendEmail
 	 * @param phone
 	 * @param officePhone
 	 * @param otherPhone
@@ -151,22 +196,29 @@ public class ContactDto extends CodedNamedDto<Long> {
 	 * @param sourceId
 	 * @param address
 	 * @param dateOfBirth
-	 * @param gender
-	 * @param maritalStatus
+	 * @param genderId
+	 * @param maritalStatusId
 	 * @param facebook
+	 * @param bankAccount
+	 * @param bank
 	 */
-	@Builder
-	public ContactDto(Long id, String name, String code, String vocative, String lastName, String position,
-			String department, Long customerId, Set<Long> classificationIds, String phone, String officePhone,
-			String otherPhone, String email, String officeEmail, Long sourceId, String address, LocalDate dateOfBirth,
-			Gender gender, MaritalStatus maritalStatus, String facebook) {
-		super(id, name, code);
-		this.vocative = vocative;
+	@Builder(toBuilder = true)
+	public ContactDto(Long id, String code, Long vocativeId, String lastName, String name, Long departmentId,
+			Long positionId, Long customerId, Set<Long> classificationIds, Boolean notCallPhone, Boolean notSendEmail,
+			String phone, String officePhone, String otherPhone, String email, String officeEmail, Long sourceId,
+			String address, LocalDate dateOfBirth, Long genderId, Long maritalStatusId, String facebook,
+			String bankAccount, String bank) {
+		super(id);
+		this.code = code;
+		this.vocativeId = vocativeId;
 		this.lastName = lastName;
-		this.position = position;
-		this.department = department;
+		this.name = name;
+		this.departmentId = departmentId;
+		this.positionId = positionId;
 		this.customerId = customerId;
 		this.classificationIds = classificationIds;
+		this.notCallPhone = notCallPhone;
+		this.notSendEmail = notSendEmail;
 		this.phone = phone;
 		this.officePhone = officePhone;
 		this.otherPhone = otherPhone;
@@ -175,9 +227,11 @@ public class ContactDto extends CodedNamedDto<Long> {
 		this.sourceId = sourceId;
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
-		this.maritalStatus = maritalStatus;
+		this.genderId = genderId;
+		this.maritalStatusId = maritalStatusId;
 		this.facebook = facebook;
+		this.bankAccount = bankAccount;
+		this.bank = bank;
 	}
 
 }

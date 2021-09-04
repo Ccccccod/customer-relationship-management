@@ -3,11 +3,19 @@
  */
 package capstone.dto.request;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
+import capstone.model.Coded;
+import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -27,42 +35,110 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class CustomerDto extends CodedNamedDto<Long> {
+public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	
+	/**
+	 * Mã khách hàng
+	 */
+	private String code;
+	
+	/**
+	 * Tên viết tắt
+	 */
 	private String shortName;
+	
+	/**
+	 * Tên
+	 */
+	private String name;
 
+	/**
+	 * Mã số thuế
+	 */
 	@NotNull
 	private String taxCode;
 	
+	/**
+	 * Điện thoại
+	 */
 	private String phone;
 
+	/**
+	 * Email
+	 */
 	@NotNull
 	@Email
 	private String email;
 	
 	/**
-	 * Nguon goc
+	 * Nguồn gốc
 	 */
 	private Long sourceId;
 	
 	/**
-	 * Phan loai khach hang
+	 * Phân loại khách hàng
 	 */
 	private Set<Long> classificationIds;
 	
+	/**
+	 * Lĩnh vực
+	 */
 	private Set<Long> fieldIds;
 	
+	/**
+	 * Loại hình
+	 */
 	private Long typeId;
 
+	/**
+	 * Ngành nghề
+	 */
 	private Set<Long> careerIds;
 	
+	/**
+	 * Địa chỉ
+	 */
 	private String address;
 
 	/**
+	 * Tài khoản ngân hàng
+	 */
+	private String bankAccount;
+	
+	/**
+	 * Mở tại ngân hàng
+	 */
+	private String bank;
+	
+	/**
+	 * Ngày thành lập
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate foundedDate;
+	
+	/**
+	 * Là khách hàng từ
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate customerSince;
+	
+	/**
+	 * Thu nhập
+	 */
+	private Long incomeId;
+	
+	/**
+	 * Website
+	 */
+	private String website;
+
+	/**
 	 * @param id
-	 * @param name
 	 * @param code
 	 * @param shortName
+	 * @param name
 	 * @param taxCode
 	 * @param phone
 	 * @param email
@@ -72,13 +148,22 @@ public class CustomerDto extends CodedNamedDto<Long> {
 	 * @param typeId
 	 * @param careerIds
 	 * @param address
+	 * @param bankAccount
+	 * @param bank
+	 * @param foundedDate
+	 * @param customerSince
+	 * @param incomeId
+	 * @param website
 	 */
-	@Builder
-	public CustomerDto(Long id, String name, String code, String shortName, String taxCode, String phone, String email,
-			Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId, Set<Long> careerIds,
-			String address) {
-		super(id, name, code);
+	@Builder(toBuilder = true)
+	public CustomerDto(Long id, String code, String shortName, String name, @NotNull String taxCode, String phone,
+			@NotNull String email, Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId,
+			Set<Long> careerIds, String address, String bankAccount, String bank, LocalDate foundedDate,
+			LocalDate customerSince, Long incomeId, String website) {
+		super(id);
+		this.code = code;
 		this.shortName = shortName;
+		this.name = name;
 		this.taxCode = taxCode;
 		this.phone = phone;
 		this.email = email;
@@ -88,6 +173,12 @@ public class CustomerDto extends CodedNamedDto<Long> {
 		this.typeId = typeId;
 		this.careerIds = careerIds;
 		this.address = address;
+		this.bankAccount = bankAccount;
+		this.bank = bank;
+		this.foundedDate = foundedDate;
+		this.customerSince = customerSince;
+		this.incomeId = incomeId;
+		this.website = website;
 	}
 	
 }

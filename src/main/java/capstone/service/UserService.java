@@ -22,7 +22,7 @@ import capstone.security.service.UserDetailsImpl;
  *
  */
 @Service
-public class UserService extends AbstractService {
+public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;

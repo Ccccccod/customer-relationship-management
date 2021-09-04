@@ -43,8 +43,21 @@ public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> impleme
 	@Column(name = "name", nullable = false, columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	protected String name;
 
-	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param name
+	 */
+	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			User owner, Boolean shared, Boolean deleted,
+			@NonNull @NotNull @NotBlank(message = "must not be empty") String name) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.name = name;
 	}
 	

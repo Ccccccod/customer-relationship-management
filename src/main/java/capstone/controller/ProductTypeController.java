@@ -18,6 +18,7 @@ import capstone.dto.response.ProductTypeTreeDto;
 import capstone.entity.ProductType;
 import capstone.exception.ErrorDetails;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.service.AbstractService;
 import capstone.service.ProductTypeService;
@@ -35,6 +36,9 @@ public class ProductTypeController
 	
 	@Autowired
 	protected ProductTypeService productTypeService;
+	
+	@Autowired
+	private ProductRepository productRepository;
 	
 	/**
 	 * Get a {@link List} of available {@link ProductType} to insert or update
@@ -71,6 +75,14 @@ public class ProductTypeController
 		return ProductType.class;
 	}
 	
-	
+	@Override
+	protected void preDelete(List<ProductType> entities) {
+		entities.forEach(e -> {
+			e.getProductTypes().forEach(i -> i.setProductType(null));
+			repository.saveAll(e.getProductTypes());
+			e.getProducts().forEach(i -> i.setProductType(null));
+			productRepository.saveAll(e.getProducts());
+		});
+	}
 
 }

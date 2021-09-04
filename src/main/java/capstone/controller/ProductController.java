@@ -3,6 +3,8 @@
  */
 package capstone.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +13,7 @@ import capstone.dto.request.ProductDto;
 import capstone.entity.Product;
 import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.ProductInfoRepository;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.service.AbstractService;
@@ -28,6 +31,9 @@ public class ProductController extends AbstractDtoEntityController<ProductDto, P
 	
 	@Autowired
 	ProductTypeRepository productTypeRepository;
+	
+	@Autowired
+	private ProductInfoRepository productInfoRepository;
 
 	@Override
 	protected Product dtoToEntity(ProductDto dto, Product product) throws ResourceNotFoundException {
@@ -53,6 +59,14 @@ public class ProductController extends AbstractDtoEntityController<ProductDto, P
 	@Override
 	protected Class<Product> entityClass() {
 		return Product.class;
+	}
+	
+	@Override
+	protected void preDelete(List<Product> entities) {
+		entities.forEach(e -> {
+			e.getProductInfos().forEach(i -> i.setProduct(null));
+			productInfoRepository.saveAll(e.getProductInfos());
+		});
 	}
 
 }

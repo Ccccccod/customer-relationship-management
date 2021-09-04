@@ -19,6 +19,7 @@ import capstone.entity.ProductInfo;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
+import capstone.repository.InvoiceRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
 import capstone.repository.ProductInfoRepository;
@@ -51,6 +52,9 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 	
 	@Autowired
 	protected ProductInfoService productInfoService;
+	
+	@Autowired
+	private InvoiceRepository invoiceRepository;
 
 	@Override
 	protected Order dtoToEntity(OrderDto dto, Order order) throws ResourceNotFoundException {
@@ -97,6 +101,14 @@ public class OrderConroller extends AbstractDtoEntityController<OrderDto, Order,
 	@Override
 	public List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, Order t) {
 		return this.productInfoRepository.deleteByIdInAndOrder(ids, t);
+	}
+	
+	@Override
+	protected void preDelete(List<Order> entities) {
+		entities.forEach(e -> {
+			e.getInvoices().forEach(i -> i.setOrder(null));
+			invoiceRepository.saveAll(e.getInvoices());
+		});
 	}
 
 }

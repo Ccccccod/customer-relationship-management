@@ -47,6 +47,7 @@ import capstone.entity.Role;
 import capstone.entity.Source;
 import capstone.entity.Type;
 import capstone.entity.User;
+import capstone.entity.Vocative;
 import capstone.model.Coded;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
@@ -148,6 +149,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
 //        userRepository.findAll().forEach(System.out::println);
 //        roleRepository.findAll().forEach(System.out::println);
+		
+		// Vocative
         
         // Source Nguồn gốc
         Source sourceCustomerOrPartnerRefer = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));

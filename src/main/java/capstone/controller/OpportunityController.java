@@ -20,6 +20,7 @@ import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityRepository;
+import capstone.repository.OrderRepository;
 import capstone.repository.ProductInfoRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.AbstractService;
@@ -52,6 +53,9 @@ public class OpportunityController
 	
 	@Autowired
 	protected ProductInfoService productInfoService;
+	
+	@Autowired
+	private OrderRepository orderRepository;
 
 	@Override
 	protected Opportunity dtoToEntity(OpportunityDto dto, Opportunity opportunity) throws ResourceNotFoundException {
@@ -109,6 +113,14 @@ public class OpportunityController
 	@Override
 	public List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, Opportunity t) {
 		return this.productInfoRepository.deleteByIdInAndOpportunity(ids, t);
+	}
+	
+	@Override
+	protected void preDelete(List<Opportunity> entities) {
+		entities.forEach(e -> {
+			e.getOrders().forEach(i -> i.setOpportunity(null));
+			orderRepository.saveAll(e.getOrders());
+		});
 	}
 	
 //	@GetMapping("{opportunityId}/product")

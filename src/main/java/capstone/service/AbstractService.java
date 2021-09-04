@@ -63,6 +63,27 @@ public abstract class AbstractService< //
 	protected Repository repository;
 	
 	@Autowired
+	protected PositionService positionService;
+	
+	@Autowired
+	protected OpportunityPhaseService opportunityPhaseService;
+	
+	@Autowired
+	protected MaritalStatusService maritalStatusService;
+	
+	@Autowired
+	protected IncomeService incomeService;
+	
+	@Autowired
+	protected GenderService genderService;
+	
+	@Autowired
+	protected DepartmentService departmentService;
+	
+	@Autowired
+	protected BusinessTypeService businessTypeService;
+	
+	@Autowired
 	protected PotentialService potentialService;
 	
 	@Autowired

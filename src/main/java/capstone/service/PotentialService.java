@@ -28,6 +28,7 @@ import capstone.repository.VocativeRepository;
 /**
  * PotentialService
  * @author Tuna
+ * 
  */
 @Service
 public class PotentialService

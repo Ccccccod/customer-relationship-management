@@ -69,6 +69,9 @@ public abstract class AbstractService< //
 	protected SourceService sourceService;
 
 	@Autowired
+	protected ProductTypeService productTypeService;
+	
+	@Autowired
 	protected CareerService careerService;
 	
 	@Autowired

@@ -23,7 +23,7 @@ import capstone.repository.ProductTypeRepository;
  *
  */
 @Service
-public class ProductTypeService extends AbstractService implements IDtoToEntityService<ProductTypeDto, ProductType, Long>{
+public class ProductTypeService extends AbstractService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long> implements IDtoToEntityService<ProductTypeDto, ProductType, Long>{
 
 	@Autowired
 	protected ProductTypeRepository productTypeRepository;
@@ -83,6 +83,34 @@ public class ProductTypeService extends AbstractService implements IDtoToEntityS
 				return null;
 			return pts.stream().map(this.productTypeToProductTypeTreeDto()).collect(Collectors.toSet());
 		};
+	}
+
+	@Override
+	protected Class<ProductType> entityClass() {
+		return ProductType.class;
+	}
+
+	@Override
+	protected ProductType entityToResponse(ProductType entity) {
+		return entity;
+	}
+
+	@Override
+	protected ProductType createDtoToEntity(ProductTypeDto dto, ProductType entity)
+			throws ResourceNotFoundException {
+		return entity.toBuilder()
+				.id(dto.getId())
+				.code(dto.getCode())
+				.name(dto.getName())
+				.productType(productTypeService.getEntityById(dto.getProductTypeId()))
+				.build();
+	}
+
+	@Override
+	protected ProductType updateDtoToEntity(ProductTypeDto updateDto, ProductType entity)
+			throws ResourceNotFoundException {
+		return this.createDtoToEntity(updateDto, entity);
+
 	}
 
 }

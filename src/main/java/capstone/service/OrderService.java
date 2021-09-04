@@ -31,14 +31,12 @@ public class OrderService extends AbstractService< OrderDto,  OrderDto,  Order, 
 
 	@Override
 	protected Class<Order> entityClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return Order.class;
 	}
 
 	@Override
 	protected Order entityToResponse(Order entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return entity;
 	}
 
 	@Override

@@ -31,7 +31,9 @@ import capstone.entity.Career;
 import capstone.entity.Classification;
 import capstone.entity.Contact;
 import capstone.entity.Customer;
+import capstone.entity.Department;
 import capstone.entity.Field;
+import capstone.entity.Income;
 import capstone.entity.Invoice;
 import capstone.entity.NamedEntity;
 import capstone.entity.Opportunity;
@@ -39,6 +41,7 @@ import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
+import capstone.entity.Position;
 import capstone.entity.Potential;
 import capstone.entity.Product;
 import capstone.entity.ProductInfo;
@@ -190,6 +193,52 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		Vocative vocativeOng = addNamedRepository(vocativeRepository, new Vocative("Ông"));
 		Vocative vocativeBa = addNamedRepository(vocativeRepository, new Vocative("Bà"));
         
+		//Department
+		Department department1 = addNamedRepository(departmentRepository, new Department("Ban Giám đốc")) ;
+		Department department2 = addNamedRepository(departmentRepository, new Department("Phòng Tài chính")) ;
+		Department department3 = addNamedRepository(departmentRepository, new Department("Phòng Nhân sự")) ;
+		Department department4 = addNamedRepository(departmentRepository, new Department("Phòng Marketing")) ;
+		Department department5 = addNamedRepository(departmentRepository, new Department("Phòng CSKH")) ;
+		Department department6 = addNamedRepository(departmentRepository, new Department("Phòng Hành chính tổng hợp")) ;
+		Department department7 = addNamedRepository(departmentRepository, new Department("Phòng Kinh doanh")) ;
+
+		// Position
+		Position position1 = addNamedRepository(positionRepository, new Position("Chủ tịch"));
+		Position position2 = addNamedRepository(positionRepository, new Position("Phó Chủ tịch"));
+		Position position3 = addNamedRepository(positionRepository, new Position("Tổng Giám đốc"));
+		Position position4 = addNamedRepository(positionRepository, new Position("Phó TGĐ"));
+		Position position5 = addNamedRepository(positionRepository, new Position("Giám đốc"));
+		Position position6 = addNamedRepository(positionRepository, new Position("Kế toán trưởng"));
+		Position position7 = addNamedRepository(positionRepository, new Position("Trưởng phòng"));
+		Position position8 = addNamedRepository(positionRepository, new Position("Trợ lý"));
+		Position position9 = addNamedRepository(positionRepository, new Position("Nhân viên"));
+
+		//Income
+		
+		Income income1 = addNamedRepository(incomeRepository, new Income("Dưới 3 tỷ "));
+		Income income2 = addNamedRepository(incomeRepository, new Income("Từ 3 tỷ đồng đến 10 tỷ đồng "));
+		Income income3 = addNamedRepository(incomeRepository, new Income("Từ 10 tỷ đồng đến 100 tỷ đồng"));
+		Income income4 = addNamedRepository(incomeRepository, new Income("Trên 100 tỷ đồng"));
+
+		// Oppotunity
+		
+		capstone.entity.OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Mở đầu") );
+		capstone.entity.OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Khách hàng quan tâm") );
+		capstone.entity.OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Demo/Giới thiệu") );
+		capstone.entity.OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Đàm phán thương lượng") );
+		capstone.entity.OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thành công") );
+		capstone.entity.OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thất bại") );
+
+
+
+		
+
+
+
+        
+
+		
+		
         // Source Nguồn gốc
         Source sourceCustomerOrPartnerRefer = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
         Source sourceSelfSeekingSaleStaff = addNamedRepository(sourceRepository, new Source("Nhân viên kinh doanh tự tìm kiếm"));
@@ -210,10 +259,22 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Field fieldLightIndustry = addNamedRepository(fieldRepository, new Field("Công nghiệp nhẹ"));
         
         // Type Loại hình
+        Type type1 = addNamedRepository(typeRepository, new Type("Công ty TNHH"));
+        Type type2 = addNamedRepository(typeRepository, new Type("Công ty cổ phần"));
+        Type type3 = addNamedRepository(typeRepository, new Type("Công ty có vốn đầu tư nước ngoài "));
+        Type type4 = addNamedRepository(typeRepository, new Type("Doanh nghiệp tư nhân "));
+        Type type5 = addNamedRepository(typeRepository, new Type("Tổ chức phi chính phủ "));
+        Type type6 = addNamedRepository(typeRepository, new Type("Cửa hàng , trung tâm"));
+        Type type7 = addNamedRepository(typeRepository, new Type("Hợp tác xã"));
+        Type type8 = addNamedRepository(typeRepository, new Type("Công ty hợp danh"));
+        Type type9 = addNamedRepository(typeRepository, new Type("Đơn vị HCSN cấp trung ương"));
+        Type type10 = addNamedRepository(typeRepository, new Type("Công ty HCSN cấp Tỉnh/Thành Phố"));
+        Type type11 = addNamedRepository(typeRepository, new Type("Công ty HCSN cấp Quận/Huyện"));
         Type typeBusiness = addNamedRepository(typeRepository, new Type("Doanh nghiệp"));
         Type typeIndividualHousehold = addNamedRepository(typeRepository, new Type("Hộ cá thể"));
         Type typeAdministrativeCareer = addNamedRepository(typeRepository, new Type("Hành chính sự nghiệp"));
         Type typeOther = addNamedRepository(typeRepository, new Type("Khác"));
+        
         
         // Career Ngành nghề
         Career career01 = addNamedRepository(careerRepository, new Career(fieldCommerce, "Kinh doanh nhôm, kính"));
@@ -429,120 +490,120 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Potential potential6 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeChi)
         		.lastName("Tôn Nữ Lạc").name("Huyền")
-        		.department("Phòng CSKH")
-        		.position("Trợ lý")
+        		.department(department1)
+        		.position(position1)
         		.phone("0399542127").officePhone("0234625478")
         		.source(sourceOther)
         		.officeEmail("lachuyen.hoanggia@gmail.com").email("tonnulachuyen@gmail.com")
-        		.customer(customer6HoangGia)
+        		.customer(customer10PhanAnh.getName())
         		.taxCode("0125546683")
         		.address("Số nhà 58, đường Nguyễn Sinh Cung, Phường Vĩ Dạ, Thành phố Huế, Thừa Thiên - Huế, Việt Nam")
         		.build());
         Potential potential7 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeAnh)
         		.lastName("Trần Nhật").name("Vũ")
-        		.department("Phòng Kinh doanh")
-        		.position("Nhân viên")
+        		.department(department2)
+        		.position(position2)
         		.phone("0354265794").officePhone("0236521456")
         		.source(sourceCustomerCome)
         		.officeEmail("vunt2@sunshine.com.vn").email("nhatvu94@gmail.com")
-        		.customer(customer7AnhDuong)
+        		.customer(customer7AnhDuong.getName())
         		.taxCode("0151284610")
         		.address("Số nhà 15, đường Phạm Hữu Nhật, Phường Mỹ An, Quận Ngũ Hành Sơn, Đà Nẵng, Việt Nam")
         		.build());
         Potential potential8 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeBa)
         		.lastName("Võ Thị Hoàng").name("Anh")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department3)
+        		.position(position3)
         		.phone("0912901685").officePhone("0245298913")
         		.source(sourceCustomerCome)
         		.officeEmail("vthanh@vht.com.vn").email("vthanh@gmail.com")
-        		.customer(customer8VHT)
+        		.customer(customer8VHT.getName())
         		.taxCode(null)
         		.address("Số nhà 605 Đường Võ Văn Kiệt, Phường 04, Quận 5, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential9 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeOng)
         		.lastName("Phạm Tiến").name("Hoàng")
-        		.department("Phòng CSKH")
-        		.position("Trưởng phòng")
+        		.department(department4)
+        		.position(position4)
         		.phone("0915145846").officePhone(null)
         		.source(sourceCustomerCome)
         		.officeEmail("pthoang@ftech.com").email("pthoang@gmail.com")
-        		.customer(customer9FTech)
+        		.customer(customer9FTech.getName())
         		.taxCode(null)
         		.address("13 Đường Bà Huyện Thanh Quan, Phường 13, Quận Bình Thạnh, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential10 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeBa)
         		.lastName("Trần Thị").name("Dung")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department5)
+        		.position(position5)
         		.phone("0914601685").officePhone(null)
         		.source(sourceCustomerCome)
         		.officeEmail("ttdung@phananh.com.vn").email("ttdung@gmail.com")
-        		.customer(customer10PhanAnh)
+        		.customer(customer10PhanAnh.getName())
         		.taxCode(null)
         		.address("Số nhà 10 đường Hoàng Hoa Thám , Phường Cống Vị, Quận Ba Đình, Hà Nội, Việt Nam")
         		.build());
         Potential potential11 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeOng)
         		.lastName("Nguyễn Quang").name("Tuấn")
-        		.department("Phòng kinh doanh")
-        		.position("Giám đốc")
+        		.department(department6)
+        		.position(position6)
         		.phone("0915367546").officePhone("02043245823")
         		.source(sourceSelfSeekingSaleStaff)
         		.officeEmail("tuannq@ico.com.vn").email("quangtuanico@gmail.com")
-        		.customer(customer3ICOVN)
+        		.customer(customer3ICOVN.getName())
         		.taxCode(null)
         		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
         		.build());
         Potential potential2 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeOng)
         		.lastName("Nguyễn Văn").name("Nam")
-        		.department("Phòng Kinh doanh")
-        		.position("Trưởng phòng")
+        		.department(department7)
+        		.position(position7)
         		.phone("0988123456").officePhone("0243981234")
         		.source(sourceSelfSeekingSaleStaff)
         		.officeEmail("nvnam@ngs.com.vn").email("nvnam@gmail.com")
-        		.customer(customer1NGS)
+        		.customer(customer1NGS.getName())
         		.taxCode(null)
         		.address("Số nhà 51, phố Lê Đại Hành, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hà Nội, Việt Nam")
         		.build());
         Potential potential3 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeBa)
         		.lastName("Phạm Thị Hà").name("Phương")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department6)
+        		.position(position6)
         		.phone("0975123456").officePhone("0245221234")
         		.source(sourceCustomerCome)
         		.officeEmail("pthphuong@voltrans.com").email("pthphuong@gmail.com")
-        		.customer(customer2VOLTRANS)
+        		.customer(customer2VOLTRANS.getName())
         		.taxCode(null)
         		.address("Số nhà 3, ngõ 78, phố Duy Tân, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội, Việt Nam")
         		.build());
         Potential potential4 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeChi)
         		.lastName("Trịnh Thị").name("Vinh")
-        		.department("Phòng Hành chính tổng hợp")
-        		.position("Trưởng phòng")
+        		.department(department1)
+        		.position(position1)
         		.phone("0399958428").officePhone("0283268542")
         		.source(sourceCustomerOrPartnerRefer)
         		.officeEmail("vinhtt1@eurodoor.com.vn").email("trinhvinh22292@gmail.com")
-        		.customer(customer4Eurodoor)
+        		.customer(customer4Eurodoor.getName())
         		.taxCode("0185514943")
         		.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential5 = addNamedRepository(potentialRepository, Potential.builder()
         		.vocative(vocativeAnh)
         		.lastName("Nguyễn Anh").name("Tuấn")
-        		.department("Phòng Tài chính")
-        		.position("Trưởng phòng")
+        		.department(department2)
+        		.position(position2)
         		.phone("0942354785").officePhone("02483024554")
         		.source(sourceThroughSeminalsAndTraining)
         		.officeEmail("natuan@hanoi.edu.vn").email("anhtuan180991@gmail.com")
-        		.customer(customer5SGDHN)
+        		.customer(customer5SGDHN.getName())
         		.taxCode("0104128452")
         		.address("Số nhà 23, đường Quang Trung, Phường Phan Chu Trinh, Quận Hoàn Kiếm, Hà Nội, Việt Nam")
         		.build());
@@ -696,9 +757,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		// Contact
 		Contact contact1 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00001")
-				.vocative("Ông")
+				.vocative(vocativeAnh)
 				.lastName("Nguyễn Văn").name("Nam")
-				.position("Trưởng phòng").department("Phòng kinh doanh")
+				.position(position1)
+				.department(department1)
 				.phone("0988123456").officePhone("0243981234")
 				.officeEmail("nvnam@ngs.com.vn").email("nvnam@gmail.com")
 				.customer(customer1NGS)
@@ -708,9 +770,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact2 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00002")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Phạm Thị Hà").name("Phương")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position2).department(department2)
 				.phone("0975123456").officePhone("0245221234")
 				.officeEmail("pthphuong@voltrans.com").email("pthphuong@gmail.com")
 				.customer(customer2VOLTRANS)
@@ -720,9 +782,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact3 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00003")
-				.vocative("Ông")
+				.vocative(vocativeBa)
 				.lastName("Nguyễn Quang").name("Tuấn")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position3).department(department3)
 				.phone("0915367546").officePhone("0245221234")
 				.officeEmail("pthphuong@voltrans.com").email("quangtuanico@gmail.com")
 				.customer(customer3ICOVN)
@@ -733,9 +795,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact4 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00004")
-				.vocative("Chị")
+				.vocative(vocativeChi)
 				.lastName("Trịnh Thị").name("Vinh")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position3).department(department3)
 				.phone("0399958428").officePhone("0245221234")
 				.officeEmail("vinhtt1@eurodoor.com.vn").email("trinhvinh22292@gmail.com")
 				.customer(customer4Eurodoor)
@@ -745,9 +807,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact5 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00005")
-				.vocative("Anh")
+				.vocative(vocativeChi)
 				.lastName("Nguyễn Anh").name("Tuấn")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position4).department(department4)
 				.phone("0942354785").officePhone("02483024554")
 				.officeEmail("natuan@hanoi.edu.vn").email("anhtuan180991@gmail.com")
 				.customer(customer5SGDHN)
@@ -757,9 +819,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact6 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00006")
-				.vocative("Chị")
+				.vocative(vocativeChi)
 				.lastName("Tôn Nữ Lạc").name("Huyền")
-				.position("Trợ lý").department("Phòng CSKH")
+				.position(position5).department(department5)
 				.phone("0399542127").officePhone("0234625478")
 				.officeEmail("lachuyen.hoanggia@gmail.com").email("tonnulachuyen@gmail.com")
 				.customer(customer6HoangGia)
@@ -769,9 +831,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact7 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00007")
-				.vocative("Anh")
+				.vocative(vocativeAnh)
 				.lastName("Trần Nhật").name("Vũ")
-				.position("Nhân viên").department("Phòng kinh doanh")
+				.position(position6).department(department6)
 				.phone("0354265794").officePhone("0236521456")
 				.officeEmail("vunt2@sunshine.com.vn").email("nhatvu94@gmail.com")
 				.customer(customer7AnhDuong)
@@ -781,9 +843,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact8 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00008")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Võ Thị Hoàng").name("Anh")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position7).department(department7)
 				.phone("0912901685").officePhone("0245298913")
 				.officeEmail("vthanh@vht.com.vn").email("vthanh@gmail.com")
 				.customer(customer8VHT)
@@ -793,9 +855,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact9 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00009")
-				.vocative("Ông")
+				.vocative(vocativeOng)
 				.lastName("Phạm Tiến").name("Hoàng")
-				.position("Trưởng phòng").department("Phòng CSKH")
+				.position(position2).department(department5)
 				.phone("0915145846").officePhone("02253468154")
 				.officeEmail("pthoang@ftech.com").email("pthoang@gmail.com")
 				.customer(customer9FTech)
@@ -805,9 +867,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact10 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00010")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Trần Thị").name("Dung")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position5).department(department1)
 				.phone("0245292653").officePhone("0245292653")
 				.officeEmail("ttdung@phananh.com.vn").email("ttdung@gmail.com")
 				.customer(customer10PhanAnh)
@@ -821,7 +883,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer1NGS)
 				.contact(contact1)
 				.name("Bán hàng cho " + customer1NGS.getName())
-				.opportunityPhase(OpportunityPhase.BEGINNING)
+				.opportunityPhase(opportunityPhase1)
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
@@ -842,7 +904,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer2VOLTRANS)
 				.contact(contact2)
 				.name("Bán hàng cho " + customer2VOLTRANS.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase2)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
@@ -863,7 +925,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer3ICOVN)
 				.contact(contact3)
 				.name("Bán hàng cho " + customer3ICOVN.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase3)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
@@ -884,7 +946,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer4Eurodoor)
 				.contact(contact4)
 				.name("Bán hàng cho " + customer4Eurodoor.getName())
-				.opportunityPhase(OpportunityPhase.SUCCESS_FINISH)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(100)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerOrPartnerRefer)
@@ -905,7 +967,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer5SGDHN)
 				.contact(contact5)
 				.name("Bán hàng cho " + customer5SGDHN.getName())
-				.opportunityPhase(OpportunityPhase.DEMO)
+				.opportunityPhase(opportunityPhase6)
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
@@ -926,7 +988,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer6HoangGia)
 				.contact(contact6)
 				.name("Bán hàng cho " + customer6HoangGia.getName())
-				.opportunityPhase(OpportunityPhase.BEGINNING)
+				.opportunityPhase(opportunityPhase5)
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
@@ -947,7 +1009,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer7AnhDuong)
 				.contact(contact7)
 				.name("Bán hàng cho " + customer7AnhDuong.getName())
-				.opportunityPhase(OpportunityPhase.DEMO)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
@@ -968,7 +1030,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer8VHT)
 				.contact(contact8)
 				.name("Bán hàng cho " + customer8VHT.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
@@ -989,7 +1051,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer9FTech)
 				.contact(contact9)
 				.name("Bán hàng cho " + customer9FTech.getName())
-				.opportunityPhase(OpportunityPhase.SUCCESS_FINISH)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JULY, 9))
 				.source(sourceCustomerCome)
@@ -1010,7 +1072,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.customer(customer10PhanAnh)
 				.contact(contact10)
 				.name("Bán hàng cho " + customer10PhanAnh.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase3)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
@@ -1028,40 +1090,36 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		
-		// Order
-		Order order1 = addNamedRepository(orderRepository, Order.builder()
-				.code("DH00009")
-				.name("Đơn hàng bán cho FTech")
-				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
-				.customer(customer4Eurodoor)
-				.contact(contact3)
-				.opportunity(opportunity3)
-				.orderValue(34_100_000L)
-				.liquidationValue(34_100_000L)
-				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
-				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
-				.paid(Boolean.TRUE)
-				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
-						ProductInfo.builder()
-								.productCode(product2.getCode())
-								.explanation(product2.getExplanation())
-								.unit(product2.getUnit())
-								.amount(1)
-								.price(product2.getSellPrice())
-								.discount(0)
-								.vat(product2.getVat())
-								.build(),
-						ProductInfo.builder()
-								.productCode(product3.getCode())
-								.explanation(product3.getExplanation())
-								.unit(product3.getUnit())
-								.amount(50)
-								.price(product3.getSellPrice())
-								.discount(10)
-								.vat(product3.getVat())
-								.build()
-						)))
-				.build());
+//		// Order
+//		Order order1 = addNamedRepository(orderRepository, Order.builder()
+//				.code("DH00009")
+//				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
+//				.customer(customer4Eurodoor)
+//				.contact(contact3)
+//				.opportunity(opportunity3)
+//				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
+//				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+//				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
+//						ProductInfo.builder()
+//								.productCode(product2.getCode())
+//								.explanation(product2.getExplanation())
+//								.unit(product2.getUnit())
+//								.amount(1)
+//								.price(product2.getSellPrice())
+//								.discount(0)
+//								.vat(product2.getVat())
+//								.build(),
+//						ProductInfo.builder()
+//								.productCode(product3.getCode())
+//								.explanation(product3.getExplanation())
+//								.unit(product3.getUnit())
+//								.amount(50)
+//								.price(product3.getSellPrice())
+//								.discount(10)
+//								.vat(product3.getVat())
+//								.build()
+//						)))
+//				.build());
 		
 		// Invoice
 		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
@@ -1075,7 +1133,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.receiverName("Min")
 				.receiverEmail("Minn@gmail.com")
 				.receiverPhone("120120129")
-				.order(order1)
+				.order(null)
 				.build());
 		
 		// Permissions

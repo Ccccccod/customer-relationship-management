@@ -102,6 +102,7 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 * @param sourceId
 	 * @param productInfoDtos
 	 */
+	
 	@Builder(toBuilder = true)
 	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId,
 			@NotNull Long opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,

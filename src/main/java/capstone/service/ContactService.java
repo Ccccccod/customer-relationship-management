@@ -35,32 +35,32 @@ import capstone.repository.VocativeRepository;
 @Service
 public class ContactService extends AbstractService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long> {
 
-	@Autowired
-	private CustomerRepository customerRepository;
-	
-	@Autowired
-	private ClassificationRepository classificationRepository;
-	
-	@Autowired
-	private SourceRepository sourceRepository;
-
-	@Autowired
-	protected VocativeRepository vocativeRepository;
-
-	@Autowired
-	protected DepartmentRepository departmentRepository;
-
-	@Autowired
-	protected PositionRepository positionRepository;
-
-	@Autowired
-	protected GenderRepository genderRepository;
-
-	@Autowired
-	protected MaritalStatusRepository maritalStatusRepository;
-
-	@Autowired
-	protected BusinessTypeRepository businessTypeRepository;
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//	
+//	@Autowired
+//	private ClassificationRepository classificationRepository;
+//	
+//	@Autowired
+//	private SourceRepository sourceRepository;
+//
+//	@Autowired
+//	protected VocativeRepository vocativeRepository;
+//
+//	@Autowired
+//	protected DepartmentRepository departmentRepository;
+//
+//	@Autowired
+//	protected PositionRepository positionRepository;
+//
+//	@Autowired
+//	protected GenderRepository genderRepository;
+//
+//	@Autowired
+//	protected MaritalStatusRepository maritalStatusRepository;
+//
+//	@Autowired
+//	protected BusinessTypeRepository businessTypeRepository;
 
 	@Override
 	protected Class<Contact> entityClass() {
@@ -77,13 +77,13 @@ public class ContactService extends AbstractService<ContactDto, ContactDto, Cont
 		return entity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
-				.vocative(findEntityById(vocativeRepository, d.getVocativeId(), Vocative.class))
+				.vocative(vocativeService.getEntityById(d.getVocativeId()))
 				.lastName(d.getLastName())
 				.name(d.getName())
-				.department(findEntityById(departmentRepository, d.getDepartmentId(), Department.class))
-				.position(findEntityById(positionRepository, d.getPositionId(), Position.class))
-				.customer(findEntityById(customerRepository, d.getCustomerId(), Customer.class))
-				.classifications(findEntitiesByIds(classificationRepository, d.getClassificationIds(), Classification.class))
+				.department(departmentService.getEntityById(d.getDepartmentId()))
+				.position(positionService.getEntityById(d.getPositionId()))
+				.customer(customerService.getEntityById(d.getCustomerId()))
+				.classifications(classificationService.getEntitiesById(d.getClassificationIds()))
 				.notCallPhone(d.getNotCallPhone())
 				.notSendEmail(d.getNotSendEmail())
 				.phone(d.getPhone())
@@ -91,11 +91,11 @@ public class ContactService extends AbstractService<ContactDto, ContactDto, Cont
 				.otherPhone(d.getOtherPhone())
 				.email(d.getEmail())
 				.officeEmail(d.getOfficeEmail())
-				.source(findEntityById(sourceRepository, d.getSourceId(), Source.class))
+				.source(sourceService.getEntityById(d.getSourceId()))
 				.address(d.getAddress())
 				.dateOfBirth(d.getDateOfBirth())
-				.gender(findEntityById(genderRepository, d.getGenderId(), Gender.class))
-				.maritalStatus(findEntityById(maritalStatusRepository, d.getMaritalStatusId(), MaritalStatus.class))
+				.gender(genderService.getEntityById(d.getGenderId()))
+				.maritalStatus(maritalStatusService.getEntityById(d.getMaritalStatusId()))
 				.facebook(d.getFacebook())
 				.bankAccount(d.getBankAccount())
 				.bank(d.getBank())

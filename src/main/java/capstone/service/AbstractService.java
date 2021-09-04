@@ -66,13 +66,25 @@ public abstract class AbstractService< //
 	protected ClassificationService classificationService;
 	
 	@Autowired
+	protected SourceService sourceService;
+
+	@Autowired
+	protected CareerService careerService;
+	
+	@Autowired
 	protected PositionService positionService;
 	
 	@Autowired
 	protected OpportunityPhaseService opportunityPhaseService;
+
+	@Autowired
+	protected TypeService typeService;
 	
 	@Autowired
 	protected MaritalStatusService maritalStatusService;
+	
+	@Autowired
+	protected FieldService fieldService;
 	
 	@Autowired
 	protected IncomeService incomeService;

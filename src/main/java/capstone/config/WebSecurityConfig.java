@@ -131,7 +131,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setExposedHeaders(Collections.singletonList(("AUTHORIZATION")));
         
 		// TODO Get CORS client from config table
-		List<String> corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000");
+		List<String> corsAllow;
+//		corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000");
+		corsAllow = new LinkedList<String>();
         
         if (corsAllow.isEmpty()) corsAllow.add("/**");
         corsConfiguration.setAllowedOrigins(corsAllow);

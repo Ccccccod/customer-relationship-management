@@ -1201,7 +1201,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         // Admin account
         if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
             User admin = new User();
-            admin.setUsername("admin1");
+            admin.setUsername("admin123");
             admin.setEmail("admin1@gmail.com");
             admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
             

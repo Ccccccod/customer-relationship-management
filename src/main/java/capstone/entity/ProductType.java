@@ -29,7 +29,6 @@ import lombok.ToString;
  * Loại hàng hóa
  * @author Tuna
  */
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor

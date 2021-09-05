@@ -74,6 +74,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	/**
+	 * Swagger ui
+	 */
+	private static final String[] SWAGGER = { "**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs",
+			"/webjars/**", "**/swagger-ui/**" };
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -82,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Permit all for login and logout
 		http.authorizeRequests() //
-				.antMatchers("/swagger-ui/**").permitAll()
+				.antMatchers(SWAGGER).permitAll()
 				.antMatchers("/api/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll();
 
@@ -119,7 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		}
         
 		http.authorizeRequests()
-        .anyRequest().authenticated()
+//        .anyRequest().authenticated()
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		

@@ -174,7 +174,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     /**
      * WARNING: disable when testing
      */
-    private static final boolean enable = false;
+    private static final boolean enable = true;
     
     static final private String PASSWORD = "Minhkien1@";
 
@@ -488,6 +488,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
         // Potential
         Potential potential6 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00001")
         		.vocative(vocativeChi)
         		.lastName("Tôn Nữ Lạc").name("Huyền")
         		.department(department1)
@@ -500,6 +501,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 58, đường Nguyễn Sinh Cung, Phường Vĩ Dạ, Thành phố Huế, Thừa Thiên - Huế, Việt Nam")
         		.build());
         Potential potential7 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00002")
         		.vocative(vocativeAnh)
         		.lastName("Trần Nhật").name("Vũ")
         		.department(department2)
@@ -512,6 +514,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 15, đường Phạm Hữu Nhật, Phường Mỹ An, Quận Ngũ Hành Sơn, Đà Nẵng, Việt Nam")
         		.build());
         Potential potential8 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00003")
         		.vocative(vocativeBa)
         		.lastName("Võ Thị Hoàng").name("Anh")
         		.department(department3)
@@ -524,6 +527,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 605 Đường Võ Văn Kiệt, Phường 04, Quận 5, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential9 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00004")
         		.vocative(vocativeOng)
         		.lastName("Phạm Tiến").name("Hoàng")
         		.department(department4)
@@ -536,6 +540,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("13 Đường Bà Huyện Thanh Quan, Phường 13, Quận Bình Thạnh, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential10 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00005")
         		.vocative(vocativeBa)
         		.lastName("Trần Thị").name("Dung")
         		.department(department5)
@@ -548,6 +553,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 10 đường Hoàng Hoa Thám , Phường Cống Vị, Quận Ba Đình, Hà Nội, Việt Nam")
         		.build());
         Potential potential11 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00006")
         		.vocative(vocativeOng)
         		.lastName("Nguyễn Quang").name("Tuấn")
         		.department(department6)
@@ -560,6 +566,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
         		.build());
         Potential potential2 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00007")
         		.vocative(vocativeOng)
         		.lastName("Nguyễn Văn").name("Nam")
         		.department(department7)
@@ -572,6 +579,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 51, phố Lê Đại Hành, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hà Nội, Việt Nam")
         		.build());
         Potential potential3 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00008")
         		.vocative(vocativeBa)
         		.lastName("Phạm Thị Hà").name("Phương")
         		.department(department6)
@@ -584,6 +592,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 3, ngõ 78, phố Duy Tân, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội, Việt Nam")
         		.build());
         Potential potential4 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00009")
         		.vocative(vocativeChi)
         		.lastName("Trịnh Thị").name("Vinh")
         		.department(department1)
@@ -596,6 +605,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential5 = addNamedRepository(potentialRepository, Potential.builder()
+				.code("TN00010")
         		.vocative(vocativeAnh)
         		.lastName("Nguyễn Anh").name("Tuấn")
         		.department(department2)
@@ -880,6 +890,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		
 		// Opportunity
 		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00001")
 				.customer(customer1NGS)
 				.contact(contact1)
 				.name("Bán hàng cho " + customer1NGS.getName())
@@ -901,6 +912,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity2 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00002")
 				.customer(customer2VOLTRANS)
 				.contact(contact2)
 				.name("Bán hàng cho " + customer2VOLTRANS.getName())
@@ -922,6 +934,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity3 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00003")
 				.customer(customer3ICOVN)
 				.contact(contact3)
 				.name("Bán hàng cho " + customer3ICOVN.getName())
@@ -943,6 +956,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity4 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00004")
 				.customer(customer4Eurodoor)
 				.contact(contact4)
 				.name("Bán hàng cho " + customer4Eurodoor.getName())
@@ -964,6 +978,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity5 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00005")
 				.customer(customer5SGDHN)
 				.contact(contact5)
 				.name("Bán hàng cho " + customer5SGDHN.getName())
@@ -985,6 +1000,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity6 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00006")
 				.customer(customer6HoangGia)
 				.contact(contact6)
 				.name("Bán hàng cho " + customer6HoangGia.getName())
@@ -1006,6 +1022,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity7 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00007")
 				.customer(customer7AnhDuong)
 				.contact(contact7)
 				.name("Bán hàng cho " + customer7AnhDuong.getName())
@@ -1027,6 +1044,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity8 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00008")
 				.customer(customer8VHT)
 				.contact(contact8)
 				.name("Bán hàng cho " + customer8VHT.getName())
@@ -1048,6 +1066,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity9 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00009")
 				.customer(customer9FTech)
 				.contact(contact9)
 				.name("Bán hàng cho " + customer9FTech.getName())
@@ -1069,6 +1088,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						))
 				.build());
 		Opportunity opportunity10 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.code("CH00010")
 				.customer(customer10PhanAnh)
 				.contact(contact10)
 				.name("Bán hàng cho " + customer10PhanAnh.getName())

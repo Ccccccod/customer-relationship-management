@@ -30,7 +30,6 @@ import lombok.ToString;
  * PotentialDto
  * Tiềm năng Dto
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -82,6 +81,11 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 * Phone
 	 */
 	private String phone;
+	
+	/**
+	 * ma vung dien thoai co quan
+	 */
+	private Long phoneAreaCodeId;
 	
 	/**
 	 * Điện thoại cơ quan
@@ -224,7 +228,7 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 */
 	@Builder(toBuilder = true)
 	public PotentialDto(Long id, @NotNull String code, Long vocativeId, String lastName, @NotBlank String name,
-			Long departmentId, Long positionId, String phone, String officePhone, String otherPhone,
+			Long departmentId, Long positionId, String phone, Long phoneAreaCodeId, String officePhone, String otherPhone,
 			Set<Long> classificationIds, Long sourceId, Boolean notCallPhone, Boolean notSendEmail, String email,
 			String officeEmail, String customer, String taxCode, String customerTaxCode, String address, Long genderId,
 			LocalDate dateOfBirth, String facebook, String bankAccount, String bank, LocalDate foundedDate,
@@ -237,6 +241,7 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 		this.departmentId = departmentId;
 		this.positionId = positionId;
 		this.phone = phone;
+		this.phoneAreaCodeId = phoneAreaCodeId;
 		this.officePhone = officePhone;
 		this.otherPhone = otherPhone;
 		this.classificationIds = classificationIds;

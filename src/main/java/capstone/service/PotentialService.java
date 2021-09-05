@@ -39,6 +39,7 @@ public class PotentialService
 				.department(departmentService.getEntityById(d.getDepartmentId()))
 				.position(positionService.getEntityById(d.getPositionId()))
 				.phone(d.getPhone())
+				.phoneAreaCode(phoneAreaCodeService.getEntityById(d.getPhoneAreaCodeId()))
 				.officePhone(d.getOfficePhone())
 				.otherPhone(d.getOtherPhone())
 				.classifications(classificationService.getEntitiesById(d.getClassificationIds()))

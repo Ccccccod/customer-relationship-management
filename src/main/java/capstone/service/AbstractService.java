@@ -123,6 +123,9 @@ public abstract class AbstractService< //
 	protected PermissionFunctionActionService permissionFunctionActionService;
 	
 	@Autowired
+	protected PhoneAreaCodeService phoneAreaCodeService;
+	
+	@Autowired
     private EntityManager entityManager;
 	
 	protected ModelMapper modelMapper = new ModelMapper();

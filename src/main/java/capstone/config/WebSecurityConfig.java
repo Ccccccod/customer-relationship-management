@@ -1,5 +1,6 @@
 package capstone.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -133,10 +134,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
 		// TODO Get CORS client from config table
 		List<String> corsAllow;
-//		corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000");
-		corsAllow = new LinkedList<String>();
+		corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000", "*", "**");
+		corsAllow = new LinkedList<String>(corsAllow);
         
-        if (corsAllow.isEmpty()) corsAllow.add("/**");
+        if (corsAllow.isEmpty()) corsAllow.add("*");
         corsConfiguration.setAllowedOrigins(corsAllow);
 
         // Allow all methods

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Career;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.CareerRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * CareerService
@@ -15,7 +16,8 @@ import capstone.repository.CareerRepository;
  * @author tuna
  */
 @Service
-public class CareerService extends AbstractService<Career, Career, Career, Career, CareerRepository, Long> {
+public class CareerService extends AbstractService<Career, Career, Career, Career, CareerRepository, Long>
+		implements INamedService<Career, CareerRepository, Long> {
 
 	@Override
 	protected Class<Career> entityClass() {

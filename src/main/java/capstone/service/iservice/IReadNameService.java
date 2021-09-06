@@ -3,10 +3,9 @@
  */
 package capstone.service.iservice;
 
-import java.io.Serializable;
 import java.util.List;
 
-import capstone.model.IdAndName;
+import capstone.exception.ResourceNotFoundException;
 
 /**
  * IReadNameService
@@ -15,8 +14,8 @@ import capstone.model.IdAndName;
  * @param <T>
  * @param <ID>
  */
-public interface IReadNameService<T, ID extends Serializable> {
+public interface IReadNameService {
 	
-	List<IdAndName<ID>> getAllName();
+	List<?> getAllName() throws ResourceNotFoundException;
 
 }

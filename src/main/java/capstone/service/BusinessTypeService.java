@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.BusinessType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.BusinessTypeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * BusinessTypeService
@@ -15,7 +16,9 @@ import capstone.repository.BusinessTypeRepository;
  * @author tuna
  */
 @Service
-public class BusinessTypeService extends AbstractService<BusinessType, BusinessType, BusinessType, BusinessType, BusinessTypeRepository, Long> {
+public class BusinessTypeService
+		extends AbstractService<BusinessType, BusinessType, BusinessType, BusinessType, BusinessTypeRepository, Long> 
+		implements INamedService<BusinessType, BusinessTypeRepository, Long> {
 
 	@Override
 	protected Class<BusinessType> entityClass() {

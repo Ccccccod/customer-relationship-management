@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Department;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.DepartmentRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * DepartmentService
@@ -15,7 +16,9 @@ import capstone.repository.DepartmentRepository;
  * @author tuna
  */
 @Service
-public class DepartmentService extends AbstractService<Department, Department, Department, Department, DepartmentRepository, Long>{
+public class DepartmentService
+		extends AbstractService<Department, Department, Department, Department, DepartmentRepository, Long>
+		implements INamedService<Department, DepartmentRepository, Long> {
 
 	@Override
 	protected Class<Department> entityClass() {

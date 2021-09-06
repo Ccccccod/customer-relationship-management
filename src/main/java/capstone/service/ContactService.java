@@ -9,13 +9,15 @@ import capstone.dto.request.ContactDto;
 import capstone.entity.Contact;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * ContactService
  * @author Tuna
  */
 @Service
-public class ContactService extends AbstractService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long> {
+public class ContactService extends AbstractService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long>
+		implements INamedService<Contact, ContactRepository, Long> {
 
 //	@Autowired
 //	private CustomerRepository customerRepository;

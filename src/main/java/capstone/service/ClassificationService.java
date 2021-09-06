@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Classification;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ClassificationRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * ClassificationService
  * @author Tuna
  */
 @Service
-public class ClassificationService extends AbstractService<Classification, Classification, Classification, Classification, ClassificationRepository, Long> {
+public class ClassificationService extends
+		AbstractService<Classification, Classification, Classification, Classification, ClassificationRepository, Long>
+		implements INamedService<Classification, ClassificationRepository, Long> {
 
 	@Override
 	protected Class<Classification> entityClass() {

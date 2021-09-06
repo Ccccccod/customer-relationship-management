@@ -9,6 +9,7 @@ import capstone.dto.request.PotentialDto;
 import capstone.entity.Potential;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PotentialRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * PotentialService
@@ -16,7 +17,8 @@ import capstone.repository.PotentialRepository;
  */
 @Service
 public class PotentialService
-		extends AbstractService<PotentialDto, PotentialDto, Potential, Potential, PotentialRepository, Long> {
+		extends AbstractService<PotentialDto, PotentialDto, Potential, Potential, PotentialRepository, Long>
+		implements INamedService<Potential, PotentialRepository, Long> {
 
 	@Override
 	protected Class<Potential> entityClass() {

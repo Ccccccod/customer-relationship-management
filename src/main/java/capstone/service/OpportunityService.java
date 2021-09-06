@@ -14,6 +14,7 @@ import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.OpportunityRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * OpportunityService
@@ -21,7 +22,8 @@ import capstone.repository.OpportunityRepository;
  */
 @Service
 public class OpportunityService
-		extends AbstractService<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, Long> {
+		extends AbstractService<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, Long>
+		implements INamedService<Opportunity, OpportunityRepository, Long> {
 
 	@Autowired
 	private OpportunityRepository repository;

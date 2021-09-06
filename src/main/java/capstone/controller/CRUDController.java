@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import capstone.dto.response.PageResponse;
 import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
@@ -47,11 +45,22 @@ public abstract class CRUDController< //
 	private Service service;
 
 	@GetMapping
-	public ResponseEntity<PageResponse<Response>> getAll(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) throws ResourceNotFoundException {
-		PageResponse<Response> pageResponse = service.getAll(page, size);
-		return ResponseEntity.ok(pageResponse);
+	public ResponseEntity<List<Response>> getAll() throws ResourceNotFoundException {
+		List<Response> all = service.getAll();
+		return ResponseEntity.ok(all);
 	}
+
+//	@GetMapping
+//	public ResponseEntity<?> getAll(@RequestParam(required = false) Integer page,
+//			@RequestParam(required = false) Integer size) throws ResourceNotFoundException {
+//		if (page == null || size == null) {
+//			List<Response> all = service.getAll();
+//			return ResponseEntity.ok(all);
+//		} else {
+//			PageResponse<Response> pageResponse = service.getAll(page, size);
+//			return ResponseEntity.ok(pageResponse);
+//		}
+//	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {

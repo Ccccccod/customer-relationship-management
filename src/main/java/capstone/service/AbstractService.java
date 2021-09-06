@@ -137,6 +137,8 @@ public abstract class AbstractService< //
 	protected ModelMapper modelMapper = new ModelMapper();
 	
 	protected <R> R deletedFilter(SupplierThrow<R> supplier, Boolean isDeleted) throws ResourceNotFoundException {
+		if (isDeleted != null && !isDeleted)
+			return supplier.get();
 		Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", isDeleted);

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Order;
+import capstone.model.IdAndExplanation;
 
 /**
  * Order Repository
@@ -19,6 +20,8 @@ import capstone.entity.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	
 	List<Order> findByOrderDateBetween(LocalDate from, LocalDate to);
+	
+	List<IdAndExplanation<Long>> findIdExplanationAllBy();
 	
 //	@Override
 //	default Boolean existsByName(String name) {
@@ -45,7 +48,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 //	Optional<Order> findFirstByExplanation(String explanation);
 //	
 //	List<Order> findByExplanation(String explanation);
-//	
-//	List<IdAndName<Long>> findIdExplanationAllBy();
 
 }

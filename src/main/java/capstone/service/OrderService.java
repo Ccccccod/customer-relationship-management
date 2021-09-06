@@ -6,26 +6,25 @@ package capstone.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
 import capstone.entity.Order;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndExplanation;
 import capstone.repository.OrderRepository;
+import capstone.service.iservice.IReadNameService;
 
 /**
  * OrderService
  * @author tuna
  */
 @Service
-public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Order, OrderRepository, Long> {
-
-	@Autowired
-	private OrderRepository repository;
+public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Order, OrderRepository, Long>
+		implements IReadNameService {
 	
 	public List<Order> findByOrderDateBetween(LocalDate from, LocalDate to) {
-		return repository.findByOrderDateBetween(from, to);
+		return getRepository().findByOrderDateBetween(from, to);
 	}
 
 	@Override
@@ -59,5 +58,11 @@ public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Ord
 		return this.createDtoToEntity(updateDto, entity);
 
 	}
+	
+	@Override
+	public List<?> getAllName() throws ResourceNotFoundException {
+		List<IdAndExplanation<Long>> findIdExplanationAllBy = getRepository().findIdExplanationAllBy();
+		return findIdExplanationAllBy;
+	};
 
 }

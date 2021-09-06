@@ -20,8 +20,12 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import capstone.dto.response.PageResponse;
 import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
@@ -151,6 +155,23 @@ public abstract class AbstractService< //
 				.map(this::entityToResponse) //
 				.collect(Collectors.toList()), false);
 		return response;
+	}
+	
+	public PageResponse<Response> getAll(int page, int size) throws ResourceNotFoundException {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Entity> p = deletedFilter(() -> this.repository.findAll(pageable), false);
+		// map to response
+		List<Response> content = p.getContent().stream() //
+				.map(this::entityToResponse) //
+				.collect(Collectors.toList());
+
+		PageResponse<Response> result = PageResponse.<Response>builder() //
+				.list(content) //
+				.currentPage(p.getNumber()) //
+				.totalElements(p.getTotalElements()) //
+				.totalPages(p.getTotalPages()) //
+				.build();
+		return result;
 	}
 	
 	@Override

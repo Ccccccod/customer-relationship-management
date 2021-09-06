@@ -33,7 +33,6 @@ import capstone.model.Identifiable;
 import capstone.repository.RepositoryUtils;
 import capstone.service.iservice.ICreateService;
 import capstone.service.iservice.IDeleteService;
-import capstone.service.iservice.IReadNameService;
 import capstone.service.iservice.IReadService;
 import capstone.service.iservice.IUpdateService;
 import capstone.utils.DtoUtils;
@@ -56,7 +55,6 @@ public abstract class AbstractService< //
 		ID extends Serializable //
 > //
 		implements IReadService<Response, ID>, //
-		IReadNameService, //
 		ICreateService<CreateDto, Response>, //
 		IUpdateService<UpdateDto, Response, ID>, //
 		IDeleteService<ID>
@@ -148,11 +146,6 @@ public abstract class AbstractService< //
         session.disableFilter("deletedFilter");
         
         return r;
-	}
-	
-	@Override
-	public List<?> getAllName() throws ResourceNotFoundException {
-		return this.getAll();
 	}
 	
 	@Override

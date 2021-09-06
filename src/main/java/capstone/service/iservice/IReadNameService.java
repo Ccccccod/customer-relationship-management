@@ -10,9 +10,6 @@ import capstone.exception.ResourceNotFoundException;
 /**
  * IReadNameService
  * @author Tuna
- *
- * @param <T>
- * @param <ID>
  */
 public interface IReadNameService {
 	

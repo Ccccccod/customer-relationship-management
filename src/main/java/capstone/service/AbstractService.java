@@ -136,7 +136,7 @@ public abstract class AbstractService< //
 	
 	protected ModelMapper modelMapper = new ModelMapper();
 	
-	private <R> R deletedFilter(SupplierThrow<R> supplier, Boolean isDeleted) throws ResourceNotFoundException {
+	protected <R> R deletedFilter(SupplierThrow<R> supplier, Boolean isDeleted) throws ResourceNotFoundException {
 		Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter("deletedFilter");
         filter.setParameter("isDeleted", isDeleted);
@@ -362,7 +362,7 @@ public abstract class AbstractService< //
 	}
 	
 	@FunctionalInterface
-	private interface SupplierThrow<T> {
+	protected interface SupplierThrow<T> {
 
 		/**
 		 * Gets a result.

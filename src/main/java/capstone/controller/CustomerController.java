@@ -32,6 +32,7 @@ import capstone.repository.PotentialRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
 import capstone.service.AbstractService;
+import capstone.service.CustomerService;
 
 /**
  * CustomerController
@@ -40,8 +41,9 @@ import capstone.service.AbstractService;
  */
 @RestController
 @RequestMapping(value = "/api/customer")
-public class CustomerController extends AbstractDtoEntityController<CustomerDto, Customer, CustomerRepository, Long> implements IReadNameController<Customer, CustomerRepository, Long> {
-	
+public class CustomerController extends AbstractDtoEntityController<CustomerDto, Customer, CustomerRepository, Long>
+		implements IReadNameController<Customer, CustomerService, Long> {
+
 	@Autowired
 	public CustomerRepository customerRepository;
 
@@ -118,6 +120,14 @@ public class CustomerController extends AbstractDtoEntityController<CustomerDto,
 			e.getInvoices().forEach(i -> i.setCustomer(null));
 			invoiceRepository.saveAll(e.getInvoices());
 		});
+	}
+
+	@Autowired
+	private CustomerService customerService;
+	
+	@Override
+	public CustomerService getService() {
+		return customerService;
 	}
 
 }

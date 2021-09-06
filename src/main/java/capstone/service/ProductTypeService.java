@@ -17,13 +17,17 @@ import capstone.dto.response.ProductTypeTreeDto;
 import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProductTypeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * ProductTypeService
  * @author tuna
  */
 @Service
-public class ProductTypeService extends AbstractService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long> implements IDtoToEntityService<ProductTypeDto, ProductType, Long>{
+public class ProductTypeService
+		extends AbstractService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long>
+		implements IDtoToEntityService<ProductTypeDto, ProductType, Long>,
+		INamedService<ProductType, ProductTypeRepository, Long> {
 
 	@Autowired
 	protected ProductTypeRepository productTypeRepository;

@@ -28,19 +28,20 @@ import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
 import capstone.repository.RoleRepository;
 import capstone.service.AbstractService;
+import capstone.service.RoleService;
 import capstone.utils.DtoUtils;
 
 /**
- * Role Controller
- * Vai trò Controller
+ * Role Controller Vai trò Controller
+ * 
  * @author Tuna
  *
  */
 @RestController
 @RequestMapping("/api/role")
 public class RoleController extends AbstractDtoEntityController<RoleDto, Role, RoleRepository, Long>
-		implements IReadNameController<Role, RoleRepository, Long> {
-	
+		implements IReadNameController<Role, RoleService, Long> {
+
 	@Autowired
 	protected PermissionFunctionRepository permissionFunctionRepository;
 
@@ -52,9 +53,7 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 
 	@Override
 	protected Role dtoToEntity(RoleDto dto, Role role) throws ResourceNotFoundException {
-		return role.toBuilder()
-				.name(dto.getName())
-				.description(dto.getDescription())
+		return role.toBuilder().name(dto.getName()).description(dto.getDescription())
 				.permissionFunctionActions(AbstractService.findEntitiesByIds(permissionFunctionActionRepository,
 						dto.getPermissionFunctionActionIds(), PermissionFunctionAction.class))
 				.build();
@@ -90,6 +89,14 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 	@Override
 	protected Class<Role> entityClass() {
 		return Role.class;
+	}
+
+	@Autowired
+	private RoleService roleService;
+
+	@Override
+	public RoleService getService() {
+		return roleService;
 	}
 
 }

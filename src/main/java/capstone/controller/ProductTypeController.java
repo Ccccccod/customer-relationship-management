@@ -32,7 +32,7 @@ import capstone.service.ProductTypeService;
 @RequestMapping("/api/productType")
 public class ProductTypeController
 		extends AbstractDtoEntityController<ProductTypeDto, ProductType, ProductTypeRepository, Long>
-		implements IReadNameController<ProductType, ProductTypeRepository, Long> {
+		implements IReadNameController<ProductType, ProductTypeService, Long> {
 	
 	@Autowired
 	protected ProductTypeService productTypeService;
@@ -83,6 +83,14 @@ public class ProductTypeController
 			e.getProducts().forEach(i -> i.setProductType(null));
 			productRepository.saveAll(e.getProducts());
 		});
+	}
+
+	@Autowired
+	private ProductTypeService productTypeService2;
+	
+	@Override
+	public ProductTypeService getService() {
+		return productTypeService2;
 	}
 
 }

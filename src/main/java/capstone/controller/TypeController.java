@@ -3,11 +3,12 @@
  */
 package capstone.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.entity.Type;
-import capstone.repository.TypeRepository;
+import capstone.service.TypeService;
 
 /**
  * TypeController
@@ -17,12 +18,14 @@ import capstone.repository.TypeRepository;
  */
 @RestController
 @RequestMapping("/api/type")
-public class TypeController extends AbstractSimpleCRUDController<Type, TypeRepository, Long>
-		implements IReadNameController<Type, TypeRepository, Long> {
+public class TypeController implements IReadNameController<Type, TypeService, Long> {
 
+	@Autowired
+	private TypeService typeService;
+	
 	@Override
-	protected Class<Type> entityClass() {
-		return Type.class;
+	public TypeService getService() {
+		return typeService;
 	}
 
 }

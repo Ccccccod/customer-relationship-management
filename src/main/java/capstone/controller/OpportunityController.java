@@ -34,7 +34,7 @@ import lombok.Getter;
 @RequestMapping("/api/opportunity")
 public class OpportunityController
 		extends CRUDController<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, OpportunityService, Long>
-		implements IReadNameController<Opportunity, OpportunityRepository, Long>,
+		implements IReadNameController<Opportunity, OpportunityService, Long>,
 		ProductInfoedController<Opportunity, OpportunityRepository, Long> {
 
 	@Autowired
@@ -99,6 +99,13 @@ public class OpportunityController
 	@Override
 	public UserService getUserService() {
 		return userService;
+	}
+
+	@Autowired
+	private OpportunityService opportunityService;
+	@Override
+	public OpportunityService getService() {
+		return opportunityService;
 	}
 	
 //	@GetMapping("{opportunityId}/product")

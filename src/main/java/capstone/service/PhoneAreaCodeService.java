@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 import capstone.entity.PhoneAreaCode;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PhoneAreaCodeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * PhoneAreaCodeService
  * @author Tuna
  */
 @Service
-public class PhoneAreaCodeService extends AbstractService<PhoneAreaCode, PhoneAreaCode, PhoneAreaCode, PhoneAreaCode, PhoneAreaCodeRepository, Long>{
+public class PhoneAreaCodeService extends
+		AbstractService<PhoneAreaCode, PhoneAreaCode, PhoneAreaCode, PhoneAreaCode, PhoneAreaCodeRepository, Long> 
+implements INamedService<PhoneAreaCode, PhoneAreaCodeRepository, Long>{
 
 	@Override
 	protected Class<PhoneAreaCode> entityClass() {

@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Vocative;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.VocativeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * VocativeService
  * @author tuna
  */
 @Service
-public class VocativeService extends AbstractService<Vocative, Vocative, Vocative, Vocative, VocativeRepository, Long> {
+public class VocativeService extends AbstractService<Vocative, Vocative, Vocative, Vocative, VocativeRepository, Long> 
+implements INamedService<Vocative, VocativeRepository, Long>{
 
 	@Override
 	protected Class<Vocative> entityClass() {

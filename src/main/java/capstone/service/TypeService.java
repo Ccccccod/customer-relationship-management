@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Type;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.TypeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * TypeService
@@ -15,7 +16,8 @@ import capstone.repository.TypeRepository;
  * @author tuna
  */
 @Service
-public class TypeService extends AbstractService<Type, Type, Type, Type, TypeRepository, Long> {
+public class TypeService extends AbstractService<Type, Type, Type, Type, TypeRepository, Long> 
+implements INamedService<Type, TypeRepository, Long>{
 
 	@Override
 	protected Class<Type> entityClass() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.OpportunityPhase;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.OpportunityPhaseRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * OpportunityPhaseService
@@ -15,7 +16,9 @@ import capstone.repository.OpportunityPhaseRepository;
  * @author tuna
  */
 @Service
-public class OpportunityPhaseService extends AbstractService<OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhaseRepository, Long> {
+public class OpportunityPhaseService extends
+		AbstractService<OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhase, OpportunityPhaseRepository, Long>
+		implements INamedService<OpportunityPhase, OpportunityPhaseRepository, Long> {
 
 	@Override
 	protected Class<OpportunityPhase> entityClass() {

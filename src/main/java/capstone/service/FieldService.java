@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Field;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.FieldRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * FieldService
@@ -15,7 +16,8 @@ import capstone.repository.FieldRepository;
  * @author tuna
  */
 @Service
-public class FieldService extends AbstractService<Field, Field, Field, Field, FieldRepository, Long> {
+public class FieldService extends AbstractService<Field, Field, Field, Field, FieldRepository, Long>
+		implements INamedService<Field, FieldRepository, Long> {
 
 	@Override
 	protected Class<Field> entityClass() {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Income;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.IncomeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * IncomeService
@@ -15,7 +16,8 @@ import capstone.repository.IncomeRepository;
  * @author tuna
  */
 @Service
-public class IncomeService extends AbstractService<Income, Income, Income, Income, IncomeRepository, Long>  {
+public class IncomeService extends AbstractService<Income, Income, Income, Income, IncomeRepository, Long>
+		implements INamedService<Income, IncomeRepository, Long> {
 
 	@Override
 	protected Class<Income> entityClass() {

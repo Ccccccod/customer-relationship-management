@@ -9,6 +9,7 @@ import capstone.dto.request.RoleDto;
 import capstone.entity.Role;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.RoleRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * RoleService
@@ -16,7 +17,8 @@ import capstone.repository.RoleRepository;
  * @author tuna
  */
 @Service
-public class RoleService extends AbstractService<RoleDto, RoleDto, Role, Role, RoleRepository, Long> {
+public class RoleService extends AbstractService<RoleDto, RoleDto, Role, Role, RoleRepository, Long> 
+implements INamedService<Role, RoleRepository, Long>{
 
 	@Override
 	protected Class<Role> entityClass() {

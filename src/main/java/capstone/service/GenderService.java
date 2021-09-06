@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.Gender;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.GenderRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * GenderService
@@ -15,7 +16,8 @@ import capstone.repository.GenderRepository;
  * @author tuna
  */
 @Service
-public class GenderService extends AbstractService<Gender, Gender, Gender, Gender, GenderRepository, Long>  {
+public class GenderService extends AbstractService<Gender, Gender, Gender, Gender, GenderRepository, Long>
+		implements INamedService<Gender, GenderRepository, Long> {
 
 	@Override
 	protected Class<Gender> entityClass() {

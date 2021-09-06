@@ -12,14 +12,16 @@ import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * ProductService
  * @author tuna
  */
 @Service
-public class ProductService extends AbstractService<ProductDto, ProductDto, Product, Product, ProductRepository, Long> implements IDtoToEntityService<ProductDto, Product, Long>{
-	
+public class ProductService extends AbstractService<ProductDto, ProductDto, Product, Product, ProductRepository, Long>
+		implements IDtoToEntityService<ProductDto, Product, Long>, INamedService<Product, ProductRepository, Long> {
+
 	@Autowired
 	ProductTypeRepository productTypeRepository;
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import capstone.entity.MaritalStatus;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.MaritalStatusRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * MaritalStatus
@@ -15,7 +16,9 @@ import capstone.repository.MaritalStatusRepository;
  * @author tuna
  */
 @Service
-public class MaritalStatusService extends AbstractService<MaritalStatus, MaritalStatus, MaritalStatus, MaritalStatus, MaritalStatusRepository, Long> {
+public class MaritalStatusService extends
+		AbstractService<MaritalStatus, MaritalStatus, MaritalStatus, MaritalStatus, MaritalStatusRepository, Long>
+		implements INamedService<MaritalStatus, MaritalStatusRepository, Long> {
 
 	@Override
 	protected Class<MaritalStatus> entityClass() {

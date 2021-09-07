@@ -27,8 +27,8 @@ import capstone.service.UserService;
 
 /**
  * ProfileController
+ * Thông tin cá nhân Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/profile")

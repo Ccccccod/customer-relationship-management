@@ -12,6 +12,7 @@ import capstone.service.ProvinceService;
 
 /**
  * ProvinceController
+ * Tỉnh Controller
  * @author Tuna
  */
 @RestController

@@ -23,7 +23,6 @@ import capstone.service.ProductService;
  * Product controller
  * Hàng hóa Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/product")

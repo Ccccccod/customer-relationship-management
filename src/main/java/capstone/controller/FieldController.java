@@ -14,7 +14,6 @@ import capstone.service.FieldService;
  * Field
  * Lĩnh vực
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/field")
@@ -27,6 +26,5 @@ public class FieldController implements IReadNameController<Field, FieldService,
 	public FieldService getService() {
 		return fieldService;
 	}
-
 	
 }

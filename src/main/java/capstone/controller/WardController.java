@@ -12,6 +12,7 @@ import capstone.service.WardService;
 
 /**
  * WardController
+ * Phường Xã Controller
  * @author Tuna
  */
 @RestController

@@ -14,6 +14,7 @@ import capstone.service.CustomerService;
 
 /**
  * CustomerController
+ * Khách hàng Controller
  * @author Tuna
  */
 @RestController

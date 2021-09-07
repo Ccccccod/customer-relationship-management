@@ -25,8 +25,8 @@ import capstone.service.ProductTypeService;
 
 /**
  * Product Type Controller
+ * Loại hàng hóa Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/productType")

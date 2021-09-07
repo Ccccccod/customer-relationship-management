@@ -12,6 +12,7 @@ import capstone.service.IncomeService;
 
 /**
  * IncomeController
+ * Doanh thu Controller
  * @author Tuna
  */
 @RestController

@@ -28,7 +28,8 @@ import capstone.service.UserService;
  */
 @RestController
 @RequestMapping("/api/invoice")
-public class InvoiceController extends CRUDController<InvoiceDto, InvoiceDto, Invoice, Invoice, InvoiceRepository, InvoiceService, Long>
+public class InvoiceController
+		extends CRUDController<InvoiceDto, InvoiceDto, Invoice, Invoice, InvoiceRepository, InvoiceService, Long>
 		implements ProductInfoedController<Invoice, InvoiceRepository, Long> {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());

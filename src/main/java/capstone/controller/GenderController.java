@@ -12,6 +12,7 @@ import capstone.service.GenderService;
 
 /**
  * GenderController
+ * Giới tính Controller
  * @author Tuna
  */
 @RestController

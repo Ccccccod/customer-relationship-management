@@ -12,6 +12,7 @@ import capstone.service.BusinessTypeService;
 
 /**
  * BusinessTypeController
+ * Loại hình doanh nghiệp Controller
  * @author Tuna
  */
 @RestController

@@ -32,10 +32,9 @@ import capstone.service.RoleService;
 import capstone.utils.DtoUtils;
 
 /**
- * Role Controller Vai trò Controller
- * 
+ * Role Controller 
+ * Vai trò Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/role")

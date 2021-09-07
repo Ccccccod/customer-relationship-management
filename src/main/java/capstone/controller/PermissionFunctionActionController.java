@@ -18,8 +18,8 @@ import capstone.repository.PermissionFunctionActionRepository;
 
 /**
  * PermissionFunctionActionController
+ * Quyền Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/permission")

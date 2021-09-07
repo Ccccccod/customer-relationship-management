@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -25,7 +23,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import capstone.common.enums.OpportunityPhase;
 import capstone.entity.BaseEntity;
 import capstone.entity.Career;
 import capstone.entity.Classification;
@@ -35,12 +32,12 @@ import capstone.entity.Department;
 import capstone.entity.Field;
 import capstone.entity.Income;
 import capstone.entity.Invoice;
-import capstone.entity.NamedEntity;
+import capstone.entity.MaritalStatus;
 import capstone.entity.Opportunity;
-import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
+import capstone.entity.PhoneAreaCode;
 import capstone.entity.Position;
 import capstone.entity.Potential;
 import capstone.entity.Product;
@@ -52,7 +49,6 @@ import capstone.entity.Type;
 import capstone.entity.User;
 import capstone.entity.Vocative;
 import capstone.model.Coded;
-import capstone.model.Identifiable;
 import capstone.model.Named;
 import capstone.repository.BusinessTypeRepository;
 import capstone.repository.CareerRepository;
@@ -73,6 +69,7 @@ import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
+import capstone.repository.PhoneAreaCodeRepository;
 import capstone.repository.PositionRepository;
 import capstone.repository.PotentialRepository;
 import capstone.repository.ProductRepository;
@@ -87,7 +84,6 @@ import capstone.utils.EncryptedPasswordUtils;
 /**
  * Data Seeding Listener
  * @author Tuna
- *
  */
 @Component
 @SuppressWarnings("unused")
@@ -114,6 +110,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 	@Autowired
 	private OpportunityPhaseRepository opportunityPhaseRepository;
 
+	@Autowired
+	private PhoneAreaCodeRepository phoneAreaCodeRepository;
+	
 	@Autowired
 	private PositionRepository positionRepository;
 	
@@ -229,15 +228,12 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		capstone.entity.OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thành công") );
 		capstone.entity.OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thất bại") );
 
-
-
+		// MaritalStatus
 		
-
-
-
-        
-
-		
+		MaritalStatus maritalStatus1 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Chưa kết hôn"));
+		MaritalStatus maritalStatus2 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Đã kết hôn"));
+		MaritalStatus maritalStatus3 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Đã ly hôn"));
+		MaritalStatus maritalStatus4 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Khác"));
 		
         // Source Nguồn gốc
         Source sourceCustomerOrPartnerRefer = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
@@ -346,6 +342,73 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Career career65 = addNamedRepository(careerRepository, new Career(fieldProduction, "Trồng rừng"));
         Career career66 = addNamedRepository(careerRepository, new Career(fieldProduction, "Sản xuất gạch, xi măng"));
         Career career67 = addNamedRepository(careerRepository, new Career(fieldProduction, "Sản xuất khác"));
+        
+        /**
+         * PhoneAreaCode
+         */
+        PhoneAreaCode phoneAreaCode01 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("296"));
+        PhoneAreaCode phoneAreaCode02 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("254"));
+        PhoneAreaCode phoneAreaCode03 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("209"));
+        PhoneAreaCode phoneAreaCode04 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("204"));
+        PhoneAreaCode phoneAreaCode05 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("291"));
+        PhoneAreaCode phoneAreaCode06 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("222"));
+        PhoneAreaCode phoneAreaCode07 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("275"));
+        PhoneAreaCode phoneAreaCode08 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("256"));
+        PhoneAreaCode phoneAreaCode09 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("274"));
+        PhoneAreaCode phoneAreaCode10 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("271"));
+        PhoneAreaCode phoneAreaCode11 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("252"));
+        PhoneAreaCode phoneAreaCode12 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("290"));
+        PhoneAreaCode phoneAreaCode13 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("292"));
+        PhoneAreaCode phoneAreaCode14 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("206"));
+        PhoneAreaCode phoneAreaCode15 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("236"));
+        PhoneAreaCode phoneAreaCode16 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("262"));
+        PhoneAreaCode phoneAreaCode17 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("261"));
+        PhoneAreaCode phoneAreaCode18 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("215"));
+        PhoneAreaCode phoneAreaCode19 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("251"));
+        PhoneAreaCode phoneAreaCode20 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("277"));
+        PhoneAreaCode phoneAreaCode21 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("269"));
+        PhoneAreaCode phoneAreaCode22 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("219"));
+        PhoneAreaCode phoneAreaCode23 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("226"));
+        PhoneAreaCode phoneAreaCode24 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("24"));
+        PhoneAreaCode phoneAreaCode25 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("239"));
+        PhoneAreaCode phoneAreaCode26 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("220"));
+        PhoneAreaCode phoneAreaCode27 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("225"));
+        PhoneAreaCode phoneAreaCode28 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("293"));
+        PhoneAreaCode phoneAreaCode29 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("28"));
+        PhoneAreaCode phoneAreaCode30 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("218"));
+        PhoneAreaCode phoneAreaCode31 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("221"));
+        PhoneAreaCode phoneAreaCode32 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("258"));
+        PhoneAreaCode phoneAreaCode33 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("297"));
+        PhoneAreaCode phoneAreaCode34 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("260"));
+        PhoneAreaCode phoneAreaCode35 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("213"));
+        PhoneAreaCode phoneAreaCode36 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("263"));
+        PhoneAreaCode phoneAreaCode37 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("205"));
+        PhoneAreaCode phoneAreaCode38 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("214"));
+        PhoneAreaCode phoneAreaCode39 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("272"));
+        PhoneAreaCode phoneAreaCode40 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("228"));
+        PhoneAreaCode phoneAreaCode41 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("238"));
+        PhoneAreaCode phoneAreaCode42 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("229"));
+        PhoneAreaCode phoneAreaCode43 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("259"));
+        PhoneAreaCode phoneAreaCode44 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("210"));
+        PhoneAreaCode phoneAreaCode45 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("257"));
+        PhoneAreaCode phoneAreaCode46 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("232"));
+        PhoneAreaCode phoneAreaCode47 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("235"));
+        PhoneAreaCode phoneAreaCode48 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("255"));
+        PhoneAreaCode phoneAreaCode49 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("203"));
+        PhoneAreaCode phoneAreaCode50 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("233"));
+        PhoneAreaCode phoneAreaCode51 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("299"));
+        PhoneAreaCode phoneAreaCode52 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("212"));
+        PhoneAreaCode phoneAreaCode53 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("276"));
+        PhoneAreaCode phoneAreaCode54 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("227"));
+        PhoneAreaCode phoneAreaCode55 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("208"));
+        PhoneAreaCode phoneAreaCode56 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("237"));
+        PhoneAreaCode phoneAreaCode57 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("234"));
+        PhoneAreaCode phoneAreaCode58 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("273"));
+        PhoneAreaCode phoneAreaCode59 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("294"));
+        PhoneAreaCode phoneAreaCode60 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("207"));
+        PhoneAreaCode phoneAreaCode61 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("270"));
+        PhoneAreaCode phoneAreaCode62 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("211"));
+        PhoneAreaCode phoneAreaCode63 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("216"));
        
 		// Customer
 		Customer customer4Eurodoor = addNamedRepository(customerRepository, Customer.builder()

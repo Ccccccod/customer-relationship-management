@@ -3,6 +3,7 @@
  */
 package capstone.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ import capstone.service.VocativeService;
 @RequestMapping("/api/vocative")
 public class VocativeContrroller implements IReadNameController<Vocative, VocativeService, Long> {
 	
+	@Autowired
 	private VocativeService vocativeService;
 
 	@Override

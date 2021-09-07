@@ -6,67 +6,44 @@ package capstone.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.InvoiceDto;
-import capstone.entity.Contact;
-import capstone.entity.Customer;
 import capstone.entity.Invoice;
-import capstone.entity.Order;
 import capstone.entity.ProductInfo;
-import capstone.exception.ResourceNotFoundException;
-import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
 import capstone.repository.InvoiceRepository;
-import capstone.repository.OrderRepository;
 import capstone.repository.ProductInfoRepository;
-import capstone.service.AbstractService;
+import capstone.service.InvoiceService;
 import capstone.service.ProductInfoService;
+import capstone.service.UserService;
 
 /**
  * InvoiceController
  * Hóa đơn Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/invoice")
-public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, Invoice, InvoiceRepository, Long> //
+public class InvoiceController extends CRUDController<InvoiceDto, InvoiceDto, Invoice, Invoice, InvoiceRepository, InvoiceService, Long>
 		implements ProductInfoedController<Invoice, InvoiceRepository, Long> {
 	
-	@Autowired
-	protected CustomerRepository customerRepository;
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	protected ContactRepository contactRepository;
+	private UserService userService;
 	
 	@Autowired
-	protected OrderRepository orderRepository;
+	private ProductInfoService productInfoService;
 	
 	@Autowired
-	protected ProductInfoRepository productInfoRepository;
+	private InvoiceRepository invoiceRepository;
 	
 	@Autowired
-	protected ProductInfoService productInfoService;
-
-	@Override
-	protected Invoice dtoToEntity(InvoiceDto dto, Invoice invoice) throws ResourceNotFoundException {
-		return invoice.toBuilder()
-				.code(dto.getCode())
-				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
-				.address(dto.getAddress())
-				.bankAccount(dto.getBankAccount())
-				.bank(dto.getBank())
-				.taxCode(dto.getTaxCode())
-				.buyer(AbstractService.findEntityById(contactRepository, dto.getBuyerId(), Contact.class))
-				.receiverName(dto.getReceiverName())
-				.receiverEmail(dto.getReceiverEmail())
-				.receiverPhone(dto.getReceiverPhone())
-				.order(AbstractService.findEntityById(orderRepository, dto.getOrderId(), Order.class))
-				.build();
-	}
+	private ProductInfoRepository productInfoRepository;
 
 	@Override
 	public ProductInfoService getProductInfoService() {
@@ -96,6 +73,21 @@ public class InvoiceController extends AbstractDtoEntityController<InvoiceDto, I
 	@Override
 	public List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, Invoice t) {
 		return this.productInfoRepository.deleteByIdInAndInvoice(ids, t);
+	}
+
+	@Override
+	public InvoiceRepository getRepository() {
+		return invoiceRepository;
+	}
+
+	@Override
+	public Logger getLogger() {
+		return logger;
+	}
+
+	@Override
+	public UserService getUserService() {
+		return userService;
 	}
 
 }

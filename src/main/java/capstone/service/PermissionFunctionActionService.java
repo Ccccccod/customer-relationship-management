@@ -36,13 +36,13 @@ public class PermissionFunctionActionService extends
 	@Override
 	protected PermissionFunctionAction createDtoToEntity(PermissionFunctionAction createDto,
 			PermissionFunctionAction entity) throws ResourceNotFoundException {
-		throw new UnsupportedOperationException("Permissions can't not be created / updated");
+		throw new UnsupportedOperationException(entityClass().getName() + " can't not be created");
 	}
 
 	@Override
 	protected PermissionFunctionAction updateDtoToEntity(PermissionFunctionAction updateDto,
 			PermissionFunctionAction entity) throws ResourceNotFoundException {
-		throw new UnsupportedOperationException("Permissions can't not be created / updated");
+		throw new UnsupportedOperationException(entityClass().getName() + " can't not be updated");
 	}
 
 	@Override

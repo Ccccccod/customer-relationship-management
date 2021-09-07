@@ -7,6 +7,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import capstone.dto.request.deserializer.IdDeserializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -32,6 +36,8 @@ public class ProductDto extends CodedNamedDto<Long> {
 	/**
 	 * ID Loại hàngg hóa
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("productType")
 	private Long productTypeId;
 
 	/**

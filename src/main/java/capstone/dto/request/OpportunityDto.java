@@ -10,9 +10,11 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.request.deserializer.IdDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
@@ -50,17 +52,23 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Khách hàng
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("customer")
 	private Long customerId;
 	
 	/**
 	 * Liên hệ
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("contact")
 	private Long contactId;
 
 	/**
 	 * Gian đoạn
 	 */
 	@NotNull
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("opportunityPhase")
 	private Long opportunityPhaseId;
 
 	/**
@@ -82,11 +90,14 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Nguồn gốc
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("source")
 	private Long sourceId;
 	
 	/**
 	 * Thông tin hàng hóa
 	 */
+	@JsonAlias("productInfos")
 	private Set<ProductInfoDto> productInfoDtos;
 
 	/**
@@ -101,7 +112,6 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 * @param sourceId
 	 * @param productInfoDtos
 	 */
-	
 	@Builder(toBuilder = true)
 	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId,
 			@NotNull Long opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,

@@ -5,6 +5,10 @@ package capstone.dto.request;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import capstone.dto.request.deserializer.IdDeserializable;
 import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import lombok.AllArgsConstructor;
@@ -37,6 +41,8 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Khách hàng
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("customer")
 	private Long customerId;
 	
 	/**
@@ -62,6 +68,8 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Người mua
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("buyer")
 	private Long buyerId;
 	
 	/**
@@ -83,6 +91,8 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Đơn hàng
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("order")
 	private Long orderId;
 
 	/**

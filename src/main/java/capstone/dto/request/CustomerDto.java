@@ -8,9 +8,12 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.request.deserializer.IdDeserializable;
+import capstone.dto.request.deserializer.IdsDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
@@ -73,26 +76,36 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Nguồn gốc
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("source")
 	private Long sourceId;
 	
 	/**
 	 * Phân loại khách hàng
 	 */
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("classifications")
 	private Set<Long> classificationIds;
 	
 	/**
 	 * Lĩnh vực
 	 */
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("fields")
 	private Set<Long> fieldIds;
 	
 	/**
 	 * Loại hình
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("type")
 	private Long typeId;
 
 	/**
 	 * Ngành nghề
 	 */
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("careers")
 	private Set<Long> careerIds;
 	
 	/**
@@ -127,6 +140,8 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Thu nhập
 	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("income")
 	private Long incomeId;
 	
 	/**

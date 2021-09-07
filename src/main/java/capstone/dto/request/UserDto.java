@@ -9,11 +9,11 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.Gender;
+import capstone.dto.request.deserializer.IdDeserializable;
+import capstone.dto.request.deserializer.IdsDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
@@ -27,7 +27,6 @@ import lombok.Setter;
 /**
  * User Dto
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -47,7 +46,9 @@ public class UserDto extends BaseDto<Long> {
 	@NotNull
 	@Password
 	private String password;
-	
+
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("roles")
 	private Set<Long> roleIds;
 
 	/**
@@ -75,13 +76,43 @@ public class UserDto extends BaseDto<Long> {
 	/**
 	 * Giới tính
 	 */
-	@JsonProperty("genderId") //
-	@JsonAlias("genderId")
-	private Gender gender;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("gender")
+	private Long genderId;
 
 	/**
 	 * Địa chỉ
 	 */
 	private String address;
+
+	/**
+	 * @param id
+	 * @param username
+	 * @param email
+	 * @param password
+	 * @param roleIds
+	 * @param lastName
+	 * @param name
+	 * @param phone
+	 * @param dateOfBirth
+	 * @param genderId
+	 * @param address
+	 */
+	@Builder(toBuilder = true)
+	public UserDto(Long id, @NotNull String username, @NotNull String email, @NotNull String password,
+			Set<Long> roleIds, String lastName, String name, String phone, LocalDate dateOfBirth, Long genderId,
+			String address) {
+		super(id);
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.roleIds = roleIds;
+		this.lastName = lastName;
+		this.name = name;
+		this.phone = phone;
+		this.dateOfBirth = dateOfBirth;
+		this.genderId = genderId;
+		this.address = address;
+	}
 
 }

@@ -4,13 +4,16 @@
 package capstone.dto.request;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.dto.request.deserializer.IdDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
@@ -45,11 +48,17 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate orderDate;
-	
+
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("customer")
 	private Long customerId;
-	
+
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("contact")
 	private Long contactId;
- 
+
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("opportunity")
 	private Long opportunityId;
 
 	/**
@@ -77,6 +86,12 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	 * Thực thu
 	 */
 	private Long receivedMoney;
+	
+	/**
+	 * Thông tin hàng hóa
+	 */
+	@JsonAlias("productInfos")
+	private Set<ProductInfoDto> productInfoDtos;
 
 	/**
 	 * @param id
@@ -89,12 +104,12 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	 * @param liquidationDeadline
 	 * @param deliveryDeadline
 	 * @param receivedMoney
-	 * @param paid
+	 * @param productInfoDtos
 	 */
 	@Builder(toBuilder = true)
 	public OrderDto(Long id, String code, @NotNull LocalDate orderDate, Long customerId, Long contactId,
 			Long opportunityId, String explanation, @NotNull LocalDate liquidationDeadline,
-			@NotNull LocalDate deliveryDeadline, Long receivedMoney) {
+			@NotNull LocalDate deliveryDeadline, Long receivedMoney, Set<ProductInfoDto> productInfoDtos) {
 		super(id);
 		this.code = code;
 		this.orderDate = orderDate;
@@ -105,6 +120,7 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 		this.liquidationDeadline = liquidationDeadline;
 		this.deliveryDeadline = deliveryDeadline;
 		this.receivedMoney = receivedMoney;
+		this.productInfoDtos = productInfoDtos;
 	}
 
 }

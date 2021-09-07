@@ -5,6 +5,10 @@ package capstone.dto.request;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import capstone.dto.request.deserializer.IdsDeserializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,6 +38,8 @@ public class RoleDto extends NamedDto<Long> {
 	/**
 	 * Quyền
 	 */
+	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonAlias("permissionFunctionActions")
 	private Set<Long> permissionFunctionActionIds;
 
 	/**
@@ -43,7 +49,7 @@ public class RoleDto extends NamedDto<Long> {
 	 * @param permissionFunctionActionIds
 	 */
 	@Builder
-	RoleDto(Long id, String name, String description, Set<Long> permissionFunctionActionIds) {
+	public RoleDto(Long id, String name, String description, Set<Long> permissionFunctionActionIds) {
 		super(id, name);
 		this.description = description;
 		this.permissionFunctionActionIds = permissionFunctionActionIds;

@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import capstone.entity.BaseEntity;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.Identifiable;
 import capstone.model.Named;
 import capstone.service.iservice.IReadNameService;
 
@@ -20,7 +20,7 @@ import capstone.service.iservice.IReadNameService;
  *
  */
 interface IReadNameController< //
-	T extends BaseEntity<ID> & Named, //
+	T extends Object & Identifiable<ID> & Named, //
 	Service extends IReadNameService,
 	ID extends Serializable //
 > //

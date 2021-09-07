@@ -47,7 +47,7 @@ public class CareerService extends AbstractService<Career, Career, Career, Caree
 	
 	@Override
 	public List<?> getAllName() throws ResourceNotFoundException {
-		List<IdAndNameAndField> list = deletedFilter(() -> this.repository.FindIdNameFieldAllBy(), false);
+		List<IdAndNameAndField> list = deletedFilter(() -> this.repository.findIdNameFieldAllBy(), false);
 		return list;
 	}
 

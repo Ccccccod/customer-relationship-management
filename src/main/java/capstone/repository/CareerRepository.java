@@ -17,7 +17,7 @@ import capstone.entity.Field;
 @Repository
 public interface CareerRepository extends NamedJpaRepository<Career, Long> {
 	
-	List<IdAndNameAndField> FindIdNameFieldAllBy();
+	List<IdAndNameAndField> findIdNameFieldAllBy();
 	
 	interface IdAndNameAndField {
 		Long getId();

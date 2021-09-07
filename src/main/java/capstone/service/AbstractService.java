@@ -40,10 +40,13 @@ import lombok.Getter;
 
 /**
  * Abstract Service
- * 
  * @author Tuna
- * @param <Dto>
+ *
+ * @param <CreateDto>
+ * @param <UpdateDto>
+ * @param <Response>
  * @param <Entity>
+ * @param <Repository>
  * @param <ID>
  */
 public abstract class AbstractService< //

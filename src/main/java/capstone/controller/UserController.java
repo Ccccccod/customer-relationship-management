@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import capstone.dto.request.UserDto;
 import capstone.dto.request.UserUpdateDto;
 import capstone.dto.response.UserResponse;
+import capstone.entity.Gender;
 import capstone.entity.Role;
 import capstone.entity.User;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
+import capstone.repository.GenderRepository;
 import capstone.repository.InvoiceRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
@@ -56,6 +58,9 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 
     @Autowired
     private ContactRepository contactRepository;
+    
+    @Autowired
+    private GenderRepository genderRepository;
     
     @Autowired
     private OpportunityRepository opportunityRepository;
@@ -105,7 +110,7 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 				.name(dto.getName())
 				.phone(dto.getPhone())
 				.dateOfBirth(dto.getDateOfBirth())
-				.gender(dto.getGender())
+				.gender(AbstractService.findEntityById(genderRepository, dto.getGenderId(), Gender.class))
 				.address(dto.getAddress())
 				.build();
 	}
@@ -119,7 +124,7 @@ public class UserController extends AbstractCRUDController<UserDto, UserUpdateDt
 				.name(updateDto.getName()) //
 				.phone(updateDto.getPhone()) //
 				.dateOfBirth(updateDto.getDateOfBirth()) //
-				.gender(updateDto.getGender()) //
+				.gender(AbstractService.findEntityById(genderRepository, updateDto.getGenderId(), Gender.class)) //
 				.address(updateDto.getAddress()) //
 				.build();
 	}

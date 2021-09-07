@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.UserUpdateDto;
 import capstone.dto.response.UserResponse;
+import capstone.entity.Gender;
 import capstone.entity.Role;
 import capstone.entity.User;
 import capstone.exception.ResourceNotFoundException;
+import capstone.repository.GenderRepository;
 import capstone.repository.RoleRepository;
 import capstone.repository.UserRepository;
 import capstone.service.AbstractService;
@@ -41,6 +43,9 @@ public class ProfileController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private GenderRepository genderRepository;
 	
 	@Autowired
 	private UserService userService;
@@ -80,7 +85,7 @@ public class ProfileController {
 				.name(updateDto.getName()) //
 				.phone(updateDto.getPhone()) //
 				.dateOfBirth(updateDto.getDateOfBirth()) //
-				.gender(updateDto.getGender()) //
+				.gender(AbstractService.findEntityById(genderRepository, updateDto.getGenderId(), Gender.class)) //
 				.address(updateDto.getAddress()) //
 				.build();
 	}

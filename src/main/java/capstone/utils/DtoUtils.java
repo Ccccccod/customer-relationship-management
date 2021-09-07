@@ -6,8 +6,8 @@ package capstone.utils;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
-import capstone.entity.BaseEntity;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.Identifiable;
 
 /**
  * @author Tuna
@@ -45,7 +45,7 @@ public class DtoUtils {
 	 * @param id id used to find resource
 	 * @return {@link Supplier} that throw {@link ResourceNotFoundException}
 	 */
-	public static final <T extends BaseEntity<ID>, ID extends Serializable> //
+	public static final <T extends Object & Identifiable<ID>, ID extends Serializable> //
 	Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(Class<T> clazz, ID id) {
 		return () -> new ResourceNotFoundException("Entity " + clazz.getName() + " not found for this id: " + id);
 	}

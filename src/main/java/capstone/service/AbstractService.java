@@ -50,7 +50,7 @@ public abstract class AbstractService< //
 		CreateDto extends Object & Identifiable<ID>, //
 		UpdateDto extends Object & Identifiable<ID>, //
 		Response extends Object & Identifiable<ID>, //
-		Entity extends BaseEntity<ID>, //
+		Entity extends Object & Identifiable<ID>, //
 		Repository extends JpaRepository<Entity, ID>, //
 		ID extends Serializable //
 > //

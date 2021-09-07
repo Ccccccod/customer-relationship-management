@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import capstone.entity.BaseEntity;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.IdAndName;
+import capstone.model.Identifiable;
 import capstone.model.Named;
 import capstone.repository.NamedJpaRepository;
 
@@ -19,7 +19,7 @@ import capstone.repository.NamedJpaRepository;
  * @author Tuna
  */
 public interface INamedService< //
-		T extends BaseEntity<ID> & Named, //
+		T extends Object & Identifiable<ID> & Named, //
 		Repository extends JpaRepository<T, ID> & NamedJpaRepository<T, ID>, //
 		ID extends Serializable //
 > extends IReadNameService {

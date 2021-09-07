@@ -62,6 +62,15 @@ public class Gender extends NamedEntity<Long> {
 	private Set<Contact> contacts;
 
 	/**
+	 * Người dùng
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "gender")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<User> users;
+
+	/**
 	 * @param id
 	 * @param createdAt
 	 * @param updatedAt
@@ -73,14 +82,16 @@ public class Gender extends NamedEntity<Long> {
 	 * @param name
 	 * @param potentials
 	 * @param contacts
+	 * @param users
 	 */
 	@Builder(toBuilder = true)
 	public Gender(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, @NonNull @NotNull @NotBlank(message = "must not be empty") String name,
-			Set<Potential> potentials, Set<Contact> contacts) {
+			Set<Potential> potentials, Set<Contact> contacts, Set<User> users) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.potentials = potentials;
 		this.contacts = contacts;
+		this.users = users;
 	}
 
 	/**

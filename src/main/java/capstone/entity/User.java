@@ -11,12 +11,11 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -29,7 +28,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
-import capstone.common.enums.Gender;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Named;
@@ -108,8 +106,8 @@ public class User extends BaseEntity<Long> implements Named {
 	/**
 	 * Giới tính
 	 */
-	@Column(name = "gender")
-	@Enumerated(EnumType.STRING)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "gender")
 	private Gender gender;
 
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)

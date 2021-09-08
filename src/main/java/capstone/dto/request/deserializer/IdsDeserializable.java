@@ -5,8 +5,10 @@ package capstone.dto.request.deserializer;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,22 +21,22 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
  * @author Tuna
  */
 @SuppressWarnings("serial")
-public class IdsDeserializable extends StdDeserializer<List<Long>> {
+public class IdsDeserializable extends StdDeserializer<Set<Long>> {
 
-	public IdsDeserializable(Class<List<Long>> vc) {
+	public IdsDeserializable(Class<Set<Long>> vc) {
 		super(vc);
 	}
 
 	public IdsDeserializable() {
-		super(List.class);
+		super(Set.class);
 	}
 
 	@Override
-	public List<Long> deserialize(JsonParser jp, DeserializationContext ctxt)
+	public Set<Long> deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
 		JsonNode node = jp.getCodec().readTree(jp);
 		if (node.isArray()) {
-			List<Long> result = new LinkedList<Long>();
+			Set<Long> result = new LinkedHashSet<>();
 			node.elements().forEachRemaining(n -> {
 				if (n.canConvertToLong()) 
 					result.add(n.asLong());
@@ -43,7 +45,7 @@ public class IdsDeserializable extends StdDeserializer<List<Long>> {
 			});
 			return result;
 		}
-		return Arrays.asList();
+		return new LinkedHashSet<>();
 	}
 
 }

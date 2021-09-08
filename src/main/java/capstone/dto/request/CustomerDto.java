@@ -30,7 +30,6 @@ import lombok.ToString;
 /**
  * Khách hàng dto
  * @author Tuna
- *
  */
 @Getter
 @Setter

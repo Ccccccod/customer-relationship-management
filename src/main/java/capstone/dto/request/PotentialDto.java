@@ -42,7 +42,6 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	/**
 	 * Mã tiềm năng
 	 */
-	@NotNull
 	private String code;
 
 	/**

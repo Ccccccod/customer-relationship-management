@@ -5,8 +5,6 @@ package capstone.dto.request;
 
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -37,7 +35,6 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Mã
 	 */
-	@NotNull
 	private String code;
 	
 	/**

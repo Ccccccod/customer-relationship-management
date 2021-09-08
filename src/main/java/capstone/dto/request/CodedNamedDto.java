@@ -5,8 +5,6 @@ package capstone.dto.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +25,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class CodedNamedDto<ID extends Serializable> extends NamedDto<ID> {
 	
-	@NotNull
 	private String code;
 
 	/**

@@ -78,12 +78,6 @@ public class District implements Identifiable<Long>, Named {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
-	private Set<Province> provinces;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
-	@JsonIgnore
 	private Set<Contact> contacts;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")

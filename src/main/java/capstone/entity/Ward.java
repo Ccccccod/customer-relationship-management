@@ -72,12 +72,6 @@ public class Ward implements Identifiable<Long>, Named {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
-	private Set<Province> provinces;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ward")
-	@ToString.Exclude
-	@EqualsAndHashCode.Exclude
-	@JsonIgnore
 	private Set<Contact> contacts;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ward")

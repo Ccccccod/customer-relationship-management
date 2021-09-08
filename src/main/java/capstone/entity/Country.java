@@ -60,13 +60,13 @@ public class Country implements Identifiable<Long>, Named {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
-	private Set<Potential> potentials;
+	private Set<Province> provinces;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
-	private Set<Province> provinces;
+	private Set<Potential> potentials;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
 	@ToString.Exclude

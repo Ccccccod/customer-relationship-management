@@ -27,7 +27,6 @@ import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
 import capstone.model.Repositoried;
-import capstone.repository.RepositoryUtils;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
@@ -92,7 +91,7 @@ public abstract class AbstractCRUDController< //
 		entity.setCreatedBy(this.userService.getCurrentUser());
 		entity.setId(null);
 		
-		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
+		capstone.utils.RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
 		entity = this.repository.save(entity);
 		
 		Response response = this.entityToResponse(entity);
@@ -117,7 +116,7 @@ public abstract class AbstractCRUDController< //
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		entity.setId(id);
 		
-		RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
+		capstone.utils.RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
 		entity = this.repository.saveAndFlush(entity);
 		logger.debug("updated enitity: {}", entity);
 		

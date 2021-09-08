@@ -1,7 +1,7 @@
 /**
  * 
  */
-package capstone.repository;
+package capstone.utils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -9,10 +9,14 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
 
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -22,17 +26,38 @@ import capstone.model.Identifiable;
 /**
  * RepositoryUtils
  * @author Tuna
- *
  */
-public class RepositoryUtils {
+public final class RepositoryUtils {
 
-	/**
-	 * This is a utility class and cannot be instantiated
-	 */
 	private RepositoryUtils() {
 		throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
 	}
+
+	/**
+	 * Enable a {@link Filter} with a parameter
+	 * @param entityManager
+	 * @param filterName
+	 * @param parameter
+	 * @param parameterValue
+	 * @return
+	 */
+	public static Supplier<Void> enableFilter(EntityManager entityManager, String filterName, String parameter,
+			Object parameterValue) {
+		Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter(filterName);
+        filter.setParameter(parameter, parameterValue);
+        return () -> {
+        	if (session != null)
+        		session.disableFilter(filterName);
+        	return null;
+        };
+	}
 	
+	public static void testF() {
+		Supplier<Void> enableFilter = enableFilter(null, null, null, null);
+		enableFilter.get();
+	}
+
 	/**
 	 * Check if an entity has any fields that will violate duplicate constraint if it's saved
 	 * @param <T> the entity's type 
@@ -74,7 +99,7 @@ public class RepositoryUtils {
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if an entity has any fields that will violate duplicate constraint if it's updated
 	 * @param <T> the entity's type 

@@ -72,67 +72,94 @@ public abstract class AbstractService< //
 	protected Repository repository;
 	
 	@Autowired
-	protected ClassificationService classificationService;
-	
-	@Autowired
-	protected SourceService sourceService;
-
-	@Autowired
-	protected ProductTypeService productTypeService;
+	protected BusinessTypeService businessTypeService;
 	
 	@Autowired
 	protected CareerService careerService;
 	
 	@Autowired
-	protected PositionService positionService;
-	
-	@Autowired
-	protected OpportunityPhaseService opportunityPhaseService;
-
-	@Autowired
-	protected TypeService typeService;
-	
-	@Autowired
-	protected MaritalStatusService maritalStatusService;
-	
-	@Autowired
-	protected FieldService fieldService;
-	
-	@Autowired
-	protected IncomeService incomeService;
-	
-	@Autowired
-	protected GenderService genderService;
-	
-	@Autowired
-	protected DepartmentService departmentService;
-	
-	@Autowired
-	protected BusinessTypeService businessTypeService;
-	
-	@Autowired
-	protected PotentialService potentialService;
+	protected ClassificationService classificationService;
 	
 	@Autowired
 	protected ContactService contactService;
 	
 	@Autowired
+	protected CountryService countryService;
+	
+	@Autowired
 	protected CustomerService customerService;
+	
+	@Autowired
+	protected DepartmentService departmentService;
+	
+	@Autowired
+	protected DistrictService districtService;
+	
+	@Autowired
+	protected FieldService fieldService;
+	
+	@Autowired
+	protected GenderService genderService;
+	
+	@Autowired
+	protected IncomeService incomeService;
+	
+	@Autowired
+	protected InvoiceService invoiceService;
+	
+	@Autowired
+	protected MaritalStatusService maritalStatusService;
+	
+	@Autowired
+	protected OpportunityPhaseService opportunityPhaseService;
 	
 	@Autowired
 	protected OpportunityService opportunityService;
 	
 	@Autowired
-	protected VocativeService vocativeService;
-	
-	@Autowired
 	protected OrderService orderService;
-
+	
 	@Autowired
 	protected PermissionFunctionActionService permissionFunctionActionService;
 	
 	@Autowired
 	protected PhoneAreaCodeService phoneAreaCodeService;
+	
+	@Autowired
+	protected PositionService positionService;
+	
+	@Autowired
+	protected PotentialService potentialService;
+	
+	@Autowired
+	protected ProductInfoService productInfoService;
+
+	@Autowired
+	protected ProductService productService;
+
+	@Autowired
+	protected ProductTypeService productTypeService;
+	
+	@Autowired
+	protected ProvinceService provinceService;
+	
+	@Autowired
+	protected RoleService roleService;
+	
+	@Autowired
+	protected SourceService sourceService;
+
+	@Autowired
+	protected TypeService typeService;
+	
+	@Autowired
+	protected UserService userService;
+	
+	@Autowired
+	protected VocativeService vocativeService;
+	
+	@Autowired
+	protected WardService wardService;
 	
 	@Autowired
     private EntityManager entityManager;

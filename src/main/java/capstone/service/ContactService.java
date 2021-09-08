@@ -3,10 +3,16 @@
  */
 package capstone.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.ContactDto;
 import capstone.entity.Contact;
+import capstone.entity.Country;
+import capstone.entity.District;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ContactRepository;
 import capstone.service.iservice.INamedService;
@@ -58,6 +64,13 @@ public class ContactService extends AbstractService<ContactDto, ContactDto, Cont
 
 	@Override
 	protected Contact createDtoToEntity(ContactDto d, Contact entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
@@ -76,6 +89,11 @@ public class ContactService extends AbstractService<ContactDto, ContactDto, Cont
 				.email(d.getEmail())
 				.officeEmail(d.getOfficeEmail())
 				.source(sourceService.getEntityById(d.getSourceId()))
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
 				.address(d.getAddress())
 				.dateOfBirth(d.getDateOfBirth())
 				.gender(genderService.getEntityById(d.getGenderId()))

@@ -5,11 +5,16 @@ package capstone.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
+import capstone.entity.Country;
+import capstone.entity.District;
 import capstone.entity.Order;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.IdAndExplanation;
 import capstone.repository.OrderRepository;
@@ -39,6 +44,13 @@ public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Ord
 
 	@Override
 	protected Order createDtoToEntity(OrderDto d, Order entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
@@ -50,6 +62,12 @@ public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Ord
 				.liquidationDeadline(d.getLiquidationDeadline())
 				.deliveryDeadline(d.getDeliveryDeadline())
 				.receivedMoney(d.getReceivedMoney())
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
 				.build();
 	}
 

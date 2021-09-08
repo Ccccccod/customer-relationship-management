@@ -3,10 +3,16 @@
  */
 package capstone.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.InvoiceDto;
+import capstone.entity.Country;
+import capstone.entity.District;
 import capstone.entity.Invoice;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.InvoiceRepository;
 
@@ -29,19 +35,31 @@ public class InvoiceService extends AbstractService<InvoiceDto, InvoiceDto, Invo
 	}
 
 	@Override
-	protected Invoice createDtoToEntity(InvoiceDto dto, Invoice entity) throws ResourceNotFoundException {
+	protected Invoice createDtoToEntity(InvoiceDto d, Invoice entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder() //
-				.code(dto.getCode()) //
-				.customer(customerService.getEntityById(dto.getCustomerId())) //
-				.address(dto.getAddress()) //
-				.bankAccount(dto.getBankAccount()) //
-				.bank(dto.getBank()) //
-				.taxCode(dto.getTaxCode()) //
-				.buyer(contactService.getEntityById(dto.getBuyerId())) //
-				.receiverName(dto.getReceiverName()) //
-				.receiverEmail(dto.getReceiverEmail()) //
-				.receiverPhone(dto.getReceiverPhone()) //
-				.order(orderService.getEntityById(dto.getOrderId())) //
+				.code(d.getCode()) //
+				.customer(customerService.getEntityById(d.getCustomerId())) //
+				.bankAccount(d.getBankAccount()) //
+				.bank(d.getBank()) //
+				.taxCode(d.getTaxCode()) //
+				.buyer(contactService.getEntityById(d.getBuyerId())) //
+				.receiverName(d.getReceiverName()) //
+				.receiverEmail(d.getReceiverEmail()) //
+				.receiverPhone(d.getReceiverPhone()) //
+				.order(orderService.getEntityById(d.getOrderId())) //
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
 				.build();
 	}
 

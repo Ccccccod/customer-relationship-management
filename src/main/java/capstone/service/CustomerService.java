@@ -3,10 +3,16 @@
  */
 package capstone.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.CustomerDto;
+import capstone.entity.Country;
 import capstone.entity.Customer;
+import capstone.entity.District;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.CustomerRepository;
 import capstone.service.iservice.INamedService;
@@ -48,27 +54,39 @@ public class CustomerService extends AbstractService<CustomerDto, CustomerDto, C
 	}
 
 	@Override
-	protected Customer createDtoToEntity(CustomerDto dto, Customer entity) throws ResourceNotFoundException {
+	protected Customer createDtoToEntity(CustomerDto d, Customer entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
-				.id(dto.getId())
-				.code(dto.getCode())
-				.shortName(dto.getShortName())
-				.name(dto.getName())
-				.taxCode(dto.getTaxCode())
-				.phone(dto.getPhone())
-				.email(dto.getEmail())
-				.source(sourceService.getEntityById(dto.getSourceId()))
-				.classifications(classificationService.getEntitiesById(dto.getClassificationIds()))
-				.fields(fieldService.getEntitiesById(dto.getFieldIds()))
-				.type(typeService.getEntityById(dto.getTypeId()))
-				.careers(careerService.getEntitiesById(dto.getCareerIds()))
-				.address(dto.getAddress())
-				.bankAccount(dto.getBankAccount())
-				.bank(dto.getBank())
-				.foundedDate(dto.getFoundedDate())
-				.customerSince(dto.getCustomerSince())
-				.income(incomeService.getEntityById(dto.getIncomeId()))
-				.website(dto.getWebsite())
+				.id(d.getId())
+				.code(d.getCode())
+				.shortName(d.getShortName())
+				.name(d.getName())
+				.taxCode(d.getTaxCode())
+				.phone(d.getPhone())
+				.email(d.getEmail())
+				.source(sourceService.getEntityById(d.getSourceId()))
+				.classifications(classificationService.getEntitiesById(d.getClassificationIds()))
+				.fields(fieldService.getEntitiesById(d.getFieldIds()))
+				.type(typeService.getEntityById(d.getTypeId()))
+				.careers(careerService.getEntitiesById(d.getCareerIds()))
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
+				.bankAccount(d.getBankAccount())
+				.bank(d.getBank())
+				.foundedDate(d.getFoundedDate())
+				.customerSince(d.getCustomerSince())
+				.income(incomeService.getEntityById(d.getIncomeId()))
+				.website(d.getWebsite())
 				.build();
 	}
 

@@ -3,10 +3,16 @@
  */
 package capstone.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.PotentialDto;
+import capstone.entity.Country;
+import capstone.entity.District;
 import capstone.entity.Potential;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PotentialRepository;
 import capstone.service.iservice.INamedService;
@@ -32,6 +38,13 @@ public class PotentialService
 
 	@Override
 	protected Potential createDtoToEntity(PotentialDto d, Potential entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
 				.code(d.getCode())
@@ -53,6 +66,11 @@ public class PotentialService
 				.customer(d.getCustomer())
 				.taxCode(d.getTaxCode())
 				.customerTaxCode(d.getCustomerTaxCode())
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
 				.address(d.getAddress())
 				.gender(genderService.getEntityById(d.getGenderId()))
 				.dateOfBirth(d.getDateOfBirth())

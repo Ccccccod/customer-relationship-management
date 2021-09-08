@@ -25,7 +25,7 @@ import capstone.service.iservice.IReadNameService;
  * @author tuna
  */
 @Service
-public class OrderService extends AbstractService<OrderDto, OrderDto, Order, Order, OrderRepository, Long>
+public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order, OrderRepository, Long>
 		implements IReadNameService {
 	
 	public List<Order> findByOrderDateBetween(LocalDate from, LocalDate to) {

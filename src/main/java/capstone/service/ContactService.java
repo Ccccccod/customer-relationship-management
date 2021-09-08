@@ -22,7 +22,7 @@ import capstone.service.iservice.INamedService;
  * @author Tuna
  */
 @Service
-public class ContactService extends AbstractService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long>
+public class ContactService extends CodedService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long>
 		implements INamedService<Contact, ContactRepository, Long> {
 
 //	@Autowired

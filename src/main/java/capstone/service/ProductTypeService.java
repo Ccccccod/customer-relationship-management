@@ -25,7 +25,7 @@ import capstone.service.iservice.INamedService;
  */
 @Service
 public class ProductTypeService
-		extends AbstractService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long>
+		extends CodedService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long>
 		implements IDtoToEntityService<ProductTypeDto, ProductType, Long>,
 		INamedService<ProductType, ProductTypeRepository, Long> {
 

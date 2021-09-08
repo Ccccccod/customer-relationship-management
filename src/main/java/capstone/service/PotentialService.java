@@ -23,7 +23,7 @@ import capstone.service.iservice.INamedService;
  */
 @Service
 public class PotentialService
-		extends AbstractService<PotentialDto, PotentialDto, Potential, Potential, PotentialRepository, Long>
+		extends CodedService<PotentialDto, PotentialDto, Potential, Potential, PotentialRepository, Long>
 		implements INamedService<Potential, PotentialRepository, Long> {
 
 	@Override

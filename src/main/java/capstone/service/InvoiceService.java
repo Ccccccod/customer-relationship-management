@@ -22,7 +22,7 @@ import capstone.repository.InvoiceRepository;
  * @author tuna
  */
 @Service
-public class InvoiceService extends AbstractService<InvoiceDto, InvoiceDto, Invoice, Invoice, InvoiceRepository, Long> {
+public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice, Invoice, InvoiceRepository, Long> {
 
 	@Override
 	protected Class<Invoice> entityClass() {

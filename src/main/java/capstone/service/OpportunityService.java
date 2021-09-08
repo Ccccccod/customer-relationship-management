@@ -27,7 +27,7 @@ import capstone.service.iservice.INamedService;
  */
 @Service
 public class OpportunityService
-		extends AbstractService<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, Long>
+		extends CodedService<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, Long>
 		implements INamedService<Opportunity, OpportunityRepository, Long> {
 
 	@Autowired

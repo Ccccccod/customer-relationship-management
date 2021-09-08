@@ -30,12 +30,12 @@ import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
-import capstone.repository.RepositoryUtils;
 import capstone.service.iservice.ICreateService;
 import capstone.service.iservice.IDeleteService;
 import capstone.service.iservice.IReadService;
 import capstone.service.iservice.IUpdateService;
 import capstone.utils.DtoUtils;
+import capstone.utils.RepositoryUtils;
 import lombok.Getter;
 
 /**

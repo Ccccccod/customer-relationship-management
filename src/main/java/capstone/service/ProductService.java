@@ -19,7 +19,7 @@ import capstone.service.iservice.INamedService;
  * @author tuna
  */
 @Service
-public class ProductService extends AbstractService<ProductDto, ProductDto, Product, Product, ProductRepository, Long>
+public class ProductService extends CodedService<ProductDto, ProductDto, Product, Product, ProductRepository, Long>
 		implements IDtoToEntityService<ProductDto, Product, Long>, INamedService<Product, ProductRepository, Long> {
 
 	@Autowired

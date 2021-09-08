@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
 import capstone.entity.BaseEntity;
+import capstone.entity.BusinessType;
 import capstone.entity.Career;
 import capstone.entity.Classification;
 import capstone.entity.Contact;
@@ -46,6 +47,7 @@ import capstone.entity.ProductType;
 import capstone.entity.Role;
 import capstone.entity.Source;
 import capstone.entity.Type;
+import capstone.entity.Unit;
 import capstone.entity.User;
 import capstone.entity.Vocative;
 import capstone.model.Coded;
@@ -77,6 +79,7 @@ import capstone.repository.ProductTypeRepository;
 import capstone.repository.RoleRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
+import capstone.repository.UnitRepository;
 import capstone.repository.UserRepository;
 import capstone.repository.VocativeRepository;
 import capstone.utils.EncryptedPasswordUtils;
@@ -169,6 +172,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
+    
+    @Autowired
+    private UnitRepository unitRepository;
 
     /**
      * WARNING: disable when testing
@@ -254,23 +260,24 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Field fieldBuilding = addNamedRepository(fieldRepository, new Field("Xây lắp"));
         Field fieldLightIndustry = addNamedRepository(fieldRepository, new Field("Công nghiệp nhẹ"));
         
+        // Loại hình doanh nghiệp
+        BusinessType businessType01 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty TNHH"));
+        BusinessType businessType02 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty cổ phần"));
+        BusinessType businessType03 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty có vốn đầu tư nước ngoài"));
+        BusinessType businessType04 = addNamedRepository(businessTypeRepository, new BusinessType("Doanh nghiệp tư nhân"));
+        BusinessType businessType05 = addNamedRepository(businessTypeRepository, new BusinessType("Tổ chức phi chính phủ"));
+        BusinessType businessType06 = addNamedRepository(businessTypeRepository, new BusinessType("Cửa hàng, trung tâm"));
+        BusinessType businessType07 = addNamedRepository(businessTypeRepository, new BusinessType("Hợp tác xã"));
+        BusinessType businessType08 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty hợp danh"));
+        BusinessType businessType09 = addNamedRepository(businessTypeRepository, new BusinessType("Đơn vị HCSN cấp trung ương"));
+        BusinessType businessType10 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty HCSN cấp Tỉnh/Thành Phố"));
+        BusinessType businessType11 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty HCSN cấp Quận/Huyện"));
+        
         // Type Loại hình
-        Type type1 = addNamedRepository(typeRepository, new Type("Công ty TNHH"));
-        Type type2 = addNamedRepository(typeRepository, new Type("Công ty cổ phần"));
-        Type type3 = addNamedRepository(typeRepository, new Type("Công ty có vốn đầu tư nước ngoài "));
-        Type type4 = addNamedRepository(typeRepository, new Type("Doanh nghiệp tư nhân "));
-        Type type5 = addNamedRepository(typeRepository, new Type("Tổ chức phi chính phủ "));
-        Type type6 = addNamedRepository(typeRepository, new Type("Cửa hàng , trung tâm"));
-        Type type7 = addNamedRepository(typeRepository, new Type("Hợp tác xã"));
-        Type type8 = addNamedRepository(typeRepository, new Type("Công ty hợp danh"));
-        Type type9 = addNamedRepository(typeRepository, new Type("Đơn vị HCSN cấp trung ương"));
-        Type type10 = addNamedRepository(typeRepository, new Type("Công ty HCSN cấp Tỉnh/Thành Phố"));
-        Type type11 = addNamedRepository(typeRepository, new Type("Công ty HCSN cấp Quận/Huyện"));
         Type typeBusiness = addNamedRepository(typeRepository, new Type("Doanh nghiệp"));
         Type typeIndividualHousehold = addNamedRepository(typeRepository, new Type("Hộ cá thể"));
         Type typeAdministrativeCareer = addNamedRepository(typeRepository, new Type("Hành chính sự nghiệp"));
         Type typeOther = addNamedRepository(typeRepository, new Type("Khác"));
-        
         
         // Career Ngành nghề
         Career career01 = addNamedRepository(careerRepository, new Career(fieldCommerce, "Kinh doanh nhôm, kính"));
@@ -409,6 +416,37 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         PhoneAreaCode phoneAreaCode61 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("270"));
         PhoneAreaCode phoneAreaCode62 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("211"));
         PhoneAreaCode phoneAreaCode63 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("216"));
+        
+        // Unit
+        Unit unit01 = addNamedRepository(unitRepository, new Unit("Bao"));
+        Unit unit02 = addNamedRepository(unitRepository, new Unit("Bình"));
+        Unit unit03 = addNamedRepository(unitRepository, new Unit("Bộ"));
+        Unit unit04 = addNamedRepository(unitRepository, new Unit("Cái"));
+        Unit unit05 = addNamedRepository(unitRepository, new Unit("Cây"));
+        Unit unit06 = addNamedRepository(unitRepository, new Unit("Chai"));
+        Unit unit07 = addNamedRepository(unitRepository, new Unit("Chiếc"));
+        Unit unit08 = addNamedRepository(unitRepository, new Unit("Cuốn"));
+        Unit unit09 = addNamedRepository(unitRepository, new Unit("Cuộn"));
+        Unit unit10 = addNamedRepository(unitRepository, new Unit("Điểu"));
+        Unit unit11 = addNamedRepository(unitRepository, new Unit("Gói"));
+        Unit unit12 = addNamedRepository(unitRepository, new Unit("Hộp"));
+        Unit unit13 = addNamedRepository(unitRepository, new Unit("Két"));
+        Unit unit14 = addNamedRepository(unitRepository, new Unit("Kg"));
+        Unit unit15 = addNamedRepository(unitRepository, new Unit("Khối"));
+        Unit unit16 = addNamedRepository(unitRepository, new Unit("Lần"));
+        Unit unit17 = addNamedRepository(unitRepository, new Unit("Lít"));
+        Unit unit18 = addNamedRepository(unitRepository, new Unit("Lọ"));
+        Unit unit19 = addNamedRepository(unitRepository, new Unit("m2"));
+        Unit unit20 = addNamedRepository(unitRepository, new Unit("m3"));
+        Unit unit21 = addNamedRepository(unitRepository, new Unit("ml"));
+        Unit unit22 = addNamedRepository(unitRepository, new Unit("Thùng"));
+        Unit unit23 = addNamedRepository(unitRepository, new Unit("Túi"));
+        Unit unit24 = addNamedRepository(unitRepository, new Unit("Tuýp"));
+        Unit unit25 = addNamedRepository(unitRepository, new Unit("Tấn"));
+        Unit unit26 = addNamedRepository(unitRepository, new Unit("Tạ"));
+        Unit unit27 = addNamedRepository(unitRepository, new Unit("Vỉ"));
+        Unit unit28 = addNamedRepository(unitRepository, new Unit("Viên"));
+        Unit unit29 = addNamedRepository(unitRepository, new Unit("Yến"));
        
 		// Customer
 		Customer customer4Eurodoor = addNamedRepository(customerRepository, Customer.builder()
@@ -690,7 +728,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 1")
         		.productType(null)
         		.explanation("Thành phẩm 1")
-        		.unit("Hộp")
+        		.unit(unit12)
         		.buyPrice(150000L)
         		.sellPrice(200000L).sellPrice1(220000L).sellPrice2(230000L)
         		.permanentPrice(250000L)
@@ -704,7 +742,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 2")
         		.productType(null)
         		.explanation("Thành phẩm 2")
-        		.unit("Cái")
+        		.unit(unit04)
         		.buyPrice(600_000L)
         		.sellPrice(800_000L).sellPrice1(900_000L).sellPrice2(1_000_000L)
         		.permanentPrice(900_000L)
@@ -718,7 +756,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 3")
         		.productType(null)
         		.explanation("Thành phẩm 3")
-        		.unit("Bộ")
+        		.unit(unit03)
         		.buyPrice(450_000L)
         		.sellPrice(460_000L).sellPrice1(470_000L).sellPrice2(420_000L)
         		.permanentPrice(500_000L)
@@ -733,7 +771,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 4")
         		.productType(null)
         		.explanation("Thành phẩm 4")
-        		.unit("Chiếc")
+        		.unit(unit07)
         		.buyPrice(200_000L)
         		.sellPrice(210_000L).sellPrice1(220_000L).sellPrice2(230_000L)
         		.permanentPrice(240_000L)
@@ -747,7 +785,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 5")
         		.productType(null)
         		.explanation("Thành phẩm 5")
-        		.unit("Hộp")
+        		.unit(unit25)
         		.buyPrice(80_000L)
         		.sellPrice(85_000L).sellPrice1(90_000L).sellPrice2(78_000L)
         		.permanentPrice(92_000L)
@@ -761,7 +799,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 6")
         		.productType(null)
         		.explanation("Thành phẩm 6")
-        		.unit("Cái")
+        		.unit(unit02)
         		.buyPrice(300_000L)
         		.sellPrice(210_000L).sellPrice1(320_000L).sellPrice2(340_000L)
         		.permanentPrice(350_000L)
@@ -775,7 +813,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 7")
         		.productType(null)
         		.explanation("Thành phẩm 7")
-        		.unit("Bộ")
+        		.unit(unit03)
         		.buyPrice(1_500_000L)
         		.sellPrice(1_550_000L).sellPrice1(1_650_000L).sellPrice2(1_700_000L)
         		.permanentPrice(1_800_000L)
@@ -789,7 +827,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 1")
         		.productType(null)
         		.explanation("Dịch Vụ 1")
-        		.unit("Gói")
+        		.unit(unit18)
         		.buyPrice(10_000_000L)
         		.sellPrice(15_000_000L).sellPrice1(13_000_000L).sellPrice2(14_000_000L)
         		.permanentPrice(12_000_000L)
@@ -803,7 +841,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 2")
         		.productType(null)
         		.explanation("Dịch Vụ 2")
-        		.unit("Gói")
+        		.unit(unit19)
         		.buyPrice(10_500_000L)
         		.sellPrice(15_500_000L).sellPrice1(13_500_000L).sellPrice2(14_500_000L)
         		.permanentPrice(12_500_000L)
@@ -817,7 +855,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 3")
         		.productType(null)
         		.explanation("Dịch Vụ 3")
-        		.unit("Gói")
+        		.unit(unit20)
         		.buyPrice(6_500_000L)
         		.sellPrice(11_500_000L).sellPrice1(9_500_000L).sellPrice2(10_500_000L)
         		.permanentPrice(8_500_000L)

@@ -18,17 +18,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Hàng hóa
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -148,7 +149,6 @@ public class Product extends CodedNamedEntity<Long> {
 	 * @param costUnitPrice
 	 * @param productInfos
 	 */
-	@Builder(toBuilder = true)
 	public Product(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String name, String code, ProductType productType,
 			String explanation, Unit unit, Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice,

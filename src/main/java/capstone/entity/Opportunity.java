@@ -29,12 +29,12 @@ import capstone.model.Coded;
 import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Opportunity
@@ -42,6 +42,7 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -200,7 +201,6 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	 * @param ward
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String code, Customer customer, Contact contact, String name,
 			OpportunityPhase opportunityPhase, Integer successRate, LocalDate expectedEndDate, Source source,

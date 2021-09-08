@@ -12,18 +12,19 @@ import capstone.dto.request.deserializer.IdDeserializable;
 import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Invoice Dto
  * Hóa đơn Dto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -150,7 +151,6 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	 * @param wardId
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public InvoiceDto(Long id, String code, Long customerId, String bankAccount, String bank, String taxCode,
 			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId,
 			Set<ProductInfoDto> productInfoDtos, Long countryId, Long provinceId, Long districtId, Long wardId,

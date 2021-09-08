@@ -18,18 +18,19 @@ import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Contact Dto
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -237,7 +238,6 @@ public class ContactDto extends BaseDto<Long> implements Coded, Named {
 	 * @param bankAccount
 	 * @param bank
 	 */
-	@Builder(toBuilder = true)
 	public ContactDto(Long id, String code, Long vocativeId, String lastName, String name, Long departmentId,
 			Long positionId, Long customerId, Set<Long> classificationIds, Boolean notCallPhone, Boolean notSendEmail,
 			String phone, String officePhone, String otherPhone, String email, String officeEmail, Long sourceId,

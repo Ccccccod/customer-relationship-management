@@ -12,18 +12,18 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdDeserializable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Hàng hóa Dto
  * @author Tuna
  */
-@Builder
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -121,7 +121,6 @@ public class ProductDto extends CodedNamedDto<Long> {
 	 * @param implicitRecord
 	 * @param costUnitPrice
 	 */
-	@Builder
 	public ProductDto(Long id, String name, String code, Long productTypeId, String explanation, Long unitId,
 			Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice,
 			Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice) {

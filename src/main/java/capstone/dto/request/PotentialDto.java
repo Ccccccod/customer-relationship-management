@@ -19,18 +19,19 @@ import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * PotentialDto
  * Tiềm năng Dto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -261,7 +262,6 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 * @param foundedDate
 	 * @param businessTypeId
 	 */
-	@Builder(toBuilder = true)
 	public PotentialDto(Long id, @NotNull String code, Long vocativeId, String lastName, @NotBlank String name,
 			Long departmentId, Long positionId, String phone, Long phoneAreaCodeId, String officePhone,
 			String otherPhone, Set<Long> classificationIds, Long sourceId, Boolean notCallPhone, Boolean notSendEmail,

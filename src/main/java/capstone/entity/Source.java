@@ -16,19 +16,21 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Nguồn gốc
  * @author Tuna
  *
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -82,7 +84,6 @@ public class Source extends NamedEntity<Long> {
 	 * @param opportunities
 	 * @param potentials
 	 */
-	@Builder(toBuilder = true)
 	public Source(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, @NonNull @NotNull @NotBlank(message = "must not be empty") String name,
 			Set<Customer> customers, Set<Contact> contacts, Set<Opportunity> opportunities, Set<Potential> potentials) {

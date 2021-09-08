@@ -28,18 +28,19 @@ import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Customer
  * Khách hàng
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -286,7 +287,6 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	 * @param invoices
 	 * @param potentials
 	 */
-	@Builder(toBuilder = true)
 	public Customer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String code, String shortName, String name, String taxCode,
 			String phone, String email, Source source, Set<Classification> classifications, Set<Field> fields,

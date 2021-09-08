@@ -18,18 +18,19 @@ import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * OrderDto
  * Đơn hàng Dto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -147,7 +148,6 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	 * @param wardId
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public OrderDto(Long id, String code, @NotNull LocalDate orderDate, Long customerId, Long contactId,
 			Long opportunityId, String explanation, @NotNull LocalDate liquidationDeadline,
 			@NotNull LocalDate deliveryDeadline, Long receivedMoney, Set<ProductInfoDto> productInfoDtos,

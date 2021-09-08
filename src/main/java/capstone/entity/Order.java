@@ -28,18 +28,19 @@ import capstone.model.Coded;
 import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Order
  * Đơn hàng
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -231,7 +232,6 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	 * @param address
 	 * @param invoices
 	 */
-	@Builder(toBuilder = true)
 	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, String code, LocalDate orderDate, Customer customer, Contact contact,
 			Opportunity opportunity, String explanation, LocalDate deliveryDeadline, LocalDate liquidationDeadline,

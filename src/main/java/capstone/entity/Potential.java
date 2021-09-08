@@ -26,18 +26,19 @@ import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Potential
  * Tiềm năng
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -356,7 +357,6 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 	 * @param income
 	 * @param website
 	 */
-	@Builder(toBuilder = true)
 	public Potential(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String code, Vocative vocative, String lastName, String name,
 			Department department, Position position, String phone, PhoneAreaCode phoneAreaCode, String officePhone,

@@ -34,6 +34,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Entity with basic fields to be extended
@@ -41,6 +42,7 @@ import lombok.ToString;
  *
  * @param <ID> Type of ID field
  */
+@SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @Getter

@@ -14,17 +14,19 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Unit
  * @author Tuna
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -57,7 +59,6 @@ public class Unit extends NamedEntity<Long> {
 	 * @param name
 	 * @param products
 	 */
-	@Builder(toBuilder = true)
 	public Unit(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, String name, Set<Product> products) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);

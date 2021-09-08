@@ -19,14 +19,15 @@ import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
 import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * UserUpdateDto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -90,7 +91,6 @@ public class UserUpdateDto extends BaseDto<Long> {
 	 * @param genderId
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public UserUpdateDto(Long id, @NotNull String username, @NotNull String email, Set<Long> roleIds, String lastName,
 			String name, String phone, LocalDate dateOfBirth, Long genderId, String address) {
 		super(id);

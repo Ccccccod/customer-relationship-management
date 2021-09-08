@@ -20,17 +20,18 @@ import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Khách hàng dto
  * @author Tuna
  */
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -206,7 +207,6 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	 * @param incomeId
 	 * @param website
 	 */
-	@Builder(toBuilder = true)
 	public CustomerDto(Long id, String code, String shortName, String name, @NotNull String taxCode, String phone,
 			@NotNull String email, Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId,
 			Set<Long> careerIds, Long countryId, Long provinceId, Long districtId, Long wardId, String address,

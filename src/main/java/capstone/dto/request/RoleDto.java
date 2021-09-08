@@ -10,18 +10,19 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdsDeserializable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Vai trò Dto
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -48,7 +49,6 @@ public class RoleDto extends NamedDto<Long> {
 	 * @param description
 	 * @param permissionFunctionActionIds
 	 */
-	@Builder
 	public RoleDto(Long id, String name, String description, Set<Long> permissionFunctionActionIds) {
 		super(id, name);
 		this.description = description;

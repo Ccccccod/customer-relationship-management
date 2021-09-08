@@ -8,18 +8,19 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdDeserializable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Loại hàng hóa Dto
  * @author Tuna
  *
  */
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -41,7 +42,6 @@ public class ProductTypeDto extends CodedNamedDto<Long> {
 	 * @param code
 	 * @param productTypeId
 	 */
-	@Builder
 	public ProductTypeDto(Long id, String name, String code, Long productTypeId) {
 		super(id, name, code);
 		this.productTypeId = productTypeId;

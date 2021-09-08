@@ -32,12 +32,12 @@ import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * User account
@@ -45,6 +45,8 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -297,7 +299,6 @@ public class User extends BaseEntity<Long> implements Named {
 	 * @param productInfosCreated
 	 * @param productInfosUpdated
 	 */
-	@Builder(toBuilder = true)
 	public User(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, String username, String password, String email, Set<Role> roles,
 			String lastName, String name, String phone, LocalDate dateOfBirth, Gender gender, String address,

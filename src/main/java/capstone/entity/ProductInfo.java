@@ -20,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Product Info
@@ -33,6 +33,7 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -188,7 +189,6 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param order
 	 * @param invoice
 	 */
-	@Builder(toBuilder = true)
 	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, Product product, String productCode, String explanation,
 			Unit unit, Integer amount, Long price, Integer discount, Integer vat, Opportunity opportunity,

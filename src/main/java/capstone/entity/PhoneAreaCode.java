@@ -17,18 +17,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * PhoneAreaCode
  * @author Tuna
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -61,7 +63,6 @@ public class PhoneAreaCode extends NamedEntity<Long> implements Named {
 	 * @param name
 	 * @param potentials
 	 */
-	@Builder(toBuilder = true)
 	public PhoneAreaCode(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted,
 			@NonNull @NotNull @NotBlank(message = "must not be empty") String name, Set<Potential> potentials) {

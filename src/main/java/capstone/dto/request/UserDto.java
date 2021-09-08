@@ -20,17 +20,17 @@ import capstone.dto.validatation.annotation.Email;
 import capstone.dto.validatation.annotation.Password;
 import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * User Dto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 public class UserDto extends BaseDto<Long> {
 
@@ -98,7 +98,6 @@ public class UserDto extends BaseDto<Long> {
 	 * @param genderId
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public UserDto(Long id, @NotNull String username, @NotNull String email, @NotNull String password,
 			Set<Long> roleIds, String lastName, String name, String phone, LocalDate dateOfBirth, Long genderId,
 			String address) {

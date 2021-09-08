@@ -23,12 +23,12 @@ import capstone.common.Constant;
 import capstone.model.Named;
 import capstone.model.Permission;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Role
@@ -36,6 +36,8 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -123,7 +125,6 @@ public class Role extends BaseEntity<Long> implements Named {
 	 * @param users
 	 * @param permissionFunctionActions
 	 */
-	@Builder(toBuilder = true)
 	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, String name, String description, Set<User> users,
 			Set<PermissionFunctionAction> permissionFunctionActions) {

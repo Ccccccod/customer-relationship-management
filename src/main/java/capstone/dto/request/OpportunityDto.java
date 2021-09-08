@@ -20,17 +20,18 @@ import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Cơ hội dto
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -148,7 +149,6 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 * @param sourceId
 	 * @param productInfoDtos
 	 */
-	@Builder(toBuilder = true)
 	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId,
 			@NotNull Long opportunityPhaseId, @NotNull @Min(0) @Max(100) Integer successRate,
 			@NotNull LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos) {
@@ -181,7 +181,6 @@ public class OpportunityDto extends BaseDto<Long> implements Coded, Named {
 	 * @param wardId
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public OpportunityDto(Long id, String code, String name, Long customerId, Long contactId, Long opportunityPhaseId,
 			Integer successRate, LocalDate expectedEndDate, Long sourceId, Set<ProductInfoDto> productInfoDtos,
 			Long countryId, Long provinceId, Long districtId, Long wardId, String address) {

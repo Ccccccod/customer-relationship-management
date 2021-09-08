@@ -6,17 +6,17 @@ package capstone.dto.response;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * PageResponse
  * @author Tuna
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 public class PageResponse<T> {
 	

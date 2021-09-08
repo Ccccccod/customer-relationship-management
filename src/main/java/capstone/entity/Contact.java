@@ -27,12 +27,12 @@ import capstone.common.Constant;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Contact
@@ -40,6 +40,7 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -301,7 +302,6 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param orders
 	 * @param invoices
 	 */
-	@Builder(toBuilder = true)
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String name, String code, Vocative vocative, String lastName,
 			Department department, Position position, Customer customer, Set<Classification> classifications,

@@ -11,19 +11,19 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdDeserializable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Product Info Dto
  * Thông tin hàng hóa Dto
  * @author Tuna
  */
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor

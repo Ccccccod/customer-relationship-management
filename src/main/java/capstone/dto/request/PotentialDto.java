@@ -148,6 +148,37 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 */
 	private String customerTaxCode;
 	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
 	/**
 	 * Địa chỉ
 	 */
@@ -206,6 +237,7 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 * @param departmentId
 	 * @param positionId
 	 * @param phone
+	 * @param phoneAreaCodeId
 	 * @param officePhone
 	 * @param otherPhone
 	 * @param classificationIds
@@ -217,6 +249,10 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 * @param customer
 	 * @param taxCode
 	 * @param customerTaxCode
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
 	 * @param address
 	 * @param genderId
 	 * @param dateOfBirth
@@ -228,11 +264,11 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	 */
 	@Builder(toBuilder = true)
 	public PotentialDto(Long id, @NotNull String code, Long vocativeId, String lastName, @NotBlank String name,
-			Long departmentId, Long positionId, String phone, Long phoneAreaCodeId, String officePhone, String otherPhone,
-			Set<Long> classificationIds, Long sourceId, Boolean notCallPhone, Boolean notSendEmail, String email,
-			String officeEmail, String customer, String taxCode, String customerTaxCode, String address, Long genderId,
-			LocalDate dateOfBirth, String facebook, String bankAccount, String bank, LocalDate foundedDate,
-			Long businessTypeId) {
+			Long departmentId, Long positionId, String phone, Long phoneAreaCodeId, String officePhone,
+			String otherPhone, Set<Long> classificationIds, Long sourceId, Boolean notCallPhone, Boolean notSendEmail,
+			String email, String officeEmail, String customer, String taxCode, String customerTaxCode, Long countryId,
+			Long provinceId, Long districtId, Long wardId, String address, Long genderId, LocalDate dateOfBirth,
+			String facebook, String bankAccount, String bank, LocalDate foundedDate, Long businessTypeId) {
 		super(id);
 		this.code = code;
 		this.vocativeId = vocativeId;
@@ -253,6 +289,10 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 		this.customer = customer;
 		this.taxCode = taxCode;
 		this.customerTaxCode = customerTaxCode;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
 		this.address = address;
 		this.genderId = genderId;
 		this.dateOfBirth = dateOfBirth;

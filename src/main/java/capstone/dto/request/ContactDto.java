@@ -132,6 +132,37 @@ public class ContactDto extends BaseDto<Long> implements Coded, Named {
 	@JsonAlias("source")
 	private Long sourceId;
 	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
 	/**
 	 * Địa chỉ
 	 */
@@ -194,6 +225,10 @@ public class ContactDto extends BaseDto<Long> implements Coded, Named {
 	 * @param email
 	 * @param officeEmail
 	 * @param sourceId
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
 	 * @param address
 	 * @param dateOfBirth
 	 * @param genderId
@@ -206,8 +241,8 @@ public class ContactDto extends BaseDto<Long> implements Coded, Named {
 	public ContactDto(Long id, String code, Long vocativeId, String lastName, String name, Long departmentId,
 			Long positionId, Long customerId, Set<Long> classificationIds, Boolean notCallPhone, Boolean notSendEmail,
 			String phone, String officePhone, String otherPhone, String email, String officeEmail, Long sourceId,
-			String address, LocalDate dateOfBirth, Long genderId, Long maritalStatusId, String facebook,
-			String bankAccount, String bank) {
+			Long countryId, Long provinceId, Long districtId, Long wardId, String address, LocalDate dateOfBirth,
+			Long genderId, Long maritalStatusId, String facebook, String bankAccount, String bank) {
 		super(id);
 		this.code = code;
 		this.vocativeId = vocativeId;
@@ -225,6 +260,10 @@ public class ContactDto extends BaseDto<Long> implements Coded, Named {
 		this.email = email;
 		this.officeEmail = officeEmail;
 		this.sourceId = sourceId;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
 		this.genderId = genderId;

@@ -108,10 +108,43 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	@JsonAlias("careers")
 	private Set<Long> careerIds;
 	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
 	/**
 	 * Địa chỉ
 	 */
 	private String address;
+	
+	// Thong tin to chuc
 
 	/**
 	 * Tài khoản ngân hàng
@@ -162,6 +195,10 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	 * @param fieldIds
 	 * @param typeId
 	 * @param careerIds
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
 	 * @param address
 	 * @param bankAccount
 	 * @param bank
@@ -173,8 +210,9 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	@Builder(toBuilder = true)
 	public CustomerDto(Long id, String code, String shortName, String name, @NotNull String taxCode, String phone,
 			@NotNull String email, Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId,
-			Set<Long> careerIds, String address, String bankAccount, String bank, LocalDate foundedDate,
-			LocalDate customerSince, Long incomeId, String website) {
+			Set<Long> careerIds, Long countryId, Long provinceId, Long districtId, Long wardId, String address,
+			String bankAccount, String bank, LocalDate foundedDate, LocalDate customerSince, Long incomeId,
+			String website) {
 		super(id);
 		this.code = code;
 		this.shortName = shortName;
@@ -187,6 +225,10 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 		this.fieldIds = fieldIds;
 		this.typeId = typeId;
 		this.careerIds = careerIds;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
 		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;

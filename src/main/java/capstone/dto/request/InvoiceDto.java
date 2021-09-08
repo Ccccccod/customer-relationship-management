@@ -3,6 +3,8 @@
  */
 package capstone.dto.request;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -44,11 +46,6 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	@JsonDeserialize(using = IdDeserializable.class)
 	@JsonAlias("customer")
 	private Long customerId;
-	
-	/**
-	 * Địa chỉ
-	 */
-	private String address;
 	
 	/**
 	 * Tài khoản ngân hàng
@@ -94,12 +91,53 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	@JsonDeserialize(using = IdDeserializable.class)
 	@JsonAlias("order")
 	private Long orderId;
+	
+	/**
+	 * Thông tin hàng hóa
+	 */
+	@JsonAlias("productInfos")
+	private Set<ProductInfoDto> productInfoDtos;
+	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
+	/**
+	 * Địa chỉ
+	 */
+	private String address;
 
 	/**
 	 * @param id
 	 * @param code
 	 * @param customerId
-	 * @param address
 	 * @param bankAccount
 	 * @param bank
 	 * @param taxCode
@@ -108,14 +146,21 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	 * @param receiverEmail
 	 * @param receiverPhone
 	 * @param orderId
+	 * @param productInfoDtos
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
+	 * @param address
 	 */
-	@Builder
-	public InvoiceDto(Long id, String code, Long customerId, String address, String bankAccount, String bank, String taxCode,
-			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId) {
+	@Builder(toBuilder = true)
+	public InvoiceDto(Long id, String code, Long customerId, String bankAccount, String bank, String taxCode,
+			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId,
+			Set<ProductInfoDto> productInfoDtos, Long countryId, Long provinceId, Long districtId, Long wardId,
+			String address) {
 		super(id);
 		this.code = code;
 		this.customerId = customerId;
-		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;
 		this.taxCode = taxCode;
@@ -124,6 +169,12 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 		this.receiverEmail = receiverEmail;
 		this.receiverPhone = receiverPhone;
 		this.orderId = orderId;
+		this.productInfoDtos = productInfoDtos;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
+		this.address = address;
 	}
 	
 }

@@ -92,6 +92,42 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	 */
 	@JsonAlias("productInfos")
 	private Set<ProductInfoDto> productInfoDtos;
+	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
+	/**
+	 * Địa chỉ
+	 */
+	private String address;
 
 	/**
 	 * @param id
@@ -105,11 +141,17 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	 * @param deliveryDeadline
 	 * @param receivedMoney
 	 * @param productInfoDtos
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
+	 * @param address
 	 */
 	@Builder(toBuilder = true)
 	public OrderDto(Long id, String code, @NotNull LocalDate orderDate, Long customerId, Long contactId,
 			Long opportunityId, String explanation, @NotNull LocalDate liquidationDeadline,
-			@NotNull LocalDate deliveryDeadline, Long receivedMoney, Set<ProductInfoDto> productInfoDtos) {
+			@NotNull LocalDate deliveryDeadline, Long receivedMoney, Set<ProductInfoDto> productInfoDtos,
+			Long countryId, Long provinceId, Long districtId, Long wardId, String address) {
 		super(id);
 		this.code = code;
 		this.orderDate = orderDate;
@@ -121,6 +163,11 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 		this.deliveryDeadline = deliveryDeadline;
 		this.receivedMoney = receivedMoney;
 		this.productInfoDtos = productInfoDtos;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
+		this.address = address;
 	}
 
 }

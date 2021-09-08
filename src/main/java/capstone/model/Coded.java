@@ -6,7 +6,6 @@ package capstone.model;
 /**
  * Coded
  * @author Tuna
- *
  */
 public interface Coded {
 	
@@ -15,5 +14,11 @@ public interface Coded {
 	 * @return
 	 */
 	String getCode();
+	
+	/**
+	 * Setter for code
+	 * @param code
+	 */
+	void setCode(String code);
 
 }

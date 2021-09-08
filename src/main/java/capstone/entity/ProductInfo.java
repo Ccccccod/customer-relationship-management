@@ -65,12 +65,13 @@ public class ProductInfo extends BaseEntity<Long> {
 	 */
 	@Column(name = "explanation", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String explanation;
-
+	
 	/**
 	 * Đơn vị tính
 	 */
-	@Column(name = "unit", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String unit;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "unit_id")
+	private Unit unit;
 	
 	/**
 	 * Số lượng
@@ -190,7 +191,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	@Builder(toBuilder = true)
 	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, Product product, String productCode, String explanation,
-			String unit, Integer amount, Long price, Integer discount, Integer vat, Opportunity opportunity,
+			Unit unit, Integer amount, Long price, Integer discount, Integer vat, Opportunity opportunity,
 			Order order, Invoice invoice) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.product = product;

@@ -4,6 +4,7 @@
 package capstone.service;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -33,6 +34,9 @@ public class ProductInfoService {
 
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;
+	
+	@Autowired
+	private UnitService unitService;
 	
 	/**
 	 * Generate {@link ProductInfo} from {@link Product}
@@ -76,11 +80,11 @@ public class ProductInfoService {
 		return products.stream().map(this::generateFromProduct).collect(Collectors.toSet());
 	}
 	
-	public ProductInfo generateFromProductInfoDto(ProductInfoDto dto) {
+	public ProductInfo generateFromProductInfoDto(ProductInfoDto dto) throws ResourceNotFoundException {
 		return ProductInfo.builder()
 				.productCode(dto.getProductCode())
 				.explanation(dto.getExplanation())
-				.unit(dto.getUnit())
+				.unit(unitService.getEntityById(dto.getUnitId()))
 				.amount(dto.getAmount())
 				.price(dto.getPrice())
 				.discount(dto.getDiscount())
@@ -88,10 +92,14 @@ public class ProductInfoService {
 				.build();
 	}
 	
-	public Set<ProductInfo> generateFromProductInfoDto(Set<ProductInfoDto> productInfoDtos) {
+	public Set<ProductInfo> generateFromProductInfoDto(Set<ProductInfoDto> productInfoDtos) throws ResourceNotFoundException {
 		if (Objects.isNull(productInfoDtos))
 			return null;
-		return productInfoDtos.stream().map(this::generateFromProductInfoDto).collect(Collectors.toSet());
+		Set<ProductInfo> set = new LinkedHashSet<ProductInfo>();
+		for (ProductInfoDto productInfoDto : productInfoDtos) {
+			set.add(generateFromProductInfoDto(productInfoDto));
+		}
+		return set;
 	}
 
 	public <T extends ProductInfoed, ID extends Serializable> ProductInfo create(ID productInfoedId,

@@ -22,7 +22,6 @@ import lombok.ToString;
 /**
  * Hàng hóa Dto
  * @author Tuna
- *
  */
 @Builder
 @Getter
@@ -48,7 +47,9 @@ public class ProductDto extends CodedNamedDto<Long> {
 	/**
 	 * Đơn vị
 	 */
-	private String unit;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("unit")
+	private Long unitId;
 
 	/**
 	 * Đơn giá bán
@@ -121,13 +122,13 @@ public class ProductDto extends CodedNamedDto<Long> {
 	 * @param costUnitPrice
 	 */
 	@Builder
-	public ProductDto(Long id, String name, String code, Long productTypeId, String explanation, String unit,
+	public ProductDto(Long id, String name, String code, Long productTypeId, String explanation, Long unitId,
 			Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice,
 			Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice) {
 		super(id, name, code);
 		this.productTypeId = productTypeId;
 		this.explanation = explanation;
-		this.unit = unit;
+		this.unitId = unitId;
 		this.sellPrice = sellPrice;
 		this.sellPrice1 = sellPrice1;
 		this.sellPrice2 = sellPrice2;

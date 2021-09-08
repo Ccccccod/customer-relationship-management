@@ -26,6 +26,7 @@ import capstone.model.ProductInfoed;
 import capstone.model.Repositoried;
 import capstone.repository.ProductInfoRepository;
 import capstone.service.ProductInfoService;
+import capstone.service.UnitService;
 import capstone.service.UserService;
 
 /**
@@ -42,6 +43,8 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	 * @return the logger
 	 */
 	Logger getLogger();
+	
+	UnitService getUnitService();
 	
 	/**
 	 * @return autowired {@link ProductInfoService}
@@ -148,7 +151,7 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 		// Update
 		// Code can not be updated
 		productInfo.setExplanation(dto.getExplanation());
-		productInfo.setUnit(dto.getUnit());
+		productInfo.setUnit(null);
 		productInfo.setAmount(dto.getAmount());
 		productInfo.setPrice(dto.getPrice());
 		productInfo.setDiscount(dto.getDiscount());

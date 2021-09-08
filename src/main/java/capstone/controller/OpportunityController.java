@@ -22,6 +22,7 @@ import capstone.repository.ProductInfoRepository;
 import capstone.repository.SourceRepository;
 import capstone.service.OpportunityService;
 import capstone.service.ProductInfoService;
+import capstone.service.UnitService;
 import capstone.service.UserService;
 import lombok.Getter;
 
@@ -103,9 +104,18 @@ public class OpportunityController
 
 	@Autowired
 	private OpportunityService opportunityService;
+	
 	@Override
 	public OpportunityService getService() {
 		return opportunityService;
+	}
+	
+	@Autowired
+	private UnitService unitService;
+
+	@Override
+	public UnitService getUnitService() {
+		return unitService;
 	}
 	
 //	@GetMapping("{opportunityId}/product")

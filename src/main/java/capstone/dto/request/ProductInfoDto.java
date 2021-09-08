@@ -6,6 +6,10 @@ package capstone.dto.request;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import capstone.dto.request.deserializer.IdDeserializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -18,7 +22,6 @@ import lombok.ToString;
  * Product Info Dto
  * Thông tin hàng hóa Dto
  * @author Tuna
- *
  */
 @Builder
 @Getter
@@ -36,7 +39,9 @@ public class ProductInfoDto extends BaseDto<Long> {
 
 	private String explanation;
 
-	private String unit;
+	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonAlias("unit")
+	private Long unitId;
 
 	@NotNull
 	@Positive

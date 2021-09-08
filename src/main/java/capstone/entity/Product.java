@@ -13,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,14 +22,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
  * Hàng hóa
  * @author Tuna
- *
  */
 @Getter
 @Setter
@@ -63,8 +59,9 @@ public class Product extends CodedNamedEntity<Long> {
 	/**
 	 * Đơn vị tính
 	 */
-	@Column(name = "unit", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String unit;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "unit_id")
+	private Unit unit;
 	
 	/**
 	 * Đơn giá bán
@@ -153,12 +150,10 @@ public class Product extends CodedNamedEntity<Long> {
 	 */
 	@Builder(toBuilder = true)
 	public Product(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			User owner, Boolean shared, Boolean deleted,
-			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
-			@NonNull @NotNull(message = "must not be null") @NotBlank(message = "must not be blank") String code,
-			ProductType productType, String explanation, String unit, Long sellPrice, Long sellPrice1, Long sellPrice2,
-			Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord,
-			Long costUnitPrice, Set<ProductInfo> productInfos) {
+			User owner, Boolean shared, Boolean deleted, String name, String code, ProductType productType,
+			String explanation, Unit unit, Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice,
+			Long buyPrice, Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice,
+			Set<ProductInfo> productInfos) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.productType = productType;
 		this.explanation = explanation;

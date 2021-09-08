@@ -153,6 +153,9 @@ public abstract class AbstractService< //
 	protected TypeService typeService;
 	
 	@Autowired
+	protected UnitService unitService;
+	
+	@Autowired
 	protected UserService userService;
 	
 	@Autowired

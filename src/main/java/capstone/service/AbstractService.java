@@ -256,6 +256,7 @@ public abstract class AbstractService< //
 	}
 	
 	Entity getEntityById(ID id, Boolean isDeleted) throws ResourceNotFoundException {
+		if (id == null) return null;
 		Entity entity = deletedFilter(() -> this.repository.findById(id)
 				.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(entityClass(), id)), isDeleted);
 		return entity;

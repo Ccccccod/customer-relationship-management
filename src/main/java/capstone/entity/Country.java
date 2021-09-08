@@ -54,10 +54,48 @@ public class Country implements Identifiable<Long>, Named {
 	@Column(name = "user_country_name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	protected String name;
 	
+	// OneToMany
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Potential> potentials;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Province> provinces;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Contact> contacts;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Customer> customers;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Opportunity> opportunities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Order> orders;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Invoice> invoices;
 
 }

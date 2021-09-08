@@ -138,6 +138,36 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
+	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
 
 	/**
 	 * Địa chỉ
@@ -218,7 +248,6 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Potential> potentials;
-	
 
 	/**
 	 * @param id
@@ -240,6 +269,10 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	 * @param fields
 	 * @param type
 	 * @param careers
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
 	 * @param address
 	 * @param bankAccount
 	 * @param bank
@@ -257,9 +290,10 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	public Customer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String code, String shortName, String name, String taxCode,
 			String phone, String email, Source source, Set<Classification> classifications, Set<Field> fields,
-			Type type, Set<Career> careers, String address, String bankAccount, String bank, LocalDate foundedDate,
-			LocalDate customerSince, Income income, String website, Set<Contact> contacts,
-			Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices, Set<Potential> potentials) {
+			Type type, Set<Career> careers, Country country, Province province, District district, Ward ward,
+			String address, String bankAccount, String bank, LocalDate foundedDate, LocalDate customerSince,
+			Income income, String website, Set<Contact> contacts, Set<Opportunity> opportunities, Set<Order> orders,
+			Set<Invoice> invoices, Set<Potential> potentials) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.shortName = shortName;
@@ -272,6 +306,10 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 		this.fields = fields;
 		this.type = type;
 		this.careers = careers;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
 		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;

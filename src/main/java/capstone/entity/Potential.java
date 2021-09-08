@@ -186,6 +186,36 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 	@Column(name = "customer_tax_code")
 	private String customerTaxCode;
 	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
 	/**
 	 * Địa chỉ
 	 */
@@ -309,6 +339,10 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 	 * @param customer
 	 * @param taxCode
 	 * @param customerTaxCode
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
 	 * @param address
 	 * @param gender
 	 * @param dateOfBirth
@@ -328,9 +362,10 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 			Department department, Position position, String phone, PhoneAreaCode phoneAreaCode, String officePhone,
 			String otherPhone, Set<Classification> classifications, Source source, Boolean notCallPhone,
 			Boolean notSendEmail, String email, String officeEmail, String customer, String taxCode,
-			String customerTaxCode, String address, Gender gender, LocalDate dateOfBirth, String facebook,
-			String bankAccount, String bank, LocalDate foundedDate, BusinessType businessType, Set<Field> fields,
-			Set<Career> careers, Income income, String website) {
+			String customerTaxCode, Country country, Province province, District district, Ward ward, String address,
+			Gender gender, LocalDate dateOfBirth, String facebook, String bankAccount, String bank,
+			LocalDate foundedDate, BusinessType businessType, Set<Field> fields, Set<Career> careers, Income income,
+			String website) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.vocative = vocative;
@@ -351,6 +386,10 @@ public class Potential extends BaseEntity<Long> implements Coded, Named {
 		this.customer = customer;
 		this.taxCode = taxCode;
 		this.customerTaxCode = customerTaxCode;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
 		this.address = address;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;

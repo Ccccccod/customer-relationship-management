@@ -17,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,7 +31,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -167,6 +164,36 @@ public class Contact extends CodedNamedEntity<Long> {
 	@JoinColumn(name = "source_id")
 	private Source source;
 	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
 	/**
 	 * Địa chỉ
 	 */
@@ -259,6 +286,10 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param email
 	 * @param officeEmail
 	 * @param source
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
 	 * @param address
 	 * @param dateOfBirth
 	 * @param gender
@@ -272,14 +303,13 @@ public class Contact extends CodedNamedEntity<Long> {
 	 */
 	@Builder(toBuilder = true)
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			User owner, Boolean shared, Boolean deleted,
-			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
-			@NonNull @NotNull(message = "must not be null") @NotBlank(message = "must not be blank") String code,
-			Vocative vocative, String lastName, Department department, Position position, Customer customer,
-			Set<Classification> classifications, Boolean notCallPhone, Boolean notSendEmail, String phone,
-			String officePhone, String otherPhone, String email, String officeEmail, Source source, String address,
-			LocalDate dateOfBirth, Gender gender, MaritalStatus maritalStatus, String facebook, String bankAccount,
-			String bank, Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices) {
+			User owner, Boolean shared, Boolean deleted, String name, String code, Vocative vocative, String lastName,
+			Department department, Position position, Customer customer, Set<Classification> classifications,
+			Boolean notCallPhone, Boolean notSendEmail, String phone, String officePhone, String otherPhone,
+			String email, String officeEmail, Source source, Country country, Province province, District district,
+			Ward ward, String address, LocalDate dateOfBirth, Gender gender, MaritalStatus maritalStatus,
+			String facebook, String bankAccount, String bank, Set<Opportunity> opportunities, Set<Order> orders,
+			Set<Invoice> invoices) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -295,6 +325,10 @@ public class Contact extends CodedNamedEntity<Long> {
 		this.email = email;
 		this.officeEmail = officeEmail;
 		this.source = source;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
 		this.address = address;
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;

@@ -60,10 +60,54 @@ public class District implements Identifiable<Long>, Named {
 	@JoinColumn(name = "user_provinceid")
 	protected Province province;
 	
+	// OneToMany
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Ward> wards;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Potential> potentials;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Province> provinces;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Contact> contacts;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Customer> customers;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Opportunity> opportunities;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Order> orders;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "district")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Invoice> invoices;
 
 }

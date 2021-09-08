@@ -149,6 +149,44 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
 	protected Set<ProductInfo> productInfos;
+	
+	// Thong tin dia chi
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
+	
+	// OneToMany
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	@ToString.Exclude
@@ -160,6 +198,11 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	public void productInfoSetThis(ProductInfo productInfo) {
 		if (Objects.nonNull(productInfo))
 			productInfo.setOrder(this);
+	}
+
+	@Override
+	public String getName() {
+		return this.explanation;
 	}
 
 	/**
@@ -181,13 +224,19 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	 * @param liquidationDeadline
 	 * @param receivedMoney
 	 * @param productInfos
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 * @param invoices
 	 */
 	@Builder(toBuilder = true)
 	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
 			Boolean shared, Boolean deleted, String code, LocalDate orderDate, Customer customer, Contact contact,
 			Opportunity opportunity, String explanation, LocalDate deliveryDeadline, LocalDate liquidationDeadline,
-			Long receivedMoney, Set<ProductInfo> productInfos, Set<Invoice> invoices) {
+			Long receivedMoney, Set<ProductInfo> productInfos, Country country, Province province, District district,
+			Ward ward, String address, Set<Invoice> invoices) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.orderDate = orderDate;
@@ -200,12 +249,12 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 		this.receivedMoney = receivedMoney;
 		this.productInfos = productInfos;
 		setToProductInfos(productInfos);
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 		this.invoices = invoices;
-	}
-
-	@Override
-	public String getName() {
-		return this.explanation;
 	}
 
 }

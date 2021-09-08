@@ -125,14 +125,6 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	private Set<Order> orders;
 	
 	/**
-	 * Địa chỉ
-	 * @return
-	 */
-	public String getAddress() {
-		return Objects.nonNull(this.customer) ? this.customer.getAddress() : null;
-	}
-	
-	/**
 	 * Doanh số kỳ vọng
 	 */
 	public Long getExpectedTurnOver() {
@@ -140,6 +132,42 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 		Integer successRate = Optional.ofNullable(this.successRate).orElse(0);
 		return totalMoney * successRate;
 	}
+	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
 	
 	@Override
 	public void productInfoSetThis(ProductInfo productInfo) {
@@ -166,12 +194,18 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	 * @param source
 	 * @param productInfos
 	 * @param orders
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 */
 	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String code, Customer customer, Contact contact, String name,
 			OpportunityPhase opportunityPhase, Integer successRate, LocalDate expectedEndDate, Source source,
-			Set<ProductInfo> productInfos, Set<Order> orders) {
+			Set<ProductInfo> productInfos, Set<Order> orders, Country country, Province province, District district,
+			Ward ward, String address) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.customer = customer;
@@ -182,8 +216,13 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 		this.expectedEndDate = expectedEndDate;
 		this.source = source;
 		this.productInfos = productInfos;
-		this.orders = orders;
 		setToProductInfos(productInfos);
+		this.orders = orders;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 	}
 
 }

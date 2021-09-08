@@ -55,12 +55,6 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
-	/**
-	 * Địa chỉ
-	 */
-	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String address;
 
 	/**
 	 * Tài khoản ngân hàng
@@ -117,6 +111,40 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
 	protected Set<ProductInfo> productInfos;
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
 
 	@Override
 	public void productInfoSetThis(ProductInfo productInfo) {
@@ -135,7 +163,6 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param deleted
 	 * @param code
 	 * @param customer
-	 * @param address
 	 * @param bankAccount
 	 * @param bank
 	 * @param taxCode
@@ -145,16 +172,21 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param receiverPhone
 	 * @param order
 	 * @param productInfos
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 */
 	@Builder(toBuilder = true)
 	public Invoice(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			User owner, Boolean shared, Boolean deleted, String code, Customer customer, String address,
-			String bankAccount, String bank, String taxCode, Contact buyer, String receiverName, String receiverEmail,
-			String receiverPhone, Order order, Set<ProductInfo> productInfos) {
+			User owner, Boolean shared, Boolean deleted, String code, Customer customer, String bankAccount,
+			String bank, String taxCode, Contact buyer, String receiverName, String receiverEmail, String receiverPhone,
+			Order order, Set<ProductInfo> productInfos, Country country, Province province, District district,
+			Ward ward, String address) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.customer = customer;
-		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;
 		this.taxCode = taxCode;
@@ -164,6 +196,11 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 		this.receiverPhone = receiverPhone;
 		this.order = order;
 		this.productInfos = productInfos;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 	}
 
 }

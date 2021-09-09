@@ -12,6 +12,6 @@ import capstone.entity.Department;
  * @author Tuna
  */
 @Repository
-public interface DepartmentRepository extends NamedJpaRepository<Department, Long> {
+public interface DepartmentRepository extends NamedJpaRepository<Department, Long>, BaseRepository<Department, Long> {
 
 }

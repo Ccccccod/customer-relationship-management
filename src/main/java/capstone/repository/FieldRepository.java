@@ -14,6 +14,7 @@ import capstone.entity.Field;
  *
  */
 @Repository
-public interface FieldRepository extends JpaRepository<Field, Long>, NamedJpaRepository<Field, Long> {
+public interface FieldRepository
+		extends JpaRepository<Field, Long>, NamedJpaRepository<Field, Long>, BaseRepository<Field, Long> {
 
 }

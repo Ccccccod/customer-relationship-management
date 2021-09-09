@@ -12,6 +12,6 @@ import capstone.entity.Gender;
  * @author Tuna
  */
 @Repository
-public interface GenderRepository extends NamedJpaRepository<Gender, Long> {
+public interface GenderRepository extends NamedJpaRepository<Gender, Long>, BaseRepository<Gender, Long> {
 
 }

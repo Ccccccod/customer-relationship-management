@@ -17,7 +17,7 @@ import capstone.model.IdAndExplanation;
  * @author Tuna
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, BaseRepository<Order, Long> {
 	
 	List<Order> findByOrderDateBetween(LocalDate from, LocalDate to);
 	

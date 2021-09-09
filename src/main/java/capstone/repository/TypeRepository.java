@@ -11,9 +11,8 @@ import capstone.entity.Type;
 /**
  * Repository for {@link Source}
  * @author Tuna
- *
  */
 @Repository
-public interface TypeRepository extends NamedJpaRepository<Type, Long>{
+public interface TypeRepository extends NamedJpaRepository<Type, Long>, BaseRepository<Type, Long> {
 	
 }

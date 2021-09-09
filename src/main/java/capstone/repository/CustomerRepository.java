@@ -9,11 +9,10 @@ import capstone.entity.Customer;
 
 /**
  * Repository for {@link Customer}
- * 
  * @author Tuna
  */
 @Repository
-public interface CustomerRepository extends NamedJpaRepository<Customer, Long> {
+public interface CustomerRepository extends NamedJpaRepository<Customer, Long>, BaseRepository<Customer, Long> {
 	
 	Boolean existsByTaxCode(String taxCode);
 	

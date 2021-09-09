@@ -12,6 +12,7 @@ import capstone.entity.BusinessType;
  * @author Tuna
  */
 @Repository
-public interface BusinessTypeRepository extends NamedJpaRepository<BusinessType, Long> {
+public interface BusinessTypeRepository
+		extends NamedJpaRepository<BusinessType, Long>, BaseRepository<BusinessType, Long> {
 
 }

@@ -12,6 +12,7 @@ import capstone.entity.OpportunityPhase;
  * @author Tuna
  */
 @Repository
-public interface OpportunityPhaseRepository extends NamedJpaRepository<OpportunityPhase, Long> {
+public interface OpportunityPhaseRepository
+		extends NamedJpaRepository<OpportunityPhase, Long>, BaseRepository<OpportunityPhase, Long> {
 
 }

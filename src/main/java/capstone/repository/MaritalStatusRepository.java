@@ -12,6 +12,7 @@ import capstone.entity.MaritalStatus;
  * @author Tuna
  */
 @Repository
-public interface MaritalStatusRepository extends NamedJpaRepository<MaritalStatus, Long> {
+public interface MaritalStatusRepository
+		extends NamedJpaRepository<MaritalStatus, Long>, BaseRepository<MaritalStatus, Long> {
 
 }

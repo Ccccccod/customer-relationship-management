@@ -15,7 +15,7 @@ import capstone.entity.Field;
  * @author Tuna
  */
 @Repository
-public interface CareerRepository extends NamedJpaRepository<Career, Long> {
+public interface CareerRepository extends NamedJpaRepository<Career, Long>, BaseRepository<Career, Long> {
 	
 	List<IdAndNameAndField> findIdNameFieldAllBy();
 	

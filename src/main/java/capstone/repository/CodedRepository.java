@@ -15,7 +15,6 @@ import capstone.model.Coded;
 /**
  * Coded Repository
  * @author Tuna
- *
  */
 @NoRepositoryBean
 public interface CodedRepository<T extends BaseEntity<ID> & Coded, ID extends Serializable> {

@@ -12,6 +12,6 @@ import capstone.entity.Income;
  * @author Tuna
  */
 @Repository
-public interface IncomeRepository extends NamedJpaRepository<Income, Long> {
+public interface IncomeRepository extends NamedJpaRepository<Income, Long>, BaseRepository<Income, Long> {
 
 }

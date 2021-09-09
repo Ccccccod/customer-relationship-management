@@ -12,6 +12,6 @@ import capstone.entity.Vocative;
  * @author Tuna
  */
 @Repository
-public interface VocativeRepository extends NamedJpaRepository<Vocative, Long> {
+public interface VocativeRepository extends NamedJpaRepository<Vocative, Long>, BaseRepository<Vocative, Long> {
 
 }

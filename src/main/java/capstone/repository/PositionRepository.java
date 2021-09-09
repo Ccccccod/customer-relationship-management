@@ -12,6 +12,6 @@ import capstone.entity.Position;
  * @author Tuna
  */
 @Repository
-public interface PositionRepository extends NamedJpaRepository<Position, Long> {
+public interface PositionRepository extends NamedJpaRepository<Position, Long>, BaseRepository<Position, Long> {
 
 }

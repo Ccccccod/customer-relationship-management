@@ -14,10 +14,10 @@ import capstone.entity.OpportunityPhase;
 /**
  * OpportunityRepository
  * @author Tuna
- *
  */
 @Repository
-public interface OpportunityRepository extends NamedJpaRepository<Opportunity, Long> {
+public interface OpportunityRepository
+		extends NamedJpaRepository<Opportunity, Long>, BaseRepository<Opportunity, Long> {
 	
 	List<Opportunity> findByExpectedEndDateBetween(LocalDate from, LocalDate to);
 	

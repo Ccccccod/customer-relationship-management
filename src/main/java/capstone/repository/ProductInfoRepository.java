@@ -17,10 +17,9 @@ import capstone.entity.ProductInfo;
 /**
  * ProductInfoRepository
  * @author Tuna
- *
  */
 @Repository
-public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long> {
+public interface ProductInfoRepository extends JpaRepository<ProductInfo, Long>, BaseRepository<ProductInfo, Long> {
 	
 	List<ProductInfo> findByOpportunity(Opportunity opportunity);
 	

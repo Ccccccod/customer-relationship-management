@@ -54,12 +54,12 @@ public class ProductType extends CodedNamedEntity<Long> {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_type_id")
 	@JsonSerialize(using = ProductTypeSerializer.class)
+	@JsonIgnore
 	private ProductType productType;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@JsonIgnore
 	private Set<ProductType> productTypes;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")

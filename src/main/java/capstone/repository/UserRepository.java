@@ -32,6 +32,13 @@ public interface UserRepository extends NamedJpaRepository<User, Long>, BaseRepo
 	Optional<User> findByEmail(String email);
 	
 	/**
+	 * Find top 1 by username
+	 * @param username
+	 * @return
+	 */
+	Optional<User> findFirstByUsername(String username);
+	
+	/**
 	 * Find by name
 	 * @param name
 	 * @return

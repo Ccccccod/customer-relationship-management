@@ -4,7 +4,6 @@
 package capstone.service;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -358,6 +357,7 @@ public abstract class AbstractService< //
 	 * @return {@link Set} of T
 	 * @throws ResourceNotFoundException
 	 */
+	@Deprecated
 	public static <T extends BaseEntity<ID>, ID extends Serializable> Set<T> findEntitiesByIds(JpaRepository<T, ID> repository,
 			Set<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
@@ -384,6 +384,7 @@ public abstract class AbstractService< //
 	 * @return {@link List} of T
 	 * @throws ResourceNotFoundException
 	 */
+	@Deprecated
 	public static <T extends BaseEntity<ID>, ID extends Serializable> List<T> findEntitiesByIds(JpaRepository<T, ID> repository,
 			List<ID> ids, Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(ids)) {
@@ -397,22 +398,6 @@ public abstract class AbstractService< //
 			ts.add(findEntityById(repository, id, class1));
 		}
 		return ts;
-	}
-	
-	/**
-	 * Method to quickly map to a {@link Collection} of BaseEntity from a {@link Collection} of
-	 * its id
-	 * @param <T>
-	 * @param <ID1>
-	 * @param repository T's repository
-	 * @param ids        {@link Collection} of T's id
-	 * @param class1     T's class
-	 * @return {@link Collection} of T
-	 * @throws ResourceNotFoundException
-	 */
-	public static <T extends BaseEntity<ID1>, ID1 extends Serializable> Collection<T> findEntitiesByIds(JpaRepository<T, ID1> repository,
-			Collection<ID1> ids, Class<T> class1) throws ResourceNotFoundException {
-		return findEntitiesByIds(repository, ids, class1);
 	}
 	
 }

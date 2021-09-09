@@ -20,6 +20,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -77,6 +79,7 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yy hh:mm:ss")
 	protected LocalDateTime updatedAt;
 	
+	@CreatedBy
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "created_by", nullable = true)
 	@ToString.Exclude
@@ -84,13 +87,15 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@JsonSerialize(using = UserSerializer.class)
 	protected User createdBy;
 
+	@LastModifiedBy
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "updated_by", nullable = true)
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@JsonSerialize(using = UserSerializer.class)
 	protected User updatedBy;
-	
+
+	@CreatedBy
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner")
 	@ToString.Exclude

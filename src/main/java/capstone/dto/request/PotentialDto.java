@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdDeserializable;
-import capstone.dto.request.deserializer.IdsDeserializable;
+import capstone.dto.request.deserializer.IdSetDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
@@ -99,7 +99,7 @@ public class PotentialDto extends BaseDto<Long> implements Named, Coded {
 	/**
 	 * Loại tiềm năng
 	 */
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializable.class)
 	@JsonAlias("classifications")
 	private Set<Long> classificationIds;
 

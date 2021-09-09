@@ -14,17 +14,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 /**
- * IdsDeserializable
+ * IdSetDeserializable
  * @author Tuna
  */
 @SuppressWarnings("serial")
-public class IdsDeserializable extends StdDeserializer<Set<Long>> {
+public class IdSetDeserializable extends StdDeserializer<Set<Long>> {
 
-	public IdsDeserializable(Class<Set<Long>> vc) {
+	public IdSetDeserializable(Class<Set<Long>> vc) {
 		super(vc);
 	}
 
-	public IdsDeserializable() {
+	public IdSetDeserializable() {
 		super(Set.class);
 	}
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.request.deserializer.IdDeserializable;
-import capstone.dto.request.deserializer.IdsDeserializable;
+import capstone.dto.request.deserializer.IdSetDeserializable;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
@@ -47,7 +47,7 @@ public class UserDto extends BaseDto<Long> {
 	@Password
 	private String password;
 
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializable.class)
 	@JsonAlias("roles")
 	private Set<Long> roleIds;
 

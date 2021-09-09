@@ -6,7 +6,6 @@ package capstone.repository;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.StringJoiner;
 
 import javax.transaction.Transactional;
 
@@ -24,22 +23,15 @@ import capstone.entity.BaseEntity;
 @NoRepositoryBean
 public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializable> extends JpaRepository<T, ID> {
 
-	@Query("UPDATE #{#entityName} e SET e.deleted = true WHERE e.id IN ?1")
-	@Modifying
-	@Transactional
-	int softDeleteById(String ids);
-
 	@Transactional
 	default int softDeleteById(ID id) {
 		return softDeleteById(Arrays.asList(id));
 	}
 
+	@Query("UPDATE #{#entityName} e SET e.deleted = true WHERE e.id IN ?1")
+	@Modifying
 	@Transactional
-	default int softDeleteById(Iterable<? extends ID> ids) {
-		StringJoiner stringJoiner = new StringJoiner(",", "(", ")");
-		ids.forEach(id -> stringJoiner.add(id.toString()));
-		return softDeleteById(stringJoiner.toString());
-	}
+	int softDeleteById(Iterable<? extends ID> ids);
 
 	@Transactional
 	default int softDelete(T entity) {

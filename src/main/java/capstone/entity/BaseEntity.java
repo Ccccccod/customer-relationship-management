@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import capstone.dto.response.serializer.UserSerializer;
 import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -99,6 +100,7 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	@Column
 	protected Boolean shared;
 	
+	@Builder.Default
 	@Column
 	protected Boolean deleted = Boolean.FALSE;
 	

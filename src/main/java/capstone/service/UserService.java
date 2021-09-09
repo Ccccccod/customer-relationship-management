@@ -48,7 +48,7 @@ public class UserService {
 			UserDetails userDetails = (org.springframework.security.core.userdetails.User) principal;
 			String userName = userDetails.getUsername();
 			if (Objects.isNull(userName))
-				return userRepository.findFirstByName(userName).orElse(null);
+				return userRepository.findFirstByUsername(userName).orElse(null);
 			return null;
 		}
 		return null;

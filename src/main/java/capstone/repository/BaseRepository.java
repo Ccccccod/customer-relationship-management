@@ -27,35 +27,41 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
 	@Query("UPDATE #{#entityName} e SET e.deleted = true WHERE e.id IN ?1")
 	@Modifying
 	@Transactional
-	void softDeleteById(String ids);
+	int softDeleteById(String ids);
 
 	@Transactional
-	default void softDeleteById(ID id) {
-		softDeleteById(Arrays.asList(id));
+	default int softDeleteById(ID id) {
+		return softDeleteById(Arrays.asList(id));
 	}
 
 	@Transactional
-	default void softDeleteById(Iterable<? extends ID> ids) {
+	default int softDeleteById(Iterable<? extends ID> ids) {
 		StringJoiner stringJoiner = new StringJoiner(",", "(", ")");
 		ids.forEach(id -> stringJoiner.add(id.toString()));
-		softDeleteById(stringJoiner.toString());
+		return softDeleteById(stringJoiner.toString());
 	}
 
 	@Transactional
-	default void softDelete(T entity) {
-		softDeleteById(entity.getId());
+	default int softDelete(T entity) {
+		return softDeleteById(entity.getId());
 	}
 
 	@Transactional
-	default void softDelete(Iterable<? extends T> entities) {
+	default int softDelete(Iterable<? extends T> entities) {
 		LinkedList<ID> list = new LinkedList<ID>();
 		entities.forEach(entity -> list.add(entity.getId()));
-		softDeleteById(list);
+		return softDeleteById(list);
 	}
 
 	@Query("UPDATE #{#entityName} e SET e.deleted = true")
 	@Transactional
 	@Modifying
-	void softDeleteAll();
+	int softDeleteAll();
+	
+	@Override
+	@Transactional
+	default void deleteAllById(Iterable<? extends ID> ids) {
+		softDeleteById(ids);
+	}
 
 }

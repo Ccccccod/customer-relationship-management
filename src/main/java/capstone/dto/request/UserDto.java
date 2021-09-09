@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.dto.request.deserializer.IdDeserializable;
-import capstone.dto.request.deserializer.IdsDeserializable;
+import capstone.dto.request.deserializer.IdDeserializer;
+import capstone.dto.request.deserializer.IdSetDeserializer;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
@@ -47,7 +47,7 @@ public class UserDto extends BaseDto<Long> {
 	@Password
 	private String password;
 
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializer.class)
 	@JsonAlias("roles")
 	private Set<Long> roleIds;
 
@@ -76,7 +76,7 @@ public class UserDto extends BaseDto<Long> {
 	/**
 	 * Giới tính
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("gender")
 	private Long genderId;
 

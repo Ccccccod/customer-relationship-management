@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.dto.request.deserializer.IdDeserializable;
-import capstone.dto.request.deserializer.IdsDeserializable;
+import capstone.dto.request.deserializer.IdDeserializer;
+import capstone.dto.request.deserializer.IdSetDeserializer;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
@@ -76,35 +76,35 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Nguồn gốc
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("source")
 	private Long sourceId;
 	
 	/**
 	 * Phân loại khách hàng
 	 */
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializer.class)
 	@JsonAlias("classifications")
 	private Set<Long> classificationIds;
 	
 	/**
 	 * Lĩnh vực
 	 */
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializer.class)
 	@JsonAlias("fields")
 	private Set<Long> fieldIds;
 	
 	/**
 	 * Loại hình
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("type")
 	private Long typeId;
 
 	/**
 	 * Ngành nghề
 	 */
-	@JsonDeserialize(using = IdsDeserializable.class)
+	@JsonDeserialize(using = IdSetDeserializer.class)
 	@JsonAlias("careers")
 	private Set<Long> careerIds;
 	
@@ -114,28 +114,28 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Quốc gia 
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("country")
 	private Long countryId;
 	
 	/**
 	 * Tỉnh
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("province")
 	private Long provinceId;
 	
 	/**
 	 * Huyện
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("district")
 	private Long districtId;
 	
 	/**
 	 * Xã, Phường
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("ward")
 	private Long wardId;
 	
@@ -173,7 +173,7 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Thu nhập
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("income")
 	private Long incomeId;
 	

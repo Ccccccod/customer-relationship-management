@@ -9,7 +9,7 @@ import javax.validation.constraints.Positive;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import capstone.dto.request.deserializer.IdDeserializable;
+import capstone.dto.request.deserializer.IdDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class ProductInfoDto extends BaseDto<Long> {
 
 	private String explanation;
 
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("unit")
 	private Long unitId;
 

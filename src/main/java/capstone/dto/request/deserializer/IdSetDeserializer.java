@@ -4,10 +4,7 @@
 package capstone.dto.request.deserializer;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,17 +14,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 /**
- * IdsDeserializable
+ * IdSetDeserializer
  * @author Tuna
  */
 @SuppressWarnings("serial")
-public class IdsDeserializable extends StdDeserializer<Set<Long>> {
+public class IdSetDeserializer extends StdDeserializer<Set<Long>> {
 
-	public IdsDeserializable(Class<Set<Long>> vc) {
+	public IdSetDeserializer(Class<Set<Long>> vc) {
 		super(vc);
 	}
 
-	public IdsDeserializable() {
+	public IdSetDeserializer() {
 		super(Set.class);
 	}
 

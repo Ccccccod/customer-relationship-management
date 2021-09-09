@@ -6,7 +6,7 @@ package capstone.dto.request;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import capstone.dto.request.deserializer.IdDeserializable;
+import capstone.dto.request.deserializer.IdDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class ProductTypeDto extends CodedNamedDto<Long> {
 	/**
 	 * Loại hàng hóa
 	 */
-	@JsonDeserialize(using = IdDeserializable.class)
+	@JsonDeserialize(using = IdDeserializer.class)
 	@JsonAlias("productType")
 	private Long productTypeId;
 

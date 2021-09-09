@@ -23,6 +23,8 @@ public final class Constant {
 		
 		public static final String NVARCHAR_255 = "nvarchar(255)";
 		
+		public static final String DELETED_FILTER = "deletedFilter";
+		
 	}
 	
 	public static final class Order {

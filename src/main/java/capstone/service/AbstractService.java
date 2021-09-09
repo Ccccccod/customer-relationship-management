@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 
 import org.hibernate.Filter;
 import org.hibernate.Session;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import capstone.common.Constant;
 import capstone.dto.response.PageResponse;
 import capstone.entity.BaseEntity;
 import capstone.exception.ResourceExistedException;
@@ -167,55 +167,64 @@ public abstract class AbstractService< //
 	@Autowired
     private EntityManager entityManager;
 	
-	protected ModelMapper modelMapper = new ModelMapper();
-	
-	protected <R> R deletedFilter(SupplierThrow<R> supplier, Boolean isDeleted) throws ResourceNotFoundException {
-		if (isDeleted != null && !isDeleted)
-			return supplier.get();
+	protected Session enableDeletedFilter(Boolean isDeleted) {
 		Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedFilter");
+        Filter filter = session.enableFilter(Constant.Hibernate.DELETED_FILTER);
         filter.setParameter("isDeleted", isDeleted);
-        
-        R r = supplier.get();
-        
-        session.disableFilter("deletedFilter");
-        
-        return r;
+        return session;
+	}
+	
+	protected void disableDeletedFilter(Session session) {
+		session.disableFilter(Constant.Hibernate.DELETED_FILTER);
+		session.close();
 	}
 	
 	@Override
 	public List<Response> getAll() throws ResourceNotFoundException {
-//		List<Response> response = this.repository.findAll().stream() //
-//				.map(this::entityToResponse) //
-//				.collect(Collectors.toList());
-		List<Response> response = deletedFilter(() -> this.repository.findAll().stream() //
-				.map(this::entityToResponse) //
-				.collect(Collectors.toList()), false);
-		return response;
+		Session session = enableDeletedFilter(false);
+		try {
+			List<Response> response = this.repository.findAll().stream() //
+					.map(this::entityToResponse) //
+					.collect(Collectors.toList());
+			return response;
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 	
-	public PageResponse<Response> getAll(int page, int size) throws ResourceNotFoundException {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Entity> p = deletedFilter(() -> this.repository.findAll(pageable), false);
-		// map to response
-		List<Response> content = p.getContent().stream() //
-				.map(this::entityToResponse) //
-				.collect(Collectors.toList());
+	public PageResponse<Response> getAll(int page, int size) {
+		Session session = enableDeletedFilter(false);
+		try {
+			Pageable pageable = PageRequest.of(page, size);
+			Page<Entity> p = this.repository.findAll(pageable);
+			// map to response
+			List<Response> content = p.getContent().stream() //
+					.map(this::entityToResponse) //
+					.collect(Collectors.toList());
 
-		PageResponse<Response> result = PageResponse.<Response>builder() //
-				.list(content) //
-				.currentPage(p.getNumber()) //
-				.totalElements(p.getTotalElements()) //
-				.totalPages(p.getTotalPages()) //
-				.build();
-		return result;
+			PageResponse<Response> result = PageResponse.<Response>builder() //
+					.list(content) //
+					.currentPage(p.getNumber()) //
+					.totalElements(p.getTotalElements()) //
+					.totalPages(p.getTotalPages()) //
+					.build();
+			return result;
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 	
 	@Override
 	public Response getById(ID id) throws ResourceNotFoundException {
-		Entity entity = deletedFilter(() -> this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(entityClass(), id)), false);
-		Response response = deletedFilter(() -> this.entityToResponse(entity), false);
-		return response;
+		Session session = enableDeletedFilter(false);
+		try {
+			Entity entity = this.repository.findById(id)
+					.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(entityClass(), id));
+			Response response = this.entityToResponse(entity);
+			return response;
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 	
 	@Override
@@ -256,9 +265,14 @@ public abstract class AbstractService< //
 	}
 	
 	Entity getEntityById(ID id, Boolean isDeleted) throws ResourceNotFoundException {
-		Entity entity = deletedFilter(() -> this.repository.findById(id)
-				.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(entityClass(), id)), isDeleted);
-		return entity;
+		Session session = enableDeletedFilter(false);
+		try {
+			Entity entity = this.repository.findById(id)
+					.orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(entityClass(), id));
+			return entity;
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 	Entity getEntityById(ID id) throws ResourceNotFoundException {
@@ -282,7 +296,12 @@ public abstract class AbstractService< //
 	}
 	
 	List<Entity> getAllEntities() throws ResourceNotFoundException {
-		return deletedFilter(() -> this.repository.findAll(), false);
+		Session session = enableDeletedFilter(false);
+		try {
+			return this.repository.findAll();
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 	
 	/**
@@ -394,17 +413,6 @@ public abstract class AbstractService< //
 	public static <T extends BaseEntity<ID1>, ID1 extends Serializable> Collection<T> findEntitiesByIds(JpaRepository<T, ID1> repository,
 			Collection<ID1> ids, Class<T> class1) throws ResourceNotFoundException {
 		return findEntitiesByIds(repository, ids, class1);
-	}
-	
-	@FunctionalInterface
-	protected interface SupplierThrow<T> {
-
-		/**
-		 * Gets a result.
-		 * @return a result
-		 */
-		T get() throws ResourceNotFoundException;
-		
 	}
 	
 }

@@ -5,6 +5,7 @@ package capstone.service;
 
 import java.util.List;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.entity.Career;
@@ -47,8 +48,13 @@ public class CareerService extends AbstractService<Career, Career, Career, Caree
 	
 	@Override
 	public List<?> getAllName() throws ResourceNotFoundException {
-		List<IdAndNameAndField> list = deletedFilter(() -> this.repository.findIdNameFieldAllBy(), false);
-		return list;
+		Session session = enableDeletedFilter(false);
+		try {
+			List<IdAndNameAndField> list = this.repository.findIdNameFieldAllBy();
+			return list;
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

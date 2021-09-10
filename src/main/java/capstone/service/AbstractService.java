@@ -164,7 +164,7 @@ public abstract class AbstractService< //
 	protected WardService wardService;
 	
 	@Autowired
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 	
 	protected Session enableDeletedFilter(Boolean isDeleted) {
 		Session session = entityManager.unwrap(Session.class);
@@ -234,8 +234,7 @@ public abstract class AbstractService< //
 		Entity entity = this.createDtoToEntity(dto, entityClass().newInstance());
 		entity.setId(null);
 		
-		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
-		entity = this.repository.save(entity);
+		entity = saveEntity(entity);
 		
 		Response response = this.entityToResponse(entity);
 		return response;
@@ -301,6 +300,11 @@ public abstract class AbstractService< //
 		} finally {
 			disableDeletedFilter(session);
 		}
+	}
+
+	Entity saveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
+		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
+		return this.repository.save(entity);
 	}
 	
 	/**

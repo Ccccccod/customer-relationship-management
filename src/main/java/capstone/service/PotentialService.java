@@ -3,16 +3,20 @@
  */
 package capstone.service;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.PotentialDto;
+import capstone.entity.Contact;
 import capstone.entity.Country;
+import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Potential;
 import capstone.entity.Province;
 import capstone.entity.Ward;
+import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.PotentialRepository;
 import capstone.service.iservice.INamedService;
@@ -85,6 +89,38 @@ public class PotentialService
 	@Override
 	protected Potential updateDtoToEntity(PotentialDto updateDto, Potential entity) throws ResourceNotFoundException {
 		return this.createDtoToEntity(updateDto, entity);
+	}
+
+	public Contact singleConvert(Long id, Long customerId)
+			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
+		Potential p = getById(id);
+		Customer customer = null;
+		Contact contact;
+		if (customerId != null) {
+			customer = customerService.getById(customerId);
+		}
+		if (customer == null && p.getCustomer() != null && !p.getCustomer().isEmpty()) {
+			customer = Customer.builder()
+					.code(randomStringGenerator.generate(10))
+					.name(p.getCustomer())
+					// TODO: Thêm các trường chuyển đổi
+					.contacts(new LinkedHashSet<>())
+					.build();
+		}
+		contact = Contact.builder()
+				.code(randomStringGenerator.generate(10))
+				.name(p.getName())
+				// TODO: Thêm các trường chuyển đổi
+				.customer(customer)
+				.build();
+		contact = contactService.saveEntity(contact);
+		if (customer != null) {
+			if (customer.getContacts() == null)
+				customer.setContacts(new LinkedHashSet<>());
+			customer.getContacts().add(contact);
+			customerService.saveEntity(customer);
+		}
+		return contact;
 	}
 
 }

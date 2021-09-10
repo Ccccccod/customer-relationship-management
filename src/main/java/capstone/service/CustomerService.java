@@ -3,8 +3,10 @@
  */
 package capstone.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.CustomerDto;
@@ -93,6 +95,15 @@ public class CustomerService extends CodedService<CustomerDto, CustomerDto, Cust
 	@Override
 	protected Customer updateDtoToEntity(CustomerDto updateDto, Customer entity) throws ResourceNotFoundException {
 		return createDtoToEntity(updateDto, entity);
+	}
+	
+	public List<Customer> findByNameIgnoreCase(String name) {
+		Session session = enableDeletedFilter(false);
+		try {
+			return this.repository.findByNameIgnoreCase(name);
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

@@ -42,7 +42,7 @@ public abstract class CRUDController< //
 {
 	
 	@Autowired
-	private Service service;
+	protected Service service;
 
 	@GetMapping
 	public ResponseEntity<List<Response>> getAll() throws ResourceNotFoundException {

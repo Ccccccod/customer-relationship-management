@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.exception.ResourceExistedException;
-import capstone.exception.ResourceNotFoundException;
 import capstone.model.Coded;
 import capstone.model.Identifiable;
-import capstone.utils.RepositoryUtils;
 
 /**
  * CodedService
@@ -32,21 +30,10 @@ public abstract class CodedService< //
 	protected RandomStringGenerator randomStringGenerator;
 	
 	@Override
-	public Response create(CreateDto dto) throws ResourceNotFoundException, ResourceExistedException,
-			IllegalArgumentException, IllegalAccessException, InstantiationException {
-		this.logger.debug("create() with body {} of type {}", dto, dto.getClass());
-        
-		Entity entity = this.createDtoToEntity(dto, entityClass().newInstance());
-		entity.setId(null);
-		
+	Entity saveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
 		String code = randomStringGenerator.generate(10);
 		entity.setCode(code);
-		
-		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
-		entity = this.repository.save(entity);
-		
-		Response response = this.entityToResponse(entity);
-		return response;
+		return super.saveEntity(entity);
 	}
 
 }

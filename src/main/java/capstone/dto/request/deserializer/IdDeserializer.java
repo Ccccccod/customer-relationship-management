@@ -30,14 +30,25 @@ public class IdDeserializer extends StdDeserializer<Long> {
 	@Override
 	public Long deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
 		JsonNode node = jp.getCodec().readTree(jp);
-		// Node is Long
-		if (node.canConvertToLong()) {
-			return node.asLong();
-		// Node is object with Long id field
-		} else if (node.isObject() && node.get("id") != null && node.get("id").canConvertToLong()) {
-			return node.get("id").asLong();
+		if (node.isObject() && node.get("id") != null) {
+			// If node is object with Long id field
+			node = node.get("id");
 		}
-		//
+		if (node.isNull()) {
+			return null;
+			
+		} else if (node.canConvertToLong()) {
+			return node.asLong();
+			
+		} else if (node.isTextual()) {
+			String nodeValue = node.textValue();
+			try {
+				return Long.parseLong(nodeValue);
+			} catch (NumberFormatException e) {
+				throw new JsonParseException(jp, "Can not parse text node to Long: " + nodeValue);
+			}
+		}
+		
 		throw new JsonParseException(jp, "Can not parse node to Long: " + node.toString());
 	}
 

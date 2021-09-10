@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -32,17 +33,37 @@ public class IdSetDeserializer extends StdDeserializer<Set<Long>> {
 	public Set<Long> deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
 		JsonNode node = jp.getCodec().readTree(jp);
-		if (node.isArray()) {
-			Set<Long> result = new LinkedHashSet<>();
-			node.elements().forEachRemaining(n -> {
-				if (n.canConvertToLong()) 
-					result.add(n.asLong());
-				else if (n.isObject() && n.get("id") != null && n.get("id").canConvertToLong())
-					result.add(n.get("id").asLong());
-			});
-			return result;
+		try {
+			if (node.isArray()) {
+				Set<Long> result = new LinkedHashSet<>();
+				Iterable<JsonNode> elementNodes = () -> node.elements();
+				for (JsonNode elementNode : elementNodes) {
+					if (elementNode.isObject() && elementNode.get("id") != null) {
+						// If node is object with Long id field
+						elementNode = elementNode.get("id");
+					}
+					if (elementNode.isNull()) {
+						result.add(null);
+						
+					} else if (elementNode.canConvertToLong()) {
+						result.add(elementNode.asLong());
+						
+					} else if (elementNode.isTextual()) {
+						String nodeValue = elementNode.textValue();
+						try {
+							result.add(Long.parseLong(nodeValue));
+						} catch (NumberFormatException e) {
+							throw new JsonParseException(jp, "Can not parse text node to Long: " + nodeValue);
+						}
+					}
+				}
+				return result;
+			}
+		} catch (JsonParseException e) {
+			throw new JsonParseException(jp, "Can not parse node to Long: " + node.toString(), e);
 		}
-		return new LinkedHashSet<>();
+		
+		throw new JsonParseException(jp, "Can not parse node to Long: " + node.toString());
 	}
 
 }

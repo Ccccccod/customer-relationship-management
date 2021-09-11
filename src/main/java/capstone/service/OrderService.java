@@ -6,6 +6,7 @@ package capstone.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import capstone.entity.Order;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
-import capstone.model.IdAndExplanation;
+import capstone.model.IdAndName;
 import capstone.repository.OrderRepository;
 import capstone.service.iservice.IReadNameService;
 
@@ -79,7 +80,20 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 	
 	@Override
 	public List<?> getAllName() throws ResourceNotFoundException {
-		List<IdAndExplanation<Long>> findIdExplanationAllBy = getRepository().findIdExplanationAllBy();
+		List<IdAndName<Long>> findIdExplanationAllBy = getRepository().findIdExplanationAllBy().stream().map(i -> new IdAndName<Long>(){
+			@Override
+			public Long getId() {
+				return i.getId();
+			}
+			@Override
+			public void setId(Long id) {
+				i.setId(id);
+			}
+			@Override
+			public String getName() {
+				return i.getExplanation();
+			}
+		}).collect(Collectors.toList());
 		return findIdExplanationAllBy;
 	};
 

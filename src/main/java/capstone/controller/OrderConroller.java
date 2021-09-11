@@ -33,7 +33,7 @@ import capstone.service.UserService;
 @RestController
 @RequestMapping("/api/order")
 public class OrderConroller extends CRUDController<OrderDto, OrderDto, Order, Order, OrderRepository, OrderService, Long>
-		implements /*IReadNameController<Order, OrderRepository, Long>,*/
+		implements IReadNameController<Order, OrderService, Long>,
 		ProductInfoedController<Order, OrderRepository, Long> {
 	
 	@Autowired
@@ -110,6 +110,11 @@ public class OrderConroller extends CRUDController<OrderDto, OrderDto, Order, Or
 	@Override
 	public UnitService getUnitService() {
 		return unitService;
+	}
+
+	@Override
+	public OrderService getService() {
+		return service;
 	}
 
 }

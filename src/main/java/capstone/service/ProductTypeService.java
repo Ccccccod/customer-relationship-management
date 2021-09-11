@@ -71,7 +71,7 @@ public class ProductTypeService
 	
 	private Function<Set<ProductType>, Set<ProductTypeTreeResponse>> productTypeSetToProductTypeTreeDtoSet() {
 		return pts -> {
-			if (Objects.isNull(pts))
+			if (Objects.isNull(pts) || pts.isEmpty())
 				return null;
 			return pts.stream().map(this.productTypeToProductTypeTreeDto()).collect(Collectors.toSet());
 		};

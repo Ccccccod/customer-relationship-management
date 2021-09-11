@@ -30,7 +30,7 @@ public class PotentialController extends
 	
 	@PostMapping("/single-convert/{id}")
 	public ResponseEntity<Contact> singleConvert(@PathVariable(name = "id", required = true) Long id,
-			@RequestParam(name = "customerId") Long customerId)
+			@RequestParam(name = "customerId", required = false) Long customerId)
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
 		Contact contact = service.singleConvert(id, customerId);
 		return ResponseEntity.ok(contact);

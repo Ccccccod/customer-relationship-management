@@ -18,5 +18,7 @@ public interface ProductTypeRepository
 		extends NamedJpaRepository<ProductType, Long>, BaseRepository<ProductType, Long> {
 	
 	List<ProductType> findByProductType(ProductType productType);
+	
+	List<ProductType> findByProductTypeNull();
 
 }

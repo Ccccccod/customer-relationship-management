@@ -5,7 +5,7 @@ package capstone.dto.response;
 
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import capstone.dto.request.CodedNamedDto;
 import lombok.AllArgsConstructor;
@@ -21,9 +21,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductTypeTreeDto extends CodedNamedDto<Long>{
+public class ProductTypeTreeResponse extends CodedNamedDto<Long>{
 	
-	private Set<ProductTypeTreeDto> productTypeTreeDtos;
+	@JsonProperty("children")
+	private Set<ProductTypeTreeResponse> productTypeTreeDtos;
 
 	/**
 	 * @param id
@@ -31,8 +32,8 @@ public class ProductTypeTreeDto extends CodedNamedDto<Long>{
 	 * @param code
 	 * @param productTypeTreeDtos
 	 */
-	public ProductTypeTreeDto(Long id, @NotNull(message = "Name must not be null") String name,
-			@NotNull(message = "Code must not be null") String code, Set<ProductTypeTreeDto> productTypeTreeDtos) {
+	public ProductTypeTreeResponse(Long id, String name, String code,
+			Set<ProductTypeTreeResponse> productTypeTreeDtos) {
 		super(id, name, code);
 		this.productTypeTreeDtos = productTypeTreeDtos;
 	}

@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.ProductTypeDto;
-import capstone.dto.response.ProductTypeTreeDto;
+import capstone.dto.response.ProductTypeTreeResponse;
 import capstone.entity.ProductType;
 import capstone.exception.ErrorDetails;
-import capstone.exception.ResourceNotFoundException;
-import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
-import capstone.service.AbstractService;
 import capstone.service.ProductTypeService;
 
 /**
@@ -30,15 +27,12 @@ import capstone.service.ProductTypeService;
  */
 @RestController
 @RequestMapping("/api/productType")
-public class ProductTypeController
-		extends AbstractDtoEntityController<ProductTypeDto, ProductType, ProductTypeRepository, Long>
+public class ProductTypeController extends
+		CRUDController<ProductTypeDto, ProductTypeDto, ProductTypeTreeResponse, ProductType, ProductTypeRepository, ProductTypeService, Long>
 		implements IReadNameController<ProductType, ProductTypeService, Long> {
 	
 	@Autowired
 	protected ProductTypeService productTypeService;
-	
-	@Autowired
-	private ProductRepository productRepository;
 	
 	/**
 	 * Get a {@link List} of available {@link ProductType} to insert or update
@@ -55,34 +49,9 @@ public class ProductTypeController
 	}
 	
 	@GetMapping("/tree")
-	public ResponseEntity<Set<ProductTypeTreeDto>> getTree() {
-		Set<ProductTypeTreeDto> productTypeTreeDtos = this.productTypeService.getTree();
+	public ResponseEntity<Set<ProductTypeTreeResponse>> getTree() {
+		Set<ProductTypeTreeResponse> productTypeTreeDtos = this.productTypeService.getTree();
 		return ResponseEntity.ok(productTypeTreeDtos);
-	}
-
-	@Override
-	protected ProductType dtoToEntity(ProductTypeDto dto, ProductType productType) throws ResourceNotFoundException {
-		return productType.toBuilder()
-				.id(dto.getId())
-				.code(dto.getCode())
-				.name(dto.getName())
-				.productType(AbstractService.findEntityById(this.repository, dto.getProductTypeId(), ProductType.class))
-				.build();
-	}
-
-	@Override
-	protected Class<ProductType> entityClass() {
-		return ProductType.class;
-	}
-	
-	@Override
-	protected void preDelete(List<ProductType> entities) {
-		entities.forEach(e -> {
-			e.getProductTypes().forEach(i -> i.setProductType(null));
-			repository.saveAll(e.getProductTypes());
-			e.getProducts().forEach(i -> i.setProductType(null));
-			productRepository.saveAll(e.getProducts());
-		});
 	}
 
 	@Autowired

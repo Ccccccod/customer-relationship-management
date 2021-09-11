@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.ProductTypeDto;
-import capstone.dto.response.ProductTypeTreeDto;
+import capstone.dto.response.ProductTypeTreeResponse;
 import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProductTypeRepository;
@@ -25,23 +25,11 @@ import capstone.service.iservice.INamedService;
  */
 @Service
 public class ProductTypeService
-		extends CodedService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long>
-		implements IDtoToEntityService<ProductTypeDto, ProductType, Long>,
-		INamedService<ProductType, ProductTypeRepository, Long> {
+		extends CodedService<ProductTypeDto, ProductTypeDto, ProductTypeTreeResponse, ProductType, ProductTypeRepository, Long>
+		implements INamedService<ProductType, ProductTypeRepository, Long> {
 
 	@Autowired
 	protected ProductTypeRepository productTypeRepository;
-
-	@Override
-	public ProductType dtoToEntity(ProductTypeDto dto) throws ResourceNotFoundException {
-		ProductType productType = ProductType.builder()
-				.id(dto.getId())
-				.code(dto.getCode())
-				.name(dto.getName())
-				.productType(findEntityById(productTypeRepository, dto.getProductTypeId(), ProductType.class))
-				.build();
-		return productType;
-	}
 
 	public List<ProductType> getAvailableProductTypesForAProductType(Long id) {
 		assert id != null;
@@ -62,17 +50,17 @@ public class ProductTypeService
 	 * Get Tree
 	 * @return
 	 */
-	public Set<ProductTypeTreeDto> getTree() {
+	public Set<ProductTypeTreeResponse> getTree() {
 		return productTypeRepository.findByProductType(null).stream()
 				.map(productTypeToProductTypeTreeDto())
 				.collect(Collectors.toSet());
 	}
 	
-	private Function<ProductType, ProductTypeTreeDto> productTypeToProductTypeTreeDto() {
+	private Function<ProductType, ProductTypeTreeResponse> productTypeToProductTypeTreeDto() {
 		return pt -> {
 			if (Objects.isNull(pt))
 				return null;
-			return ProductTypeTreeDto.builder()
+			return ProductTypeTreeResponse.builder()
 					.id(pt.getId())
 					.code(pt.getCode())
 					.name(pt.getName())
@@ -81,7 +69,7 @@ public class ProductTypeService
 		};
 	}
 	
-	private Function<Set<ProductType>, Set<ProductTypeTreeDto>> productTypeSetToProductTypeTreeDtoSet() {
+	private Function<Set<ProductType>, Set<ProductTypeTreeResponse>> productTypeSetToProductTypeTreeDtoSet() {
 		return pts -> {
 			if (Objects.isNull(pts))
 				return null;
@@ -95,8 +83,8 @@ public class ProductTypeService
 	}
 
 	@Override
-	protected ProductType entityToResponse(ProductType entity) {
-		return entity;
+	protected ProductTypeTreeResponse entityToResponse(ProductType entity) {
+		return productTypeToProductTypeTreeDto().apply(entity);
 	}
 
 	@Override

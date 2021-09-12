@@ -69,7 +69,7 @@ public class Role extends BaseEntity<Long> implements Named {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "role_permission_function_action", //

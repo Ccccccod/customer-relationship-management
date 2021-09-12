@@ -1,6 +1,12 @@
 USE [Capstone]
 GO
 
+DELETE FROM "tbl_user_ward"
+DELETE FROM "tbl_user_district"
+DELETE FROM "tbl_user_province"
+DELETE FROM "tbl_user_country"
+GO
+
 SET IDENTITY_INSERT tbl_user_country ON;
 
 INSERT INTO "tbl_user_country" ("user_countryid", "user_country_code", "user_country_name") VALUES (1, 'AC', 'Ascension');

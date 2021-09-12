@@ -263,6 +263,8 @@ public abstract class AbstractService< //
 	}
 	
 	Entity getEntityById(ID id, Boolean isDeleted) throws ResourceNotFoundException {
+		if (id == null)
+			return null;
 		Session session = enableDeletedFilter(false);
 		try {
 			Entity entity = this.repository.findById(id)

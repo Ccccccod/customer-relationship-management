@@ -3,8 +3,11 @@
  */
 package capstone.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import capstone.entity.District;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.WardRepository;
@@ -36,6 +39,11 @@ public class WardService extends AbstractService<Ward, Ward, Ward, Ward, WardRep
 	@Override
 	protected Ward updateDtoToEntity(Ward updateDto, Ward entity) throws ResourceNotFoundException {
 		throw new UnsupportedOperationException(entityClass().getName() + " can't not be updated");
+	}
+	
+	public List<Ward> findByDistrictId(Long districtId) throws ResourceNotFoundException {
+		District district = districtService.getEntityById(districtId);
+		return repository.findByDistrict(district);
 	}
 
 }

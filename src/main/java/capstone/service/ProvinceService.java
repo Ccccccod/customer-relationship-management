@@ -3,8 +3,11 @@
  */
 package capstone.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import capstone.entity.Country;
 import capstone.entity.Province;
 import capstone.exception.ResourceNotFoundException;
 import capstone.repository.ProvinceRepository;
@@ -36,6 +39,11 @@ public class ProvinceService extends AbstractService<Province, Province, Provinc
 	@Override
 	protected Province updateDtoToEntity(Province updateDto, Province entity) throws ResourceNotFoundException {
 		throw new UnsupportedOperationException(entityClass().getName() + " can't not be updated");
+	}
+	
+	public List<Province> findByCountryId(Long countryId) throws ResourceNotFoundException {
+		Country country = countryService.getEntityById(countryId);
+		return repository.findByCountry(country);
 	}
 
 }

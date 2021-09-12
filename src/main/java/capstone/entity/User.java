@@ -80,7 +80,7 @@ public class User extends BaseEntity<Long> implements Named {
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	private Set<Role> roles = new HashSet<>();
+	private Set<Role> roles;
 
 	/**
 	 * Họ và đệm

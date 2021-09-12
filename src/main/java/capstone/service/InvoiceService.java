@@ -44,7 +44,7 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 		Country country = Optional.ofNullable(province).map(Province::getCountry)
 				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder() //
-				.code(d.getCode()) //
+//				.code(d.getCode()) //
 				.customer(customerService.getEntityById(d.getCustomerId())) //
 				.bankAccount(d.getBankAccount()) //
 				.bank(d.getBank()) //

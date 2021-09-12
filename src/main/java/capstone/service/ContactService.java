@@ -73,7 +73,7 @@ public class ContactService extends CodedService<ContactDto, ContactDto, Contact
 				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
-				.code(d.getCode())
+//				.code(d.getCode())
 				.vocative(vocativeService.getEntityById(d.getVocativeId()))
 				.lastName(d.getLastName())
 				.name(d.getName())

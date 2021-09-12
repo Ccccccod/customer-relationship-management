@@ -32,11 +32,12 @@ implements INamedService<Role, RoleRepository, Long>{
 
 	@Override
 	protected Role createDtoToEntity(RoleDto dto, Role entity) throws ResourceNotFoundException {
-		return entity.toBuilder()
-		.name(dto.getName())
-		.description(dto.getDescription())
-		.permissionFunctionActions(permissionFunctionActionService.getEntitiesById(dto.getPermissionFunctionActionIds()))
-		.build();
+		return entity.toBuilder() //
+				.name(dto.getName()) //
+				.description(dto.getDescription()) //
+				.permissionFunctionActions(
+						permissionFunctionActionService.getEntitiesById(dto.getPermissionFunctionActionIds())) //
+				.build();
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class ProductService extends CodedService<ProductDto, ProductDto, Product
 		return Product.builder()
 				.id(dto.getId())
 				.name(dto.getName())
-				.code(dto.getCode())
+//				.code(dto.getCode())
 				.productType(AbstractService.findEntityById(productTypeRepository, dto.getProductTypeId(), ProductType.class))
 				.explanation(dto.getExplanation())
 				.unit(unitService.getEntityById(dto.getUnitId()))

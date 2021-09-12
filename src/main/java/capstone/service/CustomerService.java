@@ -66,7 +66,7 @@ public class CustomerService extends CodedService<CustomerDto, CustomerDto, Cust
 				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
-				.code(d.getCode())
+//				.code(d.getCode())
 				.shortName(d.getShortName())
 				.name(d.getName())
 				.taxCode(d.getTaxCode())

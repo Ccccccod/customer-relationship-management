@@ -54,7 +54,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 				.orElse(countryService.getEntityById(d.getCountryId()));
 		return entity.toBuilder()
 				.id(d.getId())
-				.code(d.getCode())
+//				.code(d.getCode())
 				.orderDate(d.getOrderDate())
 				.customer(customerService.getEntityById(d.getCustomerId()))
 				.contact(contactService.getEntityById(d.getContactId()))

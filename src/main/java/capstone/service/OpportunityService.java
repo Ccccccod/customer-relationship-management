@@ -62,7 +62,7 @@ public class OpportunityService
 				.orElse(countryService.getEntityById(d.getCountryId()));
 		opportunity = opportunity.toBuilder()
 				.id(d.getId())
-				.code(d.getCode())
+//				.code(d.getCode())
 				.name(d.getName())
 				.customer(customerService.getEntityById(d.getCustomerId()))
                 .contact(contactService.getEntityById(d.getContactId()))

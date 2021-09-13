@@ -42,7 +42,6 @@ public class OrderDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Mã đơn hàng
 	 */
-	@Column(name = "code", unique = true, nullable = false)
 	private String code;
 	
 	@NotNull

@@ -30,10 +30,10 @@ public abstract class CodedService< //
 	protected RandomStringGenerator randomStringGenerator;
 	
 	@Override
-	Entity saveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
+	Entity checkExistAndSaveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
 		String code = randomStringGenerator.generate(10);
 		entity.setCode(code);
-		return super.saveEntity(entity);
+		return super.checkExistAndSaveEntity(entity);
 	}
 
 }

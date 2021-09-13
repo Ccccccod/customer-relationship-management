@@ -234,7 +234,9 @@ public abstract class AbstractService< //
 		Entity entity = this.createDtoToEntity(dto, entityClass().newInstance());
 		entity.setId(null);
 		
-		entity = saveEntity(entity);
+		synchronized (this) {
+			entity = checkExistAndSaveEntity(entity);
+		}
 		
 		Response response = this.entityToResponse(entity);
 		return response;
@@ -249,8 +251,10 @@ public abstract class AbstractService< //
 		entity = this.updateDtoToEntity(dto, entity);
 		entity.setId(id);
 		
-		RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
-		entity = this.repository.save(entity);
+		synchronized (this) {
+			RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
+			entity = this.repository.save(entity);
+		}
 		logger.debug("updated enitity: {}", entity);
 		
 		Response response = this.entityToResponse(entity);
@@ -258,7 +262,7 @@ public abstract class AbstractService< //
 	}
 	
 	@Override
-	public void delete(Iterable<ID> ids) {
+	public synchronized void delete(Iterable<ID> ids) {
 		this.repository.deleteAllById(ids);
 	}
 	
@@ -304,8 +308,16 @@ public abstract class AbstractService< //
 		}
 	}
 
-	Entity saveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
+	Entity checkExistAndSaveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
+		checkExist(entity);
+		return saveEntity(entity);
+	}
+	
+	void checkExist(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
 		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
+	}
+	
+	Entity saveEntity(Entity entity) {
 		return this.repository.save(entity);
 	}
 	

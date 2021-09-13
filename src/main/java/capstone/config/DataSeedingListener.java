@@ -990,7 +990,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		
 		// Opportunity
-		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
+		Opportunity opportunity1 = Opportunity.builder()
 				.code("CH00001")
 				.customer(customer1NGS)
 				.contact(contact1)
@@ -999,20 +999,21 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product1)
-								.productCode(product1.getCode())
-								.explanation(product1.getExplanation())
-								.unit(product1.getUnit())
-								.amount(10)
-								.price(product1.getSellPrice())
-								.discount(10)
-								.vat(product1.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity2 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity1.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product1)
+						.productCode(product1.getCode())
+						.explanation(product1.getExplanation())
+						.unit(product1.getUnit())
+						.amount(10)
+						.price(product1.getSellPrice())
+						.discount(10)
+						.vat(product1.getVat())
+						.build()
+		));
+		opportunity1 = addNamedRepository(opportunityRepository, opportunity1);
+		Opportunity opportunity2 = Opportunity.builder()
 				.code("CH00002")
 				.customer(customer2VOLTRANS)
 				.contact(contact2)
@@ -1021,20 +1022,21 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product2)
-								.productCode(product2.getCode())
-								.explanation(product2.getExplanation())
-								.unit(product2.getUnit())
-								.amount(15)
-								.price(product2.getSellPrice())
-								.discount(2)
-								.vat(product2.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity3 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity2.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product2)
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(15)
+						.price(product2.getSellPrice())
+						.discount(2)
+						.vat(product2.getVat())
+						.build()
+		));
+		opportunity2 = addNamedRepository(opportunityRepository, opportunity2);
+		Opportunity opportunity3 = Opportunity.builder()
 				.code("CH00003")
 				.customer(customer3ICOVN)
 				.contact(contact3)
@@ -1043,20 +1045,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product3)
-								.productCode(product3.getCode())
-								.explanation(product3.getExplanation())
-								.unit(product3.getUnit())
-								.amount(50)
-								.price(product3.getSellPrice())
-								.discount(5)
-								.vat(product3.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity4 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity3.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product3)
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(5)
+						.vat(product3.getVat())
+						.build()));
+		opportunity3 = addNamedRepository(opportunityRepository, opportunity3);
+		Opportunity opportunity4 = Opportunity.builder()
 				.code("CH00004")
 				.customer(customer4Eurodoor)
 				.contact(contact4)
@@ -1065,20 +1067,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(100)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerOrPartnerRefer)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product4)
-								.productCode(product4.getCode())
-								.explanation(product4.getExplanation())
-								.unit(product4.getUnit())
-								.amount(100)
-								.price(product4.getSellPrice())
-								.discount(10)
-								.vat(product4.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity5 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity4.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product4)
+						.productCode(product4.getCode())
+						.explanation(product4.getExplanation())
+						.unit(product4.getUnit())
+						.amount(100)
+						.price(product4.getSellPrice())
+						.discount(10)
+						.vat(product4.getVat())
+						.build()));
+		opportunity4 = addNamedRepository(opportunityRepository, opportunity4);
+		Opportunity opportunity5 = Opportunity.builder()
 				.code("CH00005")
 				.customer(customer5SGDHN)
 				.contact(contact5)
@@ -1087,20 +1089,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product5)
-								.productCode(product5.getCode())
-								.explanation(product5.getExplanation())
-								.unit(product5.getUnit())
-								.amount(300)
-								.price(product5.getSellPrice())
-								.discount(10)
-								.vat(product5.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity6 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity5.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product5)
+						.productCode(product5.getCode())
+						.explanation(product5.getExplanation())
+						.unit(product5.getUnit())
+						.amount(300)
+						.price(product5.getSellPrice())
+						.discount(10)
+						.vat(product5.getVat())
+						.build()));
+		opportunity5 = addNamedRepository(opportunityRepository, opportunity5);
+		Opportunity opportunity6 = Opportunity.builder()
 				.code("CH00006")
 				.customer(customer6HoangGia)
 				.contact(contact6)
@@ -1109,20 +1111,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product6)
-								.productCode(product6.getCode())
-								.explanation(product6.getExplanation())
-								.unit(product6.getUnit())
-								.amount(1000)
-								.price(product6.getSellPrice())
-								.discount(10)
-								.vat(product6.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity7 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity6.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product6)
+						.productCode(product6.getCode())
+						.explanation(product6.getExplanation())
+						.unit(product6.getUnit())
+						.amount(1000)
+						.price(product6.getSellPrice())
+						.discount(10)
+						.vat(product6.getVat())
+						.build()));
+		opportunity6 = addNamedRepository(opportunityRepository, opportunity6);
+		Opportunity opportunity7 = Opportunity.builder()
 				.code("CH00007")
 				.customer(customer7AnhDuong)
 				.contact(contact7)
@@ -1131,20 +1133,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product7)
-								.productCode(product7.getCode())
-								.explanation(product7.getExplanation())
-								.unit(product7.getUnit())
-								.amount(20)
-								.price(product7.getSellPrice())
-								.discount(10)
-								.vat(product7.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity8 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity7.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product7)
+						.productCode(product7.getCode())
+						.explanation(product7.getExplanation())
+						.unit(product7.getUnit())
+						.amount(20)
+						.price(product7.getSellPrice())
+						.discount(10)
+						.vat(product7.getVat())
+						.build()));
+		opportunity7 = addNamedRepository(opportunityRepository, opportunity7);
+		Opportunity opportunity8 = Opportunity.builder()
 				.code("CH00008")
 				.customer(customer8VHT)
 				.contact(contact8)
@@ -1153,20 +1155,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product8)
-								.productCode(product8.getCode())
-								.explanation(product8.getExplanation())
-								.unit(product8.getUnit())
-								.amount(20)
-								.price(product8.getSellPrice())
-								.discount(10)
-								.vat(product8.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity9 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity8.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product8)
+						.productCode(product8.getCode())
+						.explanation(product8.getExplanation())
+						.unit(product8.getUnit())
+						.amount(20)
+						.price(product8.getSellPrice())
+						.discount(10)
+						.vat(product8.getVat())
+						.build()));
+		opportunity8 = addNamedRepository(opportunityRepository, opportunity8);
+		Opportunity opportunity9 = Opportunity.builder()
 				.code("CH00009")
 				.customer(customer9FTech)
 				.contact(contact9)
@@ -1175,20 +1177,20 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JULY, 9))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product9)
-								.productCode(product9.getCode())
-								.explanation(product9.getExplanation())
-								.unit(product9.getUnit())
-								.amount(2)
-								.price(product9.getSellPrice())
-								.discount(0)
-								.vat(product9.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity10 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity9.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product9)
+						.productCode(product9.getCode())
+						.explanation(product9.getExplanation())
+						.unit(product9.getUnit())
+						.amount(2)
+						.price(product9.getSellPrice())
+						.discount(0)
+						.vat(product9.getVat())
+						.build()));
+		opportunity9 = addNamedRepository(opportunityRepository, opportunity9);
+		Opportunity opportunity10 = Opportunity.builder()
 				.code("CH00010")
 				.customer(customer10PhanAnh)
 				.contact(contact10)
@@ -1197,19 +1199,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product10)
-								.productCode(product10.getCode())
-								.explanation(product10.getExplanation())
-								.unit(product10.getUnit())
-								.amount(1)
-								.price(product10.getSellPrice())
-								.discount(5)
-								.vat(product10.getVat())
-								.build()
-						))
-				.build());
+				.build();
+		opportunity10.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product10)
+						.productCode(product10.getCode())
+						.explanation(product10.getExplanation())
+						.unit(product10.getUnit())
+						.amount(1)
+						.price(product10.getSellPrice())
+						.discount(5)
+						.vat(product10.getVat())
+						.build()));
+		opportunity10 = addNamedRepository(opportunityRepository, opportunity10);
 		
 //		// Order
 //		Order order1 = addNamedRepository(orderRepository, Order.builder()

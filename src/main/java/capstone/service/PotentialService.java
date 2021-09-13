@@ -6,6 +6,7 @@ package capstone.service;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.PotentialDto;
@@ -113,21 +114,27 @@ public class PotentialService
 				// TODO: Thêm các trường chuyển đổi
 				.customer(customer)
 				.build();
-		synchronized (contactService) {
-			synchronized (customerService) {
-				contactService.checkExist(contact);
-				if (customer != null) {
-					if (customer.getContacts() == null)
-						customer.setContacts(new LinkedHashSet<>());
-					customer.getContacts().add(contact);
-					customerService.checkExist(customer);
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			synchronized (contactService) {
+				synchronized (customerService) {
+					contactService.checkExist(contact);
+					if (customer != null) {
+						if (customer.getContacts() == null)
+							customer.setContacts(new LinkedHashSet<>());
+						customer.getContacts().add(contact);
+						customerService.checkExist(customer);
+					}
+					contact = contactService.saveEntity(contact);
+					if (customer != null) {
+						customerService.saveEntity(customer);
+					}
+					return contact;
 				}
-				contact = contactService.saveEntity(contact);
-				if (customer != null) {
-					customerService.saveEntity(customer);
-				}
-				return contact;
 			}
+		} finally {
+			disableDeletedFilter(session);
 		}
 	}
 

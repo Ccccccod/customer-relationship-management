@@ -174,6 +174,8 @@ public abstract class AbstractService< //
 	}
 	
 	protected void disableDeletedFilter(Session session) {
+		if (session == null)
+			return;
 		session.disableFilter(Constant.Hibernate.DELETED_FILTER);
 		session.close();
 	}

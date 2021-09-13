@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -35,6 +36,7 @@ import capstone.entity.Income;
 import capstone.entity.Invoice;
 import capstone.entity.MaritalStatus;
 import capstone.entity.Opportunity;
+import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
@@ -1213,39 +1215,42 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 						.build()));
 		opportunity10 = addNamedRepository(opportunityRepository, opportunity10);
 		
-//		// Order
-//		Order order1 = addNamedRepository(orderRepository, Order.builder()
-//				.code("DH00009")
-//				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
-//				.customer(customer4Eurodoor)
-//				.contact(contact3)
-//				.opportunity(opportunity3)
-//				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
-//				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
-//				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
-//						ProductInfo.builder()
-//								.productCode(product2.getCode())
-//								.explanation(product2.getExplanation())
-//								.unit(product2.getUnit())
-//								.amount(1)
-//								.price(product2.getSellPrice())
-//								.discount(0)
-//								.vat(product2.getVat())
-//								.build(),
-//						ProductInfo.builder()
-//								.productCode(product3.getCode())
-//								.explanation(product3.getExplanation())
-//								.unit(product3.getUnit())
-//								.amount(50)
-//								.price(product3.getSellPrice())
-//								.discount(10)
-//								.vat(product3.getVat())
-//								.build()
-//						)))
-//				.build());
+		// Order
+		Order order1 = Order.builder()
+				.code("DH00009")
+				.explanation("Đơn hàng bán cho " + customer4Eurodoor.getName())
+				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
+				.customer(customer4Eurodoor)
+				.contact(contact3)
+				.opportunity(opportunity3)
+				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
+				.receivedMoney(1L)
+				.build();
+		order1.addToProductInfo(newSet(
+				ProductInfo.builder()
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(1)
+						.price(product2.getSellPrice())
+						.discount(0)
+						.vat(product2.getVat())
+						.build(),
+				ProductInfo.builder()
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(10)
+						.vat(product3.getVat())
+						.build()
+				));
+		order1 = addCodedRepository(orderRepository, order1);
 		
 		// Invoice
-		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
+		Invoice invoice1 = Invoice.builder()
 				.code("DN0000001")
 				.customer(customer4Eurodoor)
 				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
@@ -1256,8 +1261,29 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.receiverName("Min")
 				.receiverEmail("Minn@gmail.com")
 				.receiverPhone("120120129")
-				.order(null)
-				.build());
+				.order(order1)
+				.build();
+		invoice1.addToProductInfo(newSet(
+				ProductInfo.builder()
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(1)
+						.price(product2.getSellPrice())
+						.discount(0)
+						.vat(product2.getVat())
+						.build(),
+				ProductInfo.builder()
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(10)
+						.vat(product3.getVat())
+						.build()
+				));
+		invoice1 = addCodedRepository(invoiceRepository, invoice1);
 		
 		// Permissions
 
@@ -1456,8 +1482,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
 	}
 
-	private <T extends BaseEntity<ID> & Coded, ID extends Serializable, Re extends CodedRepository<T, ID> & JpaRepository<T, ID>> T addCodedRepository(
-			Re repository, T t) {
+	private <T extends BaseEntity<ID> & Coded, ID extends Serializable> T addCodedRepository(
+			CodedRepository<T, ID> repository, T t) {
 		return repository.findFirstByCode(t.getCode()).orElseGet(() -> repository.save(t));
 	}
 

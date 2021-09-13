@@ -6,7 +6,6 @@ package capstone.dto.request;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAlias;

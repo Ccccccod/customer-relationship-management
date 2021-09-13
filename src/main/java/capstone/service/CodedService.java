@@ -9,7 +9,6 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import capstone.exception.ResourceExistedException;
 import capstone.model.Coded;
 import capstone.model.Identifiable;
 
@@ -30,10 +29,10 @@ public abstract class CodedService< //
 	protected RandomStringGenerator randomStringGenerator;
 	
 	@Override
-	Entity checkExistAndSaveEntity(Entity entity) throws InstantiationException, IllegalAccessException, ResourceExistedException {
+	Entity saveEntity(Entity entity) {
 		String code = randomStringGenerator.generate(10);
 		entity.setCode(code);
-		return super.checkExistAndSaveEntity(entity);
+		return super.saveEntity(entity);
 	}
 
 }

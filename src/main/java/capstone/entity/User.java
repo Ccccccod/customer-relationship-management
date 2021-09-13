@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Named;
@@ -64,14 +65,16 @@ public class User extends BaseEntity<Long> implements Named {
 	
 	@JsonAlias("username")
 	@JsonProperty("username")
-	@Column(name = "username", nullable = false, updatable = false, unique = true)
+	@UniqueOrNull
+	@Column(name = "username", nullable = false, updatable = false)
 	private String username;
 
 	@JsonProperty(access = Access.WRITE_ONLY) // Ignore in case this user is added to response
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 
-	@Column(name = "email", length = 320, nullable = false, updatable = false, unique = true)
+	@UniqueOrNull
+	@Column(name = "email", length = 320, nullable = false, updatable = false)
 	private String email;
 
 	@ManyToMany(fetch = FetchType.LAZY)

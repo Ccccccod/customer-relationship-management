@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
@@ -78,7 +79,8 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	/**
 	 * Mã số thuế
 	 */
-	@Column(name = "tax_code"/*, unique = true*/, nullable = false)
+	@UniqueOrNull
+	@Column(name = "tax_code", nullable = false)
 	private String taxCode;
 
 	/**
@@ -90,7 +92,7 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	/**
 	 * Email
 	 */
-	@Column(name = "email", unique = true, nullable = false)
+	@Column(name = "email", nullable = false)
 	private String email;
 
 	/**

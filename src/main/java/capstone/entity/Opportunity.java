@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
@@ -60,7 +61,8 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Mã cơ hội
 	 */
-	@Column(name = "code", unique = true, nullable = false)
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
 	private String code;
 
 	/**

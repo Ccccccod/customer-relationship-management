@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
@@ -58,7 +59,8 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Mã đơn hàng
 	 */
-	@Column(name = "code", unique = true, nullable = false)
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
 	private String code;
 	
 	/**

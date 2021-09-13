@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.model.Coded;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,8 @@ import lombok.experimental.SuperBuilder;
 public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "code", unique = true, nullable = false)
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
 	private String code;
 
 	/**
@@ -196,6 +198,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 		this.receiverPhone = receiverPhone;
 		this.order = order;
 		this.productInfos = productInfos;
+		this.setToProductInfos(productInfos);
 		this.country = country;
 		this.province = province;
 		this.district = district;

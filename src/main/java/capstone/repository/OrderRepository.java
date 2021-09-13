@@ -17,8 +17,9 @@ import capstone.model.IdAndExplanation;
  * @author Tuna
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long>, BaseRepository<Order, Long> {
-	
+public interface OrderRepository
+		extends JpaRepository<Order, Long>, BaseRepository<Order, Long>, CodedRepository<Order, Long> {
+
 	List<Order> findByOrderDateBetween(LocalDate from, LocalDate to);
 	
 	List<IdAndExplanation<Long>> findIdExplanationAllBy();

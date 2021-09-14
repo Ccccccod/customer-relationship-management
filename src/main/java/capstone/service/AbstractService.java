@@ -184,7 +184,7 @@ public abstract class AbstractService< //
 	public List<Response> getAll() throws ResourceNotFoundException {
 		Session session = enableDeletedFilter(false);
 		try {
-			List<Response> response = this.repository.findAll().stream() //
+			List<Response> response = this.getAllEntities().stream() //
 					.map(this::entityToResponse) //
 					.collect(Collectors.toList());
 			return response;

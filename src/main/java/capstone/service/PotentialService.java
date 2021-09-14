@@ -97,6 +97,7 @@ public class PotentialService
 		Potential p = getById(id);
 		Customer customer = null;
 		Contact contact;
+		boolean createNewCustomer = false;
 		if (customerId != null) {
 			customer = customerService.getById(customerId);
 		}
@@ -107,6 +108,7 @@ public class PotentialService
 					// TODO: Thêm các trường chuyển đổi
 					.contacts(new LinkedHashSet<>())
 					.build();
+			createNewCustomer = true;
 		}
 		contact = Contact.builder()
 				.code(randomStringGenerator.generate(10))
@@ -117,23 +119,25 @@ public class PotentialService
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			synchronized (contactService) {
-				synchronized (customerService) {
+			synchronized (this) {
+				synchronized (contactService) {
 					contactService.checkExist(contact);
-					if (customer != null) {
-						if (customer.getContacts() == null)
-							customer.setContacts(new LinkedHashSet<>());
-						customer.getContacts().add(contact);
-						customerService.checkExist(customer);
+					synchronized (customerService) {
+						if (customer != null) {
+							if (customer.getContacts() == null)
+								customer.setContacts(new LinkedHashSet<>());
+							customer.getContacts().add(contact);
+							customerService.checkExist(customer);
+						}
+						if (customer != null && createNewCustomer) {
+							customerService.saveEntity(customer);
+						}
+						contact = contactService.saveEntity(contact);
 					}
-					contact = contactService.saveEntity(contact);
-					if (customer != null) {
-						customerService.saveEntity(customer);
-					}
-					potentialService.delete(id);
-					return contact;
 				}
+				this.delete(id);
 			}
+			return contact;
 		} finally {
 			disableDeletedFilter(session);
 		}

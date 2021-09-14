@@ -92,7 +92,6 @@ public class ProductTypeService
 			throws ResourceNotFoundException {
 		return entity.toBuilder()
 				.id(dto.getId())
-				.code(dto.getCode())
 				.name(dto.getName())
 				.productType(productTypeService.getEntityById(dto.getProductTypeId()))
 				.build();

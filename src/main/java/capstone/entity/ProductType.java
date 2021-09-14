@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.dto.response.serializer.ProductTypeSerializer;
@@ -52,10 +53,10 @@ public class ProductType extends CodedNamedEntity<Long> {
 	@JsonSerialize(using = ProductTypeSerializer.class)
 	private ProductType productType;
 	
+	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@JsonIgnore
 	private Set<ProductType> productTypes;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,21 @@ import capstone.service.iservice.INamedService;
  */
 @Service
 public class ProductTypeService
-		extends CodedService<ProductTypeDto, ProductTypeDto, ProductTypeTreeResponse, ProductType, ProductTypeRepository, Long>
+		extends CodedService<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, Long>
 		implements INamedService<ProductType, ProductTypeRepository, Long> {
 
 	@Autowired
 	protected ProductTypeRepository productTypeRepository;
+	
+	@Override
+	List<ProductType> getAllEntities() throws ResourceNotFoundException {
+		Session session = enableDeletedFilter(false);
+		try {
+			return this.repository.findByProductTypeNull();
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
 
 	public List<ProductType> getAvailableProductTypesForAProductType(Long id) {
 		assert id != null;
@@ -83,8 +94,8 @@ public class ProductTypeService
 	}
 
 	@Override
-	protected ProductTypeTreeResponse entityToResponse(ProductType entity) {
-		return productTypeToProductTypeTreeDto().apply(entity);
+	protected ProductType entityToResponse(ProductType entity) {
+		return entity;
 	}
 
 	@Override

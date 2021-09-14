@@ -28,7 +28,7 @@ import capstone.service.ProductTypeService;
 @RestController
 @RequestMapping("/api/productType")
 public class ProductTypeController extends
-		CRUDController<ProductTypeDto, ProductTypeDto, ProductTypeTreeResponse, ProductType, ProductTypeRepository, ProductTypeService, Long>
+		CRUDController<ProductTypeDto, ProductTypeDto, ProductType, ProductType, ProductTypeRepository, ProductTypeService, Long>
 		implements IReadNameController<ProductType, ProductTypeService, Long> {
 	
 	@Autowired

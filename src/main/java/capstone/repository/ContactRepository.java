@@ -12,6 +12,7 @@ import capstone.entity.Contact;
  * @author Tuna
  */
 @Repository
-public interface ContactRepository extends NamedJpaRepository<Contact, Long>, BaseRepository<Contact, Long> {
+public interface ContactRepository
+		extends NamedJpaRepository<Contact, Long>, BaseRepository<Contact, Long>, CodedRepository<Contact, Long> {
 
 }

@@ -14,9 +14,9 @@ import capstone.entity.ProductType;
  * @author Tuna
  */
 @Repository
-public interface ProductTypeRepository
-		extends NamedJpaRepository<ProductType, Long>, BaseRepository<ProductType, Long> {
-	
+public interface ProductTypeRepository extends NamedJpaRepository<ProductType, Long>, BaseRepository<ProductType, Long>,
+		CodedRepository<ProductType, Long> {
+
 	List<ProductType> findByProductType(ProductType productType);
 	
 	List<ProductType> findByProductTypeNull();

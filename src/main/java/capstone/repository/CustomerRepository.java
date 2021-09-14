@@ -14,8 +14,9 @@ import capstone.entity.Customer;
  * @author Tuna
  */
 @Repository
-public interface CustomerRepository extends NamedJpaRepository<Customer, Long>, BaseRepository<Customer, Long> {
-	
+public interface CustomerRepository
+		extends NamedJpaRepository<Customer, Long>, BaseRepository<Customer, Long>, CodedRepository<Customer, Long> {
+
 	List<Customer> findByNameIgnoreCase(String name);
 	
 	Boolean existsByTaxCode(String taxCode);

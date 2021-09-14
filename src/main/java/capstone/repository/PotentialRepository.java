@@ -12,6 +12,7 @@ import capstone.entity.Potential;
  * @author Tuna
  */
 @Repository
-public interface PotentialRepository extends NamedJpaRepository<Potential, Long>, BaseRepository<Potential, Long> {
+public interface PotentialRepository extends NamedJpaRepository<Potential, Long>, BaseRepository<Potential, Long>,
+		CodedRepository<Potential, Long> {
 
 }

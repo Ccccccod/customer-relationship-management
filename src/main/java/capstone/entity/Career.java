@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -77,8 +74,7 @@ public class Career extends NamedEntity<Long>{
 	 * @param customers
 	 */
 	public Career(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
-			Boolean shared, Boolean deleted, @NonNull @NotNull @NotBlank(message = "must not be empty") String name,
-			Field field, Set<Customer> customers) {
+			Boolean shared, Boolean deleted, String name, Field field, Set<Customer> customers) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.field = field;
 		this.customers = customers;

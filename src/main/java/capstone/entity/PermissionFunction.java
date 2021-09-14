@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -62,8 +59,7 @@ public class PermissionFunction extends NamedEntity<Long> {
 	 * @param permissionFunctionActions
 	 */
 	public PermissionFunction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			User owner, Boolean shared, Boolean deleted,
-			@NonNull @NotNull @NotBlank(message = "must not be empty") String name,
+			User owner, Boolean shared, Boolean deleted, String name,
 			Set<PermissionFunctionAction> permissionFunctionActions) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.permissionFunctionActions = permissionFunctionActions;
@@ -72,7 +68,7 @@ public class PermissionFunction extends NamedEntity<Long> {
 	/**
 	 * @param name
 	 */
-	public PermissionFunction(@NonNull String name) {
+	public PermissionFunction(String name) {
 		super(name);
 	}
 

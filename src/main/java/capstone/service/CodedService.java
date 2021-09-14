@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.model.Coded;
 import capstone.model.Identifiable;
+import capstone.repository.CodedRepository;
 
 /**
  * CodedService
@@ -21,7 +21,7 @@ public abstract class CodedService< //
 		UpdateDto extends Object & Identifiable<ID>, //
 		Response extends Object & Identifiable<ID>, //
 		Entity extends Object & Identifiable<ID> & Coded, //
-		Repository extends JpaRepository<Entity, ID>, //
+		Repository extends CodedRepository<Entity, ID>, //
 		ID extends Serializable //
 > extends AbstractService<CreateDto, UpdateDto, Response, Entity, Repository, ID> {
 	
@@ -31,8 +31,13 @@ public abstract class CodedService< //
 	@Override
 	Entity saveEntity(Entity entity) {
 		String code = randomStringGenerator.generate(10);
-		entity.setCode(code);
-		return super.saveEntity(entity);
+		synchronized (this) {
+			while (repository.existsByCode(code)) {
+				code = randomStringGenerator.generate(10);
+			}
+			entity.setCode(code);
+			return super.saveEntity(entity);			
+		}
 	}
 
 }

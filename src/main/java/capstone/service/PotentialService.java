@@ -3,6 +3,7 @@
  */
 package capstone.service;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
@@ -130,6 +131,7 @@ public class PotentialService
 					if (customer != null) {
 						customerService.saveEntity(customer);
 					}
+					potentialService.delete(id);
 					return contact;
 				}
 			}

@@ -69,7 +69,7 @@ public class User extends BaseEntity<Long> implements Named {
 	@Column(name = "username", nullable = false, updatable = false)
 	private String username;
 
-	@JsonProperty(access = Access.WRITE_ONLY) // Ignore in case this user is added to response
+	@JsonProperty(access = Access.WRITE_ONLY) // password is write only
 	@Column(name = "password", length = 128, nullable = false)
 	private String password;
 

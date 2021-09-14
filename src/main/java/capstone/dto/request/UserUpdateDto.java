@@ -17,6 +17,7 @@ import capstone.dto.request.deserializer.IdSetDeserializer;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.validatation.annotation.Email;
+import capstone.dto.validatation.annotation.Password;
 import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,9 @@ public class UserUpdateDto extends BaseDto<Long> {
 	@NotNull
 	@Email
 	private String email;
+	
+	@Password
+	private String password;
 	
 	@JsonDeserialize(using = IdSetDeserializer.class)
 	@JsonAlias("roles")
@@ -80,9 +84,10 @@ public class UserUpdateDto extends BaseDto<Long> {
 	private String address;
 
 	/**
-	 * @param id
+	 * @param b
 	 * @param username
 	 * @param email
+	 * @param password
 	 * @param roleIds
 	 * @param lastName
 	 * @param name
@@ -91,11 +96,13 @@ public class UserUpdateDto extends BaseDto<Long> {
 	 * @param genderId
 	 * @param address
 	 */
-	public UserUpdateDto(Long id, @NotNull String username, @NotNull String email, Set<Long> roleIds, String lastName,
-			String name, String phone, LocalDate dateOfBirth, Long genderId, String address) {
-		super(id);
+	public UserUpdateDto(BaseDtoBuilder<Long, ?, ?> b, String username, String email, String password,
+			Set<Long> roleIds, String lastName, String name, String phone, LocalDate dateOfBirth, Long genderId,
+			String address) {
+		super(b);
 		this.username = username;
 		this.email = email;
+		this.password = password;
 		this.roleIds = roleIds;
 		this.lastName = lastName;
 		this.name = name;

@@ -12,7 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import capstone.dto.request.UserDto;
+import capstone.dto.request.UserUpdateDto;
 import capstone.entity.User;
+import capstone.exception.ResourceNotFoundException;
 import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 
@@ -21,13 +24,57 @@ import capstone.security.service.UserDetailsImpl;
  * @author tuna
  */
 @Service
-public class UserService {
-	
+public class UserService extends AbstractService<UserDto, UserUpdateDto, User, User, UserRepository, Long> {
+
 	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Override
+	protected Class<User> entityClass() {
+		return User.class;
+	}
+
+	@Override
+	protected User entityToResponse(User entity) {
+		return entity;
+	}
+
+	@Override
+	protected User createDtoToEntity(UserDto d, User entity) throws ResourceNotFoundException {
+		return entity.toBuilder()
+				.id(d.getId())
+				.username(d.getUsername())
+				.password(passwordEncoder.encode(d.getPassword()))
+				.email(d.getEmail())
+				.roles(roleService.getEntitiesById(d.getRoleIds()))
+				.lastName(d.getLastName())
+				.name(d.getName())
+				.phone(d.getPhone())
+				.dateOfBirth(d.getDateOfBirth())
+				.gender(genderService.getEntityById(d.getGenderId()))
+				.address(d.getAddress())
+				.build();
+	}
+
+	@Override
+	protected User updateDtoToEntity(UserUpdateDto d, User entity) throws ResourceNotFoundException {
+		return entity.toBuilder()
+				.id(d.getId())
+				.username(d.getUsername())
+				.password(d.getPassword() == null ? entity.getPassword() : passwordEncoder.encode(d.getPassword()))
+				.email(d.getEmail())
+				.roles(roleService.getEntitiesById(d.getRoleIds()))
+				.lastName(d.getLastName())
+				.name(d.getName())
+				.phone(d.getPhone())
+				.dateOfBirth(d.getDateOfBirth())
+				.gender(genderService.getEntityById(d.getGenderId()))
+				.address(d.getAddress())
+				.build();
+	}
 	
 	/**
 	 * Get current logged in user

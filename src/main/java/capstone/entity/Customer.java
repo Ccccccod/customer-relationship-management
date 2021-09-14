@@ -80,7 +80,7 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	 * Mã số thuế
 	 */
 	@UniqueOrNull
-	@Column(name = "tax_code", nullable = false)
+	@Column(name = "tax_code")
 	private String taxCode;
 
 	/**
@@ -92,7 +92,7 @@ public class Customer extends BaseEntity<Long> implements Coded, Named {
 	/**
 	 * Email
 	 */
-	@Column(name = "email", nullable = false)
+	@Column(name = "email")
 	private String email;
 
 	/**

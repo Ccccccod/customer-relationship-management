@@ -5,7 +5,9 @@ package capstone.repository;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.transaction.Transactional;
 
@@ -40,8 +42,7 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
 
 	@Transactional
 	default int softDelete(Iterable<? extends T> entities) {
-		LinkedList<ID> list = new LinkedList<ID>();
-		entities.forEach(entity -> list.add(entity.getId()));
+		List<ID> list = StreamSupport.stream(entities.spliterator(), false).map(T::getId).collect(Collectors.toList());
 		return softDeleteById(list);
 	}
 
@@ -54,6 +55,11 @@ public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializabl
 	@Transactional
 	default void deleteAllById(Iterable<? extends ID> ids) {
 		softDeleteById(ids);
+	}
+	
+	@Override
+	default void deleteById(ID id) {
+		deleteAllById(Arrays.asList(id));
 	}
 
 }

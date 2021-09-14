@@ -3,6 +3,7 @@
  */
 package capstone.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import capstone.dto.request.ContactDto;
 import capstone.entity.Contact;
 import capstone.entity.Country;
+import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Province;
 import capstone.entity.Ward;
@@ -24,33 +26,6 @@ import capstone.service.iservice.INamedService;
 @Service
 public class ContactService extends CodedService<ContactDto, ContactDto, Contact, Contact, ContactRepository, Long>
 		implements INamedService<Contact, ContactRepository, Long> {
-
-//	@Autowired
-//	private CustomerRepository customerRepository;
-//	
-//	@Autowired
-//	private ClassificationRepository classificationRepository;
-//	
-//	@Autowired
-//	private SourceRepository sourceRepository;
-//
-//	@Autowired
-//	protected VocativeRepository vocativeRepository;
-//
-//	@Autowired
-//	protected DepartmentRepository departmentRepository;
-//
-//	@Autowired
-//	protected PositionRepository positionRepository;
-//
-//	@Autowired
-//	protected GenderRepository genderRepository;
-//
-//	@Autowired
-//	protected MaritalStatusRepository maritalStatusRepository;
-//
-//	@Autowired
-//	protected BusinessTypeRepository businessTypeRepository;
 
 	@Override
 	protected Class<Contact> entityClass() {
@@ -107,6 +82,11 @@ public class ContactService extends CodedService<ContactDto, ContactDto, Contact
 	@Override
 	protected Contact updateDtoToEntity(ContactDto updateDto, Contact entity) throws ResourceNotFoundException {
 		return this.createDtoToEntity(updateDto, entity);
+	}
+
+	public List<Contact> findByCustomerId(Long customerId) throws ResourceNotFoundException {
+		Customer customer = customerService.getEntityById(customerId);
+		return repository.findByCustomer(customer);
 	}
 
 }

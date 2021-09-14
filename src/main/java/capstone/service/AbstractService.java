@@ -264,6 +264,11 @@ public abstract class AbstractService< //
 	}
 	
 	@Override
+	public synchronized void delete(ID id) {
+		this.repository.deleteById(id);
+	}
+	
+	@Override
 	public synchronized void delete(Iterable<ID> ids) {
 		this.repository.deleteAllById(ids);
 	}

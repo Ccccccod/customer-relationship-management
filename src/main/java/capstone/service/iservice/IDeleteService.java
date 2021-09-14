@@ -14,5 +14,7 @@ import java.io.Serializable;
 public interface IDeleteService<ID extends Serializable> {
 	
 	void delete(Iterable<ID> ids);
+	
+	void delete(ID id);
 
 }

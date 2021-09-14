@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
 
@@ -20,9 +19,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
+import capstone.common.annotation.UniqueOrNull;
 import capstone.exception.ResourceExistedException;
 import capstone.model.Identifiable;
 
@@ -73,10 +72,17 @@ public final class RepositoryUtils {
         return new FilterDisabler(session, filterName);
 	}
 
+	public static <T> List<Field> getFieldsList(Class<T> clas) {
+		List<Field> fields = new LinkedList<>();
+		for (Class<? super T> class1 = clas; !Objects.isNull(class1); class1 = class1.getSuperclass()) {
+			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
+		}
+		return fields;
+	}
+
 	/**
 	 * Check if an entity has any fields that will violate duplicate constraint if it's saved
 	 * @param <T> the entity's type 
-	 * @param <ID> the entity's id's type
 	 * @param entity the entity that needs to be checked
 	 * @param repository repository to be used to query
 	 * @param clazz entity's class
@@ -84,20 +90,13 @@ public final class RepositoryUtils {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static <T extends Identifiable<ID>, ID extends Serializable> void checkExistedFields(T entity,
-			JpaRepository<T, ID> repository, Class<T> clazz)
-			throws ResourceExistedException, InstantiationException, IllegalAccessException {
+	public static <T> void checkExistedFields(T entity, QueryByExampleExecutor<T> repository, Class<T> clazz)
+			throws InstantiationException, IllegalAccessException, ResourceExistedException {
 		// Get all unique fields
-		List<Field> fields = new LinkedList<>();
-		for (Class<?> class1 = entity.getClass(); !Objects.isNull(class1); class1 = class1.getSuperclass()) {
-			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
-		}
-		// Remove fields that don't need to be unique
-		fields = fields.stream()
-				.filter(Objects::nonNull)
+		List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, UniqueOrNull.class).stream()
 				// Ignore id
+				.filter(Objects::nonNull)
 				.filter(field -> field.getAnnotation(Id.class) == null)
-				.filter(f -> Arrays.stream(f.getDeclaredAnnotationsByType(Column.class)).anyMatch(Column::unique))
 				.collect(Collectors.toList());
 		
 		// Check if an entity already exist
@@ -106,10 +105,12 @@ public final class RepositoryUtils {
 			T instance = clazz.newInstance();
 			field.setAccessible(true);
 			Object value = field.get(entity);
+			// Allow null
+			if (value == null)
+				continue;
 			field.set(instance, value);
-			Example<T> example = Example.of(instance);
 			// Query
-			if (repository.exists(example)) {
+			if (repository.exists(Example.of(instance))) {
 				throw new ResourceExistedException("An entity of " + clazz.getSimpleName() + " already exist",
 						field.getName(), value);
 			}
@@ -129,49 +130,11 @@ public final class RepositoryUtils {
 	 * @throws IllegalAccessException
 	 */
 	public static <T extends Identifiable<ID>, ID extends Serializable> void checkExistedFields(T entity, ID id,
-			JpaRepository<T, ID> repository, Class<T> clazz)
-			throws ResourceExistedException, InstantiationException, IllegalAccessException {
-		// Get all unique fields
-		List<Field> fields = new LinkedList<>();
-		for (Class<?> class1 = entity.getClass(); !Objects.isNull(class1); class1 = class1.getSuperclass()) {
-			fields.addAll(Arrays.asList(class1.getDeclaredFields()));
-		}
-		// Remove fields that don't need to be unique
-		fields = fields.stream()
-				.filter(Objects::nonNull)
-				// Ignore id
-				.filter(field -> field.getAnnotation(Id.class) == null)
-				.filter(f -> Arrays.stream(f.getDeclaredAnnotationsByType(Column.class)).anyMatch(Column::unique))
-				.collect(Collectors.toList());
-		
-		// Check if an entity already exist
-		for (Field field : fields) {
-			// Create new instance to make an Example to check
-			T instance = clazz.newInstance();
-			field.setAccessible(true);
-			Object value = field.get(entity);
-			field.set(instance, value);
-			instance.setId(id);
-			// if the updating entity's field has the value, it's ok 
-			Example<T> example = Example.of(instance);
-			// Query
-			if (repository.exists(example)) {
-				continue;
-			}
-			// else if other entity's field has the value, it is not ok
-			instance.setId(null);
-			example = Example.of(instance);
-			if (repository.exists(example)) {
-				throw new ResourceExistedException("An entity of " + clazz.getSimpleName() + " already exist",
-						field.getName(), value);
-			}
-		}
-	}
-
-	public static <T> void checkExistedFields(T entity, QueryByExampleExecutor<T> repository, Class<T> clazz)
+			QueryByExampleExecutor<T> repository, Class<T> clazz)
 			throws InstantiationException, IllegalAccessException, ResourceExistedException {
 		// Get all unique fields
-		List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, Column.class).stream()
+		List<Field> fields = FieldUtils.getFieldsListWithAnnotation(clazz, UniqueOrNull.class).stream()
+				.filter(Objects::nonNull)
 				// Ignore id
 				.filter(field -> field.getAnnotation(Id.class) == null)
 				.collect(Collectors.toList());
@@ -186,12 +149,36 @@ public final class RepositoryUtils {
 			if (value == null)
 				continue;
 			field.set(instance, value);
-			Example<T> example = Example.of(instance);
-			// Query
-			if (repository.exists(example)) {
-				throw new ResourceExistedException("An entity already exist", field.getName(), value);
+			instance.setId(id);
+			// if the updating entity's field has the value, it's ok 
+			if (repository.exists(Example.of(instance))) {
+				continue;
+			}
+			// else if other entity's field has the value, it is not ok
+			instance.setId(null);
+			if (repository.exists(Example.of(instance))) {
+				throw new ResourceExistedException("An entity of " + clazz.getSimpleName() + " already exist",
+						field.getName(), value);
 			}
 		}
+	}
+
+	/**
+	 * Check if an entity's field exists
+	 * @param <T> the entity's type
+	 * @param repository repository for entity
+	 * @param field the field to check
+	 * @param cls entity's class
+	 * @return true if an entity with specified field value exist
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public static <T> boolean checkExistedField(QueryByExampleExecutor<T> repository, Field field, Object value, Class<T> cls)
+			throws InstantiationException, IllegalAccessException {
+		T instance = cls.newInstance();
+		field.setAccessible(true);
+		field.set(instance, value);
+		return repository.exists(Example.of(instance));
 	}
 
 }

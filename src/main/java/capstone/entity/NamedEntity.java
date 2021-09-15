@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import capstone.common.Constant;
+import capstone.model.IdAndName;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 
 @MappedSuperclass
-public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> implements Named {
+public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> implements Named, IdAndName<ID> {
 	private static final long serialVersionUID = 1L;
 	
 	@NotNull // javax.validation.constraints.NotNull in case this object is used as request dto

@@ -3,6 +3,8 @@
  */
 package capstone.controller;
 
+import java.util.Objects;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,8 @@ public class PotentialController extends
 	public ResponseEntity<Contact> singleConvert(@PathVariable(name = "id", required = true) Long id,
 			@RequestParam(name = "customerId", required = false) Long customerId)
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
+		if (Objects.equals(customerId, 0L))
+			customerId = null;
 		Contact contact = service.singleConvert(id, customerId);
 		return ResponseEntity.ok(contact);
 	}

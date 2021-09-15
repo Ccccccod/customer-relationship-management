@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.CustomerDto;
 import capstone.entity.Customer;
+import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.CustomerRepository;
 import capstone.service.CustomerService;
 
@@ -37,8 +39,9 @@ public class CustomerController
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<Customer>> search(@RequestParam(name = "name") String name) {
-		List<Customer> list = service.findByNameIgnoreCase(name);
+	public ResponseEntity<List<IdAndName<Long>>> search(@RequestParam(required = true) String name)
+			throws ResourceNotFoundException {
+		List<IdAndName<Long>> list = service.findByNameIgnoreCase(name);
 		return ResponseEntity.ok(list);
 	}
 

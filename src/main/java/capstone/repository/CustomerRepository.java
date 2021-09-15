@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Customer;
+import capstone.model.IdAndName;
 
 /**
  * Repository for {@link Customer}
@@ -17,7 +18,7 @@ import capstone.entity.Customer;
 public interface CustomerRepository
 		extends NamedJpaRepository<Customer, Long>, BaseRepository<Customer, Long>, CodedRepository<Customer, Long> {
 
-	List<Customer> findByNameIgnoreCase(String name);
+	List<IdAndName<Long>> findByNameIgnoreCase(String name);
 	
 	Boolean existsByTaxCode(String taxCode);
 	

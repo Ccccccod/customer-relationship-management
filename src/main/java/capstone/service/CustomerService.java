@@ -16,6 +16,7 @@ import capstone.entity.District;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.CustomerRepository;
 import capstone.service.iservice.INamedService;
 
@@ -97,7 +98,7 @@ public class CustomerService extends CodedService<CustomerDto, CustomerDto, Cust
 		return createDtoToEntity(updateDto, entity);
 	}
 	
-	public List<Customer> findByNameIgnoreCase(String name) {
+	public List<IdAndName<Long>> findByNameIgnoreCase(String name) {
 		Session session = enableDeletedFilter(false);
 		try {
 			return this.repository.findByNameIgnoreCase(name);

@@ -89,6 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("field", e.getName());
         error.put("rejectedValue", e.getRejectedValue());
         error.put("type", "duplicate");
+        error.put("msg", "Giá trị của " + e.getName() + " đã bị trùng");
         body.put("error", error);
         
 		return new ResponseEntity<>(body, status);

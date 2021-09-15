@@ -53,7 +53,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "Customer", //
 		uniqueConstraints = { //
-				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
+//				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
 //				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
 		})
 public class Customer extends BaseEntity<Long> implements Coded, Named, IdAndName<Long> {

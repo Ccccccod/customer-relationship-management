@@ -34,7 +34,7 @@ public class PotentialController extends
 	public ResponseEntity<Contact> singleConvert(@PathVariable(name = "id", required = true) Long id,
 			@RequestParam(name = "customerId", required = false) Long customerId)
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
-		if (Objects.equals(customerId, 0L))
+		if (Objects.equals(customerId, new Long(0L)))
 			customerId = null;
 		Contact contact = service.singleConvert(id, customerId);
 		return ResponseEntity.ok(contact);

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
@@ -20,6 +21,8 @@ import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.IdAndName;
 import capstone.repository.OrderRepository;
+import capstone.repository.OrderRepository.ContactOnly;
+import capstone.repository.OrderRepository.CustomerOnly;
 import capstone.service.iservice.IReadNameService;
 
 /**
@@ -99,8 +102,25 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 	};
 	
 	public IdAndName<Long> getCustomer(Long id) throws ResourceNotFoundException {
-		Customer customer = this.getById(id).getCustomer();
-		return customer;
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.repository.findCustomerIdAndNameById(id).map(CustomerOnly::getCustomer).orElseThrow(
+					() -> new ResourceNotFoundException("Customer not found for OrderId: " + id, Customer.class));
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
+	
+	public IdAndName<Long> getContact(Long id) throws ResourceNotFoundException {
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
+					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Customer.class));
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

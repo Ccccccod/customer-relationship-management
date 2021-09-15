@@ -5,12 +5,14 @@ package capstone.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Order;
 import capstone.model.IdAndExplanation;
+import capstone.model.IdAndName;
 
 /**
  * Order Repository
@@ -24,30 +26,16 @@ public interface OrderRepository
 	
 	List<IdAndExplanation<Long>> findIdExplanationAllBy();
 	
-//	@Override
-//	default Boolean existsByName(String name) {
-//		return existsByExplanation(name);
-//	}
-//	
-//	@Override
-//	default Optional<Order> findFirstByName(String name) {
-//		return this.findFirstByExplanation(name);
-//	}
-//	
-//	@Override
-//	default List<Order> findByName(String name) {
-//		return findByExplanation(name);
-//	}
-//	
-//	@Override
-//	default List<IdAndName<Long>> findIdNameAllBy() {
-//		return this.findIdNameAllBy();
-//	}
-//	
-//	Boolean existsByExplanation(String explanation);
-//	
-//	Optional<Order> findFirstByExplanation(String explanation);
-//	
-//	List<Order> findByExplanation(String explanation);
+	Optional<CustomerOnly> findCustomerIdAndNameById(Long id);
+
+	public interface CustomerOnly {
+		IdAndName<Long> getCustomer();
+	}
+	
+	Optional<ContactOnly> findContactIdAndNameById(Long id);
+	
+	public interface ContactOnly {
+		IdAndName<Long> getContact();
+	}
 
 }

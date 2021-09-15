@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,8 +112,13 @@ public class OpportunityController
 	}
 	
 	@GetMapping("/{id}/customer")
-	public IdAndName<Long> getCustomer(@PathVariable Long id) throws ResourceNotFoundException {
-		return service.getCustomer(id);
+	public ResponseEntity<IdAndName<Long>> getCustomer(@PathVariable Long id) throws ResourceNotFoundException {
+		return ResponseEntity.ok(service.getCustomer(id));
+	}
+	
+	@GetMapping("/{id}/contact")
+	public ResponseEntity<IdAndName<Long>> getContact(@PathVariable Long id) throws ResourceNotFoundException {
+		return ResponseEntity.ok(service.getCustomer(id));
 	}
 	
 //	@GetMapping("{opportunityId}/product")

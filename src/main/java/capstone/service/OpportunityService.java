@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.IdAndName;
 import capstone.repository.OpportunityRepository;
+import capstone.repository.OpportunityRepository.CustomerOnly;
+import capstone.repository.OpportunityRepository.ContactOnly;
 import capstone.service.iservice.INamedService;
 
 /**
@@ -120,8 +123,25 @@ public class OpportunityService
 	}
 	
 	public IdAndName<Long> getCustomer(Long id) throws ResourceNotFoundException {
-		Customer customer = this.getById(id).getCustomer();
-		return customer;
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.repository.findCustomerIdAndNameById(id).map(CustomerOnly::getCustomer).orElseThrow(
+					() -> new ResourceNotFoundException("Customer not found for OpportunityId: " + id, Customer.class));
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
+	
+	public IdAndName<Long> getContact(Long id) throws ResourceNotFoundException {
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
+					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Customer.class));
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

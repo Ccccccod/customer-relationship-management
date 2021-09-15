@@ -102,5 +102,11 @@ public class ProductType extends CodedNamedEntity<Long> {
 	public ProductType(String name, String code) {
 		super(name, code);
 	}
+	
+	public Set<ProductType> getProductTypes() {
+		if (this.productTypes == null || this.productTypes.isEmpty())
+			return null;
+		return this.productTypes;
+	}
 
 }

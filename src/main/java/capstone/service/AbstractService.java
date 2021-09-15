@@ -249,7 +249,7 @@ public abstract class AbstractService< //
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
 		logger.debug("update() of id#{} with body {}", id, dto);
 		
-		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, entityClass()));
 		entity = this.updateDtoToEntity(dto, entity);
 		entity.setId(id);
 		

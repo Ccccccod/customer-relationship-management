@@ -64,7 +64,7 @@ public class ProductInfoService {
 	 */
 	public ProductInfo generateFromProduct(Long productId) throws ResourceNotFoundException {
 		Product product = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found for this id: " + productId));
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found for this id: " + productId, ProductInfo.class));
 		return this.generateFromProduct(product);
 	};
 	
@@ -105,7 +105,7 @@ public class ProductInfoService {
 	public <T extends ProductInfoed, ID extends Serializable> ProductInfo create(ID productInfoedId,
 			JpaRepository<T, ID> repository, Class<T> class1, Long productId) throws ResourceNotFoundException {
 		T t = repository.findById(productInfoedId).orElseThrow(
-				() -> new ResourceNotFoundException(class1.getName() + " not found for this id: " + productInfoedId));
+				() -> new ResourceNotFoundException(class1.getName() + " not found for this id: " + productInfoedId, class1));
 		ProductInfo productInfo = this.generateFromProduct(productId);
 		t.addToProductInfo(productInfo);
 		repository.saveAndFlush(t);

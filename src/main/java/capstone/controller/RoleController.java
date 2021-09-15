@@ -61,7 +61,7 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 	@GetMapping({ "/{id}/permissions", "/{id}/permissions/" })
 	public ResponseEntity<List<PermissionFunctionResponse>> getPermissions(@PathVariable Long id)
 			throws ResourceNotFoundException {
-		Role role = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Role role = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, Role.class));
 		List<PermissionFunction> permissionFunctions = this.permissionFunctionRepository.findAll();
 		List<PermissionFunctionResponse> response = permissionFunctions.stream().map(pf -> {
 			String name = pf.getName();
@@ -79,7 +79,7 @@ public class RoleController extends AbstractDtoEntityController<RoleDto, Role, R
 	@PutMapping({ "/{id}/permissions", "/{id}/permissions/" })
 	public void updatePermissions(@PathVariable Long id, @RequestBody PermissionUpdateDto permissionUpdateDto)
 			throws ResourceNotFoundException {
-		Role role = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Role role = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, Role.class));
 		role.setPermissionFunctionActions(AbstractService.findEntitiesByIds(this.permissionFunctionActionRepository,
 				permissionUpdateDto.getPermissionFunctionActionIds(), PermissionFunctionAction.class));
 		this.repository.save(role);

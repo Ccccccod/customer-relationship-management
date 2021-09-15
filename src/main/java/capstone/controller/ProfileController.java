@@ -54,7 +54,7 @@ public class ProfileController {
 	public ResponseEntity<UserResponse> getProfile() throws ResourceNotFoundException {
 		User currentUser = userService.getCurrentUser();
 		if (Objects.isNull(currentUser))
-			throw new ResourceNotFoundException("Can not find current user!");
+			throw new ResourceNotFoundException("Can not find current user!", User.class);
 
 		UserResponse response = entityToResponse(currentUser);
 		return ResponseEntity.ok(response);
@@ -64,7 +64,7 @@ public class ProfileController {
 	public ResponseEntity<UserResponse> updateProfile(@RequestBody UserUpdateDto dto) throws ResourceNotFoundException {
 		User currentUser = userService.getCurrentUser();
 		if (Objects.isNull(currentUser))
-			throw new ResourceNotFoundException("Can not find current user!");
+			throw new ResourceNotFoundException("Can not find current user!", User.class);
 		
 		Long id = currentUser.getId();
 		logger.debug("update() of id#{} with body {}", id, dto);

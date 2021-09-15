@@ -77,7 +77,7 @@ public abstract class AbstractCRUDController< //
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {
-		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, entityClass()));
 		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
@@ -111,7 +111,7 @@ public abstract class AbstractCRUDController< //
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
 		logger.debug("update() of id#{} with body {}", id, dto);
 		
-		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, entityClass()));
 		entity = this.updateEntity(dto, entity);
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		entity.setId(id);

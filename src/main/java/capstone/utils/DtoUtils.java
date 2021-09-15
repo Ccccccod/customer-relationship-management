@@ -10,8 +10,8 @@ import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
 
 /**
+ * DtoUtils
  * @author Tuna
- *
  */
 public class DtoUtils {
 
@@ -21,9 +21,9 @@ public class DtoUtils {
 	 * @param id id used to find resource
 	 * @throws ResourceNotFoundException {@link ResourceNotFoundException}
 	 */
-	public static final <ID extends Serializable> void throwResourceNotFoundException(ID id)
+	public static final <ID extends Serializable> void throwResourceNotFoundException(ID id, String entityName)
 			throws ResourceNotFoundException {
-		throw new ResourceNotFoundException("Entity not found for this id: " + id);
+		throw new ResourceNotFoundException("Entity not found for this id: " + id, entityName);
 	}
 
 	/**
@@ -32,9 +32,9 @@ public class DtoUtils {
 	 * @param id id used to find resource
 	 * @throws ResourceNotFoundException {@link ResourceNotFoundException}
 	 */
-	public static final <ID extends Serializable> Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(
-			ID id) {
-		return () -> new ResourceNotFoundException("Entity not found for this id: " + id);
+	public static final <T, ID extends Serializable> Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(
+			ID id, Class<T> cls) {
+		return () -> new ResourceNotFoundException("Entity not found for this id: " + id, cls.getSimpleName());
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class DtoUtils {
 	 */
 	public static final <T extends Object & Identifiable<ID>, ID extends Serializable> //
 	Supplier<ResourceNotFoundException> resourceNotFoundExceptionSupplier(Class<T> clazz, ID id) {
-		return () -> new ResourceNotFoundException("Entity " + clazz.getSimpleName() + " not found for this id: " + id);
+		return () -> new ResourceNotFoundException("Entity not found for this id: " + id, clazz.getSimpleName());
 	}
 
 }

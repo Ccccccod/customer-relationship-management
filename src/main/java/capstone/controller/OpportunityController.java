@@ -9,17 +9,18 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;
 import capstone.entity.ProductInfo;
-import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
+import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
-import capstone.repository.SourceRepository;
 import capstone.service.OpportunityService;
 import capstone.service.ProductInfoService;
 import capstone.service.UnitService;
@@ -40,15 +41,6 @@ public class OpportunityController
 
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;
-	
-	@Autowired
-	protected CustomerRepository customerRepository;
-
-	@Autowired
-	protected ContactRepository contactRepository;
-	
-	@Autowired
-	protected SourceRepository sourceRepository;
 	
 	@Autowired
 	protected ProductInfoService productInfoService;
@@ -116,6 +108,11 @@ public class OpportunityController
 	@Override
 	public UnitService getUnitService() {
 		return unitService;
+	}
+	
+	@GetMapping("/{id}/customer")
+	public IdAndName<Long> getCustomer(@PathVariable Long id) throws ResourceNotFoundException {
+		return service.getCustomer(id);
 	}
 	
 //	@GetMapping("{opportunityId}/product")

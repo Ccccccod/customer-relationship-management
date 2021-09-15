@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
 import capstone.entity.Country;
+import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Order;
 import capstone.entity.Province;
@@ -96,5 +97,10 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 		}).collect(Collectors.toList());
 		return findIdExplanationAllBy;
 	};
+	
+	public IdAndName<Long> getCustomer(Long id) throws ResourceNotFoundException {
+		Customer customer = this.getById(id).getCustomer();
+		return customer;
+	}
 
 }

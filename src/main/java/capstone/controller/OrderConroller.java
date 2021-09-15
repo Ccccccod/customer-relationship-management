@@ -9,12 +9,16 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.OrderDto;
 import capstone.entity.Order;
 import capstone.entity.ProductInfo;
+import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
 import capstone.repository.OpportunityRepository;
@@ -115,6 +119,11 @@ public class OrderConroller extends CRUDController<OrderDto, OrderDto, Order, Or
 	@Override
 	public OrderService getService() {
 		return service;
+	}
+	
+	@GetMapping("/{id}/customer")
+	public IdAndName<Long> getCustomer(@PathVariable Long id) throws ResourceNotFoundException {
+		return service.getCustomer(id);
 	}
 
 }

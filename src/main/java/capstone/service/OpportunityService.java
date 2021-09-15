@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Country;
+import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.OpportunityRepository;
 import capstone.service.iservice.INamedService;
 
@@ -115,6 +117,11 @@ public class OpportunityService
 	@Override
 	protected Class<Opportunity> entityClass() {
 		return Opportunity.class;
+	}
+	
+	public IdAndName<Long> getCustomer(Long id) throws ResourceNotFoundException {
+		Customer customer = this.getById(id).getCustomer();
+		return customer;
 	}
 
 }

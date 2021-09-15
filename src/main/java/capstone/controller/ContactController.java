@@ -3,6 +3,7 @@
  */
 package capstone.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,10 @@ public class ContactController
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<Contact>> search(@RequestParam(name = "customerId") Long customerId)
+	public ResponseEntity<List<Contact>> search(@RequestParam(name = "customerId", required = false) Long customerId)
 			throws ResourceNotFoundException {
+		if (customerId == null)
+			return ResponseEntity.ok(Collections.emptyList());
 		List<Contact> contacts = service.findByCustomerId(customerId);
 		return ResponseEntity.ok(contacts);
 	}

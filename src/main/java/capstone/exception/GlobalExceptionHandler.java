@@ -88,6 +88,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("message", e.getMessage());
         error.put("field", e.getName());
         error.put("rejectedValue", e.getRejectedValue());
+        error.put("type", "duplicate");
         body.put("error", error);
         
 		return new ResponseEntity<>(body, status);
@@ -113,7 +114,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 			
-		} else if (ex instanceof ResourceExistedException || ex instanceof DuplicateKeyException) {
+		} else if (ex instanceof DuplicateKeyException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 			

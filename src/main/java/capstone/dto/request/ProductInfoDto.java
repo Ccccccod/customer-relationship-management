@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import capstone.dto.request.deserializer.IdDeserializer;
+import capstone.dto.request.deserializer.IntegerDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,7 +39,6 @@ public class ProductInfoDto extends BaseDto<Long> {
 	@JsonAlias("product")
 	private Long productId;
 
-	@NotNull
 	private String productCode;
 
 	private String explanation;
@@ -49,6 +49,7 @@ public class ProductInfoDto extends BaseDto<Long> {
 
 	@NotNull
 	@Positive
+	@JsonDeserialize(using = IntegerDeserializer.class)
 	private Integer amount;
 
 	@NotNull

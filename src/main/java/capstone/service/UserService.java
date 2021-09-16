@@ -64,7 +64,8 @@ public class UserService extends AbstractService<UserDto, UserUpdateDto, User, U
 		return entity.toBuilder()
 				.id(d.getId())
 				.username(d.getUsername())
-				.password(d.getPassword() == null ? entity.getPassword() : passwordEncoder.encode(d.getPassword()))
+				// Password can not be updated in user management
+//				.password(d.getPassword() == null ? entity.getPassword() : passwordEncoder.encode(d.getPassword()))
 				.email(d.getEmail())
 				.roles(roleService.getEntitiesById(d.getRoleIds()))
 				.lastName(d.getLastName())

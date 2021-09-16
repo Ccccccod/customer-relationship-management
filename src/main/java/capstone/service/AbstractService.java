@@ -166,14 +166,14 @@ public abstract class AbstractService< //
 	@Autowired
     protected EntityManager entityManager;
 	
-	protected Session enableDeletedFilter(Boolean isDeleted) {
+	public Session enableDeletedFilter(Boolean isDeleted) {
 		Session session = entityManager.unwrap(Session.class);
         Filter filter = session.enableFilter(Constant.Hibernate.DELETED_FILTER);
         filter.setParameter("isDeleted", isDeleted);
         return session;
 	}
 	
-	protected void disableDeletedFilter(Session session) {
+	public void disableDeletedFilter(Session session) {
 		if (session == null)
 			return;
 		session.disableFilter(Constant.Hibernate.DELETED_FILTER);

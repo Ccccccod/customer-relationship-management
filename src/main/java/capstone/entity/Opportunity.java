@@ -118,7 +118,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity")

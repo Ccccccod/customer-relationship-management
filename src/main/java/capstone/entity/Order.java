@@ -150,7 +150,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
 	
 	// Thong tin dia chi

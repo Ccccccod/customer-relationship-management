@@ -112,7 +112,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
 	
 	/**

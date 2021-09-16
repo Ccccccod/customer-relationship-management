@@ -6,6 +6,7 @@ package capstone.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
+import capstone.entity.ProductInfo;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
@@ -82,7 +84,9 @@ public class OpportunityService
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
-		opportunity.setToProductInfos(this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos()));
+		Set<ProductInfo> productInfo = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		productInfo.forEach(p -> p.setId(null));
+		opportunity.setToProductInfos(productInfo);
 		return opportunity;
 	}
 
@@ -113,7 +117,9 @@ public class OpportunityService
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
-		// ProductInfo is not changed. It should not changeable in update controller
+		// ProductInfo 
+		Set<ProductInfo> productInfo = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		opportunity.setToProductInfos(productInfo);
 		return opportunity;
 	}
 

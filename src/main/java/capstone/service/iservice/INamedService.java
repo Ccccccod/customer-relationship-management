@@ -6,10 +6,10 @@ package capstone.service.iservice;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.exception.ResourceNotFoundException;
-import capstone.model.IdAndName;
 import capstone.model.Identifiable;
 import capstone.model.Named;
 import capstone.repository.NamedJpaRepository;
@@ -28,8 +28,17 @@ public interface INamedService< //
 	
 	@Override
 	default List<?> getAllName() throws ResourceNotFoundException {
-		List<IdAndName<ID>> idAndNames = this.getRepository().findIdNameAllBy();
-		return idAndNames;
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.getRepository().findIdNameAllBy();
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
+	
+	Session enableDeletedFilter(Boolean isDeleted);
+	
+	void disableDeletedFilter(Session session);
 
 }

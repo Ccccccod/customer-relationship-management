@@ -37,7 +37,7 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 	}
 
 	@Override
-	protected Invoice createDtoToEntity(InvoiceDto d, Invoice entity) throws ResourceNotFoundException {
+	protected Invoice createDtoToEntity(InvoiceDto d, Invoice invoice) throws ResourceNotFoundException {
 		Ward ward = wardService.getEntityById(d.getWardId());
 		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
 				.orElse(districtService.getEntityById(d.getDistrictId()));
@@ -45,7 +45,7 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.orElse(provinceService.getEntityById(d.getProvinceId()));
 		Country country = Optional.ofNullable(province).map(Province::getCountry)
 				.orElse(countryService.getEntityById(d.getCountryId()));
-		entity.toBuilder() //
+		invoice = invoice.toBuilder() //
 //				.code(d.getCode()) //
 				.customer(customerService.getEntityById(d.getCustomerId())) //
 				.bankAccount(d.getBankAccount()) //
@@ -64,8 +64,8 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.address(d.getAddress())
 				.build();
 		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
-		entity.setToProductInfos(productInfos);
-		return entity;
+		invoice.setToProductInfos(productInfos);
+		return invoice;
 	}
 
 	@Override

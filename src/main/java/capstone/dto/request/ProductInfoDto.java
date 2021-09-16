@@ -34,6 +34,10 @@ import lombok.experimental.SuperBuilder;
 @NotNull
 public class ProductInfoDto extends BaseDto<Long> {
 
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("product")
+	private Long productId;
+
 	@NotNull
 	private String productCode;
 

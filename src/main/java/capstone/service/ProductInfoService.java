@@ -85,7 +85,7 @@ public class ProductInfoService {
 		return ProductInfo.builder()
 				.id(d.getId())
 				.product(productService.getEntityById(d.getProductId()))
-				.productCode(d.getProductCode())
+				.productCode(product.getCode())
 				.explanation(d.getExplanation())
 //				.unit(unitService.getEntityById(d.getUnitId()))
 				.unit(product.getUnit())

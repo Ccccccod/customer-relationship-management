@@ -36,7 +36,7 @@ public class ProductInfoService {
 	protected ProductInfoRepository productInfoRepository;
 	
 	@Autowired
-	private UnitService unitService;
+	private ProductService productService;
 	
 	/**
 	 * Generate {@link ProductInfo} from {@link Product}
@@ -80,15 +80,19 @@ public class ProductInfoService {
 		return products.stream().map(this::generateFromProduct).collect(Collectors.toSet());
 	}
 	
-	public ProductInfo generateFromProductInfoDto(ProductInfoDto dto) throws ResourceNotFoundException {
+	public ProductInfo generateFromProductInfoDto(ProductInfoDto d) throws ResourceNotFoundException {
+		Product product = productService.getEntityById(d.getProductId());
 		return ProductInfo.builder()
-				.productCode(dto.getProductCode())
-				.explanation(dto.getExplanation())
-				.unit(unitService.getEntityById(dto.getUnitId()))
-				.amount(dto.getAmount())
-				.price(dto.getPrice())
-				.discount(dto.getDiscount())
-				.vat(dto.getVat())
+				.id(d.getId())
+				.product(productService.getEntityById(d.getProductId()))
+				.productCode(d.getProductCode())
+				.explanation(d.getExplanation())
+//				.unit(unitService.getEntityById(d.getUnitId()))
+				.unit(product.getUnit())
+				.amount(d.getAmount())
+				.price(d.getPrice())
+				.discount(d.getDiscount())
+				.vat(d.getVat())
 				.build();
 	}
 	

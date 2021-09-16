@@ -4,6 +4,7 @@
 package capstone.service;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import capstone.dto.request.InvoiceDto;
 import capstone.entity.Country;
 import capstone.entity.District;
 import capstone.entity.Invoice;
+import capstone.entity.ProductInfo;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
@@ -43,7 +45,7 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.orElse(provinceService.getEntityById(d.getProvinceId()));
 		Country country = Optional.ofNullable(province).map(Province::getCountry)
 				.orElse(countryService.getEntityById(d.getCountryId()));
-		return entity.toBuilder() //
+		entity.toBuilder() //
 //				.code(d.getCode()) //
 				.customer(customerService.getEntityById(d.getCustomerId())) //
 				.bankAccount(d.getBankAccount()) //
@@ -61,6 +63,9 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
+		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		entity.setToProductInfos(productInfos);
+		return entity;
 	}
 
 	@Override

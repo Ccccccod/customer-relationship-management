@@ -6,9 +6,11 @@ package capstone.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
@@ -16,6 +18,7 @@ import capstone.entity.Country;
 import capstone.entity.Customer;
 import capstone.entity.District;
 import capstone.entity.Order;
+import capstone.entity.ProductInfo;
 import capstone.entity.Province;
 import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
@@ -33,6 +36,9 @@ import capstone.service.iservice.IReadNameService;
 public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order, OrderRepository, Long>
 		implements IReadNameService {
 	
+	@Autowired
+	protected ProductInfoService productInfoService;
+	
 	public List<Order> findByOrderDateBetween(LocalDate from, LocalDate to) {
 		return getRepository().findByOrderDateBetween(from, to);
 	}
@@ -48,7 +54,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 	}
 
 	@Override
-	protected Order createDtoToEntity(OrderDto d, Order entity) throws ResourceNotFoundException {
+	protected Order createDtoToEntity(OrderDto d, Order order) throws ResourceNotFoundException {
 		Ward ward = wardService.getEntityById(d.getWardId());
 		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
 				.orElse(districtService.getEntityById(d.getDistrictId()));
@@ -56,7 +62,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 				.orElse(provinceService.getEntityById(d.getProvinceId()));
 		Country country = Optional.ofNullable(province).map(Province::getCountry)
 				.orElse(countryService.getEntityById(d.getCountryId()));
-		return entity.toBuilder()
+		order = order.toBuilder()
 				.id(d.getId())
 //				.code(d.getCode())
 				.orderDate(d.getOrderDate())
@@ -74,12 +80,14 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
+		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		order.setToProductInfos(productInfos);
+		return order;
 	}
 
 	@Override
 	protected Order updateDtoToEntity(OrderDto updateDto, Order entity) throws ResourceNotFoundException {
 		return this.createDtoToEntity(updateDto, entity);
-
 	}
 	
 	@Override

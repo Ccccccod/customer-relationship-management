@@ -21,7 +21,9 @@ import capstone.dto.validatation.annotation.Password;
 import capstone.dto.validatation.annotation.Username;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -32,6 +34,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UserDto extends BaseDto<Long> {
 
 	@JsonAlias({ "name" })

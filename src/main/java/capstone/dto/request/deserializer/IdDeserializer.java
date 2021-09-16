@@ -45,7 +45,7 @@ public class IdDeserializer extends StdDeserializer<Long> {
 			try {
 				return Long.parseLong(nodeValue);
 			} catch (NumberFormatException e) {
-				throw new JsonParseException(jp, "Can not parse text node to Long: " + nodeValue);
+				throw new JsonParseException(jp, "Can not parse text node to Long: " + nodeValue, e);
 			}
 		}
 		

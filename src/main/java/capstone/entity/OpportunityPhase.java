@@ -6,6 +6,7 @@ package capstone.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -25,7 +26,6 @@ import lombok.experimental.SuperBuilder;
  * OpportunityPhase
  * @author Tuna
  */
-
 @SuperBuilder(toBuilder = true)
 @Getter
 @Setter
@@ -40,6 +40,9 @@ import lombok.experimental.SuperBuilder;
 		})
 public class OpportunityPhase extends NamedEntity<Long> {
 	private static final long serialVersionUID = 1L;
+	
+	@Column(name = "success_rate")
+	private Integer successRate;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunityPhase")
 	@ToString.Exclude
@@ -68,8 +71,9 @@ public class OpportunityPhase extends NamedEntity<Long> {
 	/**
 	 * @param name
 	 */
-	public OpportunityPhase(String name) {
+	public OpportunityPhase(String name, Integer successRate) {
 		super(name);
+		this.successRate = successRate;
 	}
 
 }

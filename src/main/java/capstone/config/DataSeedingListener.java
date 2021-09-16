@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -36,6 +35,7 @@ import capstone.entity.Income;
 import capstone.entity.Invoice;
 import capstone.entity.MaritalStatus;
 import capstone.entity.Opportunity;
+import capstone.entity.OpportunityPhase;
 import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
@@ -228,13 +228,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		Income income4 = addNamedRepository(incomeRepository, new Income("Trên 100 tỷ đồng"));
 
 		// Oppotunity
-		
-		capstone.entity.OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Mở đầu") );
-		capstone.entity.OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Khách hàng quan tâm") );
-		capstone.entity.OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Demo / Giới thiệu") );
-		capstone.entity.OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Đàm phán thương lượng") );
-		capstone.entity.OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thành công") );
-		capstone.entity.OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository, new capstone.entity.OpportunityPhase("Kết thúc thất bại") );
+
+		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Mở đầu", 10));
+		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Khách hàng quan tâm", 30));
+		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Demo / Giới thiệu", 50));
+		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Đàm phán thương lượng", 70));
+		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Kết thúc thành công", 100));
+		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Kết thúc thất bại", 0));
 
 		// MaritalStatus
 		

@@ -85,7 +85,7 @@ public class OpportunityService
 				.address(d.getAddress())
 				.build();
 		Set<ProductInfo> productInfo = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
-		productInfo.forEach(p -> p.setId(null));
+//		productInfo.forEach(p -> p.setId(null));
 		opportunity.setToProductInfos(productInfo);
 		return opportunity;
 	}

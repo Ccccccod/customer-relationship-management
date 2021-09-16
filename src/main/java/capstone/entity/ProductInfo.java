@@ -107,7 +107,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 */
 	@JsonProperty
 	public Long discountMoney() {
-		return this.price * this.discount / 100;
+		return this.totalPrice() * this.discount / 100;
 	}
 	
 	/**

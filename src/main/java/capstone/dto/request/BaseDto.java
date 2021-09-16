@@ -5,8 +5,6 @@ package capstone.dto.request;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import capstone.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 /**
  * BaseDto
  * @author Tuna
- *
  */
 @SuperBuilder(toBuilder = true)
 @Getter
@@ -30,7 +27,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 public class BaseDto<ID extends Serializable> implements Identifiable<ID> {
 	
-	@JsonIgnore
 	protected ID id;
 
 }

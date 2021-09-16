@@ -3,6 +3,9 @@
  */
 package capstone.service;
 
+import java.util.List;
+
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.entity.OpportunityPhase;
@@ -42,6 +45,17 @@ public class OpportunityPhaseService extends
 	protected OpportunityPhase updateDtoToEntity(OpportunityPhase updateDto, OpportunityPhase entity)
 			throws ResourceNotFoundException {
 		return this.createDtoToEntity(updateDto, entity);
+	}
+	
+	@Override
+	public List<?> getAllName() throws ResourceNotFoundException {
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return this.repository.findIdNameSuccessRateAllBy();
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

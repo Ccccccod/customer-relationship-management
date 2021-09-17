@@ -155,6 +155,12 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 			productInfo.setInvoice(this);
 	}
 
+	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setInvoice(null);
+	}
+
 	/**
 	 * @param id
 	 * @param createdAt

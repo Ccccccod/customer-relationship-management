@@ -178,6 +178,12 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 			productInfo.setOpportunity(this);
 	}
 
+	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOpportunity(null);
+	}
+
 	/**
 	 * @param id
 	 * @param createdAt

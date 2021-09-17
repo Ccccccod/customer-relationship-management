@@ -204,6 +204,12 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	}
 
 	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOrder(null);
+	}
+
+	@Override
 	public String getName() {
 		return this.explanation;
 	}

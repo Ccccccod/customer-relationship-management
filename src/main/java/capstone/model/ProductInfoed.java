@@ -96,6 +96,12 @@ public interface ProductInfoed {
 	 * @param productInfo
 	 */
 	void productInfoSetThis(ProductInfo productInfo);
+
+	/**
+	 * remove productInfo's {@link ProductInfoed} this
+	 * @param productInfo
+	 */
+	void productInfoRemoveThis(ProductInfo productInfo);
 	
 	/**
 	 * set productInfos' {@link ProductInfoed} to this
@@ -110,9 +116,28 @@ public interface ProductInfoed {
 	 * set productInfos' {@link ProductInfoed} to this
 	 * @param productInfos
 	 */
+	default void productInfosRemoveThis(Collection<ProductInfo> productInfos) {
+		if (Objects.nonNull(productInfos))
+			productInfos.stream().filter(Objects::nonNull).forEach(this::productInfoRemoveThis);
+	}
+	
+	/**
+	 * set productInfos' {@link ProductInfoed} to this
+	 * @param productInfos
+	 */
 	default void setToProductInfos(Set<ProductInfo> productInfos) {
 		productInfosSetThis(productInfos);
 		setProductInfos(productInfos);
+	}
+	
+	default void removeProductInfos(Set<ProductInfo> productInfos) {
+		productInfosRemoveThis(productInfos);
+		setProductInfos(new LinkedHashSet<>());
+	}
+	
+	default void removeAllProductInfos() {
+		productInfosRemoveThis(this.getProductInfos());
+		setProductInfos(new LinkedHashSet<>());
 	}
 	
 	/**

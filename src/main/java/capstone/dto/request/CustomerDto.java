@@ -69,7 +69,6 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	/**
 	 * Email
 	 */
-	@NotNull
 	@Email
 	private String email;
 	
@@ -207,11 +206,10 @@ public class CustomerDto extends BaseDto<Long> implements Coded, Named {
 	 * @param incomeId
 	 * @param website
 	 */
-	public CustomerDto(Long id, String code, String shortName, String name, @NotNull String taxCode, String phone,
-			@NotNull String email, Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId,
-			Set<Long> careerIds, Long countryId, Long provinceId, Long districtId, Long wardId, String address,
-			String bankAccount, String bank, LocalDate foundedDate, LocalDate customerSince, Long incomeId,
-			String website) {
+	public CustomerDto(Long id, String code, String shortName, String name, String taxCode, String phone, String email,
+			Long sourceId, Set<Long> classificationIds, Set<Long> fieldIds, Long typeId, Set<Long> careerIds,
+			Long countryId, Long provinceId, Long districtId, Long wardId, String address, String bankAccount,
+			String bank, LocalDate foundedDate, LocalDate customerSince, Long incomeId, String website) {
 		super(id);
 		this.code = code;
 		this.shortName = shortName;

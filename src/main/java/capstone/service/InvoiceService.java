@@ -63,6 +63,7 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
+		invoice.removeAllProductInfos();
 		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
 		invoice.setToProductInfos(productInfos);
 		return invoice;

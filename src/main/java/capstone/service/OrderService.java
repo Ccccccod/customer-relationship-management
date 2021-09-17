@@ -80,6 +80,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 				.ward(ward)
 				.address(d.getAddress())
 				.build();
+		order.removeAllProductInfos();
 		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
 		order.setToProductInfos(productInfos);
 		return order;

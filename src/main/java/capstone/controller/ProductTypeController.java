@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +42,7 @@ public class ProductTypeController extends
 	 * @return
 	 */
 	@GetMapping("/getavailable/{id}")
-	public ResponseEntity<?> getAll(Long id) {
+	public ResponseEntity<?> getAll(@PathVariable Long id) {
 		if (Objects.isNull(id)) 
 			return ResponseEntity.badRequest().body(new ErrorDetails("id must not be null"));
 		List<ProductType> productTypes = this.productTypeService.getAvailableProductTypesForAProductType(id);

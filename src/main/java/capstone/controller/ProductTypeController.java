@@ -4,7 +4,6 @@
 package capstone.controller;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import capstone.dto.request.ProductTypeDto;
 import capstone.dto.response.ProductTypeTreeResponse;
 import capstone.entity.ProductType;
-import capstone.exception.ErrorDetails;
+import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.ProductTypeRepository;
 import capstone.service.ProductTypeService;
 
@@ -40,12 +40,11 @@ public class ProductTypeController extends
 	 * {@link ProductType} field of a {@link ProductType}
 	 * @param id id of {@link ProductType} that's being inserted or updated
 	 * @return
+	 * @throws ResourceNotFoundException 
 	 */
 	@GetMapping("/getavailable/{id}")
-	public ResponseEntity<?> getAll(@PathVariable Long id) {
-		if (Objects.isNull(id)) 
-			return ResponseEntity.badRequest().body(new ErrorDetails("id must not be null"));
-		List<ProductType> productTypes = this.productTypeService.getAvailableProductTypesForAProductType(id);
+	public ResponseEntity<List<IdAndName<Long>>> getAll(@PathVariable Long id) throws ResourceNotFoundException {
+		List<IdAndName<Long>> productTypes = this.productTypeService.getAvailableProductTypesForAProductType(id);
 		return ResponseEntity.ok(productTypes);
 	}
 	

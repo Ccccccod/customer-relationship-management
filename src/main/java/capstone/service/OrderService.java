@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OrderDto;
+import capstone.entity.Contact;
 import capstone.entity.Country;
 import capstone.entity.Customer;
 import capstone.entity.District;
@@ -126,7 +127,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 		try {
 			session = enableDeletedFilter(false);
 			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
-					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Customer.class));
+					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Contact.class));
 		} finally {
 			disableDeletedFilter(session);
 		}

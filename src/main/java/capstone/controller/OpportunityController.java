@@ -118,7 +118,7 @@ public class OpportunityController
 	
 	@GetMapping("/{id}/contact")
 	public ResponseEntity<IdAndName<Long>> getContact(@PathVariable Long id) throws ResourceNotFoundException {
-		return ResponseEntity.ok(service.getCustomer(id));
+		return ResponseEntity.ok(service.getContact(id));
 	}
 	
 //	@GetMapping("{opportunityId}/product")

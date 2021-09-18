@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.OpportunityDto;
+import capstone.entity.Contact;
 import capstone.entity.Country;
 import capstone.entity.Customer;
 import capstone.entity.District;
@@ -24,8 +25,8 @@ import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.IdAndName;
 import capstone.repository.OpportunityRepository;
-import capstone.repository.OpportunityRepository.CustomerOnly;
 import capstone.repository.OpportunityRepository.ContactOnly;
+import capstone.repository.OpportunityRepository.CustomerOnly;
 import capstone.service.iservice.INamedService;
 
 /**
@@ -118,7 +119,7 @@ public class OpportunityService
 		try {
 			session = enableDeletedFilter(false);
 			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
-					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Customer.class));
+					() -> new ResourceNotFoundException("Contact not found for OpportunityId: " + id, Contact.class));
 		} finally {
 			disableDeletedFilter(session);
 		}

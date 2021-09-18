@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import capstone.dto.request.ProductTypeDto;
 import capstone.dto.response.ProductTypeTreeResponse;
 import capstone.entity.ProductType;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.ProductTypeRepository;
 import capstone.service.iservice.INamedService;
 
@@ -42,19 +44,39 @@ public class ProductTypeService
 		}
 	}
 
-	public List<ProductType> getAvailableProductTypesForAProductType(Long id) {
+	public List<IdAndName<Long>> getAvailableProductTypesForAProductType(Long id) throws ResourceNotFoundException {
 		assert id != null;
-		return this.productTypeRepository.findAll().stream() //
-				.filter(pt -> {
-					ProductType productType = pt;
-					do {
-						if (productType.getId().equals(id)) {
-							return false;
-						}
-					} while (!Objects.isNull(productType = productType.getProductType()));
-					return true;
-				}) //
-				.collect(Collectors.toList());
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+//			return this.productTypeRepository.findAll().stream() //
+//					.filter(pt -> {
+//						ProductType productType = pt;
+//						do {
+//							if (productType.getId().equals(id)) {
+//								return false;
+//							}
+//						} while (!Objects.isNull(productType = productType.getProductType()));
+//						return true;
+//					}) //
+//					.collect(Collectors.toList());
+			Set<Long> notAllow = this.flat(this.getEntityById(id)).map(ProductType::getId).collect(Collectors.toSet());
+			return this.getAllName().stream() //
+					.filter(p -> !notAllow.contains(p.getId())) //
+					.map(p -> IdAndName.newInstance(p.getId(), p.getName()))
+					.collect(Collectors.toList());
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
+	
+	private Stream<ProductType> flat(ProductType productType) {
+		Set<ProductType> productTypes = productType.getProductTypes();
+		if (productTypes != null && !productTypes.isEmpty()) {
+			return productTypes.stream().flatMap(this::flat);
+		} else {
+			return Stream.of(productType);
+		}
 	}
 	
 	/**

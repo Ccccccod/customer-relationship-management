@@ -54,7 +54,7 @@ public class ProductType extends CodedNamedEntity<Long> {
 	private ProductType productType;
 	
 	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "productType")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<ProductType> productTypes;

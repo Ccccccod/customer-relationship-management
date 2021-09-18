@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.model.Identifiable;
 import capstone.model.Named;
 import capstone.repository.NamedJpaRepository;
@@ -27,7 +28,7 @@ public interface INamedService< //
 	Repository getRepository();
 	
 	@Override
-	default List<?> getAllName() throws ResourceNotFoundException {
+	default List<IdAndName<ID>> getAllName() throws ResourceNotFoundException {
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);

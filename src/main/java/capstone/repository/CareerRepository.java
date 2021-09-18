@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import capstone.entity.Career;
 import capstone.entity.Field;
+import capstone.model.IdAndName;
 
 /**
  * Repository for {@link Career}
@@ -19,7 +20,7 @@ public interface CareerRepository extends NamedJpaRepository<Career, Long>, Base
 	
 	List<IdAndNameAndField> findIdNameFieldAllBy();
 	
-	interface IdAndNameAndField {
+	interface IdAndNameAndField extends IdAndName<Long> {
 		Long getId();
 		String getName();
 		Field getField();

@@ -3,6 +3,7 @@
  */
 package capstone.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import capstone.entity.OpportunityPhase;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.OpportunityPhaseRepository;
 import capstone.service.iservice.INamedService;
 
@@ -48,11 +50,11 @@ public class OpportunityPhaseService extends
 	}
 	
 	@Override
-	public List<?> getAllName() throws ResourceNotFoundException {
+	public List<IdAndName<Long>> getAllName() throws ResourceNotFoundException {
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			return this.repository.findIdNameSuccessRateAllBy();
+			return Collections.unmodifiableList(this.repository.findIdNameSuccessRateAllBy());
 		} finally {
 			disableDeletedFilter(session);
 		}

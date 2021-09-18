@@ -3,6 +3,7 @@
  */
 package capstone.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import capstone.entity.Career;
 import capstone.exception.ResourceNotFoundException;
+import capstone.model.IdAndName;
 import capstone.repository.CareerRepository;
 import capstone.repository.CareerRepository.IdAndNameAndField;
 import capstone.service.iservice.INamedService;
@@ -47,11 +49,11 @@ public class CareerService extends AbstractService<Career, Career, Career, Caree
 	}
 	
 	@Override
-	public List<?> getAllName() throws ResourceNotFoundException {
+	public List<IdAndName<Long>> getAllName() throws ResourceNotFoundException {
 		Session session = enableDeletedFilter(false);
 		try {
 			List<IdAndNameAndField> list = this.repository.findIdNameFieldAllBy();
-			return list;
+			return Collections.unmodifiableList(list);
 		} finally {
 			disableDeletedFilter(session);
 		}

@@ -363,6 +363,7 @@ public abstract class AbstractService< //
 	 * @return T
 	 * @throws ResourceNotFoundException if no T is found for the id
 	 */
+	@Deprecated
 	public static <T extends BaseEntity<ID>, ID extends Serializable> T findEntityById(JpaRepository<T, ID> repository, ID id,
 			Class<T> class1) throws ResourceNotFoundException {
 		if (Objects.isNull(id)) {

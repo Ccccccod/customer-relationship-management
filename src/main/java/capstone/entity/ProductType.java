@@ -36,7 +36,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode(callSuper = true)
+//@EqualsAndHashCode(callSuper = true)
 
 @Entity
 @Table(name = "ProductType", //
@@ -51,6 +51,8 @@ public class ProductType extends CodedNamedEntity<Long> {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_type_id")
 	@JsonSerialize(using = ProductTypeSerializer.class)
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private ProductType productType;
 	
 	@JsonProperty("children")

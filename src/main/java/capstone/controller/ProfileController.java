@@ -105,7 +105,7 @@ public class ProfileController {
 				.name(user.getName())
 				.phone(user.getPhone())
 				.dateOfBirth(user.getDateOfBirth())
-//				.gender(user.getGender())
+				.gender(user.getGender())
 				.address(user.getAddress())
 				.build();
 	}

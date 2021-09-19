@@ -65,13 +65,43 @@ public class InvoiceService extends CodedService<InvoiceDto, InvoiceDto, Invoice
 				.build();
 		invoice.removeAllProductInfos();
 		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		productInfos.forEach(p -> p.setId(null));
 		invoice.setToProductInfos(productInfos);
 		return invoice;
 	}
 
 	@Override
-	protected Invoice updateDtoToEntity(InvoiceDto updateDto, Invoice entity) throws ResourceNotFoundException {
-		return this.createDtoToEntity(updateDto, entity);
+	protected Invoice updateDtoToEntity(InvoiceDto d, Invoice invoice) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
+		invoice = invoice.toBuilder() //
+//				.code(d.getCode()) //
+				.customer(customerService.getEntityById(d.getCustomerId())) //
+				.bankAccount(d.getBankAccount()) //
+				.bank(d.getBank()) //
+				.taxCode(d.getTaxCode()) //
+				.buyer(contactService.getEntityById(d.getBuyerId())) //
+				.receiverName(d.getReceiverName()) //
+				.receiverEmail(d.getReceiverEmail()) //
+				.receiverPhone(d.getReceiverPhone()) //
+				.order(orderService.getEntityById(d.getOrderId())) //
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
+				.build();
+		invoice.removeAllProductInfos();
+		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+//		productInfos.forEach(p -> p.setId(null));
+		invoice.setToProductInfos(productInfos);
+		return invoice;
 	}
 
 }

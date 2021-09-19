@@ -83,13 +83,43 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 				.build();
 		order.removeAllProductInfos();
 		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+		productInfos.forEach(p -> p.setId(null));
 		order.setToProductInfos(productInfos);
 		return order;
 	}
 
 	@Override
-	protected Order updateDtoToEntity(OrderDto updateDto, Order entity) throws ResourceNotFoundException {
-		return this.createDtoToEntity(updateDto, entity);
+	protected Order updateDtoToEntity(OrderDto d, Order order) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
+		order = order.toBuilder()
+				.id(d.getId())
+//				.code(d.getCode())
+				.orderDate(d.getOrderDate())
+				.customer(customerService.getEntityById(d.getCustomerId()))
+				.contact(contactService.getEntityById(d.getContactId()))
+				.opportunity(opportunityService.getEntityById(d.getOpportunityId()))
+				.explanation(d.getExplanation())
+				.liquidationDeadline(d.getLiquidationDeadline())
+				.deliveryDeadline(d.getDeliveryDeadline())
+				.receivedMoney(d.getReceivedMoney())
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
+				.build();
+		order.removeAllProductInfos();
+		Set<ProductInfo> productInfos = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+//		productInfos.forEach(p -> p.setId(null));
+		order.setToProductInfos(productInfos);
+		return order;
 	}
 	
 	@Override

@@ -87,7 +87,7 @@ public class OpportunityService
 				.build();
 		opportunity.removeAllProductInfos();
 		Set<ProductInfo> productInfo = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
-//		productInfo.forEach(p -> p.setId(null));
+		productInfo.forEach(p -> p.setId(null));
 		opportunity.setToProductInfos(productInfo);
 		return opportunity;
 	}
@@ -95,7 +95,35 @@ public class OpportunityService
 	@Override
 	protected Opportunity updateDtoToEntity(OpportunityDto d, Opportunity opportunity)
 			throws ResourceNotFoundException {
-		return this.createDtoToEntity(d, opportunity);
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
+		opportunity = opportunity.toBuilder()
+				.id(d.getId())
+//				.code(d.getCode())
+				.name(d.getName())
+				.customer(customerService.getEntityById(d.getCustomerId()))
+                .contact(contactService.getEntityById(d.getContactId()))
+                .opportunityPhase(opportunityPhaseService.getEntityById(d.getOpportunityPhaseId()))   
+                .successRate(d.getSuccessRate())
+                .expectedEndDate(d.getExpectedEndDate())
+                .source(sourceService.getEntityById(d.getSourceId()))
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
+				.build();
+		opportunity.removeAllProductInfos();
+		Set<ProductInfo> productInfo = this.productInfoService.generateFromProductInfoDto(d.getProductInfoDtos());
+//		productInfo.forEach(p -> p.setId(null));
+		opportunity.setToProductInfos(productInfo);
+		return opportunity;
 	}
 
 	@Override

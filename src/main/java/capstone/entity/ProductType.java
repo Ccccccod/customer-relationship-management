@@ -57,7 +57,6 @@ public class ProductType extends CodedNamedEntity<Long> {
 	@EqualsAndHashCode.Exclude
 	private ProductType productType;
 	
-	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
@@ -76,7 +75,7 @@ public class ProductType extends CodedNamedEntity<Long> {
 		return productType.id;
 	}
 
-	@JsonProperty("productTypes")
+	@JsonProperty("children")
 	public Set<ProductType> getProductTypesIgnoreDeleted() {
 		if (this.getProductTypes() == null)
 			return null;

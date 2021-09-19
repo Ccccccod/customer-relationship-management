@@ -4,7 +4,9 @@
 package capstone.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -56,9 +58,10 @@ public class ProductType extends CodedNamedEntity<Long> {
 	private ProductType productType;
 	
 	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "productType")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
+	@JsonIgnore
 	private Set<ProductType> productTypes;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "productType")
@@ -71,6 +74,16 @@ public class ProductType extends CodedNamedEntity<Long> {
 		if (null == productType)
 			return null;
 		return productType.id;
+	}
+
+	@JsonProperty("productTypes")
+	public Set<ProductType> getProductTypesIgnoreDeleted() {
+		if (this.getProductTypes() == null)
+			return null;
+		return this.getProductTypes().stream()
+				.filter(Objects::nonNull)
+				.filter(ProductType::isActive)
+				.collect(Collectors.toSet());
 	}
 
 	/**

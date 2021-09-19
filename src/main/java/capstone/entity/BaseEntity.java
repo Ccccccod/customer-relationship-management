@@ -113,5 +113,9 @@ public class BaseEntity<ID extends Serializable> implements Identifiable<ID>, Se
 	public boolean isNew() {
 		return this.id == null;
 	}
+	
+	public boolean isActive() {
+		return !this.deleted;
+	}
 
 }

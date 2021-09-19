@@ -26,7 +26,6 @@ import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
-import capstone.model.IdAndName;
 import capstone.model.Named;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -55,7 +54,7 @@ import lombok.experimental.SuperBuilder;
 //				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
 //				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
 		})
-public class Customer extends BaseEntity<Long> implements Coded, Named, IdAndName<Long> {
+public class Customer extends BaseEntity<Long> implements Coded, Named {
 	private static final long serialVersionUID = 1L;
 
 	/**

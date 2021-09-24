@@ -7,18 +7,17 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import capstone.common.enums.OpportunityPhase;
 import capstone.dto.request.OpportunityDto;
 import capstone.entity.Opportunity;
 import capstone.repository.OpportunityRepository;
+import capstone.service.OpportunityService;
 
 /**
  * OpportunityControllerTest
  * @author DELL
- *
  */
 public class OpportunityControllerTest extends
-		AbstractDtoEntityControllerTest<OpportunityDto, Opportunity, OpportunityRepository, OpportunityController, Long> {
+		CRUDControllerTest<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, OpportunityService, OpportunityController, Long> {
 
 	@Override
 	protected String url() {
@@ -43,19 +42,8 @@ public class OpportunityControllerTest extends
 		return Opportunity.builder()
 				.id(1L)
 				.name("co hoi 4")
-				.opportunityPhase(OpportunityPhase.BEGINNING)
 				.successRate(90)
 				.expectedEndDate(LocalDate.of(2021, 4, 20))
-				.build();
-	}
-
-	@Override
-	protected OpportunityDto createResource() {
-		return OpportunityDto.builder()
-				.name(resource().getName())
-				.opportunityPhase(resource().getOpportunityPhase())
-				.successRate(resource().getSuccessRate())
-				.expectedEndDate(resource().getExpectedEndDate())
 				.build();
 	}
 

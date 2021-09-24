@@ -8,17 +8,16 @@ import java.util.List;
 
 import capstone.dto.request.UserDto;
 import capstone.dto.request.UserUpdateDto;
-import capstone.dto.response.UserResponse;
 import capstone.entity.User;
 import capstone.repository.UserRepository;
+import capstone.service.UserService;
 
 /**
  * UserControllerTest
  * @author DELL
- *
  */
-public class UserControllerTest extends
-		AbstractCRUDControllerTest<UserDto, UserUpdateDto, UserResponse, User, UserRepository, UserController, Long> {
+public class UserControllerTest
+		extends CRUDControllerTest<UserDto, UserUpdateDto, User, User, UserRepository, UserService, UserController, Long> {
 
 	@Override
 	protected String url() {
@@ -53,15 +52,6 @@ public class UserControllerTest extends
 				.name("Manhcuong8964")
 				.password("Minhkien1@")
 				.email("xcdfdddo@gmail.com")
-				.build();
-	}
-
-	@Override
-	protected UserDto createResource() {
-		return UserDto.builder()
-				.username(resource().getName())
-				.password(resource().getPassword())
-				.email(resource().getEmail())
 				.build();
 	}
 

@@ -11,10 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import capstone.BackEndCapstoneApplication;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CareerControllerTest.class, ClassificationControllerTest.class, ContactControllerTest.class,
-		CustomerControllerTest.class, FieldControllerTest.class, InvoiceControllerTest.class,
-		OpportunityControllerTest.class, OrderControllerTest.class, ProductControllerTest.class,
-		ProductTypeControllerTest.class, RoleControllerTest.class, SourceControllerTest.class, TypeControllerTest.class,
+@SuiteClasses({ PotentialControllerTest.class, ContactControllerTest.class, CustomerControllerTest.class,
+		InvoiceControllerTest.class, OpportunityControllerTest.class, OrderControllerTest.class,
+		ProductControllerTest.class, ProductTypeControllerTest.class, RoleControllerTest.class,
 		UserControllerTest.class })
 @SpringBootTest(classes = BackEndCapstoneApplication.class)
 public class ControllerTest {

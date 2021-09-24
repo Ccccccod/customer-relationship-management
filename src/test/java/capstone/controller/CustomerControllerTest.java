@@ -9,15 +9,14 @@ import java.util.List;
 import capstone.dto.request.CustomerDto;
 import capstone.entity.Customer;
 import capstone.repository.CustomerRepository;
+import capstone.service.CustomerService;
 
 /**
  * CustomerControllerTest
  * @author Tuna
- *
  */
-
-public class CustomerControllerTest
-		extends AbstractDtoEntityControllerTest<CustomerDto, Customer, CustomerRepository, CustomerController, Long> {
+public class CustomerControllerTest extends
+		CRUDControllerTest<CustomerDto, CustomerDto, Customer, Customer, CustomerRepository, CustomerService, CustomerController, Long> {
 
 	@Override
 	protected String url() {
@@ -40,19 +39,6 @@ public class CustomerControllerTest
 //				.type(type1)
 //				.careers(Stream.of(career1, career2).collect(Collectors.toSet()))
 				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam").build();
-	}
-
-	@Override
-	protected CustomerDto createResource() {
-		return CustomerDto.builder()
-				.code(resource().getCode())
-				.name(resource().getName())
-				.shortName(resource().getShortName())
-				.taxCode(resource().getTaxCode())
-				.phone(resource().getPhone())
-				.email(resource().getEmail())
-				.address(resource().getAddress())
-				.build();
 	}
 
 }

@@ -9,14 +9,14 @@ import java.util.List;
 import capstone.dto.request.ContactDto;
 import capstone.entity.Contact;
 import capstone.repository.ContactRepository;
+import capstone.service.ContactService;
 
 /**
  * ContactControllerTest
  * @author DELL
- *
  */
-public class ContactControllerTest
-		extends AbstractDtoEntityControllerTest<ContactDto, Contact, ContactRepository, ContactController, Long> {
+public class ContactControllerTest extends
+		CRUDControllerTest<ContactDto, ContactDto, Contact, Contact, ContactRepository, ContactService, ContactController, Long> {
 
 	@Override
 	protected String url() {
@@ -47,14 +47,6 @@ public class ContactControllerTest
 				.id(1L)
 				.name("tu")
 				.code("LH41")
-				.build();
-	}
-
-	@Override
-	protected ContactDto createResource() {
-		return ContactDto.builder()
-				.name(resource.getName())
-				.code(resource().getCode())
 				.build();
 	}
 

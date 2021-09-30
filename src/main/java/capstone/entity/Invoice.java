@@ -16,8 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import capstone.common.Constant;
 import capstone.common.annotation.UniqueOrNull;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.model.Coded;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
@@ -55,6 +58,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Khách hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
@@ -80,6 +84,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Người mua
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "buyer_id")
 	private Contact buyer;
@@ -105,6 +110,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Đơn hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -118,6 +124,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Quốc gia 
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "country_id")
 	private Country country;
@@ -125,6 +132,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Tỉnh
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "province_id")
 	private Province province;
@@ -132,6 +140,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Huyện
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "district_id")
 	private District district;
@@ -139,6 +148,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Xã, Phường
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ward_id")
 	private Ward ward;

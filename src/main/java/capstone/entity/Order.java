@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import capstone.common.Constant;
 import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import capstone.model.Named;
@@ -74,6 +75,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Khách hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
@@ -88,6 +90,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Cơ hội
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "opportunity_id")
 	private Opportunity opportunity;
@@ -158,6 +161,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Quốc gia 
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "country_id")
 	private Country country;
@@ -165,6 +169,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Tỉnh
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "province_id")
 	private Province province;
@@ -172,6 +177,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Huyện
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "district_id")
 	private District district;
@@ -179,6 +185,7 @@ public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Nam
 	/**
 	 * Xã, Phường
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ward_id")
 	private Ward ward;

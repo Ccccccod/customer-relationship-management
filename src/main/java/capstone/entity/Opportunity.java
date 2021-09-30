@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import capstone.common.Constant;
 import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.model.Coded;
 import capstone.model.Named;
@@ -41,7 +42,6 @@ import lombok.experimental.SuperBuilder;
  * Opportunity
  * Cơ hội
  * @author Tuna
- *
  */
 @SuperBuilder(toBuilder = true)
 @Getter
@@ -68,6 +68,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Tổ chức
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
@@ -88,6 +89,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Gian đoạn
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "opportunity_phase_id")
 	private OpportunityPhase opportunityPhase;
@@ -111,6 +113,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Nguồn gốc
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "source_id")
 	private Source source;
@@ -141,6 +144,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Quốc gia 
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "country_id")
 	private Country country;
@@ -148,6 +152,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Tỉnh
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "province_id")
 	private Province province;
@@ -155,6 +160,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Huyện
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "district_id")
 	private District district;
@@ -162,6 +168,7 @@ public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Code
 	/**
 	 * Xã, Phường
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ward_id")
 	private Ward ward;

@@ -133,6 +133,13 @@ public class Contact extends CodedNamedEntity<Long> {
 	private String phone;
 	
 	/**
+	 * ma vung dien thoai co quan
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "phone_area_code_id")
+	private PhoneAreaCode phoneAreaCode;
+	
+	/**
 	 * Điện thoại cơ quan
 	 */
 	@Column(name = "office_phone")
@@ -280,6 +287,7 @@ public class Contact extends CodedNamedEntity<Long> {
 	 * @param notCallPhone
 	 * @param notSendEmail
 	 * @param phone
+	 * @param phoneAreaCode
 	 * @param officePhone
 	 * @param otherPhone
 	 * @param email
@@ -303,11 +311,11 @@ public class Contact extends CodedNamedEntity<Long> {
 	public Contact(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			User owner, Boolean shared, Boolean deleted, String name, String code, Vocative vocative, String lastName,
 			Department department, Position position, Customer customer, Set<Classification> classifications,
-			Boolean notCallPhone, Boolean notSendEmail, String phone, String officePhone, String otherPhone,
-			String email, String officeEmail, Source source, Country country, Province province, District district,
-			Ward ward, String address, LocalDate dateOfBirth, Gender gender, MaritalStatus maritalStatus,
-			String facebook, String bankAccount, String bank, Set<Opportunity> opportunities, Set<Order> orders,
-			Set<Invoice> invoices) {
+			Boolean notCallPhone, Boolean notSendEmail, String phone, PhoneAreaCode phoneAreaCode, String officePhone,
+			String otherPhone, String email, String officeEmail, Source source, Country country, Province province,
+			District district, Ward ward, String address, LocalDate dateOfBirth, Gender gender,
+			MaritalStatus maritalStatus, String facebook, String bankAccount, String bank,
+			Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.vocative = vocative;
 		this.lastName = lastName;
@@ -318,6 +326,7 @@ public class Contact extends CodedNamedEntity<Long> {
 		this.notCallPhone = notCallPhone;
 		this.notSendEmail = notSendEmail;
 		this.phone = phone;
+		this.phoneAreaCode = phoneAreaCode;
 		this.officePhone = officePhone;
 		this.otherPhone = otherPhone;
 		this.email = email;

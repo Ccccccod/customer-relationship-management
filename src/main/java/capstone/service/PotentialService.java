@@ -105,15 +105,46 @@ public class PotentialService
 			customer = Customer.builder()
 					.code(randomStringGenerator.generate(10))
 					.name(p.getCustomer())
-					// TODO: Thêm các trường chuyển đổi
+					.phone(p.getOfficePhone())
+					.bankAccount(p.getBankAccount())
+					.bank(p.getBank())
+					.foundedDate(p.getFoundedDate())
+					.fields(p.getFields())
+					.careers(p.getCareers())
+					.income(p.getIncome())
+					.website(p.getWebsite())
 					.contacts(new LinkedHashSet<>())
 					.build();
 			createNewCustomer = true;
 		}
 		contact = Contact.builder()
 				.code(randomStringGenerator.generate(10))
+				.vocative(p.getVocative())
+				.lastName(p.getLastName())
 				.name(p.getName())
-				// TODO: Thêm các trường chuyển đổi
+				.department(p.getDepartment())
+				.position(p.getPosition())
+				.classifications(p.getClassifications())
+				.notCallPhone(p.getNotCallPhone())
+				.notSendEmail(p.getNotSendEmail())
+				// TODO: phoneAreaCode
+				.phone(p.getPhone())
+				.officePhone(p.getOfficePhone())
+				.otherPhone(p.getOtherPhone())
+				.email(p.getEmail())
+				.officeEmail(p.getOfficeEmail())
+				.source(p.getSource())
+				.country(p.getCountry())
+				.province(p.getProvince())
+				.district(p.getDistrict())
+				.ward(p.getWard())
+				.address(p.getAddress())
+				.dateOfBirth(p.getDateOfBirth())
+				.gender(p.getGender())
+//				.maritalStatus(p.getMaritalStatus())
+				.facebook(p.getFacebook())
+				.bankAccount(p.getBankAccount())
+				.bank(p.getBank())
 				.customer(customer)
 				.build();
 		Session session = null;

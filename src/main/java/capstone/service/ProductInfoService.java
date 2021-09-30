@@ -4,6 +4,7 @@
 package capstone.service;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +99,7 @@ public class ProductInfoService {
 	
 	public Set<ProductInfo> generateFromProductInfoDto(Set<ProductInfoDto> productInfoDtos) throws ResourceNotFoundException {
 		if (Objects.isNull(productInfoDtos))
-			return null;
+			return Collections.emptySet();
 		Set<ProductInfo> set = new LinkedHashSet<ProductInfo>();
 		for (ProductInfoDto productInfoDto : productInfoDtos) {
 			set.add(generateFromProductInfoDto(productInfoDto));

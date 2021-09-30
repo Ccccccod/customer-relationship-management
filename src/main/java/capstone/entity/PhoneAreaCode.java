@@ -26,7 +26,6 @@ import lombok.experimental.SuperBuilder;
  * PhoneAreaCode
  * @author Tuna
  */
-
 @SuperBuilder(toBuilder = true)
 @Getter
 @Setter
@@ -48,6 +47,12 @@ public class PhoneAreaCode extends NamedEntity<Long> implements Named {
 	@JsonIgnore
 	private Set<Potential> potentials;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "phoneAreaCode")
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@JsonIgnore
+	private Set<Contact> contacts;
+
 	/**
 	 * @param id
 	 * @param createdAt
@@ -59,11 +64,14 @@ public class PhoneAreaCode extends NamedEntity<Long> implements Named {
 	 * @param deleted
 	 * @param name
 	 * @param potentials
+	 * @param contacts
 	 */
 	public PhoneAreaCode(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			User owner, Boolean shared, Boolean deleted, String name, Set<Potential> potentials) {
+			User owner, Boolean shared, Boolean deleted, String name, Set<Potential> potentials,
+			Set<Contact> contacts) {
 		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.potentials = potentials;
+		this.contacts = contacts;
 	}
 
 	/**

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import capstone.entity.Customer;
 import capstone.model.IdAndName;
-import capstone.model.IdNameEmailPhone;
+import capstone.model.IdNameEmailPhoneTaxCode;
 
 /**
  * Repository for {@link Customer}
@@ -21,7 +21,7 @@ public interface CustomerRepository
 
 	List<IdAndName<Long>> findByNameIgnoreCase(String name);
 	
-	List<IdNameEmailPhone<Long>> findIdNameEmailPhoneAllBy();
+	List<IdNameEmailPhoneTaxCode<Long>> findIdNameEmailPhoneAllBy();
 	
 	Boolean existsByTaxCode(String taxCode);
 	

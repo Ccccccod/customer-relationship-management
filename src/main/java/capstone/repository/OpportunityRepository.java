@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import capstone.entity.Opportunity;
 import capstone.entity.OpportunityPhase;
-import capstone.model.IdAndName;
+import capstone.model.IdNameEmailPhone;
 
 /**
  * OpportunityRepository
@@ -29,13 +29,13 @@ public interface OpportunityRepository extends NamedJpaRepository<Opportunity, L
 	Optional<CustomerOnly> findCustomerIdAndNameById(Long id);
 
 	public interface CustomerOnly {
-		IdAndName<Long> getCustomer();
+		IdNameEmailPhone<Long> getCustomer();
 	}
 	
 	Optional<ContactOnly> findContactIdAndNameById(Long id);
 	
 	public interface ContactOnly {
-		IdAndName<Long> getContact();
+		IdNameEmailPhone<Long> getContact();
 	}
 
 }

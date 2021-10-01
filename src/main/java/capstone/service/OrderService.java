@@ -145,7 +145,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			return this.repository.findCustomerIdAndNameById(id).map(CustomerOnly::getCustomer).orElseThrow(
+			return this.repository.findCustomerIdAndNameAndEmailAndPhoneById(id).map(CustomerOnly::getCustomer).orElseThrow(
 					() -> new ResourceNotFoundException("Customer not found for OrderId: " + id, Customer.class));
 		} finally {
 			disableDeletedFilter(session);
@@ -156,7 +156,7 @@ public class OrderService extends CodedService<OrderDto, OrderDto, Order, Order,
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
+			return this.repository.findContactIdAndNameAndEmailAndPhoneById(id).map(ContactOnly::getContact).orElseThrow(
 					() -> new ResourceNotFoundException("Contact not found for OrderId: " + id, Contact.class));
 		} finally {
 			disableDeletedFilter(session);

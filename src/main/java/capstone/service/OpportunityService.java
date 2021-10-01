@@ -135,7 +135,7 @@ public class OpportunityService
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			return this.repository.findCustomerIdAndNameById(id).map(CustomerOnly::getCustomer).orElseThrow(
+			return this.repository.findCustomerIdAndNameAndEmailAndPhoneById(id).map(CustomerOnly::getCustomer).orElseThrow(
 					() -> new ResourceNotFoundException("Customer not found for OpportunityId: " + id, Customer.class));
 		} finally {
 			disableDeletedFilter(session);
@@ -146,7 +146,7 @@ public class OpportunityService
 		Session session = null;
 		try {
 			session = enableDeletedFilter(false);
-			return this.repository.findContactIdAndNameById(id).map(ContactOnly::getContact).orElseThrow(
+			return this.repository.findContactIdAndNameAndEmailAndPhoneById(id).map(ContactOnly::getContact).orElseThrow(
 					() -> new ResourceNotFoundException("Contact not found for OpportunityId: " + id, Contact.class));
 		} finally {
 			disableDeletedFilter(session);

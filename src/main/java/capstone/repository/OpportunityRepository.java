@@ -26,13 +26,13 @@ public interface OpportunityRepository extends NamedJpaRepository<Opportunity, L
 	List<Opportunity> findByOpportunityPhaseAndExpectedEndDateBetween(OpportunityPhase opportunityPhase, LocalDate from,
 			LocalDate to);
 	
-	Optional<CustomerOnly> findCustomerIdAndNameById(Long id);
+	Optional<CustomerOnly> findCustomerIdAndNameAndEmailAndPhoneById(Long id);
 
 	public interface CustomerOnly {
 		IdNameEmailPhone<Long> getCustomer();
 	}
 	
-	Optional<ContactOnly> findContactIdAndNameById(Long id);
+	Optional<ContactOnly> findContactIdAndNameAndEmailAndPhoneById(Long id);
 	
 	public interface ContactOnly {
 		IdNameEmailPhone<Long> getContact();

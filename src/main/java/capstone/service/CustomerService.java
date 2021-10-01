@@ -3,6 +3,7 @@
  */
 package capstone.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,7 +102,18 @@ public class CustomerService extends CodedService<CustomerDto, CustomerDto, Cust
 	public List<IdAndName<Long>> findByNameIgnoreCase(String name) {
 		Session session = enableDeletedFilter(false);
 		try {
-			return this.repository.findByNameIgnoreCase(name);
+			return Collections.unmodifiableList(this.repository.findByNameIgnoreCase(name));
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
+	
+	@Override
+	public List<IdAndName<Long>> getAllName() throws ResourceNotFoundException {
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return Collections.unmodifiableList(this.getRepository().findIdNameEmailPhoneAllBy());
 		} finally {
 			disableDeletedFilter(session);
 		}

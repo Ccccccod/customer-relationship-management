@@ -3,6 +3,7 @@
  */
 package capstone.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -18,12 +19,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Loại hình
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -43,7 +45,25 @@ public class Type extends NamedEntity<Long>{
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Customer> customers;
-	
+
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param name
+	 * @param customers
+	 */
+	public Type(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String name, Set<Customer> customers) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
+		this.customers = customers;
+	}
+
 	public Type(String name) {
 		super(name);
 	}

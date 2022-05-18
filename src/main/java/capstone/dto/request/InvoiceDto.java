@@ -3,24 +3,28 @@
  */
 package capstone.dto.request;
 
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import capstone.dto.request.deserializer.IdDeserializer;
 import capstone.dto.validatation.annotation.Email;
 import capstone.model.Coded;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Invoice Dto
  * Hóa đơn Dto
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,20 +34,16 @@ import lombok.ToString;
 public class InvoiceDto extends BaseDto<Long> implements Coded {
 	
 	/**
-	 * Khách hàng
-	 */
-	private Long customerId;
-	
-	/**
 	 * Mã
 	 */
-	@NotNull
 	private String code;
 	
 	/**
-	 * Địa chỉ
+	 * Khách hàng
 	 */
-	private String address;
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("customer")
+	private Long customerId;
 	
 	/**
 	 * Tài khoản ngân hàng
@@ -63,6 +63,8 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Người mua
 	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("buyer")
 	private Long buyerId;
 	
 	/**
@@ -84,13 +86,56 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	/**
 	 * Đơn hàng
 	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("order")
 	private Long orderId;
+	
+	/**
+	 * Thông tin hàng hóa
+	 */
+	@JsonAlias("productInfos")
+	private Set<ProductInfoDto> productInfoDtos;
+	
+	// Address information
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("country")
+	private Long countryId;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("province")
+	private Long provinceId;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("district")
+	private Long districtId;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonDeserialize(using = IdDeserializer.class)
+	@JsonAlias("ward")
+	private Long wardId;
+	
+	/**
+	 * Địa chỉ
+	 */
+	private String address;
 
 	/**
 	 * @param id
 	 * @param code
 	 * @param customerId
-	 * @param address
 	 * @param bankAccount
 	 * @param bank
 	 * @param taxCode
@@ -99,14 +144,20 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 	 * @param receiverEmail
 	 * @param receiverPhone
 	 * @param orderId
+	 * @param productInfoDtos
+	 * @param countryId
+	 * @param provinceId
+	 * @param districtId
+	 * @param wardId
+	 * @param address
 	 */
-	@Builder
-	InvoiceDto(Long id, String code, Long customerId, String address, String bankAccount, String bank, String taxCode,
-			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId) {
+	public InvoiceDto(Long id, String code, Long customerId, String bankAccount, String bank, String taxCode,
+			Long buyerId, String receiverName, String receiverEmail, String receiverPhone, Long orderId,
+			Set<ProductInfoDto> productInfoDtos, Long countryId, Long provinceId, Long districtId, Long wardId,
+			String address) {
 		super(id);
 		this.code = code;
 		this.customerId = customerId;
-		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;
 		this.taxCode = taxCode;
@@ -115,6 +166,12 @@ public class InvoiceDto extends BaseDto<Long> implements Coded {
 		this.receiverEmail = receiverEmail;
 		this.receiverPhone = receiverPhone;
 		this.orderId = orderId;
+		this.productInfoDtos = productInfoDtos;
+		this.countryId = countryId;
+		this.provinceId = provinceId;
+		this.districtId = districtId;
+		this.wardId = wardId;
+		this.address = address;
 	}
 	
 }

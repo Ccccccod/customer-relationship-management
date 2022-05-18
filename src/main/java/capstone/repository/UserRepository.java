@@ -6,17 +6,16 @@ package capstone.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.User;
 
 /**
+ * UserRepository
  * @author Tuna
- *
  */
 @Repository
-public interface UserRepository extends NamedJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends NamedJpaRepository<User, Long>, BaseRepository<User, Long> {
 	
 	/**
 	 * Check exist by email
@@ -31,6 +30,13 @@ public interface UserRepository extends NamedJpaRepository<User, Long>, JpaSpeci
 	 * @return
 	 */
 	Optional<User> findByEmail(String email);
+	
+	/**
+	 * Find top 1 by username
+	 * @param username
+	 * @return
+	 */
+	Optional<User> findFirstByUsername(String username);
 	
 	/**
 	 * Find by name

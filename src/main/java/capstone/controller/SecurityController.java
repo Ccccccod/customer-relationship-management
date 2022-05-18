@@ -26,7 +26,6 @@ import capstone.service.UserService;
 /**
  * Security Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/security")

@@ -9,12 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * OpportunityOverviewResponse
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @Builder

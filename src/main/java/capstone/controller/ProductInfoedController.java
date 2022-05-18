@@ -26,6 +26,7 @@ import capstone.model.ProductInfoed;
 import capstone.model.Repositoried;
 import capstone.repository.ProductInfoRepository;
 import capstone.service.ProductInfoService;
+import capstone.service.UnitService;
 import capstone.service.UserService;
 
 /**
@@ -42,6 +43,8 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	 * @return the logger
 	 */
 	Logger getLogger();
+	
+	UnitService getUnitService();
 	
 	/**
 	 * @return autowired {@link ProductInfoService}
@@ -81,7 +84,7 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	default ResponseEntity<List<ProductInfo>> getAllProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId)
 			throws ResourceNotFoundException {
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
+				entityClass().getSimpleName() + " not found for this id: " + productInfoedId, entityClass()));
 		List<ProductInfo> productInfos = findByProductInfoed(productInfoed);
 		return ResponseEntity.ok(productInfos);
 	}
@@ -90,9 +93,10 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	default ResponseEntity<ProductInfo> getProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId,
 			@PathVariable(value = "productInfoId") Long productInfoId) throws ResourceNotFoundException {
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
-		ProductInfo productInfo = findByIdAndProductInfoed(productInfoId, productInfoed).orElseThrow(() -> new ResourceNotFoundException(
-				"ProductInfo not found for this id: " + productInfoId + " and this OpportunityId: " + productInfoedId));
+				entityClass().getSimpleName() + " not found for this id: " + productInfoedId, entityClass()));
+		ProductInfo productInfo = findByIdAndProductInfoed(productInfoId, productInfoed)
+				.orElseThrow(() -> new ResourceNotFoundException("ProductInfo not found for this id: " + productInfoId
+						+ " and this OpportunityId: " + productInfoedId, ProductInfo.class));
 		return ResponseEntity.ok(productInfo);
 	}
 
@@ -102,7 +106,7 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 		getLogger().debug("createProductInfo() with body {} of type {}", productInfoDto, productInfoDto.getClass());
 		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
+				entityClass().getName() + " not found for this id: " + productInfoedId, entityClass()));
 		ProductInfo productInfo = getProductInfoService().generateFromProductInfoDto(productInfoDto);
 		productInfoed.addToProductInfo(productInfo);
 		
@@ -119,13 +123,15 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 		getLogger().debug("createProductInfo() with productInfoId#{}", productId);
 		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
+				entityClass().getName() + " not found for this id: " + productInfoedId, entityClass()));
 		ProductInfo productInfo = getProductInfoService().generateFromProduct(productId);
 		productInfoed.addToProductInfo(productInfo);
 
 		productInfoed.setUpdatedBy(this.getUserService().getCurrentUser());
 		productInfo.setCreatedBy(this.getUserService().getCurrentUser());
+		productInfo = getProductInfoRepository().save(productInfo);
 		getRepository().saveAndFlush(productInfoed);
+		getProductInfoRepository().flush();
 		
 		return ResponseEntity.ok(productInfo);
 	}
@@ -138,15 +144,15 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 				productInfoId, productInfoedId.getClass(), productInfoedId, dto, dto.getClass());
 		
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
+				entityClass().getName() + " not found for this id: " + productInfoedId, entityClass()));
 		ProductInfo productInfo = findByIdAndProductInfoed(productInfoId, productInfoed)
 				.orElseThrow(() -> new ResourceNotFoundException("ProductInfo not found for this id: " + productInfoId
-						+ " and this " + entityClass().getName() + "Id: " + productInfoedId));
+						+ " and this " + entityClass().getName() + "Id: " + productInfoedId, ProductInfo.class));
 
 		// Update
 		// Code can not be updated
 		productInfo.setExplanation(dto.getExplanation());
-		productInfo.setUnit(dto.getUnit());
+		productInfo.setUnit(null);
 		productInfo.setAmount(dto.getAmount());
 		productInfo.setPrice(dto.getPrice());
 		productInfo.setDiscount(dto.getDiscount());
@@ -165,7 +171,7 @@ public interface ProductInfoedController<T extends BaseEntity<ID> & ProductInfoe
 	default ResponseEntity<?> deleteProductInfo(@PathVariable(value = "productInfoedId") ID productInfoedId,
 			@RequestBody List<Long> ids) throws ResourceNotFoundException {
 		T productInfoed = getRepository().findById(productInfoedId).orElseThrow(() -> new ResourceNotFoundException(
-				entityClass().getName() + " not found for this id: " + productInfoedId));
+				entityClass().getName() + " not found for this id: " + productInfoedId, entityClass()));
 		List<ProductInfo> response = deleteByIdAndProductInfoed(ids, productInfoed);
 		return ResponseEntity.ok(response);
 	}

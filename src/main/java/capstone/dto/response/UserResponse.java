@@ -11,22 +11,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.Gender;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
 import capstone.dto.response.serializer.UserSerializer;
+import capstone.entity.Gender;
 import capstone.entity.Role;
 import capstone.entity.User;
 import capstone.model.Identifiable;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * User Response
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 //@AllArgsConstructor
@@ -110,7 +111,6 @@ public class UserResponse implements Identifiable<Long> {
 	 * @param gender
 	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public UserResponse(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
 			String username, String email, Set<Role> roles, String lastName, String name, String phone,
 			LocalDate dateOfBirth, Gender gender, String address) {

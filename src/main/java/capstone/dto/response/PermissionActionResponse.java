@@ -4,15 +4,16 @@
 package capstone.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Tuna
  *
  */
-@Builder
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor

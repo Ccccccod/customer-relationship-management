@@ -12,23 +12,70 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import capstone.dto.request.UserDto;
+import capstone.dto.request.UserUpdateDto;
 import capstone.entity.User;
+import capstone.exception.ResourceNotFoundException;
 import capstone.repository.UserRepository;
 import capstone.security.service.UserDetailsImpl;
 
 /**
  * User Service
- * @author Tuna
- *
+ * @author tuna
  */
 @Service
-public class UserService extends AbstractService {
-	
+public class UserService extends AbstractService<UserDto, UserUpdateDto, User, User, UserRepository, Long> {
+
 	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Override
+	protected Class<User> entityClass() {
+		return User.class;
+	}
+
+	@Override
+	protected User entityToResponse(User entity) {
+		return entity;
+	}
+
+	@Override
+	protected User createDtoToEntity(UserDto d, User entity) throws ResourceNotFoundException {
+		return entity.toBuilder()
+				.id(d.getId())
+				.username(d.getUsername())
+				.password(passwordEncoder.encode(d.getPassword()))
+				.email(d.getEmail())
+				.roles(roleService.getEntitiesById(d.getRoleIds()))
+				.lastName(d.getLastName())
+				.name(d.getName())
+				.phone(d.getPhone())
+				.dateOfBirth(d.getDateOfBirth())
+				.gender(genderService.getEntityById(d.getGenderId()))
+				.address(d.getAddress())
+				.build();
+	}
+
+	@Override
+	protected User updateDtoToEntity(UserUpdateDto d, User entity) throws ResourceNotFoundException {
+		return entity.toBuilder()
+				.id(d.getId())
+				.username(d.getUsername())
+				// Password can not be updated in user management
+//				.password(d.getPassword() == null ? entity.getPassword() : passwordEncoder.encode(d.getPassword()))
+				.email(d.getEmail())
+				.roles(roleService.getEntitiesById(d.getRoleIds()))
+				.lastName(d.getLastName())
+				.name(d.getName())
+				.phone(d.getPhone())
+				.dateOfBirth(d.getDateOfBirth())
+				.gender(genderService.getEntityById(d.getGenderId()))
+				.address(d.getAddress())
+				.build();
+	}
 	
 	/**
 	 * Get current logged in user
@@ -49,8 +96,8 @@ public class UserService extends AbstractService {
 			UserDetails userDetails = (org.springframework.security.core.userdetails.User) principal;
 			String userName = userDetails.getUsername();
 			if (Objects.isNull(userName))
-				return userRepository.findFirstByName(userName).orElse(null);
-			return null;
+				return null;
+			return userRepository.findFirstByUsername(userName).orElse(null);
 		}
 		return null;
 	}

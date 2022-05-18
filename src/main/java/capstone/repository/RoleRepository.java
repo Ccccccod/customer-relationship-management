@@ -5,17 +5,16 @@ package capstone.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import capstone.entity.Role;
 
 /**
+ * RoleRepository
  * @author Tuna
- *
  */
 @Repository
-public interface RoleRepository extends NamedJpaRepository<Role, Long>, JpaSpecificationExecutor<Role>{
+public interface RoleRepository extends NamedJpaRepository<Role, Long>, BaseRepository<Role, Long> {
 	
 	/**
 	 * Find role by name

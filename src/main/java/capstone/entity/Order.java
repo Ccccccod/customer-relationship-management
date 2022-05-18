@@ -21,23 +21,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.Coded;
+import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Order
  * Đơn hàng
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -49,10 +54,15 @@ import lombok.ToString;
 @Table(name = "[Order]", //
 		uniqueConstraints = { //
 		})
-public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
+public class Order extends BaseEntity<Long> implements ProductInfoed, Coded, Named {
 	private static final long serialVersionUID = 1L;
-	// Code
-	// Name
+
+	/**
+	 * Mã đơn hàng
+	 */
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
+	private String code;
 	
 	/**
 	 * Ngày đặt hàng
@@ -65,6 +75,7 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Khách hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
@@ -79,6 +90,7 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Cơ hội
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "opportunity_id")
 	private Opportunity opportunity;
@@ -86,23 +98,22 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Giá trị đơn hàng
 	 */
-	@Column(name = "order_value", nullable = false)
-	private Long orderValue;
+	public Long getOrderValue() {
+		return this.totalMoney();
+	}
+
+	/**
+	 * Diễn giải
+	 */
+	@Column(name = "explanation", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String explanation;
 	
 	/**
 	 * Giá trị thanh lý
-
 	 */
-	@Column(name = "liquidation_value")
-	private Long liquidationValue;
-
-	/**
-	 * Hạn thanh toán
-	 */
-	@Column(name = "liquidation_date", nullable = false)
-	@JsonSerialize(using = LocalDateSerializer.class)
-	@JsonDeserialize(using = LocalDateDeserializer.class)
-	private LocalDate liquidationDeadline;
+	public Long getLiquidationValue() {
+		return this.totalMoney();
+	}
 
 	/**
 	 * Hạn giao hàng
@@ -111,18 +122,81 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	private LocalDate deliveryDeadline;
-	
+
 	/**
-	 * Tình trạng thanh toán
+	 * Hạn thanh toán
 	 */
-	@Column(name = "paid", nullable = false)
-	private Boolean paid;
+	@Column(name = "liquidation_date", nullable = false)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	private LocalDate liquidationDeadline;
+	
+	// Order fulfillment status
+	// Tình trạng thực hiện đơn hàng
+
+	/**
+	 * Thực thu
+	 */
+	@Column(name = "receivedMoney", nullable = false)
+	private Long receivedMoney;
+	
+	public String getPaymentStatus() {
+		Long receivedMoney = this.receivedMoney != null ? this.receivedMoney : 0L;
+		Long totalMoney = this.totalMoney();
+		if (Objects.equals(receivedMoney, totalMoney))
+			return Constant.Order.PaymentStatus.PAID;
+		else if (receivedMoney == 0)
+			return Constant.Order.PaymentStatus.UNPAID;
+		return Constant.Order.PaymentStatus.PAID_IN_PART;
+	}
 
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
+	
+	// Thong tin dia chi
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
+	
+	// OneToMany
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	@ToString.Exclude
@@ -130,50 +204,72 @@ public class Order extends CodedNamedEntity<Long> implements ProductInfoed {
 	@JsonIgnore
 	private Set<Invoice> invoices;
 
+	@Override
+	public void productInfoSetThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOrder(this);
+	}
+
+	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOrder(null);
+	}
+
+	@Override
+	public String getName() {
+		return this.explanation;
+	}
+
 	/**
 	 * @param id
 	 * @param createdAt
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
-	 * @param name
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param code
 	 * @param orderDate
 	 * @param customer
 	 * @param contact
 	 * @param opportunity
-	 * @param orderValue
-	 * @param liquidationValue
-	 * @param liquidationDeadline
+	 * @param explanation
 	 * @param deliveryDeadline
-	 * @param paid
+	 * @param liquidationDeadline
+	 * @param receivedMoney
 	 * @param productInfos
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 * @param invoices
 	 */
-	@Builder(toBuilder = true)
-	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String code, LocalDate orderDate, Customer customer, Contact contact, Opportunity opportunity,
-			Long orderValue, Long liquidationValue, LocalDate liquidationDeadline, LocalDate deliveryDeadline,
-			Boolean paid, Set<ProductInfo> productInfos, Set<Invoice> invoices) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+	public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String code, LocalDate orderDate, Customer customer, Contact contact,
+			Opportunity opportunity, String explanation, LocalDate deliveryDeadline, LocalDate liquidationDeadline,
+			Long receivedMoney, Set<ProductInfo> productInfos, Country country, Province province, District district,
+			Ward ward, String address, Set<Invoice> invoices) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 		this.orderDate = orderDate;
 		this.customer = customer;
 		this.contact = contact;
 		this.opportunity = opportunity;
-		this.orderValue = orderValue;
-		this.liquidationValue = liquidationValue;
-		this.liquidationDeadline = liquidationDeadline;
+		this.explanation = explanation;
 		this.deliveryDeadline = deliveryDeadline;
-		this.paid = paid;
-//		this.productInfos = productInfos;
+		this.liquidationDeadline = liquidationDeadline;
+		this.receivedMoney = receivedMoney;
+		this.productInfos = productInfos;
 		setToProductInfos(productInfos);
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 		this.invoices = invoices;
-	}
-
-	@Override
-	public void productInfoSetThis(ProductInfo productInfo) {
-		if (Objects.nonNull(productInfo))
-			productInfo.setOrder(this);
 	}
 
 }

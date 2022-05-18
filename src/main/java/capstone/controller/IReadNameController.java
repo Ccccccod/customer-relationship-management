@@ -4,17 +4,15 @@
 package capstone.controller;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import capstone.entity.BaseEntity;
-import capstone.model.IdAndName;
+import capstone.exception.ResourceNotFoundException;
+import capstone.model.Identifiable;
 import capstone.model.Named;
-import capstone.model.Repositoried;
-import capstone.repository.NamedJpaRepository;
+import capstone.service.iservice.IReadNameService;
 
 /**
  * Controller to get all names
@@ -22,16 +20,18 @@ import capstone.repository.NamedJpaRepository;
  *
  */
 interface IReadNameController< //
-	T extends BaseEntity<ID> & Named, //
-	Repository extends JpaRepository<T, ID> & NamedJpaRepository<T, ID>, //
+	T extends Object & Identifiable<ID> & Named, //
+	Service extends IReadNameService,
 	ID extends Serializable //
 > //
-		extends Repositoried<Repository> {
+{
+	
+	@Autowired
+	Service getService();
 
 	@GetMapping("/name")
-	default ResponseEntity<?> getAllName() {
-		List<IdAndName<ID>> idAndNames = this.getRepository().findIdNameAllBy();
-		return ResponseEntity.ok(idAndNames);
+	default ResponseEntity<?> getAllName() throws ResourceNotFoundException {
+		return ResponseEntity.ok(getService().getAllName());
 	}
 	
 }

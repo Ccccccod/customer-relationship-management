@@ -3,6 +3,7 @@
  */
 package capstone.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -15,25 +16,31 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
+import capstone.dto.request.deserializer.LocalDateDeserializer;
+import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.Coded;
+import capstone.model.Named;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Customer
  * Khách hàng
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -44,11 +51,17 @@ import lombok.ToString;
 @Entity
 @Table(name = "Customer", //
 		uniqueConstraints = { //
-				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
+//				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "email"), //
 //				@UniqueConstraint(name = "CUSTOMER_UK", columnNames = "tax_code") //
 		})
-public class Customer extends CodedNamedEntity<Long> {
+public class Customer extends BaseEntity<Long> implements Coded, Named {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Mã khách hàng
+	 */
+	@Column(name = "code", nullable = false)
+	private String code;
 
 	/**
 	 * Tên viết tắt
@@ -57,9 +70,16 @@ public class Customer extends CodedNamedEntity<Long> {
 	private String shortName;
 
 	/**
+	 * Tên
+	 */
+	@Column(name = "name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String name;
+
+	/**
 	 * Mã số thuế
 	 */
-	@Column(name = "tax_code"/*, unique = true*/, nullable = false)
+	@UniqueOrNull
+	@Column(name = "tax_code")
 	private String taxCode;
 
 	/**
@@ -71,7 +91,7 @@ public class Customer extends CodedNamedEntity<Long> {
 	/**
 	 * Email
 	 */
-	@Column(name = "email", unique = true, nullable = false)
+	@Column(name = "email")
 	private String email;
 
 	/**
@@ -120,12 +140,86 @@ public class Customer extends CodedNamedEntity<Long> {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	private Set<Career> careers;
+	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
 
 	/**
 	 * Địa chỉ
 	 */
 	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String address;
+	
+	// Other information
+	// Thông tin khac
+
+	/**
+	 * Tài khoản ngân hàng
+	 */
+	@Column(name = "bank_account")
+	private String bankAccount;
+	
+	/**
+	 * Mở tại ngân hàng
+	 */
+	@Column(name = "bank", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String bank;
+	
+	/**
+	 * Ngày thành lập
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@Column(name = "founded_date")
+	private LocalDate foundedDate;
+	
+	/**
+	 * Là khách hàng từ
+	 */
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@Column(name = "customer_since")
+	private LocalDate customerSince;
+	
+	/**
+	 * Thu nhập
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "income_id")
+	private Income income;
+	
+	/**
+	 * Website
+	 */
+	@Column(name = "website", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String website;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 	@ToString.Exclude
@@ -163,9 +257,12 @@ public class Customer extends CodedNamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
-	 * @param name
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param code
 	 * @param shortName
+	 * @param name
 	 * @param taxCode
 	 * @param phone
 	 * @param email
@@ -174,21 +271,34 @@ public class Customer extends CodedNamedEntity<Long> {
 	 * @param fields
 	 * @param type
 	 * @param careers
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
 	 * @param address
+	 * @param bankAccount
+	 * @param bank
+	 * @param foundedDate
+	 * @param customerSince
+	 * @param income
+	 * @param website
 	 * @param contacts
 	 * @param opportunities
 	 * @param orders
 	 * @param invoices
 	 * @param potentials
 	 */
-	@Builder(toBuilder = true)
 	public Customer(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, String code, String shortName, String taxCode, String phone, String email, Source source,
-			Set<Classification> classifications, Set<Field> fields, Type type, Set<Career> careers, String address,
-			Set<Contact> contacts, Set<Opportunity> opportunities, Set<Order> orders, Set<Invoice> invoices,
-			Set<Potential> potentials) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+			User owner, Boolean shared, Boolean deleted, String code, String shortName, String name, String taxCode,
+			String phone, String email, Source source, Set<Classification> classifications, Set<Field> fields,
+			Type type, Set<Career> careers, Country country, Province province, District district, Ward ward,
+			String address, String bankAccount, String bank, LocalDate foundedDate, LocalDate customerSince,
+			Income income, String website, Set<Contact> contacts, Set<Opportunity> opportunities, Set<Order> orders,
+			Set<Invoice> invoices, Set<Potential> potentials) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 		this.shortName = shortName;
+		this.name = name;
 		this.taxCode = taxCode;
 		this.phone = phone;
 		this.email = email;
@@ -197,7 +307,17 @@ public class Customer extends CodedNamedEntity<Long> {
 		this.fields = fields;
 		this.type = type;
 		this.careers = careers;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
 		this.address = address;
+		this.bankAccount = bankAccount;
+		this.bank = bank;
+		this.foundedDate = foundedDate;
+		this.customerSince = customerSince;
+		this.income = income;
+		this.website = website;
 		this.contacts = contacts;
 		this.opportunities = opportunities;
 		this.orders = orders;
@@ -207,10 +327,9 @@ public class Customer extends CodedNamedEntity<Long> {
 
 	/**
 	 * @param name
-	 * @param code
 	 */
-	public Customer(String name, String code) {
-		super(name, code);
+	public Customer(String name) {
+		this.name = name;
 	}
 
 }

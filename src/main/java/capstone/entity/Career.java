@@ -16,18 +16,18 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Ngành nghề
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -66,14 +66,16 @@ public class Career extends NamedEntity<Long>{
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param field
 	 * @param customers
 	 */
-	@Builder(toBuilder = true)
-	public Career(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Field field, Set<Customer> customers) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+	public Career(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String name, Field field, Set<Customer> customers) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.field = field;
 		this.customers = customers;
 	}

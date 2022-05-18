@@ -18,8 +18,8 @@ import capstone.repository.PermissionFunctionActionRepository;
 
 /**
  * PermissionFunctionActionController
+ * Quyền Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/permission")
@@ -33,6 +33,7 @@ public class PermissionFunctionActionController
 					Map<String,Object> map = new LinkedHashMap<String, Object>();
 					map.put("id", p.getId());
 					map.put("name", p.getValue());
+					map.put("viName", p.getViName());
 					return map;
 				})
 				.collect(Collectors.toSet());

@@ -17,13 +17,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Products Info
  * Thông tin các hàng hóa
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -115,12 +116,15 @@ public abstract class ProductInfoEntity extends NamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param productInfos
 	 */
 	public ProductInfoEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Set<ProductInfo> productInfos) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+			User owner, Boolean shared, Boolean deleted, String name, Set<ProductInfo> productInfos) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
 		this.productInfos = productInfos;
 	}
 

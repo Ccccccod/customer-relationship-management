@@ -9,14 +9,14 @@ import java.util.List;
 import capstone.dto.request.RoleDto;
 import capstone.entity.Role;
 import capstone.repository.RoleRepository;
+import capstone.service.RoleService;
 
 /**
  * RoleControllerTest
  * @author DELL
- *
  */
 public class RoleControllerTest
-		extends AbstractDtoEntityControllerTest<RoleDto, Role, RoleRepository, RoleController, Long> {
+		extends CRUDControllerTest<RoleDto, RoleDto, Role, Role, RoleRepository, RoleService, RoleController, Long> {
 
 	@Override
 	protected String url() {
@@ -40,12 +40,5 @@ public class RoleControllerTest
 	@Override
 	protected Role resource() {
 		return Role.builder().id(1L).name("thanh vien").build();
-	}
-
-	@Override
-	protected RoleDto createResource() {
-		return RoleDto.builder()
-				.name(resource().getName())
-				.build();
 	}
 }

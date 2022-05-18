@@ -3,64 +3,120 @@
  */
 package capstone.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import capstone.dto.request.CustomerDto;
-import capstone.entity.Career;
-import capstone.entity.Classification;
+import capstone.entity.Country;
 import capstone.entity.Customer;
-import capstone.entity.Field;
-import capstone.entity.Source;
-import capstone.entity.Type;
+import capstone.entity.District;
+import capstone.entity.Province;
+import capstone.entity.Ward;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.CareerRepository;
-import capstone.repository.ClassificationRepository;
-import capstone.repository.FieldRepository;
-import capstone.repository.SourceRepository;
-import capstone.repository.TypeRepository;
+import capstone.model.IdAndName;
+import capstone.repository.CustomerRepository;
+import capstone.service.iservice.INamedService;
 
 /**
  * Customer Service
  * @author Tuna
- *
  */
 @Service
-public class CustomerService extends AbstractService implements IDtoToEntityService<CustomerDto, Customer, Long> {
+public class CustomerService extends CodedService<CustomerDto, CustomerDto, Customer, Customer, CustomerRepository, Long>
+		implements INamedService<Customer, CustomerRepository, Long> {
 
-	@Autowired
-	private SourceRepository sourceRepository;
-	
-	@Autowired
-	private ClassificationRepository classificationRepository;
-	
-	@Autowired 
-	private FieldRepository fieldRepository;
-	
-	@Autowired
-	private TypeRepository typeRepository;
-	
-	@Autowired
-	private CareerRepository careerRepository;
+//	@Autowired
+//	private SourceRepository sourceRepository;
+//	
+//	@Autowired
+//	private ClassificationRepository classificationRepository;
+//	
+//	@Autowired 
+//	private FieldRepository fieldRepository;
+//	
+//	@Autowired
+//	private TypeRepository typeRepository;
+//	
+//	@Autowired
+//	private CareerRepository careerRepository;
+//	
+//	@Autowired
+//	private IncomeRepository incomeRepository;
 
 	@Override
-	public Customer dtoToEntity(CustomerDto dto) throws ResourceNotFoundException {
-		Customer customer = Customer.builder()
-				.id(dto.getId())
-				.code(dto.getCode())
-				.name(dto.getName())
-				.shortName(dto.getShortName())
-				.taxCode(dto.getTaxCode())
-				.phone(dto.getPhone())
-				.email(dto.getEmail())
-				.address(dto.getAddress())
-				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
-				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
-				.fields(AbstractService.findEntitiesByIds(fieldRepository, dto.getFieldIds(), Field.class))
-				.type(AbstractService.findEntityById(typeRepository, dto.getTypeId(), Type.class))
-				.careers(AbstractService.findEntitiesByIds(careerRepository, dto.getCareerIds(), Career.class))
+	protected Class<Customer> entityClass() {
+		return Customer.class;
+	}
+
+	@Override
+	protected Customer entityToResponse(Customer entity) {
+		return entity;
+	}
+
+	@Override
+	protected Customer createDtoToEntity(CustomerDto d, Customer entity) throws ResourceNotFoundException {
+		Ward ward = wardService.getEntityById(d.getWardId());
+		District district = Optional.ofNullable(ward).map(Ward::getDistrict)
+				.orElse(districtService.getEntityById(d.getDistrictId()));
+		Province province = Optional.ofNullable(district).map(District::getProvince)
+				.orElse(provinceService.getEntityById(d.getProvinceId()));
+		Country country = Optional.ofNullable(province).map(Province::getCountry)
+				.orElse(countryService.getEntityById(d.getCountryId()));
+		return entity.toBuilder()
+				.id(d.getId())
+//				.code(d.getCode())
+				.shortName(d.getShortName())
+				.name(d.getName())
+				.taxCode(d.getTaxCode())
+				.phone(d.getPhone())
+				.email(d.getEmail())
+				.source(sourceService.getEntityById(d.getSourceId()))
+				.classifications(classificationService.getEntitiesById(d.getClassificationIds()))
+				.fields(fieldService.getEntitiesById(d.getFieldIds()))
+				.type(typeService.getEntityById(d.getTypeId()))
+				.careers(careerService.getEntitiesById(d.getCareerIds()))
+				// Address
+				.country(country)
+				.province(province)
+				.district(district)
+				.ward(ward)
+				.address(d.getAddress())
+				.bankAccount(d.getBankAccount())
+				.bank(d.getBank())
+				.foundedDate(d.getFoundedDate())
+				.customerSince(d.getCustomerSince())
+				.income(incomeService.getEntityById(d.getIncomeId()))
+				.website(d.getWebsite())
 				.build();
-		return customer;
+	}
+
+	@Override
+	protected Customer updateDtoToEntity(CustomerDto updateDto, Customer entity) throws ResourceNotFoundException {
+		return createDtoToEntity(updateDto, entity);
+	}
+	
+	public List<IdAndName<Long>> findByNameIgnoreCase(String name) {
+		Session session = enableDeletedFilter(false);
+		try {
+			return Collections.unmodifiableList(this.repository.findByNameIgnoreCase(name));
+		} finally {
+			disableDeletedFilter(session);
+		}
+	}
+	
+	@Override
+	public List<IdAndName<Long>> getAllName() throws ResourceNotFoundException {
+		Session session = null;
+		try {
+			session = enableDeletedFilter(false);
+			return Collections.unmodifiableList(this.getRepository().findIdNameEmailPhoneAllBy());
+		} finally {
+			disableDeletedFilter(session);
+		}
 	}
 
 }

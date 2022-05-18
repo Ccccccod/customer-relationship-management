@@ -7,18 +7,19 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import capstone.entity.BaseEntity;
 import capstone.model.Coded;
+import capstone.model.Identifiable;
 
 /**
  * Coded Repository
  * @author Tuna
- *
  */
 @NoRepositoryBean
-public interface CodedRepository<T extends BaseEntity<ID> & Coded, ID extends Serializable> {
+public interface CodedRepository<T extends Identifiable<ID> & Coded, ID extends Serializable>
+		extends JpaRepository<T, ID> {
 	
 	Boolean existsByCode(String code);
 	

@@ -28,19 +28,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import capstone.i18n.I18nConfig;
 import capstone.model.Permission;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * PermissionFunctionAction
  * @author Tuna
  *
  */
-@Builder
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -116,14 +117,18 @@ public class PermissionFunctionAction extends BaseEntity<Long> implements Permis
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param permissionFunction
 	 * @param permissionAction
 	 * @param roles
+	 * @param messageSource
 	 */
-	@Builder
 	public PermissionFunctionAction(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy,
-			User updatedBy, PermissionFunction permissionFunction, PermissionAction permissionAction, Set<Role> roles) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+			User updatedBy, User owner, Boolean shared, Boolean deleted, PermissionFunction permissionFunction,
+			PermissionAction permissionAction, Set<Role> roles) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.permissionFunction = permissionFunction;
 		this.permissionAction = permissionAction;
 		this.roles = roles;

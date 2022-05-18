@@ -2,6 +2,7 @@ package capstone.config;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -73,6 +75,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs",
+                                   "/configuration/ui",
+                                   "/swagger-resources/**",
+                                   "/configuration/security",
+                                   "/swagger-ui.html",
+                                   "/swagger-ui/**",
+                                   "/webjars/**");
+    }
+
+	/**
+	 * Swagger ui
+	 */
+	private static final String[] SWAGGER = { "**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs",
+			"/webjars/**", "**/swagger-ui/**" };
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -81,6 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Permit all for login and logout
 		http.authorizeRequests() //
+				.antMatchers(SWAGGER).permitAll()
 				.antMatchers("/api/auth/**").permitAll()
 				.antMatchers("/api/test/**").permitAll();
 
@@ -132,10 +152,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
 		// TODO Get CORS client from config table
 		List<String> corsAllow;
-//		corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000");
-		corsAllow = new LinkedList<String>();
+		corsAllow = Arrays.asList("http://localhost:3000", "https://localhost:3000", "*", "**");
+		corsAllow = new LinkedList<String>(corsAllow);
         
-        if (corsAllow.isEmpty()) corsAllow.add("/**");
+        if (corsAllow.isEmpty()) corsAllow.add("*");
         corsConfiguration.setAllowedOrigins(corsAllow);
 
         // Allow all methods

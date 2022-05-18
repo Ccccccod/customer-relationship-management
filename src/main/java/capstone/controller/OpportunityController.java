@@ -6,80 +6,48 @@ package capstone.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.OpportunityDto;
-import capstone.entity.Contact;
-import capstone.entity.Customer;
 import capstone.entity.Opportunity;
 import capstone.entity.ProductInfo;
-import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
+import capstone.model.IdAndName;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.ProductInfoRepository;
-import capstone.repository.SourceRepository;
-import capstone.service.AbstractService;
+import capstone.service.OpportunityService;
 import capstone.service.ProductInfoService;
+import capstone.service.UnitService;
+import capstone.service.UserService;
+import lombok.Getter;
 
 /**
  * OpportunityController
  * Cơ hội Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping("/api/opportunity")
 public class OpportunityController
-		extends AbstractDtoEntityController<OpportunityDto, Opportunity, OpportunityRepository, Long>
-		implements IReadNameController<Opportunity, OpportunityRepository, Long>,
+		extends CRUDController<OpportunityDto, OpportunityDto, Opportunity, Opportunity, OpportunityRepository, OpportunityService, Long>
+		implements IReadNameController<Opportunity, OpportunityService, Long>,
 		ProductInfoedController<Opportunity, OpportunityRepository, Long> {
 
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;
 	
 	@Autowired
-	protected CustomerRepository customerRepository;
-
-	@Autowired
-	protected ContactRepository contactRepository;
-	
-	@Autowired
-	protected SourceRepository sourceRepository;
-	
-	@Autowired
 	protected ProductInfoService productInfoService;
-
-	@Override
-	protected Opportunity dtoToEntity(OpportunityDto dto, Opportunity opportunity) throws ResourceNotFoundException {
-		opportunity = opportunity.toBuilder()
-				.name(dto.getName())
-				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
-				.contact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class))
-				.opportunityPhase(dto.getOpportunityPhase())
-				.successRate(dto.getSuccessRate())
-				.expectedEndDate(dto.getExpectedEndDate())
-				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
-				.build();
-		opportunity.setToProductInfos(this.productInfoService.generateFromProductInfoDto(dto.getProductInfoDtos()));
-		return opportunity;
-	}
 	
-	@Override
-	protected Opportunity updateEntity(OpportunityDto dto, Opportunity entity) throws ResourceNotFoundException {
-		entity.setName(dto.getName());
-		entity.setCustomer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class));
-		entity.setContact(AbstractService.findEntityById(contactRepository, dto.getContactId(), Contact.class));
-		entity.setOpportunityPhase(dto.getOpportunityPhase());
-		entity.setSuccessRate(dto.getSuccessRate());
-		entity.setExpectedEndDate(dto.getExpectedEndDate());
-		entity.setSource(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class));
-		// ProductInfo is not changed. It should not changeable in update controller
-		return entity;
-	}
+	@Autowired
+	protected UserService userService;
 
 	@Override
 	public ProductInfoService getProductInfoService() {
@@ -109,6 +77,48 @@ public class OpportunityController
 	@Override
 	public List<ProductInfo> deleteByIdAndProductInfoed(Iterable<? extends Long> ids, Opportunity t) {
 		return this.productInfoRepository.deleteByIdInAndOpportunity(ids, t);
+	}
+	
+	@Autowired
+	protected OpportunityRepository opportunityRepository;
+
+	@Override
+	public OpportunityRepository getRepository() {
+		return opportunityRepository;
+	}
+	
+	@Getter
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Override
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Autowired
+	private OpportunityService opportunityService;
+	
+	@Override
+	public OpportunityService getService() {
+		return opportunityService;
+	}
+	
+	@Autowired
+	private UnitService unitService;
+
+	@Override
+	public UnitService getUnitService() {
+		return unitService;
+	}
+	
+	@GetMapping("/{id}/customer")
+	public ResponseEntity<IdAndName<Long>> getCustomer(@PathVariable Long id) throws ResourceNotFoundException {
+		return ResponseEntity.ok(service.getCustomer(id));
+	}
+	
+	@GetMapping("/{id}/contact")
+	public ResponseEntity<IdAndName<Long>> getContact(@PathVariable Long id) throws ResourceNotFoundException {
+		return ResponseEntity.ok(service.getContact(id));
 	}
 	
 //	@GetMapping("{opportunityId}/product")

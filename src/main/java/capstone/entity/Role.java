@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,14 +19,15 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
+import capstone.model.Named;
 import capstone.model.Permission;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Role
@@ -35,6 +35,8 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,9 +49,18 @@ import lombok.ToString;
 		uniqueConstraints = { //
 				@UniqueConstraint(name = "ROLE_UK", columnNames = "name") //
 				})
-public class Role extends NamedEntity<Long> {
+public class Role extends BaseEntity<Long> implements Named {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Tên
+	 */
+	@Column(name = "name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String name;
 	
+	/**
+	 * Mô tả
+	 */
 	@Column(name = "description", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String description;
 
@@ -57,7 +68,7 @@ public class Role extends NamedEntity<Long> {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonIgnore
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "role_permission_function_action", //
@@ -92,10 +103,6 @@ public class Role extends NamedEntity<Long> {
 					"This permission is not supported: " + permission.getClass().getName());
 		}
 	}
-
-	public Role(String name) {
-		super(name);
-	}
 	
 	public static final String ADMIN = "Quản trị hệ thống";
 	
@@ -109,18 +116,26 @@ public class Role extends NamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param description
 	 * @param users
 	 * @param permissionFunctionActions
 	 */
-	@Builder(toBuilder = true)
-	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name,
-			String description, Set<User> users, Set<PermissionFunctionAction> permissionFunctionActions) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+	public Role(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String name, String description, Set<User> users,
+			Set<PermissionFunctionAction> permissionFunctionActions) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.name = name;
 		this.description = description;
 		this.users = users;
 		this.permissionFunctionActions = permissionFunctionActions;
+	}
+
+	public Role(String name) {
+		this.name = name;
 	}
 	
 }

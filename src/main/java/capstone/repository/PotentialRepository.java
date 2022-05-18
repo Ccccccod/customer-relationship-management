@@ -3,13 +3,16 @@
  */
 package capstone.repository;
 
+import org.springframework.stereotype.Repository;
+
 import capstone.entity.Potential;
 
 /**
  * PotentialRepository
  * @author Tuna
- *
  */
-public interface PotentialRepository extends NamedJpaRepository<Potential, Long> {
+@Repository
+public interface PotentialRepository extends NamedJpaRepository<Potential, Long>, BaseRepository<Potential, Long>,
+		CodedRepository<Potential, Long> {
 
 }

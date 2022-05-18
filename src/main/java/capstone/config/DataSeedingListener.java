@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -25,20 +23,25 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import capstone.common.enums.OpportunityPhase;
 import capstone.entity.BaseEntity;
+import capstone.entity.BusinessType;
 import capstone.entity.Career;
 import capstone.entity.Classification;
 import capstone.entity.Contact;
 import capstone.entity.Customer;
+import capstone.entity.Department;
 import capstone.entity.Field;
+import capstone.entity.Income;
 import capstone.entity.Invoice;
-import capstone.entity.NamedEntity;
+import capstone.entity.MaritalStatus;
 import capstone.entity.Opportunity;
+import capstone.entity.OpportunityPhase;
 import capstone.entity.Order;
 import capstone.entity.PermissionAction;
 import capstone.entity.PermissionFunction;
 import capstone.entity.PermissionFunctionAction;
+import capstone.entity.PhoneAreaCode;
+import capstone.entity.Position;
 import capstone.entity.Potential;
 import capstone.entity.Product;
 import capstone.entity.ProductInfo;
@@ -46,38 +49,77 @@ import capstone.entity.ProductType;
 import capstone.entity.Role;
 import capstone.entity.Source;
 import capstone.entity.Type;
+import capstone.entity.Unit;
 import capstone.entity.User;
+import capstone.entity.Vocative;
 import capstone.model.Coded;
+import capstone.model.Named;
+import capstone.repository.BusinessTypeRepository;
 import capstone.repository.CareerRepository;
 import capstone.repository.ClassificationRepository;
 import capstone.repository.CodedRepository;
 import capstone.repository.ContactRepository;
 import capstone.repository.CustomerRepository;
+import capstone.repository.DepartmentRepository;
 import capstone.repository.FieldRepository;
+import capstone.repository.GenderRepository;
+import capstone.repository.IncomeRepository;
 import capstone.repository.InvoiceRepository;
+import capstone.repository.MaritalStatusRepository;
 import capstone.repository.NamedJpaRepository;
+import capstone.repository.OpportunityPhaseRepository;
 import capstone.repository.OpportunityRepository;
 import capstone.repository.OrderRepository;
 import capstone.repository.PermissionActionRepository;
 import capstone.repository.PermissionFunctionActionRepository;
 import capstone.repository.PermissionFunctionRepository;
+import capstone.repository.PhoneAreaCodeRepository;
+import capstone.repository.PositionRepository;
 import capstone.repository.PotentialRepository;
 import capstone.repository.ProductRepository;
 import capstone.repository.ProductTypeRepository;
 import capstone.repository.RoleRepository;
 import capstone.repository.SourceRepository;
 import capstone.repository.TypeRepository;
+import capstone.repository.UnitRepository;
 import capstone.repository.UserRepository;
+import capstone.repository.VocativeRepository;
 import capstone.utils.EncryptedPasswordUtils;
 
 /**
  * Data Seeding Listener
  * @author Tuna
- *
  */
 @Component
 @SuppressWarnings("unused")
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+
+	@Autowired
+	private VocativeRepository vocativeRepository;
+
+	@Autowired
+	private BusinessTypeRepository businessTypeRepository;
+
+	@Autowired
+	private DepartmentRepository departmentRepository;
+
+	@Autowired
+	private GenderRepository genderRepository;
+
+	@Autowired
+	private IncomeRepository incomeRepository;
+
+	@Autowired
+	private MaritalStatusRepository maritalStatusRepository;
+
+	@Autowired
+	private OpportunityPhaseRepository opportunityPhaseRepository;
+
+	@Autowired
+	private PhoneAreaCodeRepository phoneAreaCodeRepository;
+	
+	@Autowired
+	private PositionRepository positionRepository;
 	
 	@Autowired
 	private PotentialRepository potentialRepository;
@@ -132,11 +174,14 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Autowired
     private PermissionFunctionActionRepository permissionFunctionActionRepository;
+    
+    @Autowired
+    private UnitRepository unitRepository;
 
     /**
      * WARNING: disable when testing
      */
-    private static final boolean enable = false;
+    private static final boolean enable = true;
     
     static final private String PASSWORD = "Minhkien1@";
 
@@ -148,7 +193,62 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
 //        userRepository.findAll().forEach(System.out::println);
 //        roleRepository.findAll().forEach(System.out::println);
+		
+		// Vocative
+		Vocative vocativeAnh = addNamedRepository(vocativeRepository, new Vocative("Anh"));
+		Vocative vocativeChi = addNamedRepository(vocativeRepository, new Vocative("Chị"));
+		Vocative vocativeOng = addNamedRepository(vocativeRepository, new Vocative("Ông"));
+		Vocative vocativeBa = addNamedRepository(vocativeRepository, new Vocative("Bà"));
         
+		//Department
+		Department department1 = addNamedRepository(departmentRepository, new Department("Ban Giám đốc")) ;
+		Department department2 = addNamedRepository(departmentRepository, new Department("Phòng Tài chính")) ;
+		Department department3 = addNamedRepository(departmentRepository, new Department("Phòng Nhân sự")) ;
+		Department department4 = addNamedRepository(departmentRepository, new Department("Phòng Marketing")) ;
+		Department department5 = addNamedRepository(departmentRepository, new Department("Phòng CSKH")) ;
+		Department department6 = addNamedRepository(departmentRepository, new Department("Phòng Hành chính tổng hợp")) ;
+		Department department7 = addNamedRepository(departmentRepository, new Department("Phòng Kinh doanh")) ;
+
+		// Position
+		Position position1 = addNamedRepository(positionRepository, new Position("Chủ tịch"));
+		Position position2 = addNamedRepository(positionRepository, new Position("Phó Chủ tịch"));
+		Position position3 = addNamedRepository(positionRepository, new Position("Tổng Giám đốc"));
+		Position position4 = addNamedRepository(positionRepository, new Position("Phó TGĐ"));
+		Position position5 = addNamedRepository(positionRepository, new Position("Giám đốc"));
+		Position position6 = addNamedRepository(positionRepository, new Position("Kế toán trưởng"));
+		Position position7 = addNamedRepository(positionRepository, new Position("Trưởng phòng"));
+		Position position8 = addNamedRepository(positionRepository, new Position("Trợ lý"));
+		Position position9 = addNamedRepository(positionRepository, new Position("Nhân viên"));
+
+		//Income
+		
+		Income income1 = addNamedRepository(incomeRepository, new Income("Dưới 3 tỷ "));
+		Income income2 = addNamedRepository(incomeRepository, new Income("Từ 3 tỷ đồng đến 10 tỷ đồng "));
+		Income income3 = addNamedRepository(incomeRepository, new Income("Từ 10 tỷ đồng đến 100 tỷ đồng"));
+		Income income4 = addNamedRepository(incomeRepository, new Income("Trên 100 tỷ đồng"));
+
+		// Oppotunity
+
+		OpportunityPhase opportunityPhase1 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Mở đầu", 10));
+		OpportunityPhase opportunityPhase2 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Khách hàng quan tâm", 30));
+		OpportunityPhase opportunityPhase3 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Demo / Giới thiệu", 50));
+		OpportunityPhase opportunityPhase4 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Đàm phán thương lượng", 70));
+		OpportunityPhase opportunityPhase5 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Kết thúc thành công", 100));
+		OpportunityPhase opportunityPhase6 = addNamedRepository(opportunityPhaseRepository,
+				new OpportunityPhase("Kết thúc thất bại", 0));
+
+		// MaritalStatus
+		
+		MaritalStatus maritalStatus1 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Chưa kết hôn"));
+		MaritalStatus maritalStatus2 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Đã kết hôn"));
+		MaritalStatus maritalStatus3 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Đã ly hôn"));
+		MaritalStatus maritalStatus4 = addNamedRepository(maritalStatusRepository, new MaritalStatus("Khác"));
+		
         // Source Nguồn gốc
         Source sourceCustomerOrPartnerRefer = addNamedRepository(sourceRepository, new Source("Khách hàng hoặc đối tác giới thiệu"));
         Source sourceSelfSeekingSaleStaff = addNamedRepository(sourceRepository, new Source("Nhân viên kinh doanh tự tìm kiếm"));
@@ -167,6 +267,19 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Field fieldProduction = addNamedRepository(fieldRepository, new Field("Sản xuất"));
         Field fieldBuilding = addNamedRepository(fieldRepository, new Field("Xây lắp"));
         Field fieldLightIndustry = addNamedRepository(fieldRepository, new Field("Công nghiệp nhẹ"));
+        
+        // Loại hình doanh nghiệp
+        BusinessType businessType01 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty TNHH"));
+        BusinessType businessType02 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty cổ phần"));
+        BusinessType businessType03 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty có vốn đầu tư nước ngoài"));
+        BusinessType businessType04 = addNamedRepository(businessTypeRepository, new BusinessType("Doanh nghiệp tư nhân"));
+        BusinessType businessType05 = addNamedRepository(businessTypeRepository, new BusinessType("Tổ chức phi chính phủ"));
+        BusinessType businessType06 = addNamedRepository(businessTypeRepository, new BusinessType("Cửa hàng, trung tâm"));
+        BusinessType businessType07 = addNamedRepository(businessTypeRepository, new BusinessType("Hợp tác xã"));
+        BusinessType businessType08 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty hợp danh"));
+        BusinessType businessType09 = addNamedRepository(businessTypeRepository, new BusinessType("Đơn vị HCSN cấp trung ương"));
+        BusinessType businessType10 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty HCSN cấp Tỉnh/Thành Phố"));
+        BusinessType businessType11 = addNamedRepository(businessTypeRepository, new BusinessType("Công ty HCSN cấp Quận/Huyện"));
         
         // Type Loại hình
         Type typeBusiness = addNamedRepository(typeRepository, new Type("Doanh nghiệp"));
@@ -244,6 +357,104 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         Career career65 = addNamedRepository(careerRepository, new Career(fieldProduction, "Trồng rừng"));
         Career career66 = addNamedRepository(careerRepository, new Career(fieldProduction, "Sản xuất gạch, xi măng"));
         Career career67 = addNamedRepository(careerRepository, new Career(fieldProduction, "Sản xuất khác"));
+        
+        /**
+         * PhoneAreaCode
+         */
+        PhoneAreaCode phoneAreaCode01 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("296"));
+        PhoneAreaCode phoneAreaCode02 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("254"));
+        PhoneAreaCode phoneAreaCode03 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("209"));
+        PhoneAreaCode phoneAreaCode04 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("204"));
+        PhoneAreaCode phoneAreaCode05 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("291"));
+        PhoneAreaCode phoneAreaCode06 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("222"));
+        PhoneAreaCode phoneAreaCode07 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("275"));
+        PhoneAreaCode phoneAreaCode08 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("256"));
+        PhoneAreaCode phoneAreaCode09 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("274"));
+        PhoneAreaCode phoneAreaCode10 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("271"));
+        PhoneAreaCode phoneAreaCode11 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("252"));
+        PhoneAreaCode phoneAreaCode12 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("290"));
+        PhoneAreaCode phoneAreaCode13 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("292"));
+        PhoneAreaCode phoneAreaCode14 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("206"));
+        PhoneAreaCode phoneAreaCode15 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("236"));
+        PhoneAreaCode phoneAreaCode16 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("262"));
+        PhoneAreaCode phoneAreaCode17 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("261"));
+        PhoneAreaCode phoneAreaCode18 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("215"));
+        PhoneAreaCode phoneAreaCode19 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("251"));
+        PhoneAreaCode phoneAreaCode20 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("277"));
+        PhoneAreaCode phoneAreaCode21 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("269"));
+        PhoneAreaCode phoneAreaCode22 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("219"));
+        PhoneAreaCode phoneAreaCode23 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("226"));
+        PhoneAreaCode phoneAreaCode24 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("24"));
+        PhoneAreaCode phoneAreaCode25 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("239"));
+        PhoneAreaCode phoneAreaCode26 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("220"));
+        PhoneAreaCode phoneAreaCode27 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("225"));
+        PhoneAreaCode phoneAreaCode28 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("293"));
+        PhoneAreaCode phoneAreaCode29 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("28"));
+        PhoneAreaCode phoneAreaCode30 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("218"));
+        PhoneAreaCode phoneAreaCode31 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("221"));
+        PhoneAreaCode phoneAreaCode32 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("258"));
+        PhoneAreaCode phoneAreaCode33 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("297"));
+        PhoneAreaCode phoneAreaCode34 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("260"));
+        PhoneAreaCode phoneAreaCode35 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("213"));
+        PhoneAreaCode phoneAreaCode36 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("263"));
+        PhoneAreaCode phoneAreaCode37 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("205"));
+        PhoneAreaCode phoneAreaCode38 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("214"));
+        PhoneAreaCode phoneAreaCode39 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("272"));
+        PhoneAreaCode phoneAreaCode40 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("228"));
+        PhoneAreaCode phoneAreaCode41 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("238"));
+        PhoneAreaCode phoneAreaCode42 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("229"));
+        PhoneAreaCode phoneAreaCode43 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("259"));
+        PhoneAreaCode phoneAreaCode44 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("210"));
+        PhoneAreaCode phoneAreaCode45 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("257"));
+        PhoneAreaCode phoneAreaCode46 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("232"));
+        PhoneAreaCode phoneAreaCode47 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("235"));
+        PhoneAreaCode phoneAreaCode48 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("255"));
+        PhoneAreaCode phoneAreaCode49 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("203"));
+        PhoneAreaCode phoneAreaCode50 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("233"));
+        PhoneAreaCode phoneAreaCode51 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("299"));
+        PhoneAreaCode phoneAreaCode52 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("212"));
+        PhoneAreaCode phoneAreaCode53 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("276"));
+        PhoneAreaCode phoneAreaCode54 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("227"));
+        PhoneAreaCode phoneAreaCode55 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("208"));
+        PhoneAreaCode phoneAreaCode56 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("237"));
+        PhoneAreaCode phoneAreaCode57 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("234"));
+        PhoneAreaCode phoneAreaCode58 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("273"));
+        PhoneAreaCode phoneAreaCode59 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("294"));
+        PhoneAreaCode phoneAreaCode60 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("207"));
+        PhoneAreaCode phoneAreaCode61 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("270"));
+        PhoneAreaCode phoneAreaCode62 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("211"));
+        PhoneAreaCode phoneAreaCode63 = addNamedRepository(phoneAreaCodeRepository, new PhoneAreaCode("216"));
+        
+        // Unit
+        Unit unit01 = addNamedRepository(unitRepository, new Unit("Bao"));
+        Unit unit02 = addNamedRepository(unitRepository, new Unit("Bình"));
+        Unit unit03 = addNamedRepository(unitRepository, new Unit("Bộ"));
+        Unit unit04 = addNamedRepository(unitRepository, new Unit("Cái"));
+        Unit unit05 = addNamedRepository(unitRepository, new Unit("Cây"));
+        Unit unit06 = addNamedRepository(unitRepository, new Unit("Chai"));
+        Unit unit07 = addNamedRepository(unitRepository, new Unit("Chiếc"));
+        Unit unit08 = addNamedRepository(unitRepository, new Unit("Cuốn"));
+        Unit unit09 = addNamedRepository(unitRepository, new Unit("Cuộn"));
+        Unit unit10 = addNamedRepository(unitRepository, new Unit("Điểu"));
+        Unit unit11 = addNamedRepository(unitRepository, new Unit("Gói"));
+        Unit unit12 = addNamedRepository(unitRepository, new Unit("Hộp"));
+        Unit unit13 = addNamedRepository(unitRepository, new Unit("Két"));
+        Unit unit14 = addNamedRepository(unitRepository, new Unit("Kg"));
+        Unit unit15 = addNamedRepository(unitRepository, new Unit("Khối"));
+        Unit unit16 = addNamedRepository(unitRepository, new Unit("Lần"));
+        Unit unit17 = addNamedRepository(unitRepository, new Unit("Lít"));
+        Unit unit18 = addNamedRepository(unitRepository, new Unit("Lọ"));
+        Unit unit19 = addNamedRepository(unitRepository, new Unit("m2"));
+        Unit unit20 = addNamedRepository(unitRepository, new Unit("m3"));
+        Unit unit21 = addNamedRepository(unitRepository, new Unit("ml"));
+        Unit unit22 = addNamedRepository(unitRepository, new Unit("Thùng"));
+        Unit unit23 = addNamedRepository(unitRepository, new Unit("Túi"));
+        Unit unit24 = addNamedRepository(unitRepository, new Unit("Tuýp"));
+        Unit unit25 = addNamedRepository(unitRepository, new Unit("Tấn"));
+        Unit unit26 = addNamedRepository(unitRepository, new Unit("Tạ"));
+        Unit unit27 = addNamedRepository(unitRepository, new Unit("Vỉ"));
+        Unit unit28 = addNamedRepository(unitRepository, new Unit("Viên"));
+        Unit unit29 = addNamedRepository(unitRepository, new Unit("Yến"));
        
 		// Customer
 		Customer customer4Eurodoor = addNamedRepository(customerRepository, Customer.builder()
@@ -386,122 +597,132 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         
         // Potential
         Potential potential6 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Chị")
+				.code("TN00001")
+        		.vocative(vocativeChi)
         		.lastName("Tôn Nữ Lạc").name("Huyền")
-        		.department("Phòng CSKH")
-        		.position("Trợ lý")
+        		.department(department1)
+        		.position(position1)
         		.phone("0399542127").officePhone("0234625478")
         		.source(sourceOther)
         		.officeEmail("lachuyen.hoanggia@gmail.com").email("tonnulachuyen@gmail.com")
-        		.customer(customer6HoangGia)
+        		.customer(customer10PhanAnh.getName())
         		.taxCode("0125546683")
         		.address("Số nhà 58, đường Nguyễn Sinh Cung, Phường Vĩ Dạ, Thành phố Huế, Thừa Thiên - Huế, Việt Nam")
         		.build());
         Potential potential7 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Anh")
+				.code("TN00002")
+        		.vocative(vocativeAnh)
         		.lastName("Trần Nhật").name("Vũ")
-        		.department("Phòng Kinh doanh")
-        		.position("Nhân viên")
+        		.department(department2)
+        		.position(position2)
         		.phone("0354265794").officePhone("0236521456")
         		.source(sourceCustomerCome)
         		.officeEmail("vunt2@sunshine.com.vn").email("nhatvu94@gmail.com")
-        		.customer(customer7AnhDuong)
+        		.customer(customer7AnhDuong.getName())
         		.taxCode("0151284610")
         		.address("Số nhà 15, đường Phạm Hữu Nhật, Phường Mỹ An, Quận Ngũ Hành Sơn, Đà Nẵng, Việt Nam")
         		.build());
         Potential potential8 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+				.code("TN00003")
+        		.vocative(vocativeBa)
         		.lastName("Võ Thị Hoàng").name("Anh")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department3)
+        		.position(position3)
         		.phone("0912901685").officePhone("0245298913")
         		.source(sourceCustomerCome)
         		.officeEmail("vthanh@vht.com.vn").email("vthanh@gmail.com")
-        		.customer(customer8VHT)
+        		.customer(customer8VHT.getName())
         		.taxCode(null)
         		.address("Số nhà 605 Đường Võ Văn Kiệt, Phường 04, Quận 5, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential9 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+				.code("TN00004")
+        		.vocative(vocativeOng)
         		.lastName("Phạm Tiến").name("Hoàng")
-        		.department("Phòng CSKH")
-        		.position("Trưởng phòng")
+        		.department(department4)
+        		.position(position4)
         		.phone("0915145846").officePhone(null)
         		.source(sourceCustomerCome)
         		.officeEmail("pthoang@ftech.com").email("pthoang@gmail.com")
-        		.customer(customer9FTech)
+        		.customer(customer9FTech.getName())
         		.taxCode(null)
         		.address("13 Đường Bà Huyện Thanh Quan, Phường 13, Quận Bình Thạnh, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential10 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+				.code("TN00005")
+        		.vocative(vocativeBa)
         		.lastName("Trần Thị").name("Dung")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department5)
+        		.position(position5)
         		.phone("0914601685").officePhone(null)
         		.source(sourceCustomerCome)
         		.officeEmail("ttdung@phananh.com.vn").email("ttdung@gmail.com")
-        		.customer(customer10PhanAnh)
+        		.customer(customer10PhanAnh.getName())
         		.taxCode(null)
         		.address("Số nhà 10 đường Hoàng Hoa Thám , Phường Cống Vị, Quận Ba Đình, Hà Nội, Việt Nam")
         		.build());
         Potential potential11 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+				.code("TN00006")
+        		.vocative(vocativeOng)
         		.lastName("Nguyễn Quang").name("Tuấn")
-        		.department("Phòng kinh doanh")
-        		.position("Giám đốc")
+        		.department(department6)
+        		.position(position6)
         		.phone("0915367546").officePhone("02043245823")
         		.source(sourceSelfSeekingSaleStaff)
         		.officeEmail("tuannq@ico.com.vn").email("quangtuanico@gmail.com")
-        		.customer(customer3ICOVN)
+        		.customer(customer3ICOVN.getName())
         		.taxCode(null)
         		.address("Số nhà 238, đường Nguyễn Thị Minh Khai, Phường Hoàng Văn Thụ, Thành phố Bắc Giang, Bắc Giang, Việt Nam")
         		.build());
         Potential potential2 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Ông")
+				.code("TN00007")
+        		.vocative(vocativeOng)
         		.lastName("Nguyễn Văn").name("Nam")
-        		.department("Phòng Kinh doanh")
-        		.position("Trưởng phòng")
+        		.department(department7)
+        		.position(position7)
         		.phone("0988123456").officePhone("0243981234")
         		.source(sourceSelfSeekingSaleStaff)
         		.officeEmail("nvnam@ngs.com.vn").email("nvnam@gmail.com")
-        		.customer(customer1NGS)
+        		.customer(customer1NGS.getName())
         		.taxCode(null)
         		.address("Số nhà 51, phố Lê Đại Hành, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hà Nội, Việt Nam")
         		.build());
         Potential potential3 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Bà")
+				.code("TN00008")
+        		.vocative(vocativeBa)
         		.lastName("Phạm Thị Hà").name("Phương")
-        		.department("Phòng nhân sự")
-        		.position("Trưởng phòng")
+        		.department(department6)
+        		.position(position6)
         		.phone("0975123456").officePhone("0245221234")
         		.source(sourceCustomerCome)
         		.officeEmail("pthphuong@voltrans.com").email("pthphuong@gmail.com")
-        		.customer(customer2VOLTRANS)
+        		.customer(customer2VOLTRANS.getName())
         		.taxCode(null)
         		.address("Số nhà 3, ngõ 78, phố Duy Tân, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội, Việt Nam")
         		.build());
         Potential potential4 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Chị")
+				.code("TN00009")
+        		.vocative(vocativeChi)
         		.lastName("Trịnh Thị").name("Vinh")
-        		.department("Phòng Hành chính tổng hợp")
-        		.position("Trưởng phòng")
+        		.department(department1)
+        		.position(position1)
         		.phone("0399958428").officePhone("0283268542")
         		.source(sourceCustomerOrPartnerRefer)
         		.officeEmail("vinhtt1@eurodoor.com.vn").email("trinhvinh22292@gmail.com")
-        		.customer(customer4Eurodoor)
+        		.customer(customer4Eurodoor.getName())
         		.taxCode("0185514943")
         		.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
         		.build());
         Potential potential5 = addNamedRepository(potentialRepository, Potential.builder()
-        		.vocative("Anh")
+				.code("TN00010")
+        		.vocative(vocativeAnh)
         		.lastName("Nguyễn Anh").name("Tuấn")
-        		.department("Phòng Tài chính")
-        		.position("Trưởng phòng")
+        		.department(department2)
+        		.position(position2)
         		.phone("0942354785").officePhone("02483024554")
         		.source(sourceThroughSeminalsAndTraining)
         		.officeEmail("natuan@hanoi.edu.vn").email("anhtuan180991@gmail.com")
-        		.customer(customer5SGDHN)
+        		.customer(customer5SGDHN.getName())
         		.taxCode("0104128452")
         		.address("Số nhà 23, đường Quang Trung, Phường Phan Chu Trinh, Quận Hoàn Kiếm, Hà Nội, Việt Nam")
         		.build());
@@ -515,7 +736,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 1")
         		.productType(null)
         		.explanation("Thành phẩm 1")
-        		.unit("Hộp")
+        		.unit(unit12)
         		.buyPrice(150000L)
         		.sellPrice(200000L).sellPrice1(220000L).sellPrice2(230000L)
         		.permanentPrice(250000L)
@@ -529,7 +750,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 2")
         		.productType(null)
         		.explanation("Thành phẩm 2")
-        		.unit("Cái")
+        		.unit(unit04)
         		.buyPrice(600_000L)
         		.sellPrice(800_000L).sellPrice1(900_000L).sellPrice2(1_000_000L)
         		.permanentPrice(900_000L)
@@ -543,7 +764,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 3")
         		.productType(null)
         		.explanation("Thành phẩm 3")
-        		.unit("Bộ")
+        		.unit(unit03)
         		.buyPrice(450_000L)
         		.sellPrice(460_000L).sellPrice1(470_000L).sellPrice2(420_000L)
         		.permanentPrice(500_000L)
@@ -558,7 +779,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 4")
         		.productType(null)
         		.explanation("Thành phẩm 4")
-        		.unit("Chiếc")
+        		.unit(unit07)
         		.buyPrice(200_000L)
         		.sellPrice(210_000L).sellPrice1(220_000L).sellPrice2(230_000L)
         		.permanentPrice(240_000L)
@@ -572,7 +793,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 5")
         		.productType(null)
         		.explanation("Thành phẩm 5")
-        		.unit("Hộp")
+        		.unit(unit25)
         		.buyPrice(80_000L)
         		.sellPrice(85_000L).sellPrice1(90_000L).sellPrice2(78_000L)
         		.permanentPrice(92_000L)
@@ -586,7 +807,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 6")
         		.productType(null)
         		.explanation("Thành phẩm 6")
-        		.unit("Cái")
+        		.unit(unit02)
         		.buyPrice(300_000L)
         		.sellPrice(210_000L).sellPrice1(320_000L).sellPrice2(340_000L)
         		.permanentPrice(350_000L)
@@ -600,7 +821,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Thành phẩm 7")
         		.productType(null)
         		.explanation("Thành phẩm 7")
-        		.unit("Bộ")
+        		.unit(unit03)
         		.buyPrice(1_500_000L)
         		.sellPrice(1_550_000L).sellPrice1(1_650_000L).sellPrice2(1_700_000L)
         		.permanentPrice(1_800_000L)
@@ -614,7 +835,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 1")
         		.productType(null)
         		.explanation("Dịch Vụ 1")
-        		.unit("Gói")
+        		.unit(unit18)
         		.buyPrice(10_000_000L)
         		.sellPrice(15_000_000L).sellPrice1(13_000_000L).sellPrice2(14_000_000L)
         		.permanentPrice(12_000_000L)
@@ -628,7 +849,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 2")
         		.productType(null)
         		.explanation("Dịch Vụ 2")
-        		.unit("Gói")
+        		.unit(unit19)
         		.buyPrice(10_500_000L)
         		.sellPrice(15_500_000L).sellPrice1(13_500_000L).sellPrice2(14_500_000L)
         		.permanentPrice(12_500_000L)
@@ -642,7 +863,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         		.name("Dịch Vụ 3")
         		.productType(null)
         		.explanation("Dịch Vụ 3")
-        		.unit("Gói")
+        		.unit(unit20)
         		.buyPrice(6_500_000L)
         		.sellPrice(11_500_000L).sellPrice1(9_500_000L).sellPrice2(10_500_000L)
         		.permanentPrice(8_500_000L)
@@ -655,9 +876,10 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 		// Contact
 		Contact contact1 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00001")
-				.vocative("Ông")
+				.vocative(vocativeAnh)
 				.lastName("Nguyễn Văn").name("Nam")
-				.position("Trưởng phòng").department("Phòng kinh doanh")
+				.position(position1)
+				.department(department1)
 				.phone("0988123456").officePhone("0243981234")
 				.officeEmail("nvnam@ngs.com.vn").email("nvnam@gmail.com")
 				.customer(customer1NGS)
@@ -667,9 +889,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact2 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00002")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Phạm Thị Hà").name("Phương")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position2).department(department2)
 				.phone("0975123456").officePhone("0245221234")
 				.officeEmail("pthphuong@voltrans.com").email("pthphuong@gmail.com")
 				.customer(customer2VOLTRANS)
@@ -679,9 +901,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact3 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00003")
-				.vocative("Ông")
+				.vocative(vocativeBa)
 				.lastName("Nguyễn Quang").name("Tuấn")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position3).department(department3)
 				.phone("0915367546").officePhone("0245221234")
 				.officeEmail("pthphuong@voltrans.com").email("quangtuanico@gmail.com")
 				.customer(customer3ICOVN)
@@ -692,9 +914,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact4 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00004")
-				.vocative("Chị")
+				.vocative(vocativeChi)
 				.lastName("Trịnh Thị").name("Vinh")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position3).department(department3)
 				.phone("0399958428").officePhone("0245221234")
 				.officeEmail("vinhtt1@eurodoor.com.vn").email("trinhvinh22292@gmail.com")
 				.customer(customer4Eurodoor)
@@ -704,9 +926,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact5 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00005")
-				.vocative("Anh")
+				.vocative(vocativeChi)
 				.lastName("Nguyễn Anh").name("Tuấn")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position4).department(department4)
 				.phone("0942354785").officePhone("02483024554")
 				.officeEmail("natuan@hanoi.edu.vn").email("anhtuan180991@gmail.com")
 				.customer(customer5SGDHN)
@@ -716,9 +938,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact6 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00006")
-				.vocative("Chị")
+				.vocative(vocativeChi)
 				.lastName("Tôn Nữ Lạc").name("Huyền")
-				.position("Trợ lý").department("Phòng CSKH")
+				.position(position5).department(department5)
 				.phone("0399542127").officePhone("0234625478")
 				.officeEmail("lachuyen.hoanggia@gmail.com").email("tonnulachuyen@gmail.com")
 				.customer(customer6HoangGia)
@@ -728,9 +950,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact7 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00007")
-				.vocative("Anh")
+				.vocative(vocativeAnh)
 				.lastName("Trần Nhật").name("Vũ")
-				.position("Nhân viên").department("Phòng kinh doanh")
+				.position(position6).department(department6)
 				.phone("0354265794").officePhone("0236521456")
 				.officeEmail("vunt2@sunshine.com.vn").email("nhatvu94@gmail.com")
 				.customer(customer7AnhDuong)
@@ -740,9 +962,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact8 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00008")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Võ Thị Hoàng").name("Anh")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position7).department(department7)
 				.phone("0912901685").officePhone("0245298913")
 				.officeEmail("vthanh@vht.com.vn").email("vthanh@gmail.com")
 				.customer(customer8VHT)
@@ -752,9 +974,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact9 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00009")
-				.vocative("Ông")
+				.vocative(vocativeOng)
 				.lastName("Phạm Tiến").name("Hoàng")
-				.position("Trưởng phòng").department("Phòng CSKH")
+				.position(position2).department(department5)
 				.phone("0915145846").officePhone("02253468154")
 				.officeEmail("pthoang@ftech.com").email("pthoang@gmail.com")
 				.customer(customer9FTech)
@@ -764,9 +986,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		Contact contact10 = addNamedRepository(contactRepository, Contact.builder()
 				.code("LH00010")
-				.vocative("Bà")
+				.vocative(vocativeBa)
 				.lastName("Trần Thị").name("Dung")
-				.position("Trưởng phòng").department("Phòng Nhân sự")
+				.position(position5).department(department1)
 				.phone("0245292653").officePhone("0245292653")
 				.officeEmail("ttdung@phananh.com.vn").email("ttdung@gmail.com")
 				.customer(customer10PhanAnh)
@@ -776,254 +998,265 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.build());
 		
 		// Opportunity
-		Opportunity opportunity1 = addNamedRepository(opportunityRepository, Opportunity.builder()
+		Opportunity opportunity1 = Opportunity.builder()
+				.code("CH00001")
 				.customer(customer1NGS)
 				.contact(contact1)
 				.name("Bán hàng cho " + customer1NGS.getName())
-				.opportunityPhase(OpportunityPhase.BEGINNING)
+				.opportunityPhase(opportunityPhase1)
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product1)
-								.productCode(product1.getCode())
-								.explanation(product1.getExplanation())
-								.unit(product1.getUnit())
-								.amount(10)
-								.price(product1.getSellPrice())
-								.discount(10)
-								.vat(product1.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity2 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity1.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product1)
+						.productCode(product1.getCode())
+						.explanation(product1.getExplanation())
+						.unit(product1.getUnit())
+						.amount(10)
+						.price(product1.getSellPrice())
+						.discount(10)
+						.vat(product1.getVat())
+						.build()
+		));
+		opportunity1 = addNamedRepository(opportunityRepository, opportunity1);
+		Opportunity opportunity2 = Opportunity.builder()
+				.code("CH00002")
 				.customer(customer2VOLTRANS)
 				.contact(contact2)
 				.name("Bán hàng cho " + customer2VOLTRANS.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase2)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product2)
-								.productCode(product2.getCode())
-								.explanation(product2.getExplanation())
-								.unit(product2.getUnit())
-								.amount(15)
-								.price(product2.getSellPrice())
-								.discount(2)
-								.vat(product2.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity3 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity2.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product2)
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(15)
+						.price(product2.getSellPrice())
+						.discount(2)
+						.vat(product2.getVat())
+						.build()
+		));
+		opportunity2 = addNamedRepository(opportunityRepository, opportunity2);
+		Opportunity opportunity3 = Opportunity.builder()
+				.code("CH00003")
 				.customer(customer3ICOVN)
 				.contact(contact3)
 				.name("Bán hàng cho " + customer3ICOVN.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase3)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceSelfSeekingSaleStaff)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product3)
-								.productCode(product3.getCode())
-								.explanation(product3.getExplanation())
-								.unit(product3.getUnit())
-								.amount(50)
-								.price(product3.getSellPrice())
-								.discount(5)
-								.vat(product3.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity4 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity3.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product3)
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(5)
+						.vat(product3.getVat())
+						.build()));
+		opportunity3 = addNamedRepository(opportunityRepository, opportunity3);
+		Opportunity opportunity4 = Opportunity.builder()
+				.code("CH00004")
 				.customer(customer4Eurodoor)
 				.contact(contact4)
 				.name("Bán hàng cho " + customer4Eurodoor.getName())
-				.opportunityPhase(OpportunityPhase.SUCCESS_FINISH)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(100)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerOrPartnerRefer)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product4)
-								.productCode(product4.getCode())
-								.explanation(product4.getExplanation())
-								.unit(product4.getUnit())
-								.amount(100)
-								.price(product4.getSellPrice())
-								.discount(10)
-								.vat(product4.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity5 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity4.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product4)
+						.productCode(product4.getCode())
+						.explanation(product4.getExplanation())
+						.unit(product4.getUnit())
+						.amount(100)
+						.price(product4.getSellPrice())
+						.discount(10)
+						.vat(product4.getVat())
+						.build()));
+		opportunity4 = addNamedRepository(opportunityRepository, opportunity4);
+		Opportunity opportunity5 = Opportunity.builder()
+				.code("CH00005")
 				.customer(customer5SGDHN)
 				.contact(contact5)
 				.name("Bán hàng cho " + customer5SGDHN.getName())
-				.opportunityPhase(OpportunityPhase.DEMO)
+				.opportunityPhase(opportunityPhase6)
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product5)
-								.productCode(product5.getCode())
-								.explanation(product5.getExplanation())
-								.unit(product5.getUnit())
-								.amount(300)
-								.price(product5.getSellPrice())
-								.discount(10)
-								.vat(product5.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity6 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity5.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product5)
+						.productCode(product5.getCode())
+						.explanation(product5.getExplanation())
+						.unit(product5.getUnit())
+						.amount(300)
+						.price(product5.getSellPrice())
+						.discount(10)
+						.vat(product5.getVat())
+						.build()));
+		opportunity5 = addNamedRepository(opportunityRepository, opportunity5);
+		Opportunity opportunity6 = Opportunity.builder()
+				.code("CH00006")
 				.customer(customer6HoangGia)
 				.contact(contact6)
 				.name("Bán hàng cho " + customer6HoangGia.getName())
-				.opportunityPhase(OpportunityPhase.BEGINNING)
+				.opportunityPhase(opportunityPhase5)
 				.successRate(10)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceThroughSeminalsAndTraining)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product6)
-								.productCode(product6.getCode())
-								.explanation(product6.getExplanation())
-								.unit(product6.getUnit())
-								.amount(1000)
-								.price(product6.getSellPrice())
-								.discount(10)
-								.vat(product6.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity7 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity6.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product6)
+						.productCode(product6.getCode())
+						.explanation(product6.getExplanation())
+						.unit(product6.getUnit())
+						.amount(1000)
+						.price(product6.getSellPrice())
+						.discount(10)
+						.vat(product6.getVat())
+						.build()));
+		opportunity6 = addNamedRepository(opportunityRepository, opportunity6);
+		Opportunity opportunity7 = Opportunity.builder()
+				.code("CH00007")
 				.customer(customer7AnhDuong)
 				.contact(contact7)
 				.name("Bán hàng cho " + customer7AnhDuong.getName())
-				.opportunityPhase(OpportunityPhase.DEMO)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(50)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product7)
-								.productCode(product7.getCode())
-								.explanation(product7.getExplanation())
-								.unit(product7.getUnit())
-								.amount(20)
-								.price(product7.getSellPrice())
-								.discount(10)
-								.vat(product7.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity8 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity7.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product7)
+						.productCode(product7.getCode())
+						.explanation(product7.getExplanation())
+						.unit(product7.getUnit())
+						.amount(20)
+						.price(product7.getSellPrice())
+						.discount(10)
+						.vat(product7.getVat())
+						.build()));
+		opportunity7 = addNamedRepository(opportunityRepository, opportunity7);
+		Opportunity opportunity8 = Opportunity.builder()
+				.code("CH00008")
 				.customer(customer8VHT)
 				.contact(contact8)
 				.name("Bán hàng cho " + customer8VHT.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product8)
-								.productCode(product8.getCode())
-								.explanation(product8.getExplanation())
-								.unit(product8.getUnit())
-								.amount(20)
-								.price(product8.getSellPrice())
-								.discount(10)
-								.vat(product8.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity9 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity8.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product8)
+						.productCode(product8.getCode())
+						.explanation(product8.getExplanation())
+						.unit(product8.getUnit())
+						.amount(20)
+						.price(product8.getSellPrice())
+						.discount(10)
+						.vat(product8.getVat())
+						.build()));
+		opportunity8 = addNamedRepository(opportunityRepository, opportunity8);
+		Opportunity opportunity9 = Opportunity.builder()
+				.code("CH00009")
 				.customer(customer9FTech)
 				.contact(contact9)
 				.name("Bán hàng cho " + customer9FTech.getName())
-				.opportunityPhase(OpportunityPhase.SUCCESS_FINISH)
+				.opportunityPhase(opportunityPhase4)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JULY, 9))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product9)
-								.productCode(product9.getCode())
-								.explanation(product9.getExplanation())
-								.unit(product9.getUnit())
-								.amount(2)
-								.price(product9.getSellPrice())
-								.discount(0)
-								.vat(product9.getVat())
-								.build()
-						))
-				.build());
-		Opportunity opportunity10 = addNamedRepository(opportunityRepository, Opportunity.builder()
+				.build();
+		opportunity9.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product9)
+						.productCode(product9.getCode())
+						.explanation(product9.getExplanation())
+						.unit(product9.getUnit())
+						.amount(2)
+						.price(product9.getSellPrice())
+						.discount(0)
+						.vat(product9.getVat())
+						.build()));
+		opportunity9 = addNamedRepository(opportunityRepository, opportunity9);
+		Opportunity opportunity10 = Opportunity.builder()
+				.code("CH00010")
 				.customer(customer10PhanAnh)
 				.contact(contact10)
 				.name("Bán hàng cho " + customer10PhanAnh.getName())
-				.opportunityPhase(OpportunityPhase.NEGOTIATION)
+				.opportunityPhase(opportunityPhase3)
 				.successRate(70)
 				.expectedEndDate(LocalDate.of(2021, Month.JUNE, 8))
 				.source(sourceCustomerCome)
-				.productInfos(newSet( //
-						ProductInfo.builder()
-								.product(product10)
-								.productCode(product10.getCode())
-								.explanation(product10.getExplanation())
-								.unit(product10.getUnit())
-								.amount(1)
-								.price(product10.getSellPrice())
-								.discount(5)
-								.vat(product10.getVat())
-								.build()
-						))
-				.build());
+				.build();
+		opportunity10.addToProductInfo(newSet( //
+				ProductInfo.builder()
+						.product(product10)
+						.productCode(product10.getCode())
+						.explanation(product10.getExplanation())
+						.unit(product10.getUnit())
+						.amount(1)
+						.price(product10.getSellPrice())
+						.discount(5)
+						.vat(product10.getVat())
+						.build()));
+		opportunity10 = addNamedRepository(opportunityRepository, opportunity10);
 		
 		// Order
-		Order order1 = addNamedRepository(orderRepository, Order.builder()
+		Order order1 = Order.builder()
 				.code("DH00009")
-				.name("Đơn hàng bán cho FTech")
+				.explanation("Đơn hàng bán cho " + customer4Eurodoor.getName())
 				.orderDate(LocalDate.of(2021, Month.APRIL, 26))
 				.customer(customer4Eurodoor)
 				.contact(contact3)
 				.opportunity(opportunity3)
-				.orderValue(34_100_000L)
-				.liquidationValue(34_100_000L)
 				.liquidationDeadline(LocalDate.of(2021, Month.APRIL, 26))
 				.deliveryDeadline(LocalDate.of(2021, Month.APRIL, 26))
-				.paid(Boolean.TRUE)
-				.productInfos(new LinkedHashSet<ProductInfo>(Arrays.asList(
-						ProductInfo.builder()
-								.productCode(product2.getCode())
-								.explanation(product2.getExplanation())
-								.unit(product2.getUnit())
-								.amount(1)
-								.price(product2.getSellPrice())
-								.discount(0)
-								.vat(product2.getVat())
-								.build(),
-						ProductInfo.builder()
-								.productCode(product3.getCode())
-								.explanation(product3.getExplanation())
-								.unit(product3.getUnit())
-								.amount(50)
-								.price(product3.getSellPrice())
-								.discount(10)
-								.vat(product3.getVat())
-								.build()
-						)))
-				.build());
+				.receivedMoney(1L)
+				.build();
+		order1.addToProductInfo(newSet(
+				ProductInfo.builder()
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(1)
+						.price(product2.getSellPrice())
+						.discount(0)
+						.vat(product2.getVat())
+						.build(),
+				ProductInfo.builder()
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(10)
+						.vat(product3.getVat())
+						.build()
+				));
+		order1 = addCodedRepository(orderRepository, order1);
 		
 		// Invoice
-		Invoice invoice1 = addCodedRepository(invoiceRepository, Invoice.builder()
+		Invoice invoice1 = Invoice.builder()
 				.code("DN0000001")
 				.customer(customer4Eurodoor)
 				.address("Số nhà 38, đường Bình Thới, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam")
@@ -1035,7 +1268,28 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.receiverEmail("Minn@gmail.com")
 				.receiverPhone("120120129")
 				.order(order1)
-				.build());
+				.build();
+		invoice1.addToProductInfo(newSet(
+				ProductInfo.builder()
+						.productCode(product2.getCode())
+						.explanation(product2.getExplanation())
+						.unit(product2.getUnit())
+						.amount(1)
+						.price(product2.getSellPrice())
+						.discount(0)
+						.vat(product2.getVat())
+						.build(),
+				ProductInfo.builder()
+						.productCode(product3.getCode())
+						.explanation(product3.getExplanation())
+						.unit(product3.getUnit())
+						.amount(50)
+						.price(product3.getSellPrice())
+						.discount(10)
+						.vat(product3.getVat())
+						.build()
+				));
+		invoice1 = addCodedRepository(invoiceRepository, invoice1);
 		
 		// Permissions
 
@@ -1082,7 +1336,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
         // Admin account
         if (!userRepository.findByEmail("admin1@gmail.com").isPresent()) {
             User admin = new User();
-            admin.setUsername("admin1");
+            admin.setUsername("admin123");
             admin.setEmail("admin1@gmail.com");
             admin.setPassword(EncryptedPasswordUtils.encrytePassword(PASSWORD));
             
@@ -1229,13 +1483,13 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 				.collect(Collectors.toList());
 	}
 	
-	private <T extends NamedEntity<ID>, ID extends Serializable> T addNamedRepository(
+	private <T extends BaseEntity<ID> & Named, ID extends Serializable> T addNamedRepository(
 			NamedJpaRepository<T, ID> repository, T t) {
 		return repository.findFirstByName(t.getName()).orElseGet(() -> repository.save(t));
 	}
 
-	private <T extends BaseEntity<ID> & Coded, ID extends Serializable, Re extends CodedRepository<T, ID> & JpaRepository<T, ID>> T addCodedRepository(
-			Re repository, T t) {
+	private <T extends BaseEntity<ID> & Coded, ID extends Serializable> T addCodedRepository(
+			CodedRepository<T, ID> repository, T t) {
 		return repository.findFirstByCode(t.getCode()).orElseGet(() -> repository.save(t));
 	}
 

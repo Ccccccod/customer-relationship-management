@@ -3,6 +3,7 @@
  */
 package capstone.entity;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -19,12 +20,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Lĩnh vực
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -51,6 +53,26 @@ public class Field extends NamedEntity<Long> {
 	@JsonIgnore
 	private Set<Career> careers;
 	
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param name
+	 * @param customers
+	 * @param careers
+	 */
+	public Field(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, User owner,
+			Boolean shared, Boolean deleted, String name, Set<Customer> customers, Set<Career> careers) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name);
+		this.customers = customers;
+		this.careers = careers;
+	}
+
 	public Field(String name) {
 		super(name);
 	}

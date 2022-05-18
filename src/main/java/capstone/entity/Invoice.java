@@ -16,23 +16,27 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.model.Coded;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Invoice
  * Hóa đơn
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,21 +51,17 @@ import lombok.ToString;
 public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "code", unique = true, nullable = false)
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
 	private String code;
 
 	/**
 	 * Khách hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
-	/**
-	 * Địa chỉ
-	 */
-	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String address;
 
 	/**
 	 * Tài khoản ngân hàng
@@ -84,6 +84,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Người mua
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "buyer_id")
 	private Contact buyer;
@@ -109,6 +110,7 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Đơn hàng
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
 	private Order order;
@@ -116,13 +118,57 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
 
 	@Override
 	public void productInfoSetThis(ProductInfo productInfo) {
 		if (Objects.nonNull(productInfo))
 			productInfo.setInvoice(this);
+	}
+
+	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setInvoice(null);
 	}
 
 	/**
@@ -131,9 +177,11 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param code
 	 * @param customer
-	 * @param address
 	 * @param bankAccount
 	 * @param bank
 	 * @param taxCode
@@ -142,15 +190,21 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 	 * @param receiverEmail
 	 * @param receiverPhone
 	 * @param order
+	 * @param productInfos
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public Invoice(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String code, Customer customer, String address, String bankAccount, String bank, String taxCode,
-			Contact buyer, String receiverName, String receiverEmail, String receiverPhone, Order order) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+			User owner, Boolean shared, Boolean deleted, String code, Customer customer, String bankAccount,
+			String bank, String taxCode, Contact buyer, String receiverName, String receiverEmail, String receiverPhone,
+			Order order, Set<ProductInfo> productInfos, Country country, Province province, District district,
+			Ward ward, String address) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.code = code;
 		this.customer = customer;
-		this.address = address;
 		this.bankAccount = bankAccount;
 		this.bank = bank;
 		this.taxCode = taxCode;
@@ -159,6 +213,13 @@ public class Invoice extends BaseEntity<Long> implements Coded, ProductInfoed {
 		this.receiverEmail = receiverEmail;
 		this.receiverPhone = receiverPhone;
 		this.order = order;
+		this.productInfos = productInfos;
+		this.setToProductInfos(productInfos);
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 	}
 
 }

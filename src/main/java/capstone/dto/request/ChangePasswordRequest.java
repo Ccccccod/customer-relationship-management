@@ -10,16 +10,18 @@ import capstone.dto.validatation.annotation.Password;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Change Password Request
  * @author Tuna
  *
  */
+
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
-
 @NotNull
 @ChangePassword
 public class ChangePasswordRequest {

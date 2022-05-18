@@ -18,18 +18,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Hàng hóa
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -60,8 +60,9 @@ public class Product extends CodedNamedEntity<Long> {
 	/**
 	 * Đơn vị tính
 	 */
-	@Column(name = "unit", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String unit;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "unit_id")
+	private Unit unit;
 	
 	/**
 	 * Đơn giá bán
@@ -129,6 +130,9 @@ public class Product extends CodedNamedEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param name
 	 * @param code
 	 * @param productType
@@ -143,13 +147,14 @@ public class Product extends CodedNamedEntity<Long> {
 	 * @param vat
 	 * @param implicitRecord
 	 * @param costUnitPrice
+	 * @param productInfos
 	 */
-	@Builder(toBuilder = true)
 	public Product(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, String code, ProductType productType, String explanation, String unit, Long sellPrice,
-			Long sellPrice1, Long sellPrice2, Long permanentPrice, Long buyPrice, Boolean enterUnitPriorityAfterTax,
-			Integer vat, Boolean implicitRecord, Long costUnitPrice) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name, code);
+			User owner, Boolean shared, Boolean deleted, String name, String code, ProductType productType,
+			String explanation, Unit unit, Long sellPrice, Long sellPrice1, Long sellPrice2, Long permanentPrice,
+			Long buyPrice, Boolean enterUnitPriorityAfterTax, Integer vat, Boolean implicitRecord, Long costUnitPrice,
+			Set<ProductInfo> productInfos) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted, name, code);
 		this.productType = productType;
 		this.explanation = explanation;
 		this.unit = unit;
@@ -162,6 +167,7 @@ public class Product extends CodedNamedEntity<Long> {
 		this.vat = vat;
 		this.implicitRecord = implicitRecord;
 		this.costUnitPrice = costUnitPrice;
+		this.productInfos = productInfos;
 	}
 
 	/**

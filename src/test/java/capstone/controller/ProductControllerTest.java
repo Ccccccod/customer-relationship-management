@@ -9,14 +9,14 @@ import java.util.List;
 import capstone.dto.request.ProductDto;
 import capstone.entity.Product;
 import capstone.repository.ProductRepository;
+import capstone.service.ProductService;
 
 /**
  * ProductControllerTest
  * @author DELL
- *
  */
-public class ProductControllerTest
-		extends AbstractDtoEntityControllerTest<ProductDto, Product, ProductRepository, ProductController, Long> {
+public class ProductControllerTest extends
+		CRUDControllerTest<ProductDto, ProductDto, Product, Product, ProductRepository, ProductService, ProductController, Long> {
 
 	@Override
 	protected String url() {
@@ -34,14 +34,6 @@ public class ProductControllerTest
 	@Override
 	protected Product resource() {
 		return Product.builder().id(1L).name("kien").code("HH4").build();
-	}
-
-	@Override
-	protected ProductDto createResource() {
-		return ProductDto.builder()
-				.name(resource().getName())
-				.code(resource().getCode())
-				.build();
 	}
 
 }

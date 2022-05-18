@@ -27,7 +27,6 @@ import capstone.exception.ResourceExistedException;
 import capstone.exception.ResourceNotFoundException;
 import capstone.model.Identifiable;
 import capstone.model.Repositoried;
-import capstone.repository.RepositoryUtils;
 import capstone.service.UserService;
 import capstone.utils.DtoUtils;
 import capstone.utils.MapBuilder;
@@ -78,7 +77,7 @@ public abstract class AbstractCRUDController< //
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Response> getById(@PathVariable(value = "id") ID id) throws ResourceNotFoundException {
-		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, entityClass()));
 		Response response = this.entityToResponse(entity);
 		return ResponseEntity.ok(response);
 	}
@@ -92,7 +91,7 @@ public abstract class AbstractCRUDController< //
 		entity.setCreatedBy(this.userService.getCurrentUser());
 		entity.setId(null);
 		
-		RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
+		capstone.utils.RepositoryUtils.checkExistedFields(entity, this.repository, entityClass());
 		entity = this.repository.save(entity);
 		
 		Response response = this.entityToResponse(entity);
@@ -112,12 +111,12 @@ public abstract class AbstractCRUDController< //
 			throws ResourceNotFoundException, InstantiationException, IllegalAccessException, ResourceExistedException {
 		logger.debug("update() of id#{} with body {}", id, dto);
 		
-		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id));
+		Entity entity = this.repository.findById(id).orElseThrow(DtoUtils.resourceNotFoundExceptionSupplier(id, entityClass()));
 		entity = this.updateEntity(dto, entity);
 		entity.setUpdatedBy(this.userService.getCurrentUser());
 		entity.setId(id);
 		
-		RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
+		capstone.utils.RepositoryUtils.checkExistedFields(entity, id, repository, entityClass());
 		entity = this.repository.saveAndFlush(entity);
 		logger.debug("updated enitity: {}", entity);
 		
@@ -127,11 +126,11 @@ public abstract class AbstractCRUDController< //
 	
 	@DeleteMapping("")
 	public ResponseEntity<?> delete(@RequestBody List<ID> ids) throws ResourceNotFoundException {
-		List<ID> deletedTS = this.repository.findAllById(ids).stream()
-				.map(e -> e.getId())
+		List<Entity> entities = this.repository.findAllById(ids).stream()
 				.collect(Collectors.toList());
-		this.repository.deleteAllById(deletedTS);
-		return ResponseEntity.ok(MapBuilder.hashMap("deleted", deletedTS));
+		this.preDelete(entities);
+		this.repository.deleteAll(entities);
+		return ResponseEntity.ok(MapBuilder.hashMap("deleted", true));
 	}
 
 	@DeleteMapping("/{id}")
@@ -163,6 +162,14 @@ public abstract class AbstractCRUDController< //
 	 * @throws ResourceNotFoundException if Dto's fields contain id of no resources
 	 */
 	protected abstract Entity updateEntity(UpdateDto updateDto, Entity entity) throws ResourceNotFoundException;
+	
+	protected void preDelete(List<Entity> entities) {
+		entities.forEach(e -> {
+			e.setCreatedBy(null);
+			e.setUpdatedBy(null);
+		});
+		this.getRepository().saveAll(entities);
+	}
 	
 //	@SuppressWarnings("unchecked")
 //	protected void checkExistedFields(Entity entity)

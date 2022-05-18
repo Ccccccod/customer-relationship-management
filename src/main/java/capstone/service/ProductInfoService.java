@@ -4,6 +4,8 @@
 package capstone.service;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -23,8 +25,7 @@ import capstone.repository.ProductRepository;
 
 /**
  * ProductInfoService
- * @author Tuna
- *
+ * @author tuna
  */
 @Service
 public class ProductInfoService {
@@ -35,6 +36,9 @@ public class ProductInfoService {
 	@Autowired
 	protected ProductInfoRepository productInfoRepository;
 	
+	@Autowired
+	private ProductService productService;
+	
 	/**
 	 * Generate {@link ProductInfo} from {@link Product}
 	 * @param product
@@ -43,7 +47,7 @@ public class ProductInfoService {
 	public ProductInfo generateFromProduct(Product product) {
 		return ProductInfo.builder()
 				.product(product)
-				.productCode(product.getCode())
+//				.productCode(product.getCode())
 				.explanation(product.getExplanation())
 				.unit(product.getUnit())
 				.amount(1)
@@ -61,7 +65,7 @@ public class ProductInfoService {
 	 */
 	public ProductInfo generateFromProduct(Long productId) throws ResourceNotFoundException {
 		Product product = productRepository.findById(productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Product not found for this id: " + productId));
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found for this id: " + productId, ProductInfo.class));
 		return this.generateFromProduct(product);
 	};
 	
@@ -77,28 +81,36 @@ public class ProductInfoService {
 		return products.stream().map(this::generateFromProduct).collect(Collectors.toSet());
 	}
 	
-	public ProductInfo generateFromProductInfoDto(ProductInfoDto dto) {
+	public ProductInfo generateFromProductInfoDto(ProductInfoDto d) throws ResourceNotFoundException {
+		Product product = productService.getEntityById(d.getProductId());
 		return ProductInfo.builder()
-				.productCode(dto.getProductCode())
-				.explanation(dto.getExplanation())
-				.unit(dto.getUnit())
-				.amount(dto.getAmount())
-				.price(dto.getPrice())
-				.discount(dto.getDiscount())
-				.vat(dto.getVat())
+				.id(d.getId())
+				.product(productService.getEntityById(d.getProductId()))
+				.productCode(product.getCode())
+				.explanation(d.getExplanation())
+//				.unit(unitService.getEntityById(d.getUnitId()))
+				.unit(product.getUnit())
+				.amount(d.getAmount())
+				.price(d.getPrice())
+				.discount(d.getDiscount())
+				.vat(d.getVat())
 				.build();
 	}
 	
-	public Set<ProductInfo> generateFromProductInfoDto(Set<ProductInfoDto> productInfoDtos) {
+	public Set<ProductInfo> generateFromProductInfoDto(Set<ProductInfoDto> productInfoDtos) throws ResourceNotFoundException {
 		if (Objects.isNull(productInfoDtos))
-			return null;
-		return productInfoDtos.stream().map(this::generateFromProductInfoDto).collect(Collectors.toSet());
+			return Collections.emptySet();
+		Set<ProductInfo> set = new LinkedHashSet<ProductInfo>();
+		for (ProductInfoDto productInfoDto : productInfoDtos) {
+			set.add(generateFromProductInfoDto(productInfoDto));
+		}
+		return set;
 	}
 
 	public <T extends ProductInfoed, ID extends Serializable> ProductInfo create(ID productInfoedId,
 			JpaRepository<T, ID> repository, Class<T> class1, Long productId) throws ResourceNotFoundException {
 		T t = repository.findById(productInfoedId).orElseThrow(
-				() -> new ResourceNotFoundException(class1.getName() + " not found for this id: " + productInfoedId));
+				() -> new ResourceNotFoundException(class1.getName() + " not found for this id: " + productInfoedId, class1));
 		ProductInfo productInfo = this.generateFromProduct(productId);
 		t.addToProductInfo(productInfo);
 		repository.saveAndFlush(t);

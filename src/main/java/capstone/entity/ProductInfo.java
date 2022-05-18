@@ -20,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import capstone.common.Constant;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Product Info
@@ -33,6 +33,7 @@ import lombok.ToString;
  * @author Tuna
  *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -65,12 +66,13 @@ public class ProductInfo extends BaseEntity<Long> {
 	 */
 	@Column(name = "explanation", columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	private String explanation;
-
+	
 	/**
 	 * Đơn vị tính
 	 */
-	@Column(name = "unit", columnDefinition = Constant.Hibernate.NVARCHAR_255)
-	private String unit;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "unit_id")
+	private Unit unit;
 	
 	/**
 	 * Số lượng
@@ -105,7 +107,7 @@ public class ProductInfo extends BaseEntity<Long> {
 	 */
 	@JsonProperty
 	public Long discountMoney() {
-		return this.price * this.discount / 100;
+		return this.totalPrice() * this.discount / 100;
 	}
 	
 	/**
@@ -172,6 +174,9 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
 	 * @param product
 	 * @param productCode
 	 * @param explanation
@@ -184,11 +189,11 @@ public class ProductInfo extends BaseEntity<Long> {
 	 * @param order
 	 * @param invoice
 	 */
-	@Builder(toBuilder = true)
 	public ProductInfo(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			Product product, String productCode, String explanation, String unit, Integer amount, Long price,
-			Integer discount, Integer vat, Opportunity opportunity, Order order, Invoice invoice) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+			User owner, Boolean shared, Boolean deleted, Product product, String productCode, String explanation,
+			Unit unit, Integer amount, Long price, Integer discount, Integer vat, Opportunity opportunity,
+			Order order, Invoice invoice) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.product = product;
 		this.productCode = productCode;
 		this.explanation = explanation;

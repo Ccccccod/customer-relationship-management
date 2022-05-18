@@ -40,6 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		ex.printStackTrace();
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("status", status.value());
@@ -88,6 +89,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("message", e.getMessage());
         error.put("field", e.getName());
         error.put("rejectedValue", e.getRejectedValue());
+        error.put("type", "duplicate");
+        error.put("msg", "Giá trị của " + e.getName() + " đã bị trùng");
         body.put("error", error);
         
 		return new ResponseEntity<>(body, status);
@@ -110,10 +113,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@Nullable
     public ResponseEntity<?> handleException1(Exception ex, WebRequest request) throws Exception {
 		if (ex instanceof ResourceNotFoundException) {
-			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
-			return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+	        Map<String, Object> body = new LinkedHashMap<>();
+	        body.put("timestamp", new Date());
+	        body.put("status", HttpStatus.NOT_FOUND.value());
+	        
+	        Map<String, Object> error = new LinkedHashMap<>();
+	        error.put("message", ex.getMessage());
+	        error.put("entityName", ((ResourceNotFoundException) ex).getEntityName());
+	        body.put("error", error);
+	        
+			return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 			
-		} else if (ex instanceof ResourceExistedException || ex instanceof DuplicateKeyException) {
+		} else if (ex instanceof DuplicateKeyException) {
 			ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 			return new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
 			

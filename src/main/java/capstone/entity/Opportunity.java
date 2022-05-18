@@ -12,8 +12,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,25 +22,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import capstone.common.enums.OpportunityPhase;
+import capstone.common.Constant;
+import capstone.common.annotation.UniqueOrNull;
 import capstone.dto.request.deserializer.LocalDateDeserializer;
-import capstone.dto.response.serializer.I18nEnumSerializer;
+import capstone.dto.response.serializer.IdNameSerializer;
 import capstone.dto.response.serializer.LocalDateSerializer;
+import capstone.model.Coded;
+import capstone.model.Named;
 import capstone.model.ProductInfoed;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Opportunity
  * Cơ hội
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -54,23 +55,43 @@ import lombok.ToString;
 @Table(name = "Opportunity", //
 		uniqueConstraints = { //
 		})
-public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
+public class Opportunity extends BaseEntity<Long> implements ProductInfoed, Coded, Named {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Mã cơ hội
+	 */
+	@UniqueOrNull
+	@Column(name = "code", nullable = false)
+	private String code;
+
+	/**
+	 * Tổ chức
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
+	/**
+	 * Liên hệ
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
 
 	/**
+	 * Tên cơ hội
+	 */
+	@Column(name = "name", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String name;
+
+	/**
 	 * Gian đoạn
 	 */
-	@JsonSerialize(using = I18nEnumSerializer.class, as = OpportunityPhase.class)
-	@Column(name = "opportunity_phase", nullable = false)
-	@Enumerated(EnumType.STRING)
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "opportunity_phase_id")
 	private OpportunityPhase opportunityPhase;
 	
 	/**
@@ -92,6 +113,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Nguồn gốc
 	 */
+	@JsonSerialize(using = IdNameSerializer.class)
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "source_id")
 	private Source source;
@@ -99,7 +121,7 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	/**
 	 * Thông tin từng hàng hóa
 	 */
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity", cascade = CascadeType.ALL, orphanRemoval = true)
 	protected Set<ProductInfo> productInfos;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "opportunity")
@@ -107,14 +129,6 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	@EqualsAndHashCode.Exclude
 	@JsonIgnore
 	private Set<Order> orders;
-	
-	/**
-	 * Địa chỉ
-	 * @return
-	 */
-	public String getAddress() {
-		return Objects.nonNull(this.customer) ? this.customer.getAddress() : null;
-	}
 	
 	/**
 	 * Doanh số kỳ vọng
@@ -125,10 +139,56 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 		return totalMoney * successRate;
 	}
 	
+	// Thông tin địa chỉ
+	
+	/**
+	 * Quốc gia 
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "country_id")
+	private Country country;
+	
+	/**
+	 * Tỉnh
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "province_id")
+	private Province province;
+	
+	/**
+	 * Huyện
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "district_id")
+	private District district;
+	
+	/**
+	 * Xã, Phường
+	 */
+	@JsonSerialize(using = IdNameSerializer.class)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
+	
+	/**
+	 * Địa chỉ
+	 */
+	@Column(name = "address", columnDefinition = Constant.Hibernate.NVARCHAR_255)
+	private String address;
+	
 	@Override
 	public void productInfoSetThis(ProductInfo productInfo) {
 		if (Objects.nonNull(productInfo))
 			productInfo.setOpportunity(this);
+	}
+
+	@Override
+	public void productInfoRemoveThis(ProductInfo productInfo) {
+		if (Objects.nonNull(productInfo))
+			productInfo.setOpportunity(null);
 	}
 
 	/**
@@ -137,29 +197,47 @@ public class Opportunity extends NamedEntity<Long> implements ProductInfoed {
 	 * @param updatedAt
 	 * @param createdBy
 	 * @param updatedBy
-	 * @param name
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param code
 	 * @param customer
 	 * @param contact
-	 * @param moneyAmount
+	 * @param name
 	 * @param opportunityPhase
 	 * @param successRate
 	 * @param expectedEndDate
-	 * @param expectedTurnOver
 	 * @param source
 	 * @param productInfos
+	 * @param orders
+	 * @param country
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
 	 */
-	@Builder(toBuilder = true)
 	public Opportunity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
-			String name, Customer customer, Contact contact, OpportunityPhase opportunityPhase, Integer successRate,
-			LocalDate expectedEndDate, Source source, Set<ProductInfo> productInfos) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy, name);
+			User owner, Boolean shared, Boolean deleted, String code, Customer customer, Contact contact, String name,
+			OpportunityPhase opportunityPhase, Integer successRate, LocalDate expectedEndDate, Source source,
+			Set<ProductInfo> productInfos, Set<Order> orders, Country country, Province province, District district,
+			Ward ward, String address) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
+		this.code = code;
 		this.customer = customer;
 		this.contact = contact;
+		this.name = name;
 		this.opportunityPhase = opportunityPhase;
 		this.successRate = successRate;
 		this.expectedEndDate = expectedEndDate;
 		this.source = source;
+		this.productInfos = productInfos;
 		setToProductInfos(productInfos);
+		this.orders = orders;
+		this.country = country;
+		this.province = province;
+		this.district = district;
+		this.ward = ward;
+		this.address = address;
 	}
 
 }

@@ -3,72 +3,48 @@
  */
 package capstone.controller;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import capstone.dto.request.ContactDto;
-import capstone.entity.Classification;
 import capstone.entity.Contact;
-import capstone.entity.Customer;
-import capstone.entity.Source;
 import capstone.exception.ResourceNotFoundException;
-import capstone.repository.ClassificationRepository;
 import capstone.repository.ContactRepository;
-import capstone.repository.CustomerRepository;
-import capstone.repository.SourceRepository;
-import capstone.service.AbstractService;
+import capstone.service.ContactService;
 
 /**
  * ContactController
  * Liên hệ Controller
  * @author Tuna
- *
  */
 @RestController
 @RequestMapping(value = "/api/contact")
-public class ContactController extends AbstractDtoEntityController<ContactDto, Contact, ContactRepository, Long>
-		implements IReadNameController<Contact, ContactRepository, Long> {
-
-	@Autowired
-	private CustomerRepository customerRepository;
+public class ContactController
+		extends CRUDController<ContactDto, ContactDto, Contact, Contact, ContactRepository, ContactService, Long> 
+		implements IReadNameController<Contact, ContactService, Long> {
 	
 	@Autowired
-	private ClassificationRepository classificationRepository;
-	
-	@Autowired
-	private SourceRepository sourceRepository;
-	
-	@Override
-	protected Contact dtoToEntity(ContactDto dto, Contact contact) throws ResourceNotFoundException {
-		return contact.toBuilder()
-				.name(dto.getName())
-				.code(dto.getCode())
-				.id(dto.getId())
-				.lastName(dto.getLastName())
-				.vocative(dto.getVocative())
-				.position(dto.getPosition())
-				.department(dto.getDepartment())
-				.customer(AbstractService.findEntityById(customerRepository, dto.getCustomerId(), Customer.class))
-				.classifications(AbstractService.findEntitiesByIds(classificationRepository, dto.getClassificationIds(), Classification.class))
-				.phone(dto.getPhone())
-				.officePhone(dto.getOfficePhone())
-				.otherPhone(dto.getOtherPhone())
-				.email(dto.getEmail())
-				.officeEmail(dto.getOfficeEmail())
-				.source(AbstractService.findEntityById(sourceRepository, dto.getSourceId(), Source.class))
-				.address(dto.getAddress())
-				// Other Information
-				.dateOfBirth(dto.getDateOfBirth())
-				.gender(dto.getGender())
-				.maritalStatus(dto.getMaritalStatus())
-				.facebook(dto.getFacebook())
-				.build();
-	}
+	private ContactService contactService;
 
 	@Override
-	protected Class<Contact> entityClass() {
-		return Contact.class;
+	public ContactService getService() {
+		return contactService;
 	}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<Contact>> search(@RequestParam(name = "customerId", required = false) Long customerId)
+			throws ResourceNotFoundException {
+		if (customerId == null)
+			return ResponseEntity.ok(Collections.emptyList());
+		List<Contact> contacts = service.findByCustomerId(customerId);
+		return ResponseEntity.ok(contacts);
+	}
+	
 }

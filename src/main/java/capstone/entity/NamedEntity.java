@@ -17,15 +17,15 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Named Base Entity
  * @author Tuna
- *
  */
+@SuperBuilder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString
 @Getter
@@ -37,14 +37,25 @@ import lombok.ToString;
 public class NamedEntity<ID extends Serializable> extends BaseEntity<ID> implements Named {
 	private static final long serialVersionUID = 1L;
 	
-	@NonNull
 	@NotNull // javax.validation.constraints.NotNull in case this object is used as request dto
-	@NotBlank(message = "must not be empty")
+	@NotBlank
 	@Column(name = "name", nullable = false, columnDefinition = Constant.Hibernate.NVARCHAR_255)
 	protected String name;
 
-	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy, String name) {
-		super(id, createdAt, updatedAt, createdBy, updatedBy);
+	/**
+	 * @param id
+	 * @param createdAt
+	 * @param updatedAt
+	 * @param createdBy
+	 * @param updatedBy
+	 * @param owner
+	 * @param shared
+	 * @param deleted
+	 * @param name
+	 */
+	public NamedEntity(ID id, LocalDateTime createdAt, LocalDateTime updatedAt, User createdBy, User updatedBy,
+			User owner, Boolean shared, Boolean deleted, String name) {
+		super(id, createdAt, updatedAt, createdBy, updatedBy, owner, shared, deleted);
 		this.name = name;
 	}
 	
